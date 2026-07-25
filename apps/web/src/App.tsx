@@ -4,7 +4,9 @@ import {
   BellIcon,
   CheckIcon,
   DotsThreeIcon,
+  FileIcon,
   FileTextIcon,
+  FolderIcon,
   GearIcon,
   HouseIcon,
   MagnifyingGlassIcon,
@@ -322,6 +324,75 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@workspace/ui/components/tooltip"
+import {
+  Autocomplete,
+  AutocompleteContent,
+  AutocompleteEmpty,
+  AutocompleteInput,
+  AutocompleteItem,
+  AutocompleteList,
+} from "@workspace/ui/components/autocomplete"
+import { CheckboxGroup } from "@workspace/ui/components/checkbox-group"
+import {
+  DataTable,
+  type ColumnDef,
+} from "@workspace/ui/components/data-table"
+import {
+  DatePicker,
+  DatePickerContent,
+  DatePickerTrigger,
+} from "@workspace/ui/components/date-picker"
+import {
+  FileUpload,
+  FileUploadDescription,
+  FileUploadIcon,
+  FileUploadTitle,
+} from "@workspace/ui/components/file-upload"
+import { Form } from "@workspace/ui/components/form"
+import {
+  Meter,
+  MeterLabel,
+  MeterValue,
+} from "@workspace/ui/components/meter"
+import {
+  NumberField,
+  NumberFieldDecrement,
+  NumberFieldGroup,
+  NumberFieldIncrement,
+  NumberFieldInput,
+} from "@workspace/ui/components/number-field"
+import { Rating } from "@workspace/ui/components/rating"
+import {
+  Stepper,
+  StepperContent,
+  StepperIndicator,
+  StepperItem,
+  StepperSeparator,
+  StepperTitle,
+} from "@workspace/ui/components/stepper"
+import {
+  Timeline,
+  TimelineContent,
+  TimelineDescription,
+  TimelineIndicator,
+  TimelineItem,
+  TimelineTime,
+  TimelineTitle,
+} from "@workspace/ui/components/timeline"
+import {
+  Toolbar,
+  ToolbarButton,
+  ToolbarGroup,
+  ToolbarInput,
+  ToolbarSeparator,
+} from "@workspace/ui/components/toolbar"
+import {
+  Tree,
+  TreeItem,
+  TreeItemContent,
+  TreeItemTrigger,
+  TreeLeaf,
+} from "@workspace/ui/components/tree"
 
 import { useTheme } from "@/components/theme-provider"
 
@@ -413,10 +484,46 @@ const INVOICES = [
   { id: "INV-003", status: "Overdue", method: "Card", amount: "€350.00" },
 ]
 
+const INVOICE_COLUMNS: ColumnDef<(typeof INVOICES)[number]>[] = [
+  { accessorKey: "id", header: "Invoice" },
+  { accessorKey: "status", header: "Status" },
+  { accessorKey: "method", header: "Method" },
+  { accessorKey: "amount", header: "Amount" },
+]
+
+const MILESTONES = [
+  {
+    title: "Brief validated",
+    time: "12 Mar 2026",
+    detail: "Scope and brand charter signed off.",
+    state: "completed" as const,
+  },
+  {
+    title: "Tokens ported",
+    time: "18 Mar 2026",
+    detail: "Tier-1 primitives mapped onto shadcn slots.",
+    state: "completed" as const,
+  },
+  {
+    title: "Component audit",
+    time: "25 Mar 2026",
+    detail: "Base UI coverage reviewed across the registry.",
+    state: "active" as const,
+  },
+  {
+    title: "Handover",
+    time: "—",
+    detail: "Documentation and release pending.",
+    state: "inactive" as const,
+  },
+]
+
 /* -------------------------------------------------------------------------- */
 
 export function App() {
   const { theme, setTheme } = useTheme()
+  const [dueDate, setDueDate] = React.useState<Date | undefined>(undefined)
+  const [uploads, setUploads] = React.useState<File[]>([])
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-12">
@@ -426,7 +533,9 @@ export function App() {
             Diametral × shadcn
           </h1>
           <p className="mt-1.5 text-sm text-muted-foreground">
-            All 60 registry components on Diametral brand tokens. Radius is{" "}
+            73 components on Diametral brand tokens — the 60 shadcn registry
+            components plus 13 additions (unwrapped Base UI primitives and
+            common patterns the registry omits). Radius is{" "}
             <code className="font-mono text-xs">0</code> by charter — the flat
             parti pris.
           </p>
@@ -659,6 +768,124 @@ export function App() {
             </Combobox>
           </Demo>
 
+          <Demo label="Autocomplete" className="max-w-sm">
+            <Autocomplete items={FRAMEWORKS}>
+              <AutocompleteInput placeholder="Type to filter…" showClear />
+              <AutocompleteContent>
+                <AutocompleteEmpty>No framework found.</AutocompleteEmpty>
+                <AutocompleteList>
+                  {(framework: string) => (
+                    <AutocompleteItem key={framework} value={framework}>
+                      {framework}
+                    </AutocompleteItem>
+                  )}
+                </AutocompleteList>
+              </AutocompleteContent>
+            </Autocomplete>
+          </Demo>
+
+          <Demo
+            label="NumberField / CheckboxGroup"
+            className="grid gap-6 sm:grid-cols-2"
+          >
+            <Field>
+              <FieldLabel>Quantity</FieldLabel>
+              <NumberField defaultValue={3} min={0} max={99}>
+                <NumberFieldGroup>
+                  <NumberFieldDecrement />
+                  <NumberFieldInput />
+                  <NumberFieldIncrement />
+                </NumberFieldGroup>
+              </NumberField>
+              <FieldDescription>
+                Hold <Kbd>shift</Kbd> to step by ten.
+              </FieldDescription>
+            </Field>
+            <CheckboxGroup
+              defaultValue={["vite"]}
+              allValues={["vite", "next", "astro"]}
+            >
+              <div className="flex items-center gap-2">
+                <Checkbox id="ks-cg-all" parent />
+                <Label htmlFor="ks-cg-all">All frameworks</Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <Checkbox id="ks-cg-vite" name="vite" />
+                <Label htmlFor="ks-cg-vite">Vite</Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <Checkbox id="ks-cg-next" name="next" />
+                <Label htmlFor="ks-cg-next">Next.js</Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <Checkbox id="ks-cg-astro" name="astro" />
+                <Label htmlFor="ks-cg-astro">Astro</Label>
+              </div>
+            </CheckboxGroup>
+          </Demo>
+
+          <Demo
+            label="DatePicker / Rating"
+            className="grid gap-6 sm:grid-cols-2"
+          >
+            <Field>
+              <FieldLabel>Due date</FieldLabel>
+              <DatePicker>
+                <DatePickerTrigger value={dueDate} />
+                <DatePickerContent>
+                  <Calendar
+                    mode="single"
+                    selected={dueDate}
+                    onSelect={setDueDate}
+                    autoFocus
+                  />
+                </DatePickerContent>
+              </DatePicker>
+            </Field>
+            <Field>
+              <FieldLabel>Satisfaction</FieldLabel>
+              <Rating defaultValue={3} />
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-muted-foreground">Read-only:</span>
+                <Rating value={4} readOnly />
+              </div>
+            </Field>
+          </Demo>
+
+          <Demo label="FileUpload" className="max-w-md flex-col items-stretch">
+            <FileUpload multiple onFiles={setUploads}>
+              <FileUploadIcon />
+              <FileUploadTitle>Drop files</FileUploadTitle>
+              <FileUploadDescription>
+                or click to browse from your machine
+              </FileUploadDescription>
+            </FileUpload>
+            {uploads.length > 0 ? (
+              <p className="mt-3 text-xs text-muted-foreground">
+                {uploads.length} file{uploads.length > 1 ? "s" : ""} selected:{" "}
+                {uploads.map((file) => file.name).join(", ")}
+              </p>
+            ) : null}
+          </Demo>
+
+          <Demo label="Form" className="max-w-sm flex-col items-stretch">
+            <Form onSubmit={(event) => event.preventDefault()}>
+              <FieldGroup>
+                <Field>
+                  <FieldLabel htmlFor="ks-form-name">Full name</FieldLabel>
+                  <Input id="ks-form-name" name="name" required />
+                  <FieldDescription>
+                    Base UI Form consolidates validity and focuses the first
+                    invalid field on submit.
+                  </FieldDescription>
+                </Field>
+                <Button type="submit" className="w-fit">
+                  Submit
+                </Button>
+              </FieldGroup>
+            </Form>
+          </Demo>
+
           <Demo label="Calendar">
             <Calendar mode="single" className="border border-border" />
           </Demo>
@@ -867,6 +1094,89 @@ export function App() {
               </div>
             </ScrollArea>
           </Demo>
+
+          <Demo label="Meter" className="max-w-sm flex-col items-stretch">
+            <Meter value={72}>
+              <MeterLabel>Storage used</MeterLabel>
+              <MeterValue />
+            </Meter>
+          </Demo>
+
+          <Demo label="DataTable" className="w-full flex-col items-stretch">
+            <DataTable
+              columns={INVOICE_COLUMNS}
+              data={INVOICES}
+              pageSize={2}
+              searchColumn="id"
+              searchPlaceholder="Filter invoices"
+            />
+          </Demo>
+
+          <Demo label="Timeline" className="max-w-md flex-col items-stretch">
+            <Timeline>
+              {MILESTONES.map((milestone) => (
+                <TimelineItem key={milestone.title} data-state={milestone.state}>
+                  <TimelineIndicator>
+                    {milestone.state === "completed" ? <CheckIcon /> : null}
+                  </TimelineIndicator>
+                  <TimelineContent>
+                    <TimelineTitle>{milestone.title}</TimelineTitle>
+                    <TimelineTime>{milestone.time}</TimelineTime>
+                    <TimelineDescription>{milestone.detail}</TimelineDescription>
+                  </TimelineContent>
+                </TimelineItem>
+              ))}
+            </Timeline>
+          </Demo>
+
+          <Demo label="Stepper" className="w-full flex-col items-stretch">
+            <Stepper>
+              {MILESTONES.slice(0, 3).map((milestone, index) => (
+                <React.Fragment key={milestone.title}>
+                  {index > 0 ? <StepperSeparator /> : null}
+                  <StepperItem state={milestone.state}>
+                    <StepperIndicator>{index + 1}</StepperIndicator>
+                    <StepperContent>
+                      <StepperTitle>{milestone.title}</StepperTitle>
+                    </StepperContent>
+                  </StepperItem>
+                </React.Fragment>
+              ))}
+            </Stepper>
+          </Demo>
+
+          <Demo label="Tree" className="max-w-sm flex-col items-stretch">
+            <Tree className="border border-border p-2">
+              <TreeItem defaultOpen>
+                <TreeItemTrigger>
+                  <FolderIcon />
+                  packages
+                </TreeItemTrigger>
+                <TreeItemContent>
+                  <TreeItem defaultOpen>
+                    <TreeItemTrigger>
+                      <FolderIcon />
+                      ui
+                    </TreeItemTrigger>
+                    <TreeItemContent>
+                      <TreeLeaf>
+                        <FileIcon />
+                        button.tsx
+                      </TreeLeaf>
+                      <TreeLeaf>
+                        <FileIcon />
+                        meter.tsx
+                      </TreeLeaf>
+                    </TreeItemContent>
+                  </TreeItem>
+                  <TreeLeaf>
+                    <FileIcon />
+                    package.json
+                  </TreeLeaf>
+                </TreeItemContent>
+              </TreeItem>
+            </Tree>
+          </Demo>
         </Section>
 
         {/* ---------------------------------------------------------------- */}
@@ -1031,6 +1341,24 @@ export function App() {
               <CarouselPrevious />
               <CarouselNext />
             </Carousel>
+          </Demo>
+
+          <Demo label="Toolbar">
+            <Toolbar>
+              <ToolbarGroup>
+                <ToolbarButton aria-label="Bold">
+                  <TextBIcon />
+                </ToolbarButton>
+                <ToolbarButton aria-label="Italic">
+                  <TextItalicIcon />
+                </ToolbarButton>
+                <ToolbarButton aria-label="Underline">
+                  <TextUnderlineIcon />
+                </ToolbarButton>
+              </ToolbarGroup>
+              <ToolbarSeparator />
+              <ToolbarInput placeholder="Search…" aria-label="Search" />
+            </Toolbar>
           </Demo>
         </Section>
 
