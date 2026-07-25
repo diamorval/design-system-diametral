@@ -8,8 +8,15 @@ import { Separator } from "./separator.js"
 
 function ItemGroup({ className, ...props }: React.ComponentProps<"div">) {
   return (
+    // Deliberately no role="list". A list may only own listitems, and Item is
+    // polymorphic through Base UI's useRender — which does not forward `role`
+    // to the rendered element, so its children cannot be made listitems from
+    // here. Asserting the role anyway is what produced axe's critical
+    // aria-required-children on every group. A generic container is honest; a
+    // malformed list is announced unpredictably by screen readers. Consumers
+    // who genuinely need list semantics own the markup: pass role="list" here
+    // and role="listitem" on each child.
     <div
-      role="list"
       data-slot="item-group"
       className={cn(
         "group/item-group flex w-full flex-col gap-4 has-data-[size=sm]:gap-2.5 has-data-[size=xs]:gap-2",

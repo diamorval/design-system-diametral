@@ -133,6 +133,11 @@
     --ds-success: var(--ds-green);
     --ds-warning: var(--ds-orange);
     --ds-danger: var(--ds-red);
+    /* Text-weight variant of --ds-info. The functional blue is tuned as a
+       surface/accent colour and only reaches 3.78:1 on --ds-bg-alt, so it fails
+       WCAG AA as body text. Mirrors v1's `-ink` convention (css/tokens.css) for
+       the same reason --ds-ink-faint is decoupled from --ds-gris. 5.43:1. */
+    --ds-info-ink: #0f6d85;
 
     /* Tier 3 — the flat parti pris: override this single value to round the
        entire system at once (shadcn derives every other radius via calc). */
