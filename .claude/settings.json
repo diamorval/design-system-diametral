@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path // empty' | grep -E 'packages/ui/src/components/.*\\.tsx$' | xargs -r node \"$CLAUDE_PROJECT_DIR/packages/ui/scripts/lint-components.mjs\""
+          }
+        ]
+      }
+    ]
+  }
+}
