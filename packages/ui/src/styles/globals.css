@@ -2,6 +2,7 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/geist";
+@import "@fontsource-variable/geist-mono";
 
 @custom-variant dark (&:is(.dark *));
 @source "../../../apps/**/*.{ts,tsx}";
@@ -48,7 +49,13 @@
     --radius-2xl: calc(var(--radius) * 1.8);
     --radius-3xl: calc(var(--radius) * 2.2);
     --radius-4xl: calc(var(--radius) * 2.6);
+    /* Only two faces are allowed: Ufficio (titles) and Geist (everything else).
+       Tailwind's default --font-serif/--font-mono would otherwise leak Georgia
+       and Menlo in through slots we never declared, so both are pinned to Geist
+       rather than left at their defaults. */
     --font-sans: 'Geist Variable', sans-serif;
+    --font-serif: 'Geist Variable', sans-serif;
+    --font-mono: 'Geist Mono Variable', monospace;
 }
 
 /* ============================================================================
@@ -125,12 +132,12 @@
     /* Tier 3 — the flat parti pris: override this single value to round the
        entire system at once (shadcn derives every other radius via calc). */
     --ds-radius: 0px;
-    /* The two official Diametral faces: Ufficio (titles) and Geist (body).
-       Ufficio is licensed and not bundled — it renders only where installed
-       locally or where a ufficio.css webfont is imported. Geist IS bundled, so
-       it takes the fallback slot to keep type on-brand rather than dropping to
-       a system serif. */
-    --ds-font-title: "Ufficio", "Geist Variable", system-ui, sans-serif;
+    /* The two official Diametral faces: Ufficio (titles) and Geist (body/mono).
+       Ufficio is licensed and not bundled — it resolves from the local install
+       every Diametral machine ships with, or from a ufficio.css webfont import.
+       Geist takes the sole fallback slot so an unprovisioned machine still lands
+       on-brand; no system face is listed, only the generic last resort. */
+    --ds-font-title: "Ufficio", "Geist Variable", sans-serif;
 
     /* ---- shadcn slot mappings ------------------------------------------- */
     --background: var(--ds-bg);

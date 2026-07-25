@@ -579,11 +579,11 @@ export function App() {
           </Demo>
           <Demo label="Type scale" className="flex flex-col gap-1">
             <p className="font-heading text-2xl font-light">
-              Ufficio / Fraunces title face
+              Ufficio title face
             </p>
             <p className="text-base">Geist body — 14px base, 130% leading.</p>
             <p className="font-mono text-xs text-muted-foreground">
-              Mono for tokens and code.
+              Geist Mono for tokens and code.
             </p>
           </Demo>
         </Section>
