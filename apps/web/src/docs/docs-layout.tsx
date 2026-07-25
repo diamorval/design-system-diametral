@@ -1,101 +1,176 @@
 import * as React from "react"
+import {
+  BellIcon,
+  CaretCircleDownIcon,
+  CaretRightIcon,
+  ChatCircleIcon,
+  CompassIcon,
+  CursorClickIcon,
+  type Icon,
+  LayoutIcon,
+  SquaresFourIcon,
+  StackIcon,
+  TableIcon,
+  TextboxIcon,
+  WrenchIcon,
+} from "@phosphor-icons/react"
 import { Link, Outlet, useLocation } from "react-router"
 
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@workspace/ui/components/collapsible"
 import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
-  SidebarGroupContent,
   SidebarGroupLabel,
   SidebarHeader,
-  SidebarInput,
   SidebarInset,
   SidebarMenu,
   SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
   SidebarProvider,
+  SidebarRail,
   SidebarTrigger,
 } from "@workspace/ui/components/sidebar"
 
 import { ThemeToggle } from "@/components/theme-toggle"
 import { DocsSearch } from "@/docs/docs-search"
-import { componentsByCategory } from "@/registry/registry"
+import {
+  CATEGORIES,
+  COMPONENTS,
+  componentsByCategory,
+} from "@/registry/registry"
 
-function matches(query: string) {
-  const needle = query.trim().toLowerCase()
-  if (!needle) return () => true
-  return (component: { name: string; slug: string; category: string }) =>
-    component.name.toLowerCase().includes(needle) ||
-    component.slug.includes(needle) ||
-    component.category.toLowerCase().includes(needle)
+// The nav is the complete map of the system and never narrows in place — ⌘K
+// (DocsSearch) is the only search surface — so the grouping is built once.
+const GROUPS = componentsByCategory()
+
+// Keyed off CATEGORIES rather than string, so adding a category to the registry
+// fails the typecheck here instead of silently rendering an iconless row.
+const CATEGORY_ICONS: Record<(typeof CATEGORIES)[number], Icon> = {
+  Actions: CursorClickIcon,
+  Forms: TextboxIcon,
+  "Data display": TableIcon,
+  Navigation: CompassIcon,
+  Layout: LayoutIcon,
+  Disclosure: CaretCircleDownIcon,
+  Overlays: StackIcon,
+  Feedback: BellIcon,
+  Conversation: ChatCircleIcon,
+  Utilities: WrenchIcon,
 }
 
 export function DocsLayout() {
-  const [query, setQuery] = React.useState("")
   const { pathname } = useLocation()
 
-  const groups = React.useMemo(() => {
-    const predicate = matches(query)
-    return componentsByCategory()
-      .map((group) => ({ ...group, items: group.items.filter(predicate) }))
-      .filter((group) => group.items.length > 0)
-  }, [query])
+  const activeCategory = GROUPS.find((group) =>
+    group.items.some((component) => `/docs/${component.slug}` === pathname)
+  )?.category
+
+  // Sections are controlled, not `defaultOpen`: ⌘K can navigate straight into a
+  // component whose section is shut, and an uncontrolled section mounted closed
+  // would hide the row that just became active. Falling back to the active
+  // section keeps that in sync until the reader takes over a given section.
+  const [toggled, setToggled] = React.useState<Record<string, boolean>>({})
 
   return (
     <SidebarProvider>
       <Sidebar>
-        <SidebarHeader className="gap-3">
-          <Link to="/" className="flex flex-col">
-            <span className="font-heading text-sm font-semibold tracking-wider uppercase">
-              Diametral
-            </span>
-            <span className="text-xs text-muted-foreground">
-              Design system · 72 components
-            </span>
-          </Link>
-          <SidebarInput
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder="Filter components…"
-            aria-label="Filter components"
-          />
+        <SidebarHeader>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton size="lg" render={<Link to="/" />}>
+                <div className="flex aspect-square size-8 items-center justify-center bg-sidebar-primary text-sidebar-primary-foreground">
+                  <SquaresFourIcon />
+                </div>
+                <div className="flex flex-col gap-0.5 leading-none">
+                  <span className="font-heading font-semibold tracking-wider uppercase">
+                    Diametral
+                  </span>
+                  <span className="text-xs text-muted-foreground">
+                    Design system · {COMPONENTS.length} components
+                  </span>
+                </div>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
         </SidebarHeader>
         <SidebarContent>
-          {groups.length === 0 ? (
-            <p className="px-4 py-3 text-xs text-muted-foreground">
-              No component matches “{query}”.
-            </p>
-          ) : null}
-          {groups.map((group) => (
-            <SidebarGroup key={group.category}>
-              <SidebarGroupLabel>{group.category}</SidebarGroupLabel>
-              <SidebarGroupContent>
-                <SidebarMenu>
-                  {group.items.map((component) => {
-                    const to = `/docs/${component.slug}`
-                    const count = component.examples?.length ?? 0
-                    return (
-                      <SidebarMenuItem key={component.slug}>
-                        <SidebarMenuButton
-                          isActive={pathname === to}
-                          render={<Link to={to} />}
-                        >
-                          {component.name}
+          <SidebarGroup>
+            <SidebarGroupLabel>Components</SidebarGroupLabel>
+            <SidebarMenu>
+              {GROUPS.map((group) => {
+                const CategoryIcon = CATEGORY_ICONS[group.category]
+                const open =
+                  toggled[group.category] ?? group.category === activeCategory
+                return (
+                  <Collapsible
+                    key={group.category}
+                    open={open}
+                    onOpenChange={(next) =>
+                      setToggled((previous) => ({
+                        ...previous,
+                        [group.category]: next,
+                      }))
+                    }
+                    render={<SidebarMenuItem />}
+                  >
+                    {/* A category has no page of its own — App.tsx routes only
+                        `/` and `/docs/:slug` — so unlike sidebar-08 the whole
+                        row is the trigger rather than a link plus a separate
+                        chevron action. */}
+                    <CollapsibleTrigger
+                      render={
+                        <SidebarMenuButton className="group/category">
+                          <CategoryIcon />
+                          <span>{group.category}</span>
+                          <CaretRightIcon className="ms-auto transition-transform group-aria-expanded/category:rotate-90" />
                         </SidebarMenuButton>
-                        {/* The example count doubles as the coverage map: a
-                            missing badge means the page has no usages yet. */}
-                        {count > 0 ? (
-                          <SidebarMenuBadge>{count}</SidebarMenuBadge>
-                        ) : null}
-                      </SidebarMenuItem>
-                    )
-                  })}
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </SidebarGroup>
-          ))}
+                      }
+                    />
+                    <CollapsibleContent>
+                      <SidebarMenuSub>
+                        {group.items.map((component) => {
+                          const to = `/docs/${component.slug}`
+                          const count = component.examples?.length ?? 0
+                          return (
+                            <SidebarMenuSubItem key={component.slug}>
+                              <SidebarMenuSubButton
+                                isActive={pathname === to}
+                                render={<Link to={to} />}
+                              >
+                                {component.name}
+                              </SidebarMenuSubButton>
+                              {/* The example count doubles as the coverage map:
+                                  a missing badge means the page has no usages
+                                  yet. `top-1` because the badge centres itself
+                                  off the peer menu button's data-size, which a
+                                  sub button — h-7, data-size="md" — never
+                                  emits. */}
+                              {count > 0 ? (
+                                <SidebarMenuBadge className="top-1">
+                                  {count}
+                                </SidebarMenuBadge>
+                              ) : null}
+                            </SidebarMenuSubItem>
+                          )
+                        })}
+                      </SidebarMenuSub>
+                    </CollapsibleContent>
+                  </Collapsible>
+                )
+              })}
+            </SidebarMenu>
+          </SidebarGroup>
         </SidebarContent>
+        <SidebarRail />
       </Sidebar>
 
       <SidebarInset>
