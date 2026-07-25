@@ -6,13 +6,13 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@workspace/ui/components/card"
+} from "@diametral/ui/components/card"
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
   type ChartConfig,
-} from "@workspace/ui/components/chart"
+} from "@diametral/ui/components/chart"
 
 const DATA = [
   { month: "Jan", desktop: 186, mobile: 80 },

@@ -4,7 +4,7 @@ import {
   Avatar,
   AvatarBadge,
   AvatarFallback,
-} from "@workspace/ui/components/avatar"
+} from "@diametral/ui/components/avatar"
 
 // `AvatarBadge` sizes itself from the avatar's `data-size` rather than taking a
 // size of its own, and hides its icon at `sm` where it would be illegible.

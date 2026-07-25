@@ -1,4 +1,4 @@
-import { Button } from "@workspace/ui/components/button"
+import { Button } from "@diametral/ui/components/button"
 import {
   Drawer,
   DrawerContent,
@@ -6,7 +6,7 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "@workspace/ui/components/drawer"
+} from "@diametral/ui/components/drawer"
 
 const DIRECTIONS = ["down", "up", "left", "right"] as const
 

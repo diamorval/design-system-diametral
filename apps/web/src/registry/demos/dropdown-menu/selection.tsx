@@ -1,7 +1,7 @@
 import * as React from "react"
 import { CaretDownIcon } from "@phosphor-icons/react"
 
-import { Button } from "@workspace/ui/components/button"
+import { Button } from "@diametral/ui/components/button"
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -12,7 +12,7 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@workspace/ui/components/dropdown-menu"
+} from "@diametral/ui/components/dropdown-menu"
 
 // Checkbox and radio items reserve their indicator space with `pe-8`, so mixing
 // them with plain items in one menu keeps the labels aligned.

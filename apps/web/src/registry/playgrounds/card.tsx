@@ -1,6 +1,6 @@
 import type { ComponentProps } from "react"
 
-import { Button } from "@workspace/ui/components/button"
+import { Button } from "@diametral/ui/components/button"
 import {
   Card,
   CardAction,
@@ -9,7 +9,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@workspace/ui/components/card"
+} from "@diametral/ui/components/card"
 
 // Card and its parts are plain divs with no variant axis — composition is the
 // API, so the only thing worth editing here is the title.

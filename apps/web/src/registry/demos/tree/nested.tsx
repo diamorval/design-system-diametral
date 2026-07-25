@@ -6,7 +6,7 @@ import {
   TreeItemContent,
   TreeItemTrigger,
   TreeLeaf,
-} from "@workspace/ui/components/tree"
+} from "@diametral/ui/components/tree"
 
 // Each level is its own Collapsible, so nesting is literal nesting — there is no
 // depth prop and no flattened id/parentId model to maintain.

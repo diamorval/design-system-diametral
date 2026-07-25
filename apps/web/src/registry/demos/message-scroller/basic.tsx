@@ -1,4 +1,4 @@
-import { Bubble, BubbleContent } from "@workspace/ui/components/bubble"
+import { Bubble, BubbleContent } from "@diametral/ui/components/bubble"
 import {
   MessageScroller,
   MessageScrollerButton,
@@ -6,7 +6,7 @@ import {
   MessageScrollerItem,
   MessageScrollerProvider,
   MessageScrollerViewport,
-} from "@workspace/ui/components/message-scroller"
+} from "@diametral/ui/components/message-scroller"
 
 const HISTORY = Array.from({ length: 18 }, (_, index) => ({
   id: `m${index}`,

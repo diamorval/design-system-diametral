@@ -3,7 +3,7 @@ import type { ComponentProps } from "react"
 import {
   ToggleGroup,
   ToggleGroupItem,
-} from "@workspace/ui/components/toggle-group"
+} from "@diametral/ui/components/toggle-group"
 
 // `variant` and `size` come from `toggleVariants`, which lives in toggle.tsx —
 // so they cannot be auto-extracted here and are declared by hand instead.

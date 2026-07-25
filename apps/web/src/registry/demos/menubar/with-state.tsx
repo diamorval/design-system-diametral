@@ -14,7 +14,7 @@ import {
   MenubarSubContent,
   MenubarSubTrigger,
   MenubarTrigger,
-} from "@workspace/ui/components/menubar"
+} from "@diametral/ui/components/menubar"
 
 export default function MenubarWithState() {
   const [showRail, setShowRail] = React.useState(true)

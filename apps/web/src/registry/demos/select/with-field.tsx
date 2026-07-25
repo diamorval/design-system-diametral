@@ -2,14 +2,14 @@ import {
   Field,
   FieldDescription,
   FieldLabel,
-} from "@workspace/ui/components/field"
+} from "@diametral/ui/components/field"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@workspace/ui/components/select"
+} from "@diametral/ui/components/select"
 
 const TARGETS = {
   preview: "Preview",

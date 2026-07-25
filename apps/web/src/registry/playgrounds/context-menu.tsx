@@ -7,7 +7,7 @@ import {
   ContextMenuItem,
   ContextMenuSeparator,
   ContextMenuTrigger,
-} from "@workspace/ui/components/context-menu"
+} from "@diametral/ui/components/context-menu"
 
 export default function ContextMenuPlayground(
   props: ComponentProps<typeof ContextMenuContent>

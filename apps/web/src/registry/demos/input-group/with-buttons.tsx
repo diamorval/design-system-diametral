@@ -6,7 +6,7 @@ import {
   InputGroupAddon,
   InputGroupButton,
   InputGroupInput,
-} from "@workspace/ui/components/input-group"
+} from "@diametral/ui/components/input-group"
 
 export default function InputGroupWithButtons() {
   const [visible, setVisible] = React.useState(false)

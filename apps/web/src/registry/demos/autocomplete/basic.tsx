@@ -5,12 +5,12 @@ import {
   AutocompleteInput,
   AutocompleteItem,
   AutocompleteList,
-} from "@workspace/ui/components/autocomplete"
+} from "@diametral/ui/components/autocomplete"
 import {
   Field,
   FieldDescription,
   FieldLabel,
-} from "@workspace/ui/components/field"
+} from "@diametral/ui/components/field"
 
 const TAGS = [
   "accessibility",

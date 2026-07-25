@@ -1,11 +1,11 @@
-import { Button } from "@workspace/ui/components/button"
+import { Button } from "@diametral/ui/components/button"
 import {
   Empty,
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
-} from "@workspace/ui/components/empty"
-import { Spinner } from "@workspace/ui/components/spinner"
+} from "@diametral/ui/components/empty"
+import { Spinner } from "@diametral/ui/components/spinner"
 
 export default function SpinnerInContext() {
   return (

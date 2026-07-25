@@ -4,7 +4,7 @@ import {
   Alert,
   AlertDescription,
   AlertTitle,
-} from "@workspace/ui/components/alert"
+} from "@diametral/ui/components/alert"
 
 // The accent is an `::after` rule on the leading edge, not a border, so it
 // stays put whatever the alert's own border does.

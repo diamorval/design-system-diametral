@@ -1,7 +1,7 @@
 import type { ComponentProps } from "react"
 import { FileTextIcon } from "@phosphor-icons/react"
 
-import { Button } from "@workspace/ui/components/button"
+import { Button } from "@diametral/ui/components/button"
 import {
   Item,
   ItemActions,
@@ -9,7 +9,7 @@ import {
   ItemDescription,
   ItemMedia,
   ItemTitle,
-} from "@workspace/ui/components/item"
+} from "@diametral/ui/components/item"
 
 export default function ItemPlayground({
   children,

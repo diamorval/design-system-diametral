@@ -2,7 +2,7 @@ import {
   Progress,
   ProgressLabel,
   ProgressValue,
-} from "@workspace/ui/components/progress"
+} from "@diametral/ui/components/progress"
 
 // `value` is declared `always` for the same reason as Meter's. Note the panel
 // cannot express the indeterminate state, which is `value={null}` rather than a

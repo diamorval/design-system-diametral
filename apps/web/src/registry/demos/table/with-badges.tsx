@@ -1,4 +1,4 @@
-import { Badge } from "@workspace/ui/components/badge"
+import { Badge } from "@diametral/ui/components/badge"
 import {
   Table,
   TableBody,
@@ -7,7 +7,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@workspace/ui/components/table"
+} from "@diametral/ui/components/table"
 
 const INVOICES = [
   { id: "INV-001", status: "Paid", method: "Transfer", amount: "€1,250.00" },

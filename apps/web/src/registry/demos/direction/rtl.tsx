@@ -1,14 +1,14 @@
 import { ArrowRightIcon } from "@phosphor-icons/react"
 
-import { Button } from "@workspace/ui/components/button"
-import { DirectionProvider } from "@workspace/ui/components/direction"
+import { Button } from "@diametral/ui/components/button"
+import { DirectionProvider } from "@diametral/ui/components/direction"
 import {
   Item,
   ItemActions,
   ItemContent,
   ItemDescription,
   ItemTitle,
-} from "@workspace/ui/components/item"
+} from "@diametral/ui/components/item"
 
 // Components use logical properties (ps/pe, start/end) throughout, so flipping
 // direction is a provider change — no mirrored stylesheet.

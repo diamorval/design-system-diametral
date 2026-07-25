@@ -7,7 +7,7 @@ import {
 import {
   ToggleGroup,
   ToggleGroupItem,
-} from "@workspace/ui/components/toggle-group"
+} from "@diametral/ui/components/toggle-group"
 
 export default function ToggleGroupMultiple() {
   return (

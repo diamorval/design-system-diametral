@@ -14,7 +14,7 @@ export type ComponentDoc = {
 }
 
 /**
- * Every component in @workspace/ui gets an entry so the sidebar is a complete
+ * Every component in @diametral/ui gets an entry so the sidebar is a complete
  * map of the system; `examples` is what makes a page documented. Pages without
  * examples render an honest "not yet documented" state rather than being hidden,
  * which keeps the remaining work visible instead of invisible.
@@ -1687,7 +1687,7 @@ export function findComponent(slug: string) {
 }
 
 export function importPath(slug: string) {
-  return `@workspace/ui/components/${slug}`
+  return `@diametral/ui/components/${slug}`
 }
 
 /** Stable in-page anchor so an individual usage can be linked, e.g. #tones. */

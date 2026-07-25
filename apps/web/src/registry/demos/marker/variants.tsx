@@ -1,4 +1,4 @@
-import { Marker, MarkerContent } from "@workspace/ui/components/marker"
+import { Marker, MarkerContent } from "@diametral/ui/components/marker"
 
 export default function MarkerVariants() {
   return (

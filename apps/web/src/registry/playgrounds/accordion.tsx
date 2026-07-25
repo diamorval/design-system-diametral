@@ -5,7 +5,7 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@workspace/ui/components/accordion"
+} from "@diametral/ui/components/accordion"
 
 export default function AccordionPlayground(
   props: ComponentProps<typeof Accordion>

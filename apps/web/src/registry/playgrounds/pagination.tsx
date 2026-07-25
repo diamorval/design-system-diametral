@@ -8,7 +8,7 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@workspace/ui/components/pagination"
+} from "@diametral/ui/components/pagination"
 
 // The controls drive one link: `isActive` and `size` are what a page number
 // exposes, while the nav itself takes nothing.

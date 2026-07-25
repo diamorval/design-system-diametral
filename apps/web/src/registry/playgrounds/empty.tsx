@@ -1,7 +1,7 @@
 import type { ComponentProps } from "react"
 import { FileTextIcon } from "@phosphor-icons/react"
 
-import { Button } from "@workspace/ui/components/button"
+import { Button } from "@diametral/ui/components/button"
 import {
   Empty,
   EmptyContent,
@@ -9,7 +9,7 @@ import {
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
-} from "@workspace/ui/components/empty"
+} from "@diametral/ui/components/empty"
 
 export default function EmptyPlayground({
   children,

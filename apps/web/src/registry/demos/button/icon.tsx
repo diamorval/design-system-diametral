@@ -1,7 +1,7 @@
 import { PaperPlaneTiltIcon } from "@phosphor-icons/react"
 
-import { Button } from "@workspace/ui/components/button"
-import { Spinner } from "@workspace/ui/components/spinner"
+import { Button } from "@diametral/ui/components/button"
+import { Spinner } from "@diametral/ui/components/spinner"
 
 export default function ButtonIcon() {
   return (

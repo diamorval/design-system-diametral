@@ -7,7 +7,7 @@ import {
   TimelineIndicator,
   TimelineItem,
   TimelineTitle,
-} from "@workspace/ui/components/timeline"
+} from "@diametral/ui/components/timeline"
 
 // `Timeline` itself is an `ol` with no props of its own — the state that changes
 // anything visually is `data-state` on the item, so that is the subject.

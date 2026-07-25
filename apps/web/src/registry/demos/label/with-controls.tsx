@@ -1,6 +1,6 @@
-import { Checkbox } from "@workspace/ui/components/checkbox"
-import { Label } from "@workspace/ui/components/label"
-import { Switch } from "@workspace/ui/components/switch"
+import { Checkbox } from "@diametral/ui/components/checkbox"
+import { Label } from "@diametral/ui/components/label"
+import { Switch } from "@diametral/ui/components/switch"
 
 // Label restyles itself from the control it follows: `peer-data-[slot=checkbox]`
 // and friends drop the uppercase treatment, because a checkbox label is a

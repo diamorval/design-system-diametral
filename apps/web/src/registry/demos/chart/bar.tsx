@@ -5,7 +5,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
   type ChartConfig,
-} from "@workspace/ui/components/chart"
+} from "@diametral/ui/components/chart"
 
 const DATA = [
   { month: "Jan", desktop: 186, mobile: 80 },

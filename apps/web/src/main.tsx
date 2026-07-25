@@ -1,12 +1,12 @@
 import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
 
-import "@workspace/ui/globals.css"
+import "@diametral/ui/globals.css"
 import { App } from "./App.tsx"
 import { ThemeProvider } from "@/components/theme-provider.tsx"
-import { DirectionProvider } from "@workspace/ui/components/direction"
-import { TooltipProvider } from "@workspace/ui/components/tooltip"
-import { Toaster } from "@workspace/ui/components/toast"
+import { DirectionProvider } from "@diametral/ui/components/direction"
+import { TooltipProvider } from "@diametral/ui/components/tooltip"
+import { Toaster } from "@diametral/ui/components/toast"
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

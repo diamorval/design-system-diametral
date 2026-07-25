@@ -1,10 +1,10 @@
-import { Avatar, AvatarFallback } from "@workspace/ui/components/avatar"
-import { Button } from "@workspace/ui/components/button"
+import { Avatar, AvatarFallback } from "@diametral/ui/components/avatar"
+import { Button } from "@diametral/ui/components/button"
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
-} from "@workspace/ui/components/hover-card"
+} from "@diametral/ui/components/hover-card"
 
 export default function HoverCardWithAvatar() {
   return (

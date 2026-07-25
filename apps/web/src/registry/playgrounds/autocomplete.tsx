@@ -7,7 +7,7 @@ import {
   AutocompleteInput,
   AutocompleteItem,
   AutocompleteList,
-} from "@workspace/ui/components/autocomplete"
+} from "@diametral/ui/components/autocomplete"
 
 const TAGS = ["accessibility", "charter", "colour", "tokens", "typography"]
 

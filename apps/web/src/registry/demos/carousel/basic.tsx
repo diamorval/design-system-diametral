@@ -4,7 +4,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@workspace/ui/components/carousel"
+} from "@diametral/ui/components/carousel"
 
 // The arrows sit outside the viewport (`-start-12` / `-end-12`), so the
 // carousel needs horizontal room around it or they clip.

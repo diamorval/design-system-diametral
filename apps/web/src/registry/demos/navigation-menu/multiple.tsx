@@ -5,7 +5,7 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-} from "@workspace/ui/components/navigation-menu"
+} from "@diametral/ui/components/navigation-menu"
 
 const MENUS = [
   { label: "Product", items: ["Design system", "Playground", "Tokens"] },

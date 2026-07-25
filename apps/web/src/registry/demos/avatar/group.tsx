@@ -3,7 +3,7 @@ import {
   AvatarFallback,
   AvatarGroup,
   AvatarGroupCount,
-} from "@workspace/ui/components/avatar"
+} from "@diametral/ui/components/avatar"
 
 const TEAM = ["CR", "AM", "DT", "LB"]
 

@@ -2,7 +2,7 @@ import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
-} from "@workspace/ui/components/hover-card"
+} from "@diametral/ui/components/hover-card"
 
 // Built on Base UI's PreviewCard: hover- and focus-triggered, and explicitly
 // supplementary — never put anything essential only in here.

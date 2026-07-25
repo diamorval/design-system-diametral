@@ -4,7 +4,7 @@ import {
   ItemDescription,
   ItemGroup,
   ItemTitle,
-} from "@workspace/ui/components/item"
+} from "@diametral/ui/components/item"
 
 export default function ItemVariants() {
   return (

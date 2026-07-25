@@ -1,5 +1,5 @@
-import { Marker, MarkerContent } from "@workspace/ui/components/marker"
-import { ScrollArea } from "@workspace/ui/components/scroll-area"
+import { Marker, MarkerContent } from "@diametral/ui/components/marker"
+import { ScrollArea } from "@diametral/ui/components/scroll-area"
 
 const GROUPS = [
   { label: "Actions", items: ["Button", "Button Group", "Toggle", "Toolbar"] },

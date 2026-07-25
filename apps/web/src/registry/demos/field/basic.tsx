@@ -2,8 +2,8 @@ import {
   Field,
   FieldDescription,
   FieldLabel,
-} from "@workspace/ui/components/field"
-import { Textarea } from "@workspace/ui/components/textarea"
+} from "@diametral/ui/components/field"
+import { Textarea } from "@diametral/ui/components/textarea"
 
 export default function FieldBasic() {
   return (

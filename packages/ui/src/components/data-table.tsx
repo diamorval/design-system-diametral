@@ -14,9 +14,9 @@ import {
   type SortingState,
 } from "@tanstack/react-table"
 
-import { cn } from "@workspace/ui/lib/utils"
-import { Button } from "@workspace/ui/components/button"
-import { Input } from "@workspace/ui/components/input"
+import { cn } from "../lib/utils.js"
+import { Button } from "./button.js"
+import { Input } from "./input.js"
 import {
   Table,
   TableBody,
@@ -24,7 +24,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@workspace/ui/components/table"
+} from "./table.js"
 import {
   CaretUpIcon,
   CaretDownIcon,

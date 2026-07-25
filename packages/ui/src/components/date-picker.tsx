@@ -2,13 +2,13 @@
 
 import { format } from "date-fns"
 
-import { cn } from "@workspace/ui/lib/utils"
-import { Button } from "@workspace/ui/components/button"
+import { cn } from "../lib/utils.js"
+import { Button } from "./button.js"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@workspace/ui/components/popover"
+} from "./popover.js"
 import { CalendarBlankIcon } from "@phosphor-icons/react"
 
 const DatePicker = Popover

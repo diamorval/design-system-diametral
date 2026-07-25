@@ -3,11 +3,11 @@ import {
   FieldLabel,
   FieldLegend,
   FieldSet,
-} from "@workspace/ui/components/field"
+} from "@diametral/ui/components/field"
 import {
   RadioGroup,
   RadioGroupItem,
-} from "@workspace/ui/components/radio-group"
+} from "@diametral/ui/components/radio-group"
 
 const SPEEDS = [
   { value: "standard", label: "Standard — 5 days" },

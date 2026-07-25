@@ -4,7 +4,7 @@ import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
-} from "@workspace/ui/components/resizable"
+} from "@diametral/ui/components/resizable"
 
 export default function ResizablePlayground(
   props: ComponentProps<typeof ResizablePanelGroup>

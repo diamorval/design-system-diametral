@@ -1,5 +1,5 @@
-import { ScrollArea } from "@workspace/ui/components/scroll-area"
-import { Separator } from "@workspace/ui/components/separator"
+import { ScrollArea } from "@diametral/ui/components/scroll-area"
+import { Separator } from "@diametral/ui/components/separator"
 
 const COMMITS = Array.from({ length: 24 }, (_, index) => ({
   sha: (0x4f2c91 + index * 7919).toString(16).slice(0, 7),

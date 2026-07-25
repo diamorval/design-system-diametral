@@ -2,7 +2,7 @@ import {
   InputOTP,
   InputOTPGroup,
   InputOTPSlot,
-} from "@workspace/ui/components/input-otp"
+} from "@diametral/ui/components/input-otp"
 
 // The props are declared narrowly rather than derived from the component: its
 // type is a `render` XOR `children` union, and spreading a derived `Omit<…>`

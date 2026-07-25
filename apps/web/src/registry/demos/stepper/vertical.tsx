@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { Button } from "@workspace/ui/components/button"
+import { Button } from "@diametral/ui/components/button"
 import {
   Stepper,
   StepperContent,
@@ -9,7 +9,7 @@ import {
   StepperItem,
   StepperSeparator,
   StepperTitle,
-} from "@workspace/ui/components/stepper"
+} from "@diametral/ui/components/stepper"
 
 const STEPS = [
   { title: "Devis", description: "Envoyé le 12 juin." },

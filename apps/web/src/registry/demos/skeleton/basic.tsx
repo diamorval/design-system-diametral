@@ -1,4 +1,4 @@
-import { Skeleton } from "@workspace/ui/components/skeleton"
+import { Skeleton } from "@diametral/ui/components/skeleton"
 
 export default function SkeletonBasic() {
   return (

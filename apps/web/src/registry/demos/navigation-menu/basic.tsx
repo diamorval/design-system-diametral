@@ -6,7 +6,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
-} from "@workspace/ui/components/navigation-menu"
+} from "@diametral/ui/components/navigation-menu"
 
 const SECTIONS = [
   { title: "Actions", description: "Buttons, toggles and toolbars." },

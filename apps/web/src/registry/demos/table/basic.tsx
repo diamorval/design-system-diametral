@@ -5,7 +5,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@workspace/ui/components/table"
+} from "@diametral/ui/components/table"
 
 const MEMBERS = [
   { name: "Augustin Morval", role: "Design engineering", team: "Platform" },

@@ -1,11 +1,11 @@
 import * as React from "react"
 
-import { Button } from "@workspace/ui/components/button"
+import { Button } from "@diametral/ui/components/button"
 import {
   Progress,
   ProgressLabel,
   ProgressValue,
-} from "@workspace/ui/components/progress"
+} from "@diametral/ui/components/progress"
 
 // `value={null}` is the indeterminate state — distinct from `0`, which means
 // "started, nothing done yet". Base UI reflects it as data-indeterminate.

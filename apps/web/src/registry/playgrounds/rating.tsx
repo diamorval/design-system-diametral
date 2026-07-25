@@ -1,6 +1,6 @@
 import type { ComponentProps } from "react"
 
-import { Rating } from "@workspace/ui/components/rating"
+import { Rating } from "@diametral/ui/components/rating"
 
 export default function RatingPlayground({
   max,

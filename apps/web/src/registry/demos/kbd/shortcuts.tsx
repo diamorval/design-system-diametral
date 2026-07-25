@@ -1,4 +1,4 @@
-import { Kbd, KbdGroup } from "@workspace/ui/components/kbd"
+import { Kbd, KbdGroup } from "@diametral/ui/components/kbd"
 
 const SHORTCUTS = [
   { keys: ["⌘", "K"], label: "Open the command palette" },

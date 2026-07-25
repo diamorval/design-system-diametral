@@ -1,12 +1,12 @@
 import { MagnifyingGlassIcon } from "@phosphor-icons/react"
 
-import { Button } from "@workspace/ui/components/button"
+import { Button } from "@diametral/ui/components/button"
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
-} from "@workspace/ui/components/input-group"
-import { Kbd, KbdGroup } from "@workspace/ui/components/kbd"
+} from "@diametral/ui/components/input-group"
+import { Kbd, KbdGroup } from "@diametral/ui/components/kbd"
 
 // Kbd restyles itself from its container — `in-data-[slot=input-group]` swaps
 // the muted background for the input fill so it reads as inset, not stacked.

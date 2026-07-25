@@ -5,7 +5,7 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@workspace/ui/components/breadcrumb"
+} from "@diametral/ui/components/breadcrumb"
 
 // `BreadcrumbPage` is the current page: not a link, and marked `aria-current`.
 // The separators are `aria-hidden`, so the trail reads cleanly aloud.

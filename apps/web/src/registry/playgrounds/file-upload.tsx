@@ -5,7 +5,7 @@ import {
   FileUploadDescription,
   FileUploadIcon,
   FileUploadTitle,
-} from "@workspace/ui/components/file-upload"
+} from "@diametral/ui/components/file-upload"
 
 export default function FileUploadPlayground(
   props: ComponentProps<typeof FileUpload>

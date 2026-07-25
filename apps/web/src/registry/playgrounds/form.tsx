@@ -1,9 +1,9 @@
 import type { ComponentProps } from "react"
 
-import { Button } from "@workspace/ui/components/button"
-import { Field, FieldGroup, FieldLabel } from "@workspace/ui/components/field"
-import { Form } from "@workspace/ui/components/form"
-import { Input } from "@workspace/ui/components/input"
+import { Button } from "@diametral/ui/components/button"
+import { Field, FieldGroup, FieldLabel } from "@diametral/ui/components/field"
+import { Form } from "@diametral/ui/components/form"
+import { Input } from "@diametral/ui/components/input"
 
 export default function FormPlayground(props: ComponentProps<typeof Form>) {
   return (

@@ -6,7 +6,7 @@ import {
   TreeItemContent,
   TreeItemTrigger,
   TreeLeaf,
-} from "@workspace/ui/components/tree"
+} from "@diametral/ui/components/tree"
 
 export default function TreeBasic() {
   return (

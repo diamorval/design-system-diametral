@@ -7,7 +7,7 @@ import {
   ContextMenuSeparator,
   ContextMenuShortcut,
   ContextMenuTrigger,
-} from "@workspace/ui/components/context-menu"
+} from "@diametral/ui/components/context-menu"
 
 export default function ContextMenuBasic() {
   return (

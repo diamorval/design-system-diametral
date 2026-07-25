@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { Rating } from "@workspace/ui/components/rating"
+import { Rating } from "@diametral/ui/components/rating"
 
 const REVIEWS = [
   { author: "Régie Ouest", score: 5 },

@@ -8,17 +8,17 @@ import {
 
 import { palette } from "virtual:demo-source"
 
-import { Button } from "@workspace/ui/components/button"
-import { Input } from "@workspace/ui/components/input"
-import { Label } from "@workspace/ui/components/label"
+import { Button } from "@diametral/ui/components/button"
+import { Input } from "@diametral/ui/components/input"
+import { Label } from "@diametral/ui/components/label"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@workspace/ui/components/select"
-import { Switch } from "@workspace/ui/components/switch"
+} from "@diametral/ui/components/select"
+import { Switch } from "@diametral/ui/components/switch"
 
 import { formatJsx } from "@/docs/format-jsx"
 import { tokenizeJsx, type TokenKind } from "@/docs/tokenize-jsx"

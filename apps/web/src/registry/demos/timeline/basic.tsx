@@ -6,7 +6,7 @@ import {
   TimelineItem,
   TimelineTime,
   TimelineTitle,
-} from "@workspace/ui/components/timeline"
+} from "@diametral/ui/components/timeline"
 
 const EVENTS = [
   {

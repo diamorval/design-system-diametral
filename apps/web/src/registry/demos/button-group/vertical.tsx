@@ -1,8 +1,8 @@
-import { Button } from "@workspace/ui/components/button"
+import { Button } from "@diametral/ui/components/button"
 import {
   ButtonGroup,
   ButtonGroupSeparator,
-} from "@workspace/ui/components/button-group"
+} from "@diametral/ui/components/button-group"
 
 export default function ButtonGroupVertical() {
   return (

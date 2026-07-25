@@ -2,7 +2,7 @@ import {
   Bubble,
   BubbleContent,
   BubbleGroup,
-} from "@workspace/ui/components/bubble"
+} from "@diametral/ui/components/bubble"
 
 const TURNS = [
   { from: "them", text: "Can I retheme this without touching components?" },

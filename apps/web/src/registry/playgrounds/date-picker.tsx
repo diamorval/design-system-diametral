@@ -1,11 +1,11 @@
 import type { ComponentProps } from "react"
 
-import { Calendar } from "@workspace/ui/components/calendar"
+import { Calendar } from "@diametral/ui/components/calendar"
 import {
   DatePicker,
   DatePickerContent,
   DatePickerTrigger,
-} from "@workspace/ui/components/date-picker"
+} from "@diametral/ui/components/date-picker"
 
 // The controls drive the trigger, which is where this component adds anything of
 // its own: `DatePicker` is just `Popover`, and the Calendar inside stays yours.

@@ -1,6 +1,6 @@
 import type { ComponentProps } from "react"
 
-import { Avatar, AvatarFallback } from "@workspace/ui/components/avatar"
+import { Avatar, AvatarFallback } from "@diametral/ui/components/avatar"
 
 export default function AvatarPlayground({
   children,

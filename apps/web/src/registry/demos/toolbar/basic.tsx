@@ -11,7 +11,7 @@ import {
   ToolbarButton,
   ToolbarGroup,
   ToolbarSeparator,
-} from "@workspace/ui/components/toolbar"
+} from "@diametral/ui/components/toolbar"
 
 // ToolbarSeparator reads the root's orientation and draws across it, so a
 // horizontal toolbar gets vertical rules without being told.

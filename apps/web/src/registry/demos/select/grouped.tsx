@@ -7,7 +7,7 @@ import {
   SelectSeparator,
   SelectTrigger,
   SelectValue,
-} from "@workspace/ui/components/select"
+} from "@diametral/ui/components/select"
 
 const ITEMS = {
   vite: "Vite",

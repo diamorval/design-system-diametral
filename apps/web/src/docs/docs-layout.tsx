@@ -20,7 +20,7 @@ import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@workspace/ui/components/collapsible"
+} from "@diametral/ui/components/collapsible"
 import {
   Sidebar,
   SidebarContent,
@@ -38,7 +38,7 @@ import {
   SidebarProvider,
   SidebarRail,
   SidebarTrigger,
-} from "@workspace/ui/components/sidebar"
+} from "@diametral/ui/components/sidebar"
 
 import { ThemeToggle } from "@/components/theme-toggle"
 import { DocsSearch } from "@/docs/docs-search"

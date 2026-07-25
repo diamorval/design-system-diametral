@@ -4,7 +4,7 @@ import {
   Marker,
   MarkerContent,
   MarkerIcon,
-} from "@workspace/ui/components/marker"
+} from "@diametral/ui/components/marker"
 
 // `MarkerIcon` is `aria-hidden` — it is decoration, so the meaning has to live
 // in MarkerContent rather than in the glyph.

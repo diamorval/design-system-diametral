@@ -1,4 +1,4 @@
-import { Meter, MeterLabel, MeterValue } from "@workspace/ui/components/meter"
+import { Meter, MeterLabel, MeterValue } from "@diametral/ui/components/meter"
 
 // `value` is what a meter *is*, so it is declared `always` — a snippet that
 // omitted it would render an empty track.

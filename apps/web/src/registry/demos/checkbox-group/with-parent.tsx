@@ -1,6 +1,6 @@
-import { Checkbox } from "@workspace/ui/components/checkbox"
-import { CheckboxGroup } from "@workspace/ui/components/checkbox-group"
-import { Field, FieldLabel } from "@workspace/ui/components/field"
+import { Checkbox } from "@diametral/ui/components/checkbox"
+import { CheckboxGroup } from "@diametral/ui/components/checkbox-group"
+import { Field, FieldLabel } from "@diametral/ui/components/field"
 
 const SCOPES = ["read:tokens", "write:tokens", "publish"]
 

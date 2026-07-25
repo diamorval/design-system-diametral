@@ -1,4 +1,4 @@
-import { Button } from "@workspace/ui/components/button"
+import { Button } from "@diametral/ui/components/button"
 
 export default function ButtonTones() {
   return (

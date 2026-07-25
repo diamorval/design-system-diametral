@@ -1,14 +1,14 @@
 import { ArrowRightIcon } from "@phosphor-icons/react"
 
-import { Button } from "@workspace/ui/components/button"
-import { DirectionProvider } from "@workspace/ui/components/direction"
+import { Button } from "@diametral/ui/components/button"
+import { DirectionProvider } from "@diametral/ui/components/direction"
 import {
   Item,
   ItemActions,
   ItemContent,
   ItemDescription,
   ItemTitle,
-} from "@workspace/ui/components/item"
+} from "@diametral/ui/components/item"
 
 // The provider tells Base UI which way its panels and arrow keys go; the `dir`
 // attribute is what flips the CSS. Both are needed, so the same value drives each.

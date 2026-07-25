@@ -1,4 +1,4 @@
-import { Calendar } from "@workspace/ui/components/calendar"
+import { Calendar } from "@diametral/ui/components/calendar"
 
 // `numberOfMonths` arrives as a string and has to be a number. `startMonth` and
 // `endMonth` are hardcoded because `captionLayout="dropdown"` needs a bounded

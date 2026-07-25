@@ -8,7 +8,7 @@ import {
   AttachmentGroup,
   AttachmentMedia,
   AttachmentTitle,
-} from "@workspace/ui/components/attachment"
+} from "@diametral/ui/components/attachment"
 
 export default function AttachmentPlayground({
   children,

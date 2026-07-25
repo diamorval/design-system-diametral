@@ -1,4 +1,4 @@
-import { Spinner } from "@workspace/ui/components/spinner"
+import { Spinner } from "@diametral/ui/components/spinner"
 
 // Spinner carries `role="status"` and `aria-label="Loading"` itself, so it is
 // announced without any extra markup around it.

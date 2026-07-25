@@ -1,5 +1,5 @@
-import { Button } from "@workspace/ui/components/button"
-import { ButtonGroup } from "@workspace/ui/components/button-group"
+import { Button } from "@diametral/ui/components/button"
+import { ButtonGroup } from "@diametral/ui/components/button-group"
 
 // The group strips the inner radii and collapses the shared border, so the
 // children stay plain Buttons — no "grouped" variant to remember.

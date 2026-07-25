@@ -2,8 +2,8 @@
 
 import { NumberField as NumberFieldPrimitive } from "@base-ui/react/number-field"
 
-import { cn } from "@workspace/ui/lib/utils"
-import { Button } from "@workspace/ui/components/button"
+import { cn } from "../lib/utils.js"
+import { Button } from "./button.js"
 import { MinusIcon, PlusIcon } from "@phosphor-icons/react"
 
 function NumberField({ className, ...props }: NumberFieldPrimitive.Root.Props) {

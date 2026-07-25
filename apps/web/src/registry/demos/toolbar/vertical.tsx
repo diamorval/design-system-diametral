@@ -9,7 +9,7 @@ import {
   Toolbar,
   ToolbarButton,
   ToolbarSeparator,
-} from "@workspace/ui/components/toolbar"
+} from "@diametral/ui/components/toolbar"
 
 export default function ToolbarVertical() {
   return (

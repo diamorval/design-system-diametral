@@ -3,15 +3,15 @@ import {
   FieldDescription,
   FieldGroup,
   FieldLabel,
-} from "@workspace/ui/components/field"
-import { Input } from "@workspace/ui/components/input"
+} from "@diametral/ui/components/field"
+import { Input } from "@diametral/ui/components/input"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@workspace/ui/components/select"
+} from "@diametral/ui/components/select"
 
 const FRAMEWORKS = { vite: "Vite", next: "Next.js", astro: "Astro" }
 

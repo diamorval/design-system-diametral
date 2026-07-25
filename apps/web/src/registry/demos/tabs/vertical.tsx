@@ -3,7 +3,7 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@workspace/ui/components/tabs"
+} from "@diametral/ui/components/tabs"
 
 export default function TabsVertical() {
   return (

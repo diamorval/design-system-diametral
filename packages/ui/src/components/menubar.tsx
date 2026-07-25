@@ -2,7 +2,7 @@ import * as React from "react"
 import { Menu as MenuPrimitive } from "@base-ui/react/menu"
 import { Menubar as MenubarPrimitive } from "@base-ui/react/menubar"
 
-import { cn } from "@workspace/ui/lib/utils"
+import { cn } from "../lib/utils.js"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,7 +17,7 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from "@workspace/ui/components/dropdown-menu"
+} from "./dropdown-menu.js"
 import { CheckIcon } from "@phosphor-icons/react"
 
 function Menubar({ className, ...props }: MenubarPrimitive.Props) {

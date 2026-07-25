@@ -1,11 +1,11 @@
-import { Checkbox } from "@workspace/ui/components/checkbox"
+import { Checkbox } from "@diametral/ui/components/checkbox"
 import {
   Field,
   FieldDescription,
   FieldGroup,
   FieldLabel,
-} from "@workspace/ui/components/field"
-import { Switch } from "@workspace/ui/components/switch"
+} from "@diametral/ui/components/field"
+import { Switch } from "@diametral/ui/components/switch"
 
 export default function FieldChoices() {
   return (

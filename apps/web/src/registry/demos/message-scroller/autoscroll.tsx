@@ -1,7 +1,7 @@
 import * as React from "react"
 
-import { Button } from "@workspace/ui/components/button"
-import { Bubble, BubbleContent } from "@workspace/ui/components/bubble"
+import { Button } from "@diametral/ui/components/button"
+import { Bubble, BubbleContent } from "@diametral/ui/components/bubble"
 import {
   MessageScroller,
   MessageScrollerButton,
@@ -9,7 +9,7 @@ import {
   MessageScrollerItem,
   MessageScrollerProvider,
   MessageScrollerViewport,
-} from "@workspace/ui/components/message-scroller"
+} from "@diametral/ui/components/message-scroller"
 
 // `scrollAnchor` on the last item is what pins the view to the bottom as
 // messages arrive — and releases it once the reader scrolls up.

@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { Button } from "@workspace/ui/components/button"
+import { Button } from "@diametral/ui/components/button"
 import {
   Command,
   CommandDialog,
@@ -9,8 +9,8 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@workspace/ui/components/command"
-import { Kbd, KbdGroup } from "@workspace/ui/components/kbd"
+} from "@diametral/ui/components/command"
+import { Kbd, KbdGroup } from "@diametral/ui/components/kbd"
 
 const COMPONENTS = ["Button", "Badge", "Dialog", "Popover", "Tooltip"]
 

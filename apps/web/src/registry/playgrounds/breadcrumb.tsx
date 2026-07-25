@@ -7,7 +7,7 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@workspace/ui/components/breadcrumb"
+} from "@diametral/ui/components/breadcrumb"
 
 // The trail takes no props of its own; what is worth editing is the current page,
 // which `BreadcrumbPage` marks as `aria-current` and renders as plain text.

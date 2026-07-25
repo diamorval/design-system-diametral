@@ -3,7 +3,7 @@ import { MonitorIcon, MoonIcon, SunIcon } from "@phosphor-icons/react"
 import {
   ToggleGroup,
   ToggleGroupItem,
-} from "@workspace/ui/components/toggle-group"
+} from "@diametral/ui/components/toggle-group"
 
 import { useTheme, type Theme } from "@/components/theme-provider"
 

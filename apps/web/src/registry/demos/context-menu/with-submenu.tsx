@@ -12,7 +12,7 @@ import {
   ContextMenuSubContent,
   ContextMenuSubTrigger,
   ContextMenuTrigger,
-} from "@workspace/ui/components/context-menu"
+} from "@diametral/ui/components/context-menu"
 
 export default function ContextMenuWithSubmenu() {
   const [pinned, setPinned] = React.useState(true)

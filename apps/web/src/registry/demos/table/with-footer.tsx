@@ -6,7 +6,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@workspace/ui/components/table"
+} from "@diametral/ui/components/table"
 
 const LINES = [
   { label: "Design system audit", days: 6, amount: 5400 },

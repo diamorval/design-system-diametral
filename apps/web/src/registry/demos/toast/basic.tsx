@@ -1,5 +1,5 @@
-import { Button } from "@workspace/ui/components/button"
-import { toast } from "@workspace/ui/components/toast"
+import { Button } from "@diametral/ui/components/button"
+import { toast } from "@diametral/ui/components/toast"
 
 export default function ToastBasic() {
   return (

@@ -7,8 +7,8 @@ import {
   AttachmentMedia,
   AttachmentTitle,
   AttachmentTrigger,
-} from "@workspace/ui/components/attachment"
-import { Spinner } from "@workspace/ui/components/spinner"
+} from "@diametral/ui/components/attachment"
+import { Spinner } from "@diametral/ui/components/spinner"
 
 // `state` drives the border and media colour: `idle` goes dashed, `error` turns
 // destructive. Nothing else in the tree needs to know which state it is in.

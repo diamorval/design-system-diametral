@@ -1,4 +1,4 @@
-import { AspectRatio } from "@workspace/ui/components/aspect-ratio"
+import { AspectRatio } from "@diametral/ui/components/aspect-ratio"
 
 // `ratio` becomes a `--ratio` custom property consumed by `aspect-(--ratio)`,
 // so any number works — there is no allow-list of ratios to extend.

@@ -6,7 +6,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@workspace/ui/components/carousel"
+} from "@diametral/ui/components/carousel"
 
 export default function CarouselPlayground(
   props: ComponentProps<typeof Carousel>

@@ -2,7 +2,7 @@ import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
-} from "@workspace/ui/components/resizable"
+} from "@diametral/ui/components/resizable"
 
 // This build of react-resizable-panels takes `orientation`, not `direction` —
 // the group styles itself off the resulting `aria-orientation`.

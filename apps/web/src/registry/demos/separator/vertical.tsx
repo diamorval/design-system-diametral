@@ -1,4 +1,4 @@
-import { Separator } from "@workspace/ui/components/separator"
+import { Separator } from "@diametral/ui/components/separator"
 
 // A vertical separator sizes itself with `self-stretch`, so it needs a flex
 // parent with a height to stretch into — `items-center` alone collapses it.

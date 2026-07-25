@@ -3,7 +3,7 @@
 import * as React from "react"
 import { Collapsible as CollapsiblePrimitive } from "@base-ui/react/collapsible"
 
-import { cn } from "@workspace/ui/lib/utils"
+import { cn } from "../lib/utils.js"
 import { CaretRightIcon, CaretDownIcon } from "@phosphor-icons/react"
 
 function Tree({ className, ...props }: React.ComponentProps<"ul">) {

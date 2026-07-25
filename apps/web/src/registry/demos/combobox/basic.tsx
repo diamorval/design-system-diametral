@@ -5,8 +5,8 @@ import {
   ComboboxInput,
   ComboboxItem,
   ComboboxList,
-} from "@workspace/ui/components/combobox"
-import { Field, FieldLabel } from "@workspace/ui/components/field"
+} from "@diametral/ui/components/combobox"
+import { Field, FieldLabel } from "@diametral/ui/components/field"
 
 const CITIES = [
   "Bordeaux",

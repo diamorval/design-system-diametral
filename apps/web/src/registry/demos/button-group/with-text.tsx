@@ -1,11 +1,11 @@
 import { ArrowRightIcon } from "@phosphor-icons/react"
 
-import { Button } from "@workspace/ui/components/button"
+import { Button } from "@diametral/ui/components/button"
 import {
   ButtonGroup,
   ButtonGroupText,
-} from "@workspace/ui/components/button-group"
-import { Input } from "@workspace/ui/components/input"
+} from "@diametral/ui/components/button-group"
+import { Input } from "@diametral/ui/components/input"
 
 export default function ButtonGroupWithText() {
   return (

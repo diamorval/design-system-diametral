@@ -1,6 +1,6 @@
 import type { ComponentProps } from "react"
 
-import { Button } from "@workspace/ui/components/button"
+import { Button } from "@diametral/ui/components/button"
 import {
   Dialog,
   DialogClose,
@@ -10,7 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@workspace/ui/components/dialog"
+} from "@diametral/ui/components/dialog"
 
 export default function DialogPlayground({
   children,

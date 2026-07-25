@@ -1,16 +1,16 @@
 import * as React from "react"
 
-import { Button } from "@workspace/ui/components/button"
+import { Button } from "@diametral/ui/components/button"
 import {
   Collapsible,
   CollapsibleContent,
-} from "@workspace/ui/components/collapsible"
+} from "@diametral/ui/components/collapsible"
 import {
   Item,
   ItemContent,
   ItemGroup,
   ItemTitle,
-} from "@workspace/ui/components/item"
+} from "@diametral/ui/components/item"
 
 const HIDDEN = ["Régie Ouest", "Atelier Nord", "Studio Sud"]
 

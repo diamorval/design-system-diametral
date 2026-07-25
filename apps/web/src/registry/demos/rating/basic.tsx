@@ -1,5 +1,5 @@
-import { Rating } from "@workspace/ui/components/rating"
-import { Field, FieldLabel } from "@workspace/ui/components/field"
+import { Rating } from "@diametral/ui/components/rating"
+import { Field, FieldLabel } from "@diametral/ui/components/field"
 
 // Built on a radio group, so each star is a real radio: arrow keys move between
 // them and the value is one number rather than a click handler per star.

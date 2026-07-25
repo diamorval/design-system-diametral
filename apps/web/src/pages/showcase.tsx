@@ -23,13 +23,13 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@workspace/ui/components/accordion"
+} from "@diametral/ui/components/accordion"
 import {
   Alert,
   AlertAction,
   AlertDescription,
   AlertTitle,
-} from "@workspace/ui/components/alert"
+} from "@diametral/ui/components/alert"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -40,8 +40,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@workspace/ui/components/alert-dialog"
-import { AspectRatio } from "@workspace/ui/components/aspect-ratio"
+} from "@diametral/ui/components/alert-dialog"
+import { AspectRatio } from "@diametral/ui/components/aspect-ratio"
 import {
   Attachment,
   AttachmentContent,
@@ -49,14 +49,14 @@ import {
   AttachmentGroup,
   AttachmentMedia,
   AttachmentTitle,
-} from "@workspace/ui/components/attachment"
+} from "@diametral/ui/components/attachment"
 import {
   Avatar,
   AvatarFallback,
   AvatarGroup,
   AvatarGroupCount,
-} from "@workspace/ui/components/avatar"
-import { Badge } from "@workspace/ui/components/badge"
+} from "@diametral/ui/components/avatar"
+import { Badge } from "@diametral/ui/components/badge"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -64,18 +64,18 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@workspace/ui/components/breadcrumb"
+} from "@diametral/ui/components/breadcrumb"
 import {
   Bubble,
   BubbleContent,
   BubbleGroup,
-} from "@workspace/ui/components/bubble"
-import { Button } from "@workspace/ui/components/button"
+} from "@diametral/ui/components/bubble"
+import { Button } from "@diametral/ui/components/button"
 import {
   ButtonGroup,
   ButtonGroupSeparator,
-} from "@workspace/ui/components/button-group"
-import { Calendar } from "@workspace/ui/components/calendar"
+} from "@diametral/ui/components/button-group"
+import { Calendar } from "@diametral/ui/components/calendar"
 import {
   Card,
   CardAction,
@@ -84,26 +84,26 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@workspace/ui/components/card"
+} from "@diametral/ui/components/card"
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@workspace/ui/components/carousel"
+} from "@diametral/ui/components/carousel"
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
   type ChartConfig,
-} from "@workspace/ui/components/chart"
-import { Checkbox } from "@workspace/ui/components/checkbox"
+} from "@diametral/ui/components/chart"
+import { Checkbox } from "@diametral/ui/components/checkbox"
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@workspace/ui/components/collapsible"
+} from "@diametral/ui/components/collapsible"
 import {
   Combobox,
   ComboboxContent,
@@ -111,7 +111,7 @@ import {
   ComboboxInput,
   ComboboxItem,
   ComboboxList,
-} from "@workspace/ui/components/combobox"
+} from "@diametral/ui/components/combobox"
 import {
   Command,
   CommandEmpty,
@@ -120,7 +120,7 @@ import {
   CommandItem,
   CommandList,
   CommandShortcut,
-} from "@workspace/ui/components/command"
+} from "@diametral/ui/components/command"
 import {
   ContextMenu,
   ContextMenuContent,
@@ -128,7 +128,7 @@ import {
   ContextMenuSeparator,
   ContextMenuShortcut,
   ContextMenuTrigger,
-} from "@workspace/ui/components/context-menu"
+} from "@diametral/ui/components/context-menu"
 import {
   Dialog,
   DialogClose,
@@ -138,7 +138,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@workspace/ui/components/dialog"
+} from "@diametral/ui/components/dialog"
 import {
   Drawer,
   DrawerContent,
@@ -146,7 +146,7 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "@workspace/ui/components/drawer"
+} from "@diametral/ui/components/drawer"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -155,7 +155,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
-} from "@workspace/ui/components/dropdown-menu"
+} from "@diametral/ui/components/dropdown-menu"
 import {
   Empty,
   EmptyContent,
@@ -163,30 +163,30 @@ import {
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
-} from "@workspace/ui/components/empty"
+} from "@diametral/ui/components/empty"
 import {
   Field,
   FieldDescription,
   FieldGroup,
   FieldLabel,
-} from "@workspace/ui/components/field"
+} from "@diametral/ui/components/field"
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
-} from "@workspace/ui/components/hover-card"
-import { Input } from "@workspace/ui/components/input"
+} from "@diametral/ui/components/hover-card"
+import { Input } from "@diametral/ui/components/input"
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
-} from "@workspace/ui/components/input-group"
+} from "@diametral/ui/components/input-group"
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSeparator,
   InputOTPSlot,
-} from "@workspace/ui/components/input-otp"
+} from "@diametral/ui/components/input-otp"
 import {
   Item,
   ItemActions,
@@ -195,14 +195,14 @@ import {
   ItemGroup,
   ItemMedia,
   ItemTitle,
-} from "@workspace/ui/components/item"
-import { Kbd, KbdGroup } from "@workspace/ui/components/kbd"
-import { Label } from "@workspace/ui/components/label"
+} from "@diametral/ui/components/item"
+import { Kbd, KbdGroup } from "@diametral/ui/components/kbd"
+import { Label } from "@diametral/ui/components/label"
 import {
   Marker,
   MarkerContent,
   MarkerIcon,
-} from "@workspace/ui/components/marker"
+} from "@diametral/ui/components/marker"
 import {
   Menubar,
   MenubarContent,
@@ -211,26 +211,26 @@ import {
   MenubarSeparator,
   MenubarShortcut,
   MenubarTrigger,
-} from "@workspace/ui/components/menubar"
+} from "@diametral/ui/components/menubar"
 import {
   Message,
   MessageAvatar,
   MessageContent,
   MessageGroup,
-} from "@workspace/ui/components/message"
+} from "@diametral/ui/components/message"
 import {
   MessageScroller,
   MessageScrollerContent,
   MessageScrollerItem,
   MessageScrollerProvider,
   MessageScrollerViewport,
-} from "@workspace/ui/components/message-scroller"
+} from "@diametral/ui/components/message-scroller"
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-} from "@workspace/ui/components/navigation-menu"
+} from "@diametral/ui/components/navigation-menu"
 import {
   Pagination,
   PaginationContent,
@@ -239,7 +239,7 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@workspace/ui/components/pagination"
+} from "@diametral/ui/components/pagination"
 import {
   Popover,
   PopoverContent,
@@ -247,30 +247,30 @@ import {
   PopoverHeader,
   PopoverTitle,
   PopoverTrigger,
-} from "@workspace/ui/components/popover"
+} from "@diametral/ui/components/popover"
 import {
   Progress,
   ProgressLabel,
   ProgressValue,
-} from "@workspace/ui/components/progress"
+} from "@diametral/ui/components/progress"
 import {
   RadioGroup,
   RadioGroupItem,
-} from "@workspace/ui/components/radio-group"
+} from "@diametral/ui/components/radio-group"
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
-} from "@workspace/ui/components/resizable"
-import { ScrollArea } from "@workspace/ui/components/scroll-area"
+} from "@diametral/ui/components/resizable"
+import { ScrollArea } from "@diametral/ui/components/scroll-area"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@workspace/ui/components/select"
-import { Separator } from "@workspace/ui/components/separator"
+} from "@diametral/ui/components/select"
+import { Separator } from "@diametral/ui/components/separator"
 import {
   Sheet,
   SheetContent,
@@ -278,7 +278,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@workspace/ui/components/sheet"
+} from "@diametral/ui/components/sheet"
 import {
   Sidebar,
   SidebarContent,
@@ -291,11 +291,11 @@ import {
   SidebarMenuItem,
   SidebarProvider,
   SidebarTrigger,
-} from "@workspace/ui/components/sidebar"
-import { Skeleton } from "@workspace/ui/components/skeleton"
-import { Slider } from "@workspace/ui/components/slider"
-import { Spinner } from "@workspace/ui/components/spinner"
-import { Switch } from "@workspace/ui/components/switch"
+} from "@diametral/ui/components/sidebar"
+import { Skeleton } from "@diametral/ui/components/skeleton"
+import { Slider } from "@diametral/ui/components/slider"
+import { Spinner } from "@diametral/ui/components/spinner"
+import { Switch } from "@diametral/ui/components/switch"
 import {
   Table,
   TableBody,
@@ -304,25 +304,25 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@workspace/ui/components/table"
+} from "@diametral/ui/components/table"
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@workspace/ui/components/tabs"
-import { Textarea } from "@workspace/ui/components/textarea"
-import { toast } from "@workspace/ui/components/toast"
-import { Toggle } from "@workspace/ui/components/toggle"
+} from "@diametral/ui/components/tabs"
+import { Textarea } from "@diametral/ui/components/textarea"
+import { toast } from "@diametral/ui/components/toast"
+import { Toggle } from "@diametral/ui/components/toggle"
 import {
   ToggleGroup,
   ToggleGroupItem,
-} from "@workspace/ui/components/toggle-group"
+} from "@diametral/ui/components/toggle-group"
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@workspace/ui/components/tooltip"
+} from "@diametral/ui/components/tooltip"
 import {
   Autocomplete,
   AutocompleteContent,
@@ -330,30 +330,30 @@ import {
   AutocompleteInput,
   AutocompleteItem,
   AutocompleteList,
-} from "@workspace/ui/components/autocomplete"
-import { CheckboxGroup } from "@workspace/ui/components/checkbox-group"
-import { DataTable, type ColumnDef } from "@workspace/ui/components/data-table"
+} from "@diametral/ui/components/autocomplete"
+import { CheckboxGroup } from "@diametral/ui/components/checkbox-group"
+import { DataTable, type ColumnDef } from "@diametral/ui/components/data-table"
 import {
   DatePicker,
   DatePickerContent,
   DatePickerTrigger,
-} from "@workspace/ui/components/date-picker"
+} from "@diametral/ui/components/date-picker"
 import {
   FileUpload,
   FileUploadDescription,
   FileUploadIcon,
   FileUploadTitle,
-} from "@workspace/ui/components/file-upload"
-import { Form } from "@workspace/ui/components/form"
-import { Meter, MeterLabel, MeterValue } from "@workspace/ui/components/meter"
+} from "@diametral/ui/components/file-upload"
+import { Form } from "@diametral/ui/components/form"
+import { Meter, MeterLabel, MeterValue } from "@diametral/ui/components/meter"
 import {
   NumberField,
   NumberFieldDecrement,
   NumberFieldGroup,
   NumberFieldIncrement,
   NumberFieldInput,
-} from "@workspace/ui/components/number-field"
-import { Rating } from "@workspace/ui/components/rating"
+} from "@diametral/ui/components/number-field"
+import { Rating } from "@diametral/ui/components/rating"
 import {
   Stepper,
   StepperContent,
@@ -361,7 +361,7 @@ import {
   StepperItem,
   StepperSeparator,
   StepperTitle,
-} from "@workspace/ui/components/stepper"
+} from "@diametral/ui/components/stepper"
 import {
   Timeline,
   TimelineContent,
@@ -370,21 +370,21 @@ import {
   TimelineItem,
   TimelineTime,
   TimelineTitle,
-} from "@workspace/ui/components/timeline"
+} from "@diametral/ui/components/timeline"
 import {
   Toolbar,
   ToolbarButton,
   ToolbarGroup,
   ToolbarInput,
   ToolbarSeparator,
-} from "@workspace/ui/components/toolbar"
+} from "@diametral/ui/components/toolbar"
 import {
   Tree,
   TreeItem,
   TreeItemContent,
   TreeItemTrigger,
   TreeLeaf,
-} from "@workspace/ui/components/tree"
+} from "@diametral/ui/components/tree"
 
 import { ThemeToggle } from "@/components/theme-toggle"
 

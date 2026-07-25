@@ -9,7 +9,7 @@ import {
   AttachmentGroup,
   AttachmentMedia,
   AttachmentTitle,
-} from "@workspace/ui/components/attachment"
+} from "@diametral/ui/components/attachment"
 
 const FILES = [
   { name: "charte-diametral.pdf", size: "2,4 Mo" },

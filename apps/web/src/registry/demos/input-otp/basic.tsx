@@ -2,7 +2,7 @@ import {
   InputOTP,
   InputOTPGroup,
   InputOTPSlot,
-} from "@workspace/ui/components/input-otp"
+} from "@diametral/ui/components/input-otp"
 
 // There is one real input behind the slots; the slots are painted from its state.
 // That is what makes paste, autofill and the OS SMS suggestion work.

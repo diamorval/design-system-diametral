@@ -1,11 +1,11 @@
 import type { ComponentProps } from "react"
 
-import { Button } from "@workspace/ui/components/button"
+import { Button } from "@diametral/ui/components/button"
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@workspace/ui/components/tooltip"
+} from "@diametral/ui/components/tooltip"
 
 // The panel drives the content's positioning, so hover the trigger to see it.
 export default function TooltipPlayground({

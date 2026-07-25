@@ -1,4 +1,4 @@
-import { Meter, MeterLabel, MeterValue } from "@workspace/ui/components/meter"
+import { Meter, MeterLabel, MeterValue } from "@diametral/ui/components/meter"
 
 // Meter is for a static measurement inside a known range — disk used, budget
 // consumed. Use Progress for something advancing towards completion.

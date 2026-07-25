@@ -1,4 +1,4 @@
-import { AspectRatio } from "@workspace/ui/components/aspect-ratio"
+import { AspectRatio } from "@diametral/ui/components/aspect-ratio"
 
 // `ratio` is required and non-integer, which is why the config marks it `always`
 // (so it is never omitted from the snippet) and why serialize prints decimals

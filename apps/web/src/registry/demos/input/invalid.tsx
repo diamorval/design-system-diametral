@@ -1,5 +1,5 @@
-import { Field, FieldError, FieldLabel } from "@workspace/ui/components/field"
-import { Input } from "@workspace/ui/components/input"
+import { Field, FieldError, FieldLabel } from "@diametral/ui/components/field"
+import { Input } from "@diametral/ui/components/input"
 
 export default function InputInvalid() {
   return (

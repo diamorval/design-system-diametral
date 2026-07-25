@@ -8,7 +8,7 @@ import {
   MenubarSeparator,
   MenubarShortcut,
   MenubarTrigger,
-} from "@workspace/ui/components/menubar"
+} from "@diametral/ui/components/menubar"
 
 export default function MenubarPlayground(
   props: ComponentProps<typeof Menubar>

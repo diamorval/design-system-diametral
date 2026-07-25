@@ -1,6 +1,6 @@
 import { ShareNetworkIcon, UserPlusIcon } from "@phosphor-icons/react"
 
-import { Button } from "@workspace/ui/components/button"
+import { Button } from "@diametral/ui/components/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,7 +10,7 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from "@workspace/ui/components/dropdown-menu"
+} from "@diametral/ui/components/dropdown-menu"
 
 // Submenus open to `inline-end` by default, which flips with direction — an RTL
 // locale gets them on the correct side with no extra prop.

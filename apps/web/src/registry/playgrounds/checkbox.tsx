@@ -1,7 +1,7 @@
 import type { ComponentProps } from "react"
 
-import { Checkbox } from "@workspace/ui/components/checkbox"
-import { Label } from "@workspace/ui/components/label"
+import { Checkbox } from "@diametral/ui/components/checkbox"
+import { Label } from "@diametral/ui/components/label"
 
 export default function CheckboxPlayground({
   children,

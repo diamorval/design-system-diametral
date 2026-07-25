@@ -1,6 +1,6 @@
 import type { ComponentProps } from "react"
 
-import { Button } from "@workspace/ui/components/button"
+import { Button } from "@diametral/ui/components/button"
 import {
   Sheet,
   SheetContent,
@@ -8,7 +8,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@workspace/ui/components/sheet"
+} from "@diametral/ui/components/sheet"
 
 export default function SheetPlayground({
   children,

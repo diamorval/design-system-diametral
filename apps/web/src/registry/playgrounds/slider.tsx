@@ -1,6 +1,6 @@
 import type { ComponentProps } from "react"
 
-import { Slider } from "@workspace/ui/components/slider"
+import { Slider } from "@diametral/ui/components/slider"
 
 // Panel values arrive as strings, so `step` is coerced here rather than on the
 // element — anything written on the `{...props}` element is dropped from the

@@ -6,7 +6,7 @@ import {
   AttachmentGroup,
   AttachmentMedia,
   AttachmentTitle,
-} from "@workspace/ui/components/attachment"
+} from "@diametral/ui/components/attachment"
 
 const ITEMS = [
   { name: "cover.png", icon: <ImageIcon /> },

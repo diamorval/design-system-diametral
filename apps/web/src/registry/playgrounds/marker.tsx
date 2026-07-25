@@ -5,7 +5,7 @@ import {
   Marker,
   MarkerContent,
   MarkerIcon,
-} from "@workspace/ui/components/marker"
+} from "@diametral/ui/components/marker"
 
 export default function MarkerPlayground({
   children,

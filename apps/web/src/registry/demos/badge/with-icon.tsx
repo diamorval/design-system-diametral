@@ -4,7 +4,7 @@ import {
   WarningCircleIcon,
 } from "@phosphor-icons/react"
 
-import { Badge } from "@workspace/ui/components/badge"
+import { Badge } from "@diametral/ui/components/badge"
 
 export default function BadgeWithIcon() {
   return (

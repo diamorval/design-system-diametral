@@ -1,11 +1,11 @@
-import { Checkbox } from "@workspace/ui/components/checkbox"
+import { Checkbox } from "@diametral/ui/components/checkbox"
 import {
   Field,
   FieldContent,
   FieldDescription,
   FieldLabel,
   FieldTitle,
-} from "@workspace/ui/components/field"
+} from "@diametral/ui/components/field"
 
 const PLANS = [
   {

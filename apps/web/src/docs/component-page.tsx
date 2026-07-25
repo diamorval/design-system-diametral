@@ -2,14 +2,14 @@ import * as React from "react"
 import { Link, useParams } from "react-router"
 import { CheckIcon, CopyIcon } from "@phosphor-icons/react"
 
-import { Badge } from "@workspace/ui/components/badge"
-import { Button } from "@workspace/ui/components/button"
+import { Badge } from "@diametral/ui/components/badge"
+import { Button } from "@diametral/ui/components/button"
 import {
   Empty,
   EmptyDescription,
   EmptyHeader,
   EmptyTitle,
-} from "@workspace/ui/components/empty"
+} from "@diametral/ui/components/empty"
 
 import { ExampleBlock } from "@/docs/example"
 import { Playground } from "@/docs/playground"

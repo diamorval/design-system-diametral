@@ -1,10 +1,10 @@
 import type { ComponentProps } from "react"
 
-import { Field, FieldLabel } from "@workspace/ui/components/field"
+import { Field, FieldLabel } from "@diametral/ui/components/field"
 import {
   RadioGroup,
   RadioGroupItem,
-} from "@workspace/ui/components/radio-group"
+} from "@diametral/ui/components/radio-group"
 
 const SPEEDS = ["standard", "express", "same-day"]
 

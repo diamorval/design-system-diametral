@@ -7,7 +7,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@workspace/ui/components/table"
+} from "@diametral/ui/components/table"
 
 const ROWS = [
   { id: "INV-001", client: "Régie Ouest", total: "4 200 €" },

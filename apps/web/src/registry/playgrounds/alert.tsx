@@ -5,7 +5,7 @@ import {
   Alert,
   AlertDescription,
   AlertTitle,
-} from "@workspace/ui/components/alert"
+} from "@diametral/ui/components/alert"
 
 export default function AlertPlayground({
   children,

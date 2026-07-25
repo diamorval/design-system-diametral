@@ -11,8 +11,8 @@ import {
   AlertDialogMedia,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@workspace/ui/components/alert-dialog"
-import { Button } from "@workspace/ui/components/button"
+} from "@diametral/ui/components/alert-dialog"
+import { Button } from "@diametral/ui/components/button"
 
 export default function AlertDialogPlayground({
   children,

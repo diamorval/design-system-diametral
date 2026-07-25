@@ -1,4 +1,4 @@
-import { Separator } from "@workspace/ui/components/separator"
+import { Separator } from "@diametral/ui/components/separator"
 
 export default function SeparatorBasic() {
   return (

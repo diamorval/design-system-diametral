@@ -1,4 +1,4 @@
-import { Button } from "@workspace/ui/components/button"
+import { Button } from "@diametral/ui/components/button"
 import {
   Drawer,
   DrawerClose,
@@ -8,7 +8,7 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "@workspace/ui/components/drawer"
+} from "@diametral/ui/components/drawer"
 
 // `swipeDirection` is the single source of truth: the content derives its axis,
 // edge, border and close transform from it, so there is no separate `side`.

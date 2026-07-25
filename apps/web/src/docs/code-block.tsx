@@ -1,7 +1,7 @@
 import { CheckIcon, CopyIcon } from "@phosphor-icons/react"
 
-import { Button } from "@workspace/ui/components/button"
-import { cn } from "@workspace/ui/lib/utils"
+import { Button } from "@diametral/ui/components/button"
+import { cn } from "@diametral/ui/lib/utils"
 
 import { useCopy } from "@/docs/use-copy"
 

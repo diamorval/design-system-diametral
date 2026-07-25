@@ -1,12 +1,12 @@
 import * as React from "react"
 
-import { Calendar } from "@workspace/ui/components/calendar"
+import { Calendar } from "@diametral/ui/components/calendar"
 import {
   DatePicker,
   DatePickerContent,
   DatePickerTrigger,
-} from "@workspace/ui/components/date-picker"
-import { Field, FieldLabel } from "@workspace/ui/components/field"
+} from "@diametral/ui/components/date-picker"
+import { Field, FieldLabel } from "@diametral/ui/components/field"
 
 type Range = { from: Date | undefined; to?: Date | undefined }
 

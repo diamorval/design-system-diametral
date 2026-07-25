@@ -1,18 +1,18 @@
 import * as React from "react"
 import { MagnifyingGlassIcon } from "@phosphor-icons/react"
 
-import { Checkbox } from "@workspace/ui/components/checkbox"
-import { DirectionProvider } from "@workspace/ui/components/direction"
-import { Field, FieldLabel } from "@workspace/ui/components/field"
+import { Checkbox } from "@diametral/ui/components/checkbox"
+import { DirectionProvider } from "@diametral/ui/components/direction"
+import { Field, FieldLabel } from "@diametral/ui/components/field"
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
-} from "@workspace/ui/components/input-group"
+} from "@diametral/ui/components/input-group"
 import {
   ToggleGroup,
   ToggleGroupItem,
-} from "@workspace/ui/components/toggle-group"
+} from "@diametral/ui/components/toggle-group"
 
 export default function DirectionSwitching() {
   const [direction, setDirection] = React.useState<"ltr" | "rtl">("rtl")

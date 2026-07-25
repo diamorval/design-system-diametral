@@ -8,8 +8,8 @@ import {
   AutocompleteLabel,
   AutocompleteList,
   AutocompleteStatus,
-} from "@workspace/ui/components/autocomplete"
-import { Field, FieldLabel } from "@workspace/ui/components/field"
+} from "@diametral/ui/components/autocomplete"
+import { Field, FieldLabel } from "@diametral/ui/components/field"
 
 const GROUPED = [
   { value: "Actions", items: ["Button", "Toggle", "Toolbar"] },

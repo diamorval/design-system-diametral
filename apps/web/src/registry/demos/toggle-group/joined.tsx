@@ -1,7 +1,7 @@
 import {
   ToggleGroup,
   ToggleGroupItem,
-} from "@workspace/ui/components/toggle-group"
+} from "@diametral/ui/components/toggle-group"
 
 // `spacing={0}` collapses the gap and strips the inner borders, which is what
 // turns a row of toggles into one segmented control.

@@ -1,5 +1,5 @@
-import { Checkbox } from "@workspace/ui/components/checkbox"
-import { Label } from "@workspace/ui/components/label"
+import { Checkbox } from "@diametral/ui/components/checkbox"
+import { Label } from "@diametral/ui/components/label"
 
 // The box is 18px but carries an invisible `::after` that extends the hit area
 // well past it, so the target is comfortable without the visual growing.

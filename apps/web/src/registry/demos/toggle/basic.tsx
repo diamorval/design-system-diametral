@@ -1,6 +1,6 @@
 import { TextBIcon } from "@phosphor-icons/react"
 
-import { Toggle } from "@workspace/ui/components/toggle"
+import { Toggle } from "@diametral/ui/components/toggle"
 
 export default function ToggleBasic() {
   return (

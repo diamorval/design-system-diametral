@@ -5,7 +5,7 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@workspace/ui/components/tabs"
+} from "@diametral/ui/components/tabs"
 
 export default function TabsPlayground(props: ComponentProps<typeof TabsList>) {
   return (

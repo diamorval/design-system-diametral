@@ -1,5 +1,5 @@
-import { Button } from "@workspace/ui/components/button"
-import { toast } from "@workspace/ui/components/toast"
+import { Button } from "@diametral/ui/components/button"
+import { toast } from "@diametral/ui/components/toast"
 
 // Toast is fired, not rendered: its API is a function call rather than props.
 // The controls drive the live toast, but the snippet shows the shape of the call

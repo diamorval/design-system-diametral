@@ -3,8 +3,8 @@ import {
   FieldDescription,
   FieldError,
   FieldLabel,
-} from "@workspace/ui/components/field"
-import { Textarea } from "@workspace/ui/components/textarea"
+} from "@diametral/ui/components/field"
+import { Textarea } from "@diametral/ui/components/textarea"
 
 export default function TextareaWithField() {
   return (

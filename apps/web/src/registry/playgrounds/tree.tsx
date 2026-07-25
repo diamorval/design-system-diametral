@@ -7,7 +7,7 @@ import {
   TreeItemContent,
   TreeItemTrigger,
   TreeLeaf,
-} from "@workspace/ui/components/tree"
+} from "@diametral/ui/components/tree"
 
 // The controls drive the branch, not the tree: `TreeItem` is a Collapsible, so
 // open state and disabling belong to it.

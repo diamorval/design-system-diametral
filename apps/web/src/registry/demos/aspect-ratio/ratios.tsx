@@ -1,4 +1,4 @@
-import { AspectRatio } from "@workspace/ui/components/aspect-ratio"
+import { AspectRatio } from "@diametral/ui/components/aspect-ratio"
 
 const RATIOS = [
   { label: "1 / 1", value: 1 },

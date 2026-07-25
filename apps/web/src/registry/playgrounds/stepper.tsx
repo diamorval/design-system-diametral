@@ -7,7 +7,7 @@ import {
   StepperItem,
   StepperSeparator,
   StepperTitle,
-} from "@workspace/ui/components/stepper"
+} from "@diametral/ui/components/stepper"
 
 export default function StepperPlayground(
   props: ComponentProps<typeof Stepper>

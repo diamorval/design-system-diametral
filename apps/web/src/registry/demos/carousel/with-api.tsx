@@ -5,7 +5,7 @@ import {
   type CarouselApi,
   CarouselContent,
   CarouselItem,
-} from "@workspace/ui/components/carousel"
+} from "@diametral/ui/components/carousel"
 
 const SLIDES = ["Charter", "Tokens", "Components", "Playground"]
 

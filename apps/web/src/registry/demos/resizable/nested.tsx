@@ -2,7 +2,7 @@ import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
-} from "@workspace/ui/components/resizable"
+} from "@diametral/ui/components/resizable"
 
 function Pane({ label }: { label: string }) {
   return (

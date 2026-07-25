@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { Button } from "@workspace/ui/components/button"
+import { Button } from "@diametral/ui/components/button"
 import {
   Item,
   ItemContent,
@@ -8,8 +8,8 @@ import {
   ItemGroup,
   ItemMedia,
   ItemTitle,
-} from "@workspace/ui/components/item"
-import { Skeleton } from "@workspace/ui/components/skeleton"
+} from "@diametral/ui/components/item"
+import { Skeleton } from "@diametral/ui/components/skeleton"
 
 const ROWS = [
   { name: "Régie Ouest", note: "4 missions en cours" },

@@ -1,11 +1,11 @@
 import { MagnifyingGlassIcon } from "@phosphor-icons/react"
 
-import { Button } from "@workspace/ui/components/button"
+import { Button } from "@diametral/ui/components/button"
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
-} from "@workspace/ui/components/input-group"
+} from "@diametral/ui/components/input-group"
 
 export default function InputWithAddon() {
   return (

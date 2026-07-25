@@ -6,7 +6,7 @@ import {
   MenubarSeparator,
   MenubarShortcut,
   MenubarTrigger,
-} from "@workspace/ui/components/menubar"
+} from "@diametral/ui/components/menubar"
 
 // One tab stop for the bar; arrow keys move between menus, and an open menu
 // stays open as you move along — the desktop-application convention.

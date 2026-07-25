@@ -5,7 +5,7 @@ import {
   FileUploadDescription,
   FileUploadIcon,
   FileUploadTitle,
-} from "@workspace/ui/components/file-upload"
+} from "@diametral/ui/components/file-upload"
 
 // The drop zone is a `role="button"` div over a hidden input, so click, Enter,
 // Space and drag-and-drop all open or receive files.

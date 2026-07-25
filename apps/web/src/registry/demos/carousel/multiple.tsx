@@ -4,7 +4,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@workspace/ui/components/carousel"
+} from "@diametral/ui/components/carousel"
 
 // Items are `basis-full` by default; overriding the basis is what shows several
 // slides at once, and `align: "start"` stops Embla centring the short last page.

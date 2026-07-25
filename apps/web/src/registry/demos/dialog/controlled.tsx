@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { Button } from "@workspace/ui/components/button"
+import { Button } from "@diametral/ui/components/button"
 import {
   Dialog,
   DialogContent,
@@ -8,8 +8,8 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@workspace/ui/components/dialog"
-import { Spinner } from "@workspace/ui/components/spinner"
+} from "@diametral/ui/components/dialog"
+import { Spinner } from "@diametral/ui/components/spinner"
 
 export default function DialogControlled() {
   const [open, setOpen] = React.useState(false)

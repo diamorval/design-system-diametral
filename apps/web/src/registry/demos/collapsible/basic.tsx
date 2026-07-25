@@ -1,11 +1,11 @@
 import { CaretDownIcon } from "@phosphor-icons/react"
 
-import { Button } from "@workspace/ui/components/button"
+import { Button } from "@diametral/ui/components/button"
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@workspace/ui/components/collapsible"
+} from "@diametral/ui/components/collapsible"
 
 export default function CollapsibleBasic() {
   return (

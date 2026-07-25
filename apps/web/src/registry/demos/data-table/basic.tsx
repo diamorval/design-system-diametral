@@ -1,4 +1,4 @@
-import { DataTable, type ColumnDef } from "@workspace/ui/components/data-table"
+import { DataTable, type ColumnDef } from "@diametral/ui/components/data-table"
 
 type Run = { id: string; suite: string; duration: string; status: string }
 

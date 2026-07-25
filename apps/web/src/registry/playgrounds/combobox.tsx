@@ -7,7 +7,7 @@ import {
   ComboboxInput,
   ComboboxItem,
   ComboboxList,
-} from "@workspace/ui/components/combobox"
+} from "@diametral/ui/components/combobox"
 
 const CITIES = ["Bordeaux", "Lille", "Lyon", "Nantes", "Paris", "Toulouse"]
 

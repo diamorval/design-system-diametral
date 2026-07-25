@@ -8,7 +8,7 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@workspace/ui/components/command"
+} from "@diametral/ui/components/command"
 
 // cmdk's own props: turning `shouldFilter` off is how you hand filtering to a
 // server, and `loop` wraps arrow-key selection at the ends of the list.

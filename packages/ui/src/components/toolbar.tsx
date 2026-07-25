@@ -3,9 +3,9 @@
 import { Toolbar as ToolbarPrimitive } from "@base-ui/react/toolbar"
 import { type VariantProps } from "class-variance-authority"
 
-import { cn } from "@workspace/ui/lib/utils"
-import { Button, buttonVariants } from "@workspace/ui/components/button"
-import { Input } from "@workspace/ui/components/input"
+import { cn } from "../lib/utils.js"
+import { Button, buttonVariants } from "./button.js"
+import { Input } from "./input.js"
 
 function Toolbar({ className, ...props }: ToolbarPrimitive.Root.Props) {
   return (

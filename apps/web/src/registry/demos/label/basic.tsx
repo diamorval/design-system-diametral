@@ -1,5 +1,5 @@
-import { Input } from "@workspace/ui/components/input"
-import { Label } from "@workspace/ui/components/label"
+import { Input } from "@diametral/ui/components/input"
+import { Label } from "@diametral/ui/components/label"
 
 // Label is uppercase and tracked by default, which suits a form field heading.
 // Prefer `FieldLabel` inside a `Field` — it adds the disabled and invalid wiring.

@@ -2,7 +2,7 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from "@workspace/ui/components/avatar"
+} from "@diametral/ui/components/avatar"
 
 // Inlined so the demo never depends on the network. Any `src` behaves the same:
 // the fallback shows until the image resolves, and stays if it fails.

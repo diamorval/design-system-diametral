@@ -1,4 +1,4 @@
-import { Toggle } from "@workspace/ui/components/toggle"
+import { Toggle } from "@diametral/ui/components/toggle"
 
 export default function ToggleVariants() {
   return (

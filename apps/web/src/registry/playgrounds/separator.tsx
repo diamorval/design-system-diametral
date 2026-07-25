@@ -1,6 +1,6 @@
 import type { ComponentProps } from "react"
 
-import { Separator } from "@workspace/ui/components/separator"
+import { Separator } from "@diametral/ui/components/separator"
 
 // The row wraps, so a horizontal separator takes its own line between the two
 // labels while a vertical one stretches to the container's height beside them.

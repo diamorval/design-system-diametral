@@ -10,7 +10,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarProvider,
-} from "@workspace/ui/components/sidebar"
+} from "@diametral/ui/components/sidebar"
 
 export default function SidebarPlayground({
   children,

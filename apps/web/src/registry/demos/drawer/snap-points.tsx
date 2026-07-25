@@ -1,4 +1,4 @@
-import { Button } from "@workspace/ui/components/button"
+import { Button } from "@diametral/ui/components/button"
 import {
   Drawer,
   DrawerContent,
@@ -6,13 +6,13 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "@workspace/ui/components/drawer"
+} from "@diametral/ui/components/drawer"
 import {
   Item,
   ItemContent,
   ItemGroup,
   ItemTitle,
-} from "@workspace/ui/components/item"
+} from "@diametral/ui/components/item"
 
 // With snap points the popup takes the full viewport height and the snap offset
 // moves it, which is why the sizing rules switch on `data-snap-points`.

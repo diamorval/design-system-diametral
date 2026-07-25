@@ -1,7 +1,7 @@
 import * as React from "react"
 
-import { Field, FieldLabel } from "@workspace/ui/components/field"
-import { Slider } from "@workspace/ui/components/slider"
+import { Field, FieldLabel } from "@diametral/ui/components/field"
+import { Slider } from "@diametral/ui/components/slider"
 
 // An array value gives a range: two thumbs and an indicator between them. Base UI
 // hands the callback the whole array, so read both ends from it.

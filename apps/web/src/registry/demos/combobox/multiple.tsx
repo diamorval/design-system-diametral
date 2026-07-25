@@ -9,12 +9,12 @@ import {
   ComboboxList,
   ComboboxValue,
   useComboboxAnchor,
-} from "@workspace/ui/components/combobox"
+} from "@diametral/ui/components/combobox"
 import {
   Field,
   FieldDescription,
   FieldLabel,
-} from "@workspace/ui/components/field"
+} from "@diametral/ui/components/field"
 
 const SCOPES = [
   "read:tokens",

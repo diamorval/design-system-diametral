@@ -1,6 +1,6 @@
 import type { ComponentProps } from "react"
 
-import { Button } from "@workspace/ui/components/button"
+import { Button } from "@diametral/ui/components/button"
 import {
   Drawer,
   DrawerContent,
@@ -8,7 +8,7 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "@workspace/ui/components/drawer"
+} from "@diametral/ui/components/drawer"
 
 // The geometry props live on the root here, not the content: `swipeDirection` is
 // what the content derives its axis, edge and closed transform from.

@@ -10,7 +10,7 @@ import {
   ToolbarButton,
   ToolbarGroup,
   ToolbarSeparator,
-} from "@workspace/ui/components/toolbar"
+} from "@diametral/ui/components/toolbar"
 
 export default function ToolbarPlayground(
   props: ComponentProps<typeof Toolbar>

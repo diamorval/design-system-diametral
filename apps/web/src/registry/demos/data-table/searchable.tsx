@@ -1,5 +1,5 @@
-import { Badge } from "@workspace/ui/components/badge"
-import { DataTable, type ColumnDef } from "@workspace/ui/components/data-table"
+import { Badge } from "@diametral/ui/components/badge"
+import { DataTable, type ColumnDef } from "@diametral/ui/components/data-table"
 
 type Invoice = { id: string; client: string; status: string; amount: number }
 

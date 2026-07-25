@@ -1,5 +1,5 @@
-import { Field, FieldLabel } from "@workspace/ui/components/field"
-import { Slider } from "@workspace/ui/components/slider"
+import { Field, FieldLabel } from "@diametral/ui/components/field"
+import { Slider } from "@diametral/ui/components/slider"
 
 // The component reads `value` / `defaultValue` to decide how many thumbs to
 // render, so a single number gives one and an array gives one per entry.

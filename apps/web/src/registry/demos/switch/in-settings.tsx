@@ -5,8 +5,8 @@ import {
   FieldGroup,
   FieldSeparator,
   FieldTitle,
-} from "@workspace/ui/components/field"
-import { Switch } from "@workspace/ui/components/switch"
+} from "@diametral/ui/components/field"
+import { Switch } from "@diametral/ui/components/switch"
 
 const SETTINGS = [
   {

@@ -1,7 +1,7 @@
 import type { ComponentProps } from "react"
 
-import { Checkbox } from "@workspace/ui/components/checkbox"
-import { Field, FieldLabel } from "@workspace/ui/components/field"
+import { Checkbox } from "@diametral/ui/components/checkbox"
+import { Field, FieldLabel } from "@diametral/ui/components/field"
 
 export default function FieldPlayground({
   children,

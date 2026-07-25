@@ -1,6 +1,6 @@
 import { DownloadSimpleIcon, FilePdfIcon } from "@phosphor-icons/react"
 
-import { Button } from "@workspace/ui/components/button"
+import { Button } from "@diametral/ui/components/button"
 import {
   Item,
   ItemActions,
@@ -9,7 +9,7 @@ import {
   ItemGroup,
   ItemMedia,
   ItemTitle,
-} from "@workspace/ui/components/item"
+} from "@diametral/ui/components/item"
 
 const FILES = [
   { name: "Charte graphique.pdf", size: "2,4 Mo" },

@@ -3,7 +3,7 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@workspace/ui/components/accordion"
+} from "@diametral/ui/components/accordion"
 
 // Base UI opens several panels at once by default; `multiple={false}` is what
 // collapses the others when a new one opens.

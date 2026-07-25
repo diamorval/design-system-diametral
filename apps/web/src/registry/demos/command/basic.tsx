@@ -9,7 +9,7 @@ import {
   CommandList,
   CommandSeparator,
   CommandShortcut,
-} from "@workspace/ui/components/command"
+} from "@diametral/ui/components/command"
 
 // `CommandItem` hides its trailing check whenever the item carries a shortcut,
 // so the two never collide on the inline-end edge.

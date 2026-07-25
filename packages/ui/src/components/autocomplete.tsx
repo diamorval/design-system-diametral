@@ -2,13 +2,13 @@
 
 import { Autocomplete as AutocompletePrimitive } from "@base-ui/react/autocomplete"
 
-import { cn } from "@workspace/ui/lib/utils"
+import { cn } from "../lib/utils.js"
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
   InputGroupInput,
-} from "@workspace/ui/components/input-group"
+} from "./input-group.js"
 import { XIcon } from "@phosphor-icons/react"
 
 const Autocomplete = AutocompletePrimitive.Root

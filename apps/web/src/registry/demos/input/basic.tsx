@@ -1,4 +1,4 @@
-import { Input } from "@workspace/ui/components/input"
+import { Input } from "@diametral/ui/components/input"
 
 export default function InputBasic() {
   return (

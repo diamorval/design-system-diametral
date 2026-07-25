@@ -1,7 +1,7 @@
 import type { ComponentProps } from "react"
 
-import { Input } from "@workspace/ui/components/input"
-import { Label } from "@workspace/ui/components/label"
+import { Input } from "@diametral/ui/components/input"
+import { Label } from "@diametral/ui/components/label"
 
 export default function LabelPlayground({
   children,

@@ -1,4 +1,4 @@
-import { Badge } from "@workspace/ui/components/badge"
+import { Badge } from "@diametral/ui/components/badge"
 
 // Badge in this system is typographic, not a pill: no border, no padding, no
 // fill. The variants change colour only, so it sits inline without a box.

@@ -7,7 +7,7 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-} from "@workspace/ui/components/navigation-menu"
+} from "@diametral/ui/components/navigation-menu"
 
 // `navigationMenuTriggerStyle` is a cva with no variants object, so there is no
 // axis to extract — `align` on the root is the real knob, and it is forwarded to

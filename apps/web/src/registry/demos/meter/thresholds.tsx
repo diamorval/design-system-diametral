@@ -1,4 +1,4 @@
-import { Meter, MeterLabel, MeterValue } from "@workspace/ui/components/meter"
+import { Meter, MeterLabel, MeterValue } from "@diametral/ui/components/meter"
 
 const USAGE = [
   { label: "Design", value: 34 },

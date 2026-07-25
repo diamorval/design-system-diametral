@@ -1,4 +1,4 @@
-import { cn } from "@workspace/ui/lib/utils"
+import { cn } from "@diametral/ui/lib/utils"
 
 /**
  * Renders `code` spans inside registry prose. Deliberately not a markdown

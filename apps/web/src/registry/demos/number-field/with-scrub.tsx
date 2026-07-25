@@ -2,13 +2,13 @@ import {
   Field,
   FieldDescription,
   FieldLabel,
-} from "@workspace/ui/components/field"
+} from "@diametral/ui/components/field"
 import {
   NumberField,
   NumberFieldGroup,
   NumberFieldInput,
   NumberFieldScrubArea,
-} from "@workspace/ui/components/number-field"
+} from "@diametral/ui/components/number-field"
 
 // `NumberFieldScrubArea` turns its children into a drag handle — press and move
 // sideways, the way a design tool's numeric inputs behave. It reads the root's

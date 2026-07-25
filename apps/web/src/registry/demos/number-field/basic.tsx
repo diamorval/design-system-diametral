@@ -2,14 +2,14 @@ import {
   Field,
   FieldDescription,
   FieldLabel,
-} from "@workspace/ui/components/field"
+} from "@diametral/ui/components/field"
 import {
   NumberField,
   NumberFieldDecrement,
   NumberFieldGroup,
   NumberFieldIncrement,
   NumberFieldInput,
-} from "@workspace/ui/components/number-field"
+} from "@diametral/ui/components/number-field"
 
 // A real number field, not `<input type="number">`: it clamps to min/max, honours
 // step on the arrow keys, and formats with Intl rather than raw digits.

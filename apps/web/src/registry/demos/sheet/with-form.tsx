@@ -1,6 +1,6 @@
-import { Button } from "@workspace/ui/components/button"
-import { Field, FieldLabel } from "@workspace/ui/components/field"
-import { Input } from "@workspace/ui/components/input"
+import { Button } from "@diametral/ui/components/button"
+import { Field, FieldLabel } from "@diametral/ui/components/field"
+import { Input } from "@diametral/ui/components/input"
 import {
   Sheet,
   SheetClose,
@@ -10,8 +10,8 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@workspace/ui/components/sheet"
-import { Textarea } from "@workspace/ui/components/textarea"
+} from "@diametral/ui/components/sheet"
+import { Textarea } from "@diametral/ui/components/textarea"
 
 // `SheetFooter` carries `mt-auto`, so it pins to the bottom of the panel however
 // short the body is — no explicit flex-1 on the content.

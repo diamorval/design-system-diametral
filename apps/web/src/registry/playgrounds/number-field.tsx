@@ -6,7 +6,7 @@ import {
   NumberFieldGroup,
   NumberFieldIncrement,
   NumberFieldInput,
-} from "@workspace/ui/components/number-field"
+} from "@diametral/ui/components/number-field"
 
 // `step` and the bounds arrive from the panel as strings, so they are coerced
 // before Base UI sees them.

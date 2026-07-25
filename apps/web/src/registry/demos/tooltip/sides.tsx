@@ -1,11 +1,11 @@
-import { Button } from "@workspace/ui/components/button"
-import { Kbd, KbdGroup } from "@workspace/ui/components/kbd"
+import { Button } from "@diametral/ui/components/button"
+import { Kbd, KbdGroup } from "@diametral/ui/components/kbd"
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@workspace/ui/components/tooltip"
+} from "@diametral/ui/components/tooltip"
 
 // `inline-start` / `inline-end` are the logical sides — they follow direction,
 // where `left` / `right` stay physical. Prefer the logical pair.

@@ -1,7 +1,7 @@
 import type { ComponentProps } from "react"
 
-import { Label } from "@workspace/ui/components/label"
-import { Switch } from "@workspace/ui/components/switch"
+import { Label } from "@diametral/ui/components/label"
+import { Switch } from "@diametral/ui/components/switch"
 
 export default function SwitchPlayground({
   children,

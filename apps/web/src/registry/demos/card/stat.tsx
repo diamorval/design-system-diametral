@@ -1,11 +1,11 @@
-import { Badge } from "@workspace/ui/components/badge"
+import { Badge } from "@diametral/ui/components/badge"
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@workspace/ui/components/card"
+} from "@diametral/ui/components/card"
 
 const STATS = [
   { label: "Components", value: "73", delta: "+13" },

@@ -4,7 +4,7 @@ import {
   Bubble,
   BubbleContent,
   BubbleGroup,
-} from "@workspace/ui/components/bubble"
+} from "@diametral/ui/components/bubble"
 
 export default function BubblePlayground({
   children,

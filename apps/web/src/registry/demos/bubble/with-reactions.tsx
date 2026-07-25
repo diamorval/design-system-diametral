@@ -3,7 +3,7 @@ import {
   BubbleContent,
   BubbleGroup,
   BubbleReactions,
-} from "@workspace/ui/components/bubble"
+} from "@diametral/ui/components/bubble"
 
 // Reactions are absolutely positioned and overhang the bubble, ringed in the
 // card colour so they punch a hole through the edge rather than sitting beside it.

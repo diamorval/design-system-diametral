@@ -5,7 +5,7 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
-} from "@workspace/ui/components/input-group"
+} from "@diametral/ui/components/input-group"
 
 export default function InputGroupPlayground(
   props: ComponentProps<typeof InputGroupAddon>

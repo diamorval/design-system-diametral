@@ -1,16 +1,16 @@
 import { SlidersHorizontalIcon } from "@phosphor-icons/react"
 
-import { Button } from "@workspace/ui/components/button"
-import { Field, FieldLabel } from "@workspace/ui/components/field"
-import { Input } from "@workspace/ui/components/input"
+import { Button } from "@diametral/ui/components/button"
+import { Field, FieldLabel } from "@diametral/ui/components/field"
+import { Input } from "@diametral/ui/components/input"
 import {
   Popover,
   PopoverContent,
   PopoverHeader,
   PopoverTitle,
   PopoverTrigger,
-} from "@workspace/ui/components/popover"
-import { Switch } from "@workspace/ui/components/switch"
+} from "@diametral/ui/components/popover"
+import { Switch } from "@diametral/ui/components/switch"
 
 // Popover traps focus and is dismissible, so interactive content belongs here
 // rather than in a Tooltip — a tooltip is never reachable by keyboard users.

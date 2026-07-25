@@ -11,8 +11,8 @@ import {
   CommandItem,
   CommandList,
   CommandShortcut,
-} from "@workspace/ui/components/command"
-import { Kbd, KbdGroup } from "@workspace/ui/components/kbd"
+} from "@diametral/ui/components/command"
+import { Kbd, KbdGroup } from "@diametral/ui/components/kbd"
 
 import { componentsByCategory } from "@/registry/registry"
 

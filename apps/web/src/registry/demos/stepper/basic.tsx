@@ -5,7 +5,7 @@ import {
   StepperItem,
   StepperSeparator,
   StepperTitle,
-} from "@workspace/ui/components/stepper"
+} from "@diametral/ui/components/stepper"
 
 const STEPS = [
   { title: "Scope", state: "completed" as const },

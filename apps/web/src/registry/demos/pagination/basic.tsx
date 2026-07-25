@@ -6,7 +6,7 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@workspace/ui/components/pagination"
+} from "@diametral/ui/components/pagination"
 
 // `PaginationLink` renders an anchor through Button's `render`, with
 // `nativeButton={false}` — so it stays a real link and middle-click still works.

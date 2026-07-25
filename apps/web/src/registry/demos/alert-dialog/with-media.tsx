@@ -10,8 +10,8 @@ import {
   AlertDialogMedia,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@workspace/ui/components/alert-dialog"
-import { Button } from "@workspace/ui/components/button"
+} from "@diametral/ui/components/alert-dialog"
+import { Button } from "@diametral/ui/components/button"
 
 // `size="sm"` keeps the header centred at every breakpoint and makes the footer
 // a two-column grid; `default` goes left-aligned and inline from `sm` up.

@@ -1,13 +1,13 @@
 import { Link } from "react-router"
 
-import { Badge } from "@workspace/ui/components/badge"
+import { Badge } from "@diametral/ui/components/badge"
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@workspace/ui/components/card"
+} from "@diametral/ui/components/card"
 
 import { COMPONENTS, componentsByCategory } from "@/registry/registry"
 

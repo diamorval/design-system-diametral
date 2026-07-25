@@ -1,12 +1,12 @@
-import { Avatar, AvatarFallback } from "@workspace/ui/components/avatar"
-import { Bubble, BubbleContent } from "@workspace/ui/components/bubble"
+import { Avatar, AvatarFallback } from "@diametral/ui/components/avatar"
+import { Bubble, BubbleContent } from "@diametral/ui/components/bubble"
 import {
   Message,
   MessageAvatar,
   MessageContent,
   MessageFooter,
   MessageGroup,
-} from "@workspace/ui/components/message"
+} from "@diametral/ui/components/message"
 
 // When a footer is present the avatar lifts by 2rem to stay level with the
 // bubble instead of the timestamp — `group-has-data-[slot=message-footer]`.

@@ -11,7 +11,7 @@ import {
   SidebarMenuItem,
   SidebarProvider,
   SidebarTrigger,
-} from "@workspace/ui/components/sidebar"
+} from "@diametral/ui/components/sidebar"
 
 const ITEMS = [
   { title: "Dashboard", icon: HouseIcon, active: true },

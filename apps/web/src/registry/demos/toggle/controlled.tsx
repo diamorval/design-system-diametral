@@ -1,7 +1,7 @@
 import * as React from "react"
 import { EyeIcon, EyeSlashIcon } from "@phosphor-icons/react"
 
-import { Toggle } from "@workspace/ui/components/toggle"
+import { Toggle } from "@diametral/ui/components/toggle"
 
 export default function ToggleControlled() {
   const [revealed, setRevealed] = React.useState(false)

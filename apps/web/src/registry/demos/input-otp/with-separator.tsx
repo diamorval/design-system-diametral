@@ -5,7 +5,7 @@ import {
   InputOTPGroup,
   InputOTPSeparator,
   InputOTPSlot,
-} from "@workspace/ui/components/input-otp"
+} from "@diametral/ui/components/input-otp"
 
 export default function InputOtpWithSeparator() {
   const [value, setValue] = React.useState("")

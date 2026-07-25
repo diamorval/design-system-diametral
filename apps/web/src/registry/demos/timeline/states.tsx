@@ -7,7 +7,7 @@ import {
   TimelineIndicator,
   TimelineItem,
   TimelineTitle,
-} from "@workspace/ui/components/timeline"
+} from "@diametral/ui/components/timeline"
 
 const STEPS = [
   { title: "Devis signé", state: "completed" },

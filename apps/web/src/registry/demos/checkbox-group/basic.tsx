@@ -1,11 +1,11 @@
-import { Checkbox } from "@workspace/ui/components/checkbox"
-import { CheckboxGroup } from "@workspace/ui/components/checkbox-group"
+import { Checkbox } from "@diametral/ui/components/checkbox"
+import { CheckboxGroup } from "@diametral/ui/components/checkbox-group"
 import {
   Field,
   FieldLabel,
   FieldLegend,
   FieldSet,
-} from "@workspace/ui/components/field"
+} from "@diametral/ui/components/field"
 
 const TOPICS = [
   { value: "releases", label: "Release notes" },

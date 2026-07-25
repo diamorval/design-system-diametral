@@ -5,7 +5,7 @@ import {
   InputGroupAddon,
   InputGroupButton,
   InputGroupTextarea,
-} from "@workspace/ui/components/input-group"
+} from "@diametral/ui/components/input-group"
 
 // `block-start` / `block-end` stack the addon above or below instead of beside,
 // which turns the group into a composer. The group switches to a column itself.

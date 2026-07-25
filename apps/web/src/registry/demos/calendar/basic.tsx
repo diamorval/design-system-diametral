@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { Calendar } from "@workspace/ui/components/calendar"
+import { Calendar } from "@diametral/ui/components/calendar"
 
 // Built on react-day-picker. `--cell-radius: 0` is set on the root, which is how
 // range ends stay square while the library still reasons about rounded corners.

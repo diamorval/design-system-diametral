@@ -5,8 +5,8 @@ import {
   AlertAction,
   AlertDescription,
   AlertTitle,
-} from "@workspace/ui/components/alert"
-import { Button } from "@workspace/ui/components/button"
+} from "@diametral/ui/components/alert"
+import { Button } from "@diametral/ui/components/button"
 
 // `AlertAction` is absolutely positioned; the alert reserves the space for it
 // with `has-data-[slot=alert-action]:pe-18`, so the text never runs underneath.

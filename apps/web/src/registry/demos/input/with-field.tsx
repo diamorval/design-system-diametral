@@ -2,8 +2,8 @@ import {
   Field,
   FieldDescription,
   FieldLabel,
-} from "@workspace/ui/components/field"
-import { Input } from "@workspace/ui/components/input"
+} from "@diametral/ui/components/field"
+import { Input } from "@diametral/ui/components/input"
 
 export default function InputWithField() {
   return (

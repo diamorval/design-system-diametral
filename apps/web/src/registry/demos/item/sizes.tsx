@@ -6,8 +6,8 @@ import {
   ItemHeader,
   ItemSeparator,
   ItemTitle,
-} from "@workspace/ui/components/item"
-import { Badge } from "@workspace/ui/components/badge"
+} from "@diametral/ui/components/item"
+import { Badge } from "@diametral/ui/components/badge"
 
 // `ItemGroup` tightens its own gap when it contains sm/xs items, so the density
 // of a list follows the items rather than needing a matching group prop.

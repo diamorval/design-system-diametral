@@ -132,11 +132,13 @@
     /* Tier 3 — the flat parti pris: override this single value to round the
        entire system at once (shadcn derives every other radius via calc). */
     --ds-radius: 0px;
-    /* The two official Diametral faces: Ufficio (titles) and Geist (body/mono).
-       Ufficio is licensed and not bundled — it resolves from the local install
-       every Diametral machine ships with, or from a ufficio.css webfont import.
-       Geist takes the sole fallback slot so an unprovisioned machine still lands
-       on-brand; no system face is listed, only the generic last resort. */
+    /* The two official Diametral faces: Ufficio (titles) and Geist (body/mono),
+       and deliberately no third — see the @theme note above.
+       Ufficio is commercial (Giulia B. EULA) and is never bundled or committed:
+       clause 4.2 requires offline-only storage, and the licence on file covers
+       Web per-URL, self-hosted. A licensed consumer imports its own ufficio.css;
+       everyone else lands on Geist, which is on-brand by design rather than a
+       system serif. No system face is listed, only the generic last resort. */
     --ds-font-title: "Ufficio", "Geist Variable", sans-serif;
 
     /* ---- shadcn slot mappings ------------------------------------------- */

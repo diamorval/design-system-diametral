@@ -1,6 +1,6 @@
 import type { ComponentProps } from "react"
 
-import { Textarea } from "@workspace/ui/components/textarea"
+import { Textarea } from "@diametral/ui/components/textarea"
 
 export default function TextareaPlayground(
   props: ComponentProps<typeof Textarea>

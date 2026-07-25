@@ -1,7 +1,7 @@
 import type { ComponentProps } from "react"
 
-import { ScrollArea } from "@workspace/ui/components/scroll-area"
-import { Separator } from "@workspace/ui/components/separator"
+import { ScrollArea } from "@diametral/ui/components/scroll-area"
+import { Separator } from "@diametral/ui/components/separator"
 
 const ROWS = Array.from({ length: 20 }, (_, index) => `Commit ${index + 1}`)
 
