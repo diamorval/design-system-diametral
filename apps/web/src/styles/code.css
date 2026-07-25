@@ -1,0 +1,24 @@
+/* Shiki emits both themes as CSS variables on every span (--shiki-light /
+   --shiki-dark) because the plugin runs with `defaultColor: false`. Switching
+   theme is therefore a repaint of these two rules, not a re-highlight. */
+.shiki,
+.shiki span {
+  color: var(--shiki-light);
+  background-color: transparent;
+}
+
+.dark .shiki,
+.dark .shiki span {
+  color: var(--shiki-dark);
+}
+
+.shiki {
+  background-color: transparent !important;
+}
+
+.shiki code {
+  display: grid;
+  /* Long lines scroll the container rather than wrapping: wrapped JSX loses the
+     indentation that carries the nesting. */
+  white-space: pre;
+}

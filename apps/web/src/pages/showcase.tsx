@@ -520,7 +520,7 @@ const MILESTONES = [
 
 /* -------------------------------------------------------------------------- */
 
-export function App() {
+export function Showcase() {
   const { theme, setTheme } = useTheme()
   const [dueDate, setDueDate] = React.useState<Date | undefined>(undefined)
   const [uploads, setUploads] = React.useState<File[]>([])
