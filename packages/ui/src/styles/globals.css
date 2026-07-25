@@ -112,6 +112,11 @@
     --ds-rule-soft: var(--ds-grey-faint);
     --ds-accent: var(--ds-rouge);
     --ds-accent-bg: var(--ds-orange-bg);
+    /* Neutral action surface — the default button fill. Kept separate from
+       --ds-ink because dark mode must raise it off the page rather than
+       invert it: a noir button on a #0e0e10 background disappears. */
+    --ds-action: var(--ds-noir);
+    --ds-on-action: var(--ds-blanc);
     --ds-focus-ring: var(--ds-ink);
     --ds-success: var(--ds-green);
     --ds-warning: var(--ds-orange);
@@ -178,6 +183,8 @@
     --ds-ink-faint: #8b8d97;
     --ds-rule: #2c2d31;
     --ds-rule-soft: #232428;
+    --ds-action: #32333a;
+    --ds-on-action: var(--ds-blanc);
     --ds-accent-bg: rgba(255, 42, 0, .16);
     --ds-green-bg: rgba(46, 125, 79, .20);
     --ds-orange-bg: rgba(255, 85, 0, .16);

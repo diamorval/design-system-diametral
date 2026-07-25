@@ -598,6 +598,30 @@ export function App() {
             <Button variant="link">Link</Button>
             <Button variant="destructive">Destructive</Button>
           </Demo>
+          <Demo label="Palette tones">
+            <Button tone="noir">Noir</Button>
+            <Button tone="rouge">Rouge</Button>
+            <Button tone="marron">Marron</Button>
+            <Button tone="kaki">Kaki</Button>
+            <Button tone="beige">Beige</Button>
+            <Button tone="vert">Vert</Button>
+            <Button tone="bleu">Bleu</Button>
+            <Button tone="jaune">Jaune</Button>
+          </Demo>
+          <Demo label="Tones on outline & ghost">
+            <Button variant="outline" tone="rouge">
+              Outline rouge
+            </Button>
+            <Button variant="outline" tone="bleu">
+              Outline bleu
+            </Button>
+            <Button variant="ghost" tone="vert">
+              Ghost vert
+            </Button>
+            <Button variant="ghost" tone="marron">
+              Ghost marron
+            </Button>
+          </Demo>
           <Demo label="Sizes & state">
             <Button size="sm">Small</Button>
             <Button size="default">Default</Button>

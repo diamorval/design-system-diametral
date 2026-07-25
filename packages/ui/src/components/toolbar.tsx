@@ -37,12 +37,13 @@ function ToolbarButton({
   className,
   variant = "ghost",
   size = "icon-sm",
+  tone,
   ...props
 }: ToolbarPrimitive.Button.Props & VariantProps<typeof buttonVariants>) {
   return (
     <ToolbarPrimitive.Button
       data-slot="toolbar-button"
-      render={<Button variant={variant} size={size} />}
+      render={<Button variant={variant} size={size} tone={tone} />}
       className={cn("shrink-0 data-pressed:bg-muted", className)}
       {...props}
     />
