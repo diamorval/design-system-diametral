@@ -290,8 +290,15 @@ function GeneratedCode({ code }: { code: string }) {
   return (
     <div className="group/code relative border border-t-0 border-border">
       {/* .code-tokens picks up the same light/dark colour switching as the
-          build-time highlighted blocks, without shiki's line-grid rule. */}
-      <pre className="code-tokens overflow-x-auto bg-muted/40 p-4 font-mono text-[13px] leading-relaxed">
+          build-time highlighted blocks, without shiki's line-grid rule.
+          Long lines scroll rather than wrap, so the block is a scrollable
+          region: it needs to be focusable, or a keyboard user cannot pan it. */}
+      <pre
+        tabIndex={0}
+        role="region"
+        aria-label="Generated JSX"
+        className="code-tokens overflow-x-auto bg-muted/40 p-4 font-mono text-[13px] leading-relaxed"
+      >
         <code>
           {tokens.map((token, index) => (
             <span

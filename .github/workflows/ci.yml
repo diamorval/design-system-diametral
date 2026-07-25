@@ -1,0 +1,106 @@
+name: CI
+
+# Typecheck, lint and build on every push and PR. Also packs @diametral/ui and
+# installs the tarball into a throwaway project, because the monorepo build
+# passes even when the *published* artifact is broken — extensionless ESM
+# specifiers and @source paths that climb out of the package both fail only for
+# an external consumer.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm typecheck
+
+      - run: pnpm lint
+
+      - run: pnpm build
+
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Pack @diametral/ui
+        run: pnpm --filter @diametral/ui pack --pack-destination /tmp
+
+      - name: Assert the commercial font never ships
+        run: |
+          if tar tzf /tmp/diametral-ui-*.tgz | grep -iE 'ufficio|\.(woff2?|otf|ttf)$'; then
+            echo "::error::A font file is present in the tarball. Ufficio is commercial and must never be distributed (see packages/ui/NOTICE.md)."
+            exit 1
+          fi
+          echo "No font binaries in the tarball."
+
+      - name: Install the tarball as an external consumer
+        run: |
+          mkdir -p /tmp/consumer/src && cd /tmp/consumer
+          echo '{"name":"consumer","private":true,"type":"module"}' > package.json
+          cat > tsconfig.json <<'JSON'
+          { "compilerOptions": { "target":"ES2022","lib":["ES2022","DOM"],"module":"ESNext",
+            "moduleResolution":"bundler","jsx":"react-jsx","strict":true,"noEmit":true,
+            "skipLibCheck":true }, "include":["src"] }
+          JSON
+          cat > src/app.tsx <<'TSX'
+          import { Button } from "@diametral/ui/components/button"
+          import { Card, CardContent } from "@diametral/ui/components/card"
+          import { cn } from "@diametral/ui/lib/utils"
+          export const App = () => (
+            <Card className={cn("m-4")}>
+              <CardContent>
+                <Button variant="outline" tone="rouge">Escalate</Button>
+              </CardContent>
+            </Card>
+          )
+          TSX
+          printf '@import "@diametral/ui/globals.css";\n@source "./src/**/*.tsx";\n' > src/app.css
+          npm install --no-audit --no-fund react@19 react-dom@19 @types/react@19 \
+            @types/react-dom@19 typescript tailwindcss @tailwindcss/cli /tmp/diametral-ui-*.tgz
+
+      - name: Consumer typechecks against the tarball
+        run: cd /tmp/consumer && npx tsc --noEmit
+
+      - name: Consumer resolves the package under plain Node ESM
+        run: |
+          cd /tmp/consumer
+          node --input-type=module -e "
+            import('@diametral/ui/components/button')
+              .then(() => console.log('Node ESM resolution OK'))
+              .catch(e => { console.error('Node ESM resolution FAILED:', e.code); process.exit(1) })
+          "
+
+      - name: Tailwind picks up classes from inside the package
+        run: |
+          cd /tmp/consumer
+          npx @tailwindcss/cli -i src/app.css -o out.css
+          for cls in shrink-0 tabular-nums; do
+            grep -q "$cls" out.css || { echo "::error::Tailwind did not emit .$cls — the packaged @source directive is broken."; exit 1; }
+          done
+          grep -q -- '--ds-rouge' out.css || { echo "::error::Brand tokens missing from consumer CSS."; exit 1; }
+          echo "Packaged stylesheet is self-scanning correctly."

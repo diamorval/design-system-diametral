@@ -1,0 +1,84 @@
+name: Visual regression
+
+# Full-page screenshot comparison for a curated set of routes, in both themes.
+#
+# Baselines MUST be generated on Linux. Sub-pixel font rendering differs enough
+# between macOS and Linux to blow past the 2% tolerance, and
+# snapshotPathTemplate is deliberately not keyed by platform so that CI compares
+# against exactly what is committed. That means: do not run
+# `test:visual:update` on a laptop and commit the result.
+#
+# To generate or refresh baselines, run this workflow manually with
+# `update_baselines: true`, download the `visual-baselines` artifact, and commit
+# it to apps/web/tests/__screenshots__/.
+#
+# Until baselines exist the comparison step is skipped rather than failed, so the
+# workflow arms itself the moment they are committed.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      update_baselines:
+        description: "Regenerate baselines and upload them as an artifact"
+        type: boolean
+        default: false
+
+jobs:
+  visual:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Install Chromium
+        run: pnpm --filter web exec playwright install --with-deps chromium
+
+      - name: Check for committed baselines
+        id: baselines
+        run: |
+          if [ -d apps/web/tests/__screenshots__ ] && \
+             [ -n "$(find apps/web/tests/__screenshots__ -name '*.png' -print -quit)" ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::No baselines committed yet — run this workflow with update_baselines=true, then commit the artifact."
+          fi
+
+      - name: Regenerate baselines
+        if: inputs.update_baselines
+        run: pnpm --filter web run test:visual:update
+
+      - name: Upload regenerated baselines
+        if: inputs.update_baselines
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-baselines
+          path: apps/web/tests/__screenshots__/
+          retention-days: 14
+          if-no-files-found: error
+
+      - name: Compare against baselines
+        if: ${{ !inputs.update_baselines && steps.baselines.outputs.present == 'true' }}
+        run: pnpm --filter web run test:visual
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-report
+          path: |
+            apps/web/playwright-report/
+            apps/web/test-results/
+          retention-days: 14
+          if-no-files-found: ignore

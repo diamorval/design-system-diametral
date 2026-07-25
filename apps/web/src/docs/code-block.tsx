@@ -21,6 +21,11 @@ export function CodeBlock({
   return (
     <div className={cn("group/code relative", className)}>
       <div
+        // Long lines scroll rather than wrap, so this is a scrollable region and
+        // must be focusable for keyboard users to pan it.
+        tabIndex={0}
+        role="region"
+        aria-label="Example source"
         className="overflow-x-auto bg-muted/40 p-4 font-mono text-[13px] leading-relaxed"
         // The markup comes from shiki running over our own repo files at build
         // time — there is no user-supplied input in this string.

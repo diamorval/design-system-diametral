@@ -1,0 +1,35 @@
+{
+  "name": "@diametral/assets",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Diametral brand assets — logo marks and lockups as themeable SVG, with raster fallbacks.",
+  "license": "MIT",
+  "keywords": [
+    "diametral",
+    "brand",
+    "logo",
+    "assets"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LittleBigCode/design-system2.git",
+    "directory": "packages/assets"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "//": "Buildless on purpose: the files ARE the artifact, so there is no build script and no dist. Adding one would only put a copy step between the source of truth and consumers.",
+  "files": [
+    "logo",
+    "README.md",
+    "LICENSE",
+    "NOTICE.md"
+  ],
+  "exports": {
+    "./logo/*": "./logo/*",
+    "./package.json": "./package.json"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

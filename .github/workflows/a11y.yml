@@ -1,0 +1,66 @@
+name: Accessibility
+
+# Runs axe-core over every documented component route, in both themes, and
+# reports critical/serious WCAG violations.
+#
+# REPORT-ONLY FOR NOW. The suite currently fails, and almost all of it traces to
+# one token: --muted-foreground (#767884, ported from v1's --ds-gris) scores
+# 4.38:1 on white and 4.02:1 on the muted/sidebar surface, where AA needs 4.50.
+# Fixing that means diverging from v1's tokens.json, which is a brand decision,
+# not a test fix — so this job surfaces the violations instead of silently
+# passing or blocking every PR.
+#
+# To arm the gate: resolve the token, get the suite green, then delete
+# `continue-on-error` below and mark this job required.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  a11y:
+    name: Accessibility (report-only)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Install Chromium
+        run: pnpm --filter web exec playwright install --with-deps chromium
+
+      - name: Run accessibility suite
+        id: axe
+        continue-on-error: true
+        run: pnpm --filter web run test:a11y
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a11y-report
+          path: |
+            apps/web/playwright-report/
+            apps/web/test-results/
+          retention-days: 14
+          if-no-files-found: ignore
+
+      - name: Summarise
+        if: always()
+        run: |
+          if [ "${{ steps.axe.outcome }}" = "success" ]; then
+            echo "### Accessibility: no critical/serious violations" >> "$GITHUB_STEP_SUMMARY"
+            echo "The suite is green — consider removing continue-on-error and making this job required." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "### Accessibility: violations found (report-only)" >> "$GITHUB_STEP_SUMMARY"
+            echo "Download the \`a11y-report\` artifact for the per-route breakdown." >> "$GITHUB_STEP_SUMMARY"
+          fi
