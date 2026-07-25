@@ -1,6 +1,10 @@
 import * as React from "react"
 import { useSearchParams } from "react-router"
-import { ArrowCounterClockwiseIcon, CheckIcon, CopyIcon } from "@phosphor-icons/react"
+import {
+  ArrowCounterClockwiseIcon,
+  CheckIcon,
+  CopyIcon,
+} from "@phosphor-icons/react"
 
 import { palette } from "virtual:demo-source"
 
@@ -8,9 +12,12 @@ import { Button } from "@workspace/ui/components/button"
 import { Input } from "@workspace/ui/components/input"
 import { Label } from "@workspace/ui/components/label"
 import {
-  NativeSelect,
-  NativeSelectOption,
-} from "@workspace/ui/components/native-select"
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@workspace/ui/components/select"
 import { Switch } from "@workspace/ui/components/switch"
 
 import { formatJsx } from "@/docs/format-jsx"
@@ -29,11 +36,17 @@ const TOKEN_ROLE: Record<TokenKind, keyof typeof palette.light> = {
   text: "fg",
 }
 
-/** `rows={3}` reads better than `rows="3"`, and matches what you'd write. */
+/**
+ * `rows={3}` reads better than `rows="3"`, and matches what you'd write.
+ * Decimals count too: a ratio of `1.7778` is a number, and printing it quoted
+ * would not compile against `ratio: number`.
+ */
 function serialize(prop: string, value: string | boolean) {
   if (value === true) return prop
   if (typeof value !== "string") return ""
-  return /^\d+$/.test(value) ? `${prop}={${value}}` : `${prop}="${value}"`
+  return /^\d+(\.\d+)?$/.test(value)
+    ? `${prop}={${value}}`
+    : `${prop}="${value}"`
 }
 
 function extraDefault(control: Control) {
@@ -82,7 +95,9 @@ export function Playground({ slug }: { slug: string }) {
     const value = extraValue(control)
     if (value === false || value === "") continue
     renderProps[control.prop] = value
-    if (value !== extraDefault(control)) printed.push(serialize(control.prop, value))
+    if (control.always || value !== extraDefault(control)) {
+      printed.push(serialize(control.prop, value))
+    }
   }
 
   const childrenText = children
@@ -107,7 +122,9 @@ export function Playground({ slug }: { slug: string }) {
           <Button
             variant="ghost"
             size="xs"
-            onClick={() => setParams({}, { replace: true, preventScrollReset: true })}
+            onClick={() =>
+              setParams({}, { replace: true, preventScrollReset: true })
+            }
           >
             <ArrowCounterClockwiseIcon /> Reset
           </Button>
@@ -137,21 +154,13 @@ export function Playground({ slug }: { slug: string }) {
 
           {axes.map((axis) => (
             <ControlRow key={axis.prop} label={axis.prop}>
-              <NativeSelect
+              <PanelSelect
+                label={axis.prop}
                 value={axisValue(axis)}
-                onChange={(event) => set(axis.prop, event.target.value)}
-                aria-label={axis.prop}
-              >
-                {/* Only offered when cva declares no default for this axis. */}
-                {axis.default ? null : (
-                  <NativeSelectOption value={UNSET}>{UNSET}</NativeSelectOption>
-                )}
-                {axis.options.map((option) => (
-                  <NativeSelectOption key={option} value={option}>
-                    {option}
-                  </NativeSelectOption>
-                ))}
-              </NativeSelect>
+                // UNSET is only offered when cva declares no default for this axis.
+                options={axis.default ? axis.options : [UNSET, ...axis.options]}
+                onValueChange={(value) => set(axis.prop, value)}
+              />
             </ControlRow>
           ))}
 
@@ -186,17 +195,12 @@ export function Playground({ slug }: { slug: string }) {
             if (control.type === "select") {
               return (
                 <ControlRow key={control.prop} label={label}>
-                  <NativeSelect
+                  <PanelSelect
+                    label={label}
                     value={String(value)}
-                    onChange={(event) => set(control.prop, event.target.value)}
-                    aria-label={label}
-                  >
-                    {control.options.map((option) => (
-                      <NativeSelectOption key={option} value={option}>
-                        {option}
-                      </NativeSelectOption>
-                    ))}
-                  </NativeSelect>
+                    options={control.options}
+                    onValueChange={(next) => set(control.prop, next)}
+                  />
                 </ControlRow>
               )
             }
@@ -214,7 +218,9 @@ export function Playground({ slug }: { slug: string }) {
           })}
 
           {axes.length === 0 && extras.length === 0 ? (
-            <p className="text-xs text-muted-foreground">No controls declared.</p>
+            <p className="text-xs text-muted-foreground">
+              No controls declared.
+            </p>
           ) : null}
         </aside>
       </div>
@@ -236,6 +242,44 @@ function ControlRow({
       <span className="font-mono text-xs text-muted-foreground">{label}</span>
       {children}
     </div>
+  )
+}
+
+/**
+ * Every panel choice is a plain string whose label is the value itself, so the
+ * root needs no `items` map — `SelectValue` printing the raw value is exactly
+ * what we want here.
+ *
+ * Base UI types the emitted value as nullable because a Select can be cleared;
+ * the panel offers no clear affordance, so a null falls back to UNSET.
+ */
+function PanelSelect({
+  label,
+  value,
+  options,
+  onValueChange,
+}: {
+  label: string
+  value: string
+  options: readonly string[]
+  onValueChange: (value: string) => void
+}) {
+  return (
+    <Select
+      value={value}
+      onValueChange={(next: string | null) => onValueChange(next ?? UNSET)}
+    >
+      <SelectTrigger size="sm" className="w-full" aria-label={label}>
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent>
+        {options.map((option) => (
+          <SelectItem key={option} value={option}>
+            {option}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
   )
 }
 
@@ -269,7 +313,7 @@ function GeneratedCode({ code }: { code: string }) {
         variant="ghost"
         aria-label={copied ? "Copied" : "Copy code"}
         onClick={copy}
-        className="absolute end-2 top-2 opacity-0 transition-opacity focus-visible:opacity-100 group-hover/code:opacity-100"
+        className="absolute end-2 top-2 opacity-0 transition-opacity group-hover/code:opacity-100 focus-visible:opacity-100"
       >
         {copied ? <CheckIcon /> : <CopyIcon />}
       </Button>

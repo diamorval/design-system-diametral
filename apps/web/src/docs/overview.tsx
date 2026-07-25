@@ -38,10 +38,13 @@ export function Overview() {
           Diametral × shadcn
         </h1>
         <p className="mt-3 max-w-2xl text-sm text-muted-foreground">
-          73 components on Diametral brand tokens — the 60 shadcn registry
-          components plus 13 additions. Radius is{" "}
-          <code className="font-mono text-xs">0</code> by charter, type is
-          Ufficio and Geist only, and every colour resolves through a{" "}
+          72 components on Diametral brand tokens — 59 of the 60 shadcn registry
+          components plus 13 additions. The native{" "}
+          <code className="font-mono text-xs">select</code> is the one omission
+          — the OS paints its own dropdown, so it can never honour the charter,
+          and <code className="font-mono text-xs">Select</code> replaces it.
+          Radius is <code className="font-mono text-xs">0</code> by charter,
+          type is Ufficio and Geist only, and every colour resolves through a{" "}
           <code className="font-mono text-xs">--ds-*</code> semantic.
         </p>
         <div className="mt-5 flex flex-wrap items-center gap-2">
@@ -93,7 +96,9 @@ export function Overview() {
             <Card key={group.category}>
               <CardHeader>
                 <CardTitle>{group.category}</CardTitle>
-                <CardDescription>{group.items.length} components</CardDescription>
+                <CardDescription>
+                  {group.items.length} components
+                </CardDescription>
               </CardHeader>
               <CardContent className="flex flex-wrap gap-x-3 gap-y-1.5">
                 {group.items.map((component) => (

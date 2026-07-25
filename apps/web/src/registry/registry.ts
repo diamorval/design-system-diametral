@@ -320,27 +320,6 @@ export const COMPONENTS: ComponentDoc[] = [
     ],
   },
   {
-    slug: "native-select",
-    name: "Native Select",
-    category: "Forms",
-    description:
-      "A styled native `<select>` for dense forms and mobile, where the OS picker is preferable.",
-    examples: [
-      {
-        demo: "native-select/basic",
-        title: "Basic",
-        description:
-          "No portal and no JavaScript — and the OS picker on mobile. Reach for `Select` only when you need custom item rendering.",
-      },
-      {
-        demo: "native-select/grouped",
-        title: "Groups and sizes",
-        description:
-          "Options are painted with the `Canvas` / `CanvasText` system colours, because the open dropdown is drawn by the OS and ignores the app palette.",
-      },
-    ],
-  },
-  {
     slug: "checkbox",
     name: "Checkbox",
     category: "Forms",

@@ -1,5 +1,5 @@
+import type { ComponentProps } from "react"
 import {
-  CopyIcon,
   DotsThreeIcon,
   PencilSimpleIcon,
   TrashIcon,
@@ -13,11 +13,12 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@workspace/ui/components/dropdown-menu"
 
-export default function DropdownMenuBasic() {
+export default function DropdownMenuPlayground(
+  props: ComponentProps<typeof DropdownMenuContent>
+) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
@@ -27,18 +28,13 @@ export default function DropdownMenuBasic() {
       >
         <DotsThreeIcon />
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        {/* `DropdownMenuLabel` is a group part in Base UI, so it belongs inside a
-            `DropdownMenuGroup` — directly in the content it throws on open. */}
+      <DropdownMenuContent {...props}>
+        {/* A label is a *group* part in Base UI, so it has to sit inside a
+            DropdownMenuGroup — placing it directly in the content throws on open. */}
         <DropdownMenuGroup>
           <DropdownMenuLabel>Document</DropdownMenuLabel>
           <DropdownMenuItem>
             <PencilSimpleIcon /> Rename
-            <DropdownMenuShortcut>⌘R</DropdownMenuShortcut>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <CopyIcon /> Duplicate
-            <DropdownMenuShortcut>⌘D</DropdownMenuShortcut>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />

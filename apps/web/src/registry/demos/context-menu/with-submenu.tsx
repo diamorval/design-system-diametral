@@ -4,6 +4,7 @@ import {
   ContextMenu,
   ContextMenuCheckboxItem,
   ContextMenuContent,
+  ContextMenuGroup,
   ContextMenuItem,
   ContextMenuLabel,
   ContextMenuSeparator,
@@ -26,10 +27,14 @@ export default function ContextMenuWithSubmenu() {
         Right-click for more
       </ContextMenuTrigger>
       <ContextMenuContent>
-        <ContextMenuLabel>charte-2026.pdf</ContextMenuLabel>
-        <ContextMenuCheckboxItem checked={pinned} onCheckedChange={setPinned}>
-          Pinned
-        </ContextMenuCheckboxItem>
+        {/* A label is a group part in Base UI, so it needs a group around it —
+            directly in the content it throws when the menu opens. */}
+        <ContextMenuGroup>
+          <ContextMenuLabel>charte-2026.pdf</ContextMenuLabel>
+          <ContextMenuCheckboxItem checked={pinned} onCheckedChange={setPinned}>
+            Pinned
+          </ContextMenuCheckboxItem>
+        </ContextMenuGroup>
         <ContextMenuSeparator />
         <ContextMenuSub>
           <ContextMenuSubTrigger>Move to</ContextMenuSubTrigger>

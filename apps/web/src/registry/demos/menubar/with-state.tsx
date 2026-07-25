@@ -29,8 +29,10 @@ export default function MenubarWithState() {
             Show sidebar rail
           </MenubarCheckboxItem>
           <MenubarSeparator />
-          <MenubarLabel>Theme</MenubarLabel>
+          {/* The label is a group part, so it goes *inside* the radio group it
+              labels — outside it there is no group context and it throws. */}
           <MenubarRadioGroup value={theme} onValueChange={setTheme}>
+            <MenubarLabel>Theme</MenubarLabel>
             <MenubarRadioItem value="light">Light</MenubarRadioItem>
             <MenubarRadioItem value="dark">Dark</MenubarRadioItem>
             <MenubarRadioItem value="system">System</MenubarRadioItem>

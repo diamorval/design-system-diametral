@@ -226,10 +226,6 @@ import {
   MessageScrollerViewport,
 } from "@workspace/ui/components/message-scroller"
 import {
-  NativeSelect,
-  NativeSelectOption,
-} from "@workspace/ui/components/native-select"
-import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
@@ -257,7 +253,10 @@ import {
   ProgressLabel,
   ProgressValue,
 } from "@workspace/ui/components/progress"
-import { RadioGroup, RadioGroupItem } from "@workspace/ui/components/radio-group"
+import {
+  RadioGroup,
+  RadioGroupItem,
+} from "@workspace/ui/components/radio-group"
 import {
   ResizableHandle,
   ResizablePanel,
@@ -333,10 +332,7 @@ import {
   AutocompleteList,
 } from "@workspace/ui/components/autocomplete"
 import { CheckboxGroup } from "@workspace/ui/components/checkbox-group"
-import {
-  DataTable,
-  type ColumnDef,
-} from "@workspace/ui/components/data-table"
+import { DataTable, type ColumnDef } from "@workspace/ui/components/data-table"
 import {
   DatePicker,
   DatePickerContent,
@@ -349,11 +345,7 @@ import {
   FileUploadTitle,
 } from "@workspace/ui/components/file-upload"
 import { Form } from "@workspace/ui/components/form"
-import {
-  Meter,
-  MeterLabel,
-  MeterValue,
-} from "@workspace/ui/components/meter"
+import { Meter, MeterLabel, MeterValue } from "@workspace/ui/components/meter"
 import {
   NumberField,
   NumberFieldDecrement,
@@ -394,7 +386,7 @@ import {
   TreeLeaf,
 } from "@workspace/ui/components/tree"
 
-import { useTheme } from "@/components/theme-provider"
+import { ThemeToggle } from "@/components/theme-toggle"
 
 /* -------------------------------------------------------------------------- */
 /*  Page scaffolding                                                          */
@@ -450,6 +442,8 @@ function Demo({
 /* -------------------------------------------------------------------------- */
 
 const FRAMEWORKS = ["Vite", "Next.js", "Remix", "Astro", "Nuxt"]
+
+const KS_OPTIONS = { a: "Option A", b: "Option B" }
 
 const CHART_DATA = [
   { month: "Jan", desktop: 186, mobile: 80 },
@@ -521,7 +515,6 @@ const MILESTONES = [
 /* -------------------------------------------------------------------------- */
 
 export function Showcase() {
-  const { theme, setTheme } = useTheme()
   const [dueDate, setDueDate] = React.useState<Date | undefined>(undefined)
   const [uploads, setUploads] = React.useState<File[]>([])
 
@@ -533,25 +526,15 @@ export function Showcase() {
             Diametral × shadcn
           </h1>
           <p className="mt-1.5 text-sm text-muted-foreground">
-            73 components on Diametral brand tokens — the 60 shadcn registry
-            components plus 13 additions (unwrapped Base UI primitives and
-            common patterns the registry omits). Radius is{" "}
+            72 components on Diametral brand tokens — 59 of the 60 shadcn
+            registry components plus 13 additions (unwrapped Base UI primitives
+            and common patterns the registry omits). Radius is{" "}
             <code className="font-mono text-xs">0</code> by charter — the flat
             parti pris.
           </p>
         </div>
-        <div className="flex items-center gap-2">
-          <NativeSelect
-            value={theme}
-            onChange={(event) =>
-              setTheme(event.target.value as "light" | "dark" | "system")
-            }
-            className="w-32"
-          >
-            <NativeSelectOption value="system">System</NativeSelectOption>
-            <NativeSelectOption value="light">Light</NativeSelectOption>
-            <NativeSelectOption value="dark">Dark</NativeSelectOption>
-          </NativeSelect>
+        <div className="flex items-center gap-3">
+          <ThemeToggle />
           <span className="text-xs text-muted-foreground">
             or press <Kbd>d</Kbd>
           </span>
@@ -720,11 +703,19 @@ export function Showcase() {
                 </Select>
               </Field>
               <Field>
-                <FieldLabel htmlFor="ks-native">NativeSelect</FieldLabel>
-                <NativeSelect id="ks-native" defaultValue="b">
-                  <NativeSelectOption value="a">Option A</NativeSelectOption>
-                  <NativeSelectOption value="b">Option B</NativeSelectOption>
-                </NativeSelect>
+                <FieldLabel>Select (small)</FieldLabel>
+                <Select items={KS_OPTIONS} defaultValue="b">
+                  <SelectTrigger size="sm" className="w-full">
+                    <SelectValue placeholder="Pick one" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.entries(KS_OPTIONS).map(([value, label]) => (
+                      <SelectItem key={value} value={value}>
+                        {label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </Field>
             </FieldGroup>
           </Demo>
@@ -870,7 +861,9 @@ export function Showcase() {
               <FieldLabel>Satisfaction</FieldLabel>
               <Rating defaultValue={3} />
               <div className="flex items-center gap-2">
-                <span className="text-sm text-muted-foreground">Read-only:</span>
+                <span className="text-sm text-muted-foreground">
+                  Read-only:
+                </span>
                 <Rating value={4} readOnly />
               </div>
             </Field>
@@ -1091,7 +1084,9 @@ export function Showcase() {
                   <FileTextIcon />
                 </EmptyMedia>
                 <EmptyTitle>No documents</EmptyTitle>
-                <EmptyDescription>Upload a file to get started.</EmptyDescription>
+                <EmptyDescription>
+                  Upload a file to get started.
+                </EmptyDescription>
               </EmptyHeader>
               <EmptyContent>
                 <Button size="sm">Upload</Button>
@@ -1139,14 +1134,19 @@ export function Showcase() {
           <Demo label="Timeline" className="max-w-md flex-col items-stretch">
             <Timeline>
               {MILESTONES.map((milestone) => (
-                <TimelineItem key={milestone.title} data-state={milestone.state}>
+                <TimelineItem
+                  key={milestone.title}
+                  data-state={milestone.state}
+                >
                   <TimelineIndicator>
                     {milestone.state === "completed" ? <CheckIcon /> : null}
                   </TimelineIndicator>
                   <TimelineContent>
                     <TimelineTitle>{milestone.title}</TimelineTitle>
                     <TimelineTime>{milestone.time}</TimelineTime>
-                    <TimelineDescription>{milestone.detail}</TimelineDescription>
+                    <TimelineDescription>
+                      {milestone.detail}
+                    </TimelineDescription>
                   </TimelineContent>
                 </TimelineItem>
               ))}
@@ -1550,8 +1550,8 @@ export function Showcase() {
               <AccordionItem value="a">
                 <AccordionTrigger>Is it flat by default?</AccordionTrigger>
                 <AccordionContent>
-                  Yes — <code className="font-mono text-xs">--ds-radius: 0px</code>
-                  .
+                  Yes —{" "}
+                  <code className="font-mono text-xs">--ds-radius: 0px</code>.
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="b">

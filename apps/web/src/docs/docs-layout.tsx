@@ -2,10 +2,6 @@ import * as React from "react"
 import { Link, Outlet, useLocation } from "react-router"
 
 import {
-  NativeSelect,
-  NativeSelectOption,
-} from "@workspace/ui/components/native-select"
-import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
@@ -22,7 +18,8 @@ import {
   SidebarTrigger,
 } from "@workspace/ui/components/sidebar"
 
-import { useTheme } from "@/components/theme-provider"
+import { ThemeToggle } from "@/components/theme-toggle"
+import { DocsSearch } from "@/docs/docs-search"
 import { componentsByCategory } from "@/registry/registry"
 
 function matches(query: string) {
@@ -54,7 +51,7 @@ export function DocsLayout() {
               Diametral
             </span>
             <span className="text-xs text-muted-foreground">
-              Design system · 73 components
+              Design system · 72 components
             </span>
           </Link>
           <SidebarInput
@@ -104,6 +101,7 @@ export function DocsLayout() {
       <SidebarInset>
         <header className="sticky top-0 z-10 flex items-center gap-3 border-b border-border bg-background/85 px-6 py-3 backdrop-blur">
           <SidebarTrigger />
+          <DocsSearch />
           <div className="flex-1" />
           <Link
             to="/showcase"
@@ -111,30 +109,12 @@ export function DocsLayout() {
           >
             Legacy showcase
           </Link>
-          <ThemeSelect />
+          <ThemeToggle />
         </header>
         <main className="mx-auto w-full max-w-5xl px-6 py-10">
           <Outlet />
         </main>
       </SidebarInset>
     </SidebarProvider>
-  )
-}
-
-function ThemeSelect() {
-  const { theme, setTheme } = useTheme()
-  return (
-    <NativeSelect
-      value={theme}
-      onChange={(event) =>
-        setTheme(event.target.value as "light" | "dark" | "system")
-      }
-      className="w-28"
-      aria-label="Theme"
-    >
-      <NativeSelectOption value="system">System</NativeSelectOption>
-      <NativeSelectOption value="light">Light</NativeSelectOption>
-      <NativeSelectOption value="dark">Dark</NativeSelectOption>
-    </NativeSelect>
   )
 }

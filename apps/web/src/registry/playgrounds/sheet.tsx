@@ -1,0 +1,33 @@
+import type { ComponentProps } from "react"
+
+import { Button } from "@workspace/ui/components/button"
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@workspace/ui/components/sheet"
+
+export default function SheetPlayground({
+  children,
+  ...props
+}: ComponentProps<typeof SheetContent>) {
+  return (
+    <Sheet>
+      <SheetTrigger render={<Button variant="outline" />}>
+        Open sheet
+      </SheetTrigger>
+      <SheetContent {...props}>
+        <SheetHeader>
+          <SheetTitle>{children}</SheetTitle>
+          <SheetDescription>
+            Left and right sheets cap at `sm:max-w-sm`; top and bottom size to
+            their content.
+          </SheetDescription>
+        </SheetHeader>
+      </SheetContent>
+    </Sheet>
+  )
+}

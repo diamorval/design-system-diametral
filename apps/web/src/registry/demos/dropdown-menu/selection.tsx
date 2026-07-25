@@ -6,6 +6,7 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuLabel,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
@@ -25,25 +26,29 @@ export default function DropdownMenuSelection() {
         View <CaretDownIcon />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuLabel>Columns</DropdownMenuLabel>
-        {["name", "status", "owner"].map((column) => (
-          <DropdownMenuCheckboxItem
-            key={column}
-            checked={columns.includes(column)}
-            onCheckedChange={(checked) =>
-              setColumns((current) =>
-                checked
-                  ? [...current, column]
-                  : current.filter((item) => item !== column)
-              )
-            }
-          >
-            {column}
-          </DropdownMenuCheckboxItem>
-        ))}
+        {/* A label is a group part: it needs either a `DropdownMenuGroup` or —
+            as below — the `DropdownMenuRadioGroup` it labels around it. */}
+        <DropdownMenuGroup>
+          <DropdownMenuLabel>Columns</DropdownMenuLabel>
+          {["name", "status", "owner"].map((column) => (
+            <DropdownMenuCheckboxItem
+              key={column}
+              checked={columns.includes(column)}
+              onCheckedChange={(checked) =>
+                setColumns((current) =>
+                  checked
+                    ? [...current, column]
+                    : current.filter((item) => item !== column)
+                )
+              }
+            >
+              {column}
+            </DropdownMenuCheckboxItem>
+          ))}
+        </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuLabel>Density</DropdownMenuLabel>
         <DropdownMenuRadioGroup value={density} onValueChange={setDensity}>
+          <DropdownMenuLabel>Density</DropdownMenuLabel>
           <DropdownMenuRadioItem value="comfortable">
             Comfortable
           </DropdownMenuRadioItem>
