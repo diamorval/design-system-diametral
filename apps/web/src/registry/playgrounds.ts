@@ -134,7 +134,74 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
   select: {
     extras: [
       { prop: "disabled", type: "boolean" },
-      { prop: "defaultValue", type: "select", options: ["vite", "next", "astro"] },
+      {
+        prop: "defaultValue",
+        type: "select",
+        options: ["vite", "next", "astro"],
+      },
+    ],
+  },
+  "native-select": {
+    extras: [
+      { prop: "size", type: "select", options: ["default", "sm"] },
+      { prop: "disabled", type: "boolean" },
+    ],
+  },
+  avatar: {
+    children: { default: "CR", label: "initials" },
+    extras: [
+      { prop: "size", type: "select", options: ["default", "sm", "lg"] },
+    ],
+  },
+  separator: {
+    note: "The row wraps, so a horizontal rule takes its own line while a vertical one stretches beside the labels.",
+    extras: [
+      {
+        prop: "orientation",
+        type: "select",
+        options: ["horizontal", "vertical"],
+      },
+    ],
+  },
+  slider: {
+    extras: [
+      {
+        prop: "orientation",
+        type: "select",
+        options: ["horizontal", "vertical"],
+      },
+      { prop: "step", type: "select", options: ["1", "5", "10", "25"] },
+      { prop: "disabled", type: "boolean" },
+    ],
+  },
+  rating: {
+    extras: [
+      { prop: "max", type: "select", options: ["5", "10", "3"] },
+      { prop: "readOnly", type: "boolean" },
+      { prop: "disabled", type: "boolean" },
+    ],
+  },
+  stepper: {
+    extras: [
+      {
+        prop: "orientation",
+        type: "select",
+        options: ["horizontal", "vertical"],
+      },
+    ],
+  },
+  "toggle-group": {
+    note: "`variant` and `size` belong to toggleVariants in toggle.tsx, so they are declared here rather than extracted.",
+    extras: [
+      { prop: "multiple", type: "boolean" },
+      {
+        prop: "orientation",
+        type: "select",
+        options: ["horizontal", "vertical"],
+      },
+      { prop: "spacing", type: "select", options: ["2", "0", "4"] },
+      { prop: "variant", type: "select", options: ["default", "outline"] },
+      { prop: "size", type: "select", options: ["default", "sm", "lg"] },
     ],
   },
 }
