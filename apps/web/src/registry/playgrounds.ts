@@ -18,6 +18,12 @@ export type PlaygroundConfig = {
   variantsFrom?: string
   /** Props the cva block has no knowledge of. */
   extras?: Control[]
+  /**
+   * Editable text content. The playground file must place a `{children}` marker
+   * where it belongs — which need not be on the subject itself: Marker puts it
+   * inside MarkerContent, Checkbox inside its Label.
+   */
+  children?: { default: string; label?: string }
   /** Shown above the controls when the subject needs explaining. */
   note?: string
 }
@@ -25,13 +31,16 @@ export type PlaygroundConfig = {
 export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
   /* -- Variant-driven ---------------------------------------------------- */
   button: {
+    children: { default: "Save changes" },
     variantsFrom: "buttonVariants",
     extras: [{ prop: "disabled", type: "boolean" }],
   },
   badge: {
+    children: { default: "In review" },
     variantsFrom: "badgeVariants",
   },
   alert: {
+    children: { default: "Heads up", label: "title" },
     variantsFrom: "alertVariants",
   },
   toggle: {
@@ -42,19 +51,24 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
     ],
   },
   marker: {
+    children: { default: "Verified" },
     variantsFrom: "markerVariants",
   },
   item: {
+    children: { default: "charter.pdf", label: "title" },
     variantsFrom: "itemVariants",
   },
   bubble: {
+    children: { default: "How do I theme this?", label: "message" },
     variantsFrom: "bubbleVariants",
     note: "Controls drive the Bubble inside a BubbleGroup.",
   },
   attachment: {
+    children: { default: "charte-diametral.pdf", label: "title" },
     variantsFrom: "attachmentVariants",
   },
   empty: {
+    children: { default: "No documents", label: "title" },
     variantsFrom: "emptyMediaVariants",
     note: "The only axis in empty.tsx belongs to EmptyMedia, so the controls drive the media slot.",
   },
@@ -63,6 +77,7 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
     note: "The axis belongs to TabsList, not Tabs.",
   },
   sidebar: {
+    children: { default: "Dashboard", label: "label" },
     variantsFrom: "sidebarMenuButtonVariants",
     note: "The axis belongs to SidebarMenuButton.",
     extras: [{ prop: "isActive", type: "boolean" }],
@@ -75,6 +90,7 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
     variantsFrom: "buttonGroupVariants",
   },
   field: {
+    children: { default: "Accept the charter", label: "label" },
     variantsFrom: "fieldVariants",
   },
 
@@ -101,6 +117,7 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
     ],
   },
   checkbox: {
+    children: { default: "Accept the charter", label: "label" },
     extras: [
       { prop: "defaultChecked", type: "boolean", label: "checked" },
       { prop: "indeterminate", type: "boolean" },
@@ -108,6 +125,7 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
     ],
   },
   switch: {
+    children: { default: "Email notifications", label: "label" },
     extras: [
       { prop: "defaultChecked", type: "boolean", label: "checked" },
       { prop: "disabled", type: "boolean" },

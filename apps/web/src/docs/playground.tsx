@@ -13,6 +13,7 @@ import {
 } from "@workspace/ui/components/native-select"
 import { Switch } from "@workspace/ui/components/switch"
 
+import { formatJsx } from "@/docs/format-jsx"
 import { tokenizeJsx, type TokenKind } from "@/docs/tokenize-jsx"
 import { useCopy } from "@/docs/use-copy"
 import { getPlayground, type Axis } from "@/registry/playground-registry"
@@ -46,7 +47,7 @@ export function Playground({ slug }: { slug: string }) {
   const [params, setParams] = useSearchParams()
 
   if (!playground) return null
-  const { Subject, template, axes, extras, note } = playground
+  const { Subject, template, axes, extras, children, note } = playground
 
   const axisValue = (axis: Axis) =>
     params.get(axis.prop) ?? axis.default ?? UNSET
@@ -84,15 +85,17 @@ export function Playground({ slug }: { slug: string }) {
     if (value !== extraDefault(control)) printed.push(serialize(control.prop, value))
   }
 
-  const code = template.includes("{...props}")
-    ? template.replace(
-        printed.length ? "{...props}" : " {...props}",
-        printed.join(" ")
-      )
-    : template
+  const childrenText = children
+    ? (params.get("children") ?? children.default)
+    : undefined
+  if (childrenText !== undefined) renderProps.children = childrenText
 
-  const touched = axes.some((axis) => params.has(axis.prop)) ||
-    extras.some((control) => params.has(control.prop))
+  const code = formatJsx(template, printed, childrenText)
+
+  const touched =
+    axes.some((axis) => params.has(axis.prop)) ||
+    extras.some((control) => params.has(control.prop)) ||
+    params.has("children")
 
   return (
     <section id="playground" className="scroll-mt-20">
@@ -121,6 +124,17 @@ export function Playground({ slug }: { slug: string }) {
         </div>
 
         <aside className="flex flex-col gap-4 border-t border-border p-4 lg:border-s lg:border-t-0">
+          {children ? (
+            <ControlRow label={children.label ?? "children"}>
+              <Input
+                value={childrenText ?? ""}
+                placeholder={children.default}
+                onChange={(event) => set("children", event.target.value)}
+                aria-label={children.label ?? "children"}
+              />
+            </ControlRow>
+          ) : null}
+
           {axes.map((axis) => (
             <ControlRow key={axis.prop} label={axis.prop}>
               <NativeSelect
@@ -231,9 +245,9 @@ function GeneratedCode({ code }: { code: string }) {
 
   return (
     <div className="group/code relative border border-t-0 border-border">
-      {/* Reuses the .shiki rules from code.css, so these tokens pick up the
-          same light/dark switching as the build-time highlighted blocks. */}
-      <pre className="shiki overflow-x-auto bg-muted/40 p-4 font-mono text-[13px] leading-relaxed">
+      {/* .code-tokens picks up the same light/dark colour switching as the
+          build-time highlighted blocks, without shiki's line-grid rule. */}
+      <pre className="code-tokens overflow-x-auto bg-muted/40 p-4 font-mono text-[13px] leading-relaxed">
         <code>
           {tokens.map((token, index) => (
             <span

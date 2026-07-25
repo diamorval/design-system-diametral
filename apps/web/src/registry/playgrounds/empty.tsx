@@ -11,16 +11,17 @@ import {
   EmptyTitle,
 } from "@workspace/ui/components/empty"
 
-export default function EmptyPlayground(
-  props: ComponentProps<typeof EmptyMedia>
-) {
+export default function EmptyPlayground({
+  children,
+  ...props
+}: ComponentProps<typeof EmptyMedia>) {
   return (
     <Empty className="w-full">
       <EmptyHeader>
         <EmptyMedia {...props}>
           <FileTextIcon />
         </EmptyMedia>
-        <EmptyTitle>No documents</EmptyTitle>
+        <EmptyTitle>{children}</EmptyTitle>
         <EmptyDescription>Upload a file to get started.</EmptyDescription>
       </EmptyHeader>
       <EmptyContent>

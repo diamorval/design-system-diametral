@@ -7,13 +7,16 @@ import {
   MarkerIcon,
 } from "@workspace/ui/components/marker"
 
-export default function MarkerPlayground(props: ComponentProps<typeof Marker>) {
+export default function MarkerPlayground({
+  children,
+  ...props
+}: ComponentProps<typeof Marker>) {
   return (
     <Marker {...props}>
       <MarkerIcon>
         <CheckIcon />
       </MarkerIcon>
-      <MarkerContent>Verified</MarkerContent>
+      <MarkerContent>{children}</MarkerContent>
     </Marker>
   )
 }

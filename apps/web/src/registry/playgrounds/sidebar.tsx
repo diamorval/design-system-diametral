@@ -12,9 +12,10 @@ import {
   SidebarProvider,
 } from "@workspace/ui/components/sidebar"
 
-export default function SidebarPlayground(
-  props: ComponentProps<typeof SidebarMenuButton>
-) {
+export default function SidebarPlayground({
+  children,
+  ...props
+}: ComponentProps<typeof SidebarMenuButton>) {
   return (
     <SidebarProvider className="min-h-40 w-full border border-border">
       <Sidebar collapsible="none" className="w-52">
@@ -24,7 +25,7 @@ export default function SidebarPlayground(
               <SidebarMenu>
                 <SidebarMenuItem>
                   <SidebarMenuButton {...props}>
-                    <HouseIcon /> Dashboard
+                    <HouseIcon /> {children}
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               </SidebarMenu>

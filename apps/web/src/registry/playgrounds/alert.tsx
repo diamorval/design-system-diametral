@@ -7,11 +7,14 @@ import {
   AlertTitle,
 } from "@workspace/ui/components/alert"
 
-export default function AlertPlayground(props: ComponentProps<typeof Alert>) {
+export default function AlertPlayground({
+  children,
+  ...props
+}: ComponentProps<typeof Alert>) {
   return (
     <Alert {...props}>
       <BellIcon />
-      <AlertTitle>Heads up</AlertTitle>
+      <AlertTitle>{children}</AlertTitle>
       <AlertDescription>
         Tokens are wired to the Diametral charter.
       </AlertDescription>

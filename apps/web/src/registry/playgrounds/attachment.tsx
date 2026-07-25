@@ -10,9 +10,10 @@ import {
   AttachmentTitle,
 } from "@workspace/ui/components/attachment"
 
-export default function AttachmentPlayground(
-  props: ComponentProps<typeof Attachment>
-) {
+export default function AttachmentPlayground({
+  children,
+  ...props
+}: ComponentProps<typeof Attachment>) {
   return (
     <AttachmentGroup className="w-full max-w-sm">
       <Attachment {...props}>
@@ -20,7 +21,7 @@ export default function AttachmentPlayground(
           <FileTextIcon />
         </AttachmentMedia>
         <AttachmentContent>
-          <AttachmentTitle>charte-diametral.pdf</AttachmentTitle>
+          <AttachmentTitle>{children}</AttachmentTitle>
           <AttachmentDescription>1.2 MB</AttachmentDescription>
         </AttachmentContent>
       </Attachment>

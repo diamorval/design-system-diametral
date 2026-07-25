@@ -6,11 +6,14 @@ import {
   BubbleGroup,
 } from "@workspace/ui/components/bubble"
 
-export default function BubblePlayground(props: ComponentProps<typeof Bubble>) {
+export default function BubblePlayground({
+  children,
+  ...props
+}: ComponentProps<typeof Bubble>) {
   return (
     <BubbleGroup className="w-full max-w-sm">
       <Bubble {...props}>
-        <BubbleContent>How do I theme this?</BubbleContent>
+        <BubbleContent>{children}</BubbleContent>
       </Bubble>
     </BubbleGroup>
   )

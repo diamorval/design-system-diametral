@@ -23,6 +23,7 @@ export type Playground = {
   template: string
   axes: Axis[]
   extras: Control[]
+  children?: { default: string; label?: string }
   note?: string
 }
 
@@ -57,6 +58,7 @@ for (const [file, mod] of Object.entries(modules)) {
     template,
     axes,
     extras: config.extras ?? [],
+    children: config.children,
     note: config.note,
   })
 }

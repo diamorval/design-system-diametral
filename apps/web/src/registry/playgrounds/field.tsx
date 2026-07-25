@@ -3,11 +3,14 @@ import type { ComponentProps } from "react"
 import { Checkbox } from "@workspace/ui/components/checkbox"
 import { Field, FieldLabel } from "@workspace/ui/components/field"
 
-export default function FieldPlayground(props: ComponentProps<typeof Field>) {
+export default function FieldPlayground({
+  children,
+  ...props
+}: ComponentProps<typeof Field>) {
   return (
     <Field className="w-full max-w-sm" {...props}>
       <Checkbox id="field-playground" defaultChecked />
-      <FieldLabel htmlFor="field-playground">Accept the charter</FieldLabel>
+      <FieldLabel htmlFor="field-playground">{children}</FieldLabel>
     </Field>
   )
 }

@@ -11,14 +11,17 @@ import {
   ItemTitle,
 } from "@workspace/ui/components/item"
 
-export default function ItemPlayground(props: ComponentProps<typeof Item>) {
+export default function ItemPlayground({
+  children,
+  ...props
+}: ComponentProps<typeof Item>) {
   return (
     <Item {...props}>
       <ItemMedia>
         <FileTextIcon className="size-4" />
       </ItemMedia>
       <ItemContent>
-        <ItemTitle>charter.pdf</ItemTitle>
+        <ItemTitle>{children}</ItemTitle>
         <ItemDescription>2.4 MB · uploaded today</ItemDescription>
       </ItemContent>
       <ItemActions>
