@@ -12,8 +12,10 @@ import {
 } from "@workspace/ui/components/empty"
 
 import { ExampleBlock } from "@/docs/example"
+import { Playground } from "@/docs/playground"
 import { Prose } from "@/docs/prose"
 import { demoKeysFor } from "@/registry/demos"
+import { hasPlayground } from "@/registry/playground-registry"
 import { exampleAnchor, findComponent, importPath } from "@/registry/registry"
 
 function ImportLine({ slug }: { slug: string }) {
@@ -70,6 +72,7 @@ export function ComponentPage() {
   const examples = component.examples ?? []
   const documented = new Set(examples.map((example) => example.demo))
   const orphans = demoKeysFor(slug).filter((key) => !documented.has(key))
+  const playground = hasPlayground(slug)
 
   return (
     <div className="flex gap-12">
@@ -87,6 +90,10 @@ export function ComponentPage() {
           </div>
         </header>
 
+        <div className="mb-12">
+          <Playground slug={component.slug} />
+        </div>
+
         {examples.length > 0 ? (
           <div className="flex flex-col gap-12">
             {examples.map((example) => (
@@ -99,6 +106,16 @@ export function ComponentPage() {
               />
             ))}
           </div>
+        ) : playground ? (
+          // A playground already gives this page working content, so the missing
+          // examples are a footnote rather than an empty state.
+          <p className="text-sm text-muted-foreground">
+            Curated usages for {component.name} are still to be written — the{" "}
+            <Link to="/showcase" className="underline">
+              legacy showcase
+            </Link>{" "}
+            may already demo it.
+          </p>
         ) : (
           <Empty className="border border-dashed border-border">
             <EmptyHeader>
@@ -116,12 +133,22 @@ export function ComponentPage() {
         )}
       </article>
 
-      {examples.length > 1 ? (
+      {(playground ? 1 : 0) + examples.length > 1 ? (
         <nav className="sticky top-8 hidden h-fit w-44 shrink-0 xl:block">
           <p className="mb-3 font-mono text-[11px] tracking-wide text-muted-foreground uppercase">
             On this page
           </p>
           <ul className="flex flex-col gap-2 border-s border-border">
+            {playground ? (
+              <li>
+                <a
+                  href="#playground"
+                  className="-ms-px block border-s border-transparent ps-3 text-sm text-muted-foreground hover:border-foreground hover:text-foreground"
+                >
+                  Playground
+                </a>
+              </li>
+            ) : null}
             {examples.map((example) => (
               <li key={example.demo}>
                 <a

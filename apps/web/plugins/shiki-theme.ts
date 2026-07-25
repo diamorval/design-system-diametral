@@ -99,3 +99,10 @@ function theme(
 
 export const diametralLight = theme("diametral-light", "light", LIGHT)
 export const diametralDark = theme("diametral-dark", "dark", DARK)
+
+/**
+ * Shipped to the client through the virtual module so the playground's runtime
+ * tokenizer paints with these exact hexes. Without this the colour table would
+ * be duplicated in CSS and drift from the themes above.
+ */
+export const palette = { light: LIGHT, dark: DARK }

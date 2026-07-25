@@ -1,8 +1,9 @@
-import * as React from "react"
 import { CheckIcon, CopyIcon } from "@phosphor-icons/react"
 
 import { Button } from "@workspace/ui/components/button"
 import { cn } from "@workspace/ui/lib/utils"
+
+import { useCopy } from "@/docs/use-copy"
 
 import "@/styles/code.css"
 
@@ -15,18 +16,7 @@ export function CodeBlock({
   code: string
   className?: string
 }) {
-  const [copied, setCopied] = React.useState(false)
-
-  React.useEffect(() => {
-    if (!copied) return
-    const timer = window.setTimeout(() => setCopied(false), 2000)
-    return () => window.clearTimeout(timer)
-  }, [copied])
-
-  async function copy() {
-    await navigator.clipboard.writeText(code)
-    setCopied(true)
-  }
+  const { copied, copy } = useCopy(code)
 
   return (
     <div className={cn("group/code relative", className)}>
