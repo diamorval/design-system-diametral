@@ -19,4 +19,15 @@ export default defineConfig([
       globals: globals.browser,
     },
   },
+  {
+    // Vendored shadcn registry source: `shadcn add` regenerates these files, so
+    // suppress at config level rather than patching each file (patches would be
+    // reverted by the next --overwrite). Registry components intentionally
+    // co-export cva variants and context hooks alongside the component.
+    files: ['src/components/**/*.{ts,tsx}', 'src/hooks/**/*.{ts,tsx}'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
+      'react-hooks/set-state-in-effect': 'off',
+    },
+  },
 ])

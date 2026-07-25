@@ -9,7 +9,7 @@
 @source "../**/*.{ts,tsx}";
 
 @theme inline {
-    --font-heading: var(--font-sans);
+    --font-heading: var(--ds-font-title);
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -51,73 +51,139 @@
     --font-sans: 'Geist Variable', sans-serif;
 }
 
+/* ============================================================================
+   Diametral brand tokens — ported from @diametral/design-system
+   (tokens/tokens.json, the v1 single source of truth).
+
+   Tier 1 primitives and Tier 2 semantics are declared as --ds-*; shadcn's slots
+   below are thin references onto them. Keep it that way: retheming means editing
+   the --ds-* semantics only, and the dark block overrides semantics alone —
+   exactly the layering v1 uses in css/themes/*.css.
+   ============================================================================ */
 :root {
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.147 0.004 49.25);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.147 0.004 49.25);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.147 0.004 49.25);
-    --primary: oklch(0.216 0.006 56.043);
-    --primary-foreground: oklch(0.985 0.001 106.423);
-    --secondary: oklch(0.97 0.001 106.424);
-    --secondary-foreground: oklch(0.216 0.006 56.043);
-    --muted: oklch(0.97 0.001 106.424);
-    --muted-foreground: oklch(0.553 0.013 58.071);
-    --accent: oklch(0.97 0.001 106.424);
-    --accent-foreground: oklch(0.216 0.006 56.043);
-    --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.923 0.003 48.717);
-    --input: oklch(0.923 0.003 48.717);
-    --ring: oklch(0.709 0.01 56.259);
-    --chart-1: oklch(0.869 0.005 56.366);
-    --chart-2: oklch(0.553 0.013 58.071);
-    --chart-3: oklch(0.444 0.011 73.639);
-    --chart-4: oklch(0.374 0.01 67.558);
-    --chart-5: oklch(0.268 0.007 34.298);
-    --radius: 0.625rem;
-    --sidebar: oklch(0.985 0.001 106.423);
-    --sidebar-foreground: oklch(0.147 0.004 49.25);
-    --sidebar-primary: oklch(0.216 0.006 56.043);
-    --sidebar-primary-foreground: oklch(0.985 0.001 106.423);
-    --sidebar-accent: oklch(0.97 0.001 106.424);
-    --sidebar-accent-foreground: oklch(0.216 0.006 56.043);
-    --sidebar-border: oklch(0.923 0.003 48.717);
-    --sidebar-ring: oklch(0.709 0.01 56.259);
+    /* Tier 1 — brand primaries */
+    --ds-noir: #161616;
+    --ds-blanc: #ffffff;
+    --ds-gris: #767884;
+    --ds-marron: #9f8667;
+    --ds-kaki: #aab0a6;
+    --ds-beige: #d5d3c4;
+    --ds-jaune: #f4fbda;
+
+    /* Tier 1 — brand secondaries */
+    --ds-rouge: #ff2a00;
+    --ds-vert: #89fc79;
+    --ds-bleu: #23e2ff;
+    --ds-jaune-vif: #fff73b;
+
+    /* Tier 1 — neutrals */
+    --ds-grey-light: #f5f5f5;
+    --ds-grey-faint: #e4e4e6;
+    --ds-grey: #cdced0;
+    --ds-grey-dark: #434649;
+
+    /* Tier 1 — functional */
+    --ds-green: #2e7d4f;
+    --ds-green-bg: #eef4ef;
+    --ds-orange: #ff5500;
+    --ds-orange-bg: #fff0e8;
+    --ds-red: #c0392b;
+    --ds-red-bg: #f9ebe9;
+    --ds-info: #1488a6;
+    --ds-info-bg: #eafaff;
+    --ds-grey-bg: #ececec;
+    --ds-chart-1: #ff2a00;
+    --ds-chart-2: #1488a6;
+    --ds-chart-3: #2e7d4f;
+    --ds-chart-4: #9f8667;
+    --ds-chart-5: #7b5ea7;
+    --ds-chart-6: #e0a32e;
+
+    /* Tier 2 — semantics (the retheming surface) */
+    --ds-bg: var(--ds-blanc);
+    --ds-bg-alt: var(--ds-grey-light);
+    --ds-surface: var(--ds-blanc);
+    --ds-overlay-scrim: rgba(22, 22, 22, .5);
+    --ds-ink: var(--ds-noir);
+    --ds-ink-soft: var(--ds-grey-dark);
+    --ds-ink-faint: var(--ds-gris);
+    --ds-on-accent: var(--ds-blanc);
+    --ds-rule: var(--ds-grey);
+    --ds-rule-soft: var(--ds-grey-faint);
+    --ds-accent: var(--ds-rouge);
+    --ds-accent-bg: var(--ds-orange-bg);
+    --ds-focus-ring: var(--ds-ink);
+    --ds-success: var(--ds-green);
+    --ds-warning: var(--ds-orange);
+    --ds-danger: var(--ds-red);
+
+    /* Tier 3 — the flat parti pris: override this single value to round the
+       entire system at once (shadcn derives every other radius via calc). */
+    --ds-radius: 0px;
+    /* The two official Diametral faces: Ufficio (titles) and Geist (body).
+       Ufficio is licensed and not bundled — it renders only where installed
+       locally or where a ufficio.css webfont is imported. Geist IS bundled, so
+       it takes the fallback slot to keep type on-brand rather than dropping to
+       a system serif. */
+    --ds-font-title: "Ufficio", "Geist Variable", system-ui, sans-serif;
+
+    /* ---- shadcn slot mappings ------------------------------------------- */
+    --background: var(--ds-bg);
+    --foreground: var(--ds-ink);
+    --card: var(--ds-surface);
+    --card-foreground: var(--ds-ink);
+    --popover: var(--ds-surface);
+    --popover-foreground: var(--ds-ink);
+    /* Brand signal red is shadcn's `primary` (the solid fill), not its
+       `accent` — which is only the subtle hover surface. */
+    --primary: var(--ds-accent);
+    --primary-foreground: var(--ds-on-accent);
+    --secondary: var(--ds-bg-alt);
+    --secondary-foreground: var(--ds-ink);
+    --muted: var(--ds-bg-alt);
+    --muted-foreground: var(--ds-ink-faint);
+    --accent: var(--ds-bg-alt);
+    --accent-foreground: var(--ds-ink);
+    --destructive: var(--ds-danger);
+    --border: var(--ds-rule);
+    --input: var(--ds-rule);
+    --ring: var(--ds-focus-ring);
+    --chart-1: var(--ds-chart-1);
+    --chart-2: var(--ds-chart-2);
+    --chart-3: var(--ds-chart-3);
+    --chart-4: var(--ds-chart-4);
+    --chart-5: var(--ds-chart-5);
+    --radius: var(--ds-radius);
+    --sidebar: var(--ds-bg-alt);
+    --sidebar-foreground: var(--ds-ink);
+    --sidebar-primary: var(--ds-accent);
+    --sidebar-primary-foreground: var(--ds-on-accent);
+    --sidebar-accent: var(--ds-rule-soft);
+    --sidebar-accent-foreground: var(--ds-ink);
+    --sidebar-border: var(--ds-rule);
+    --sidebar-ring: var(--ds-focus-ring);
 }
 
+/* Dark theme — Tier 2 semantics only, mirroring v1's css/themes/dark.css. The
+   shadcn slots above re-resolve automatically because they are var() refs and
+   this class lands on the same root element. Brand red is deliberately kept as
+   the accent: it pops on dark. */
 .dark {
-    --background: oklch(0.147 0.004 49.25);
-    --foreground: oklch(0.985 0.001 106.423);
-    --card: oklch(0.216 0.006 56.043);
-    --card-foreground: oklch(0.985 0.001 106.423);
-    --popover: oklch(0.216 0.006 56.043);
-    --popover-foreground: oklch(0.985 0.001 106.423);
-    --primary: oklch(0.923 0.003 48.717);
-    --primary-foreground: oklch(0.216 0.006 56.043);
-    --secondary: oklch(0.268 0.007 34.298);
-    --secondary-foreground: oklch(0.985 0.001 106.423);
-    --muted: oklch(0.268 0.007 34.298);
-    --muted-foreground: oklch(0.709 0.01 56.259);
-    --accent: oklch(0.268 0.007 34.298);
-    --accent-foreground: oklch(0.985 0.001 106.423);
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.553 0.013 58.071);
-    --chart-1: oklch(0.869 0.005 56.366);
-    --chart-2: oklch(0.553 0.013 58.071);
-    --chart-3: oklch(0.444 0.011 73.639);
-    --chart-4: oklch(0.374 0.01 67.558);
-    --chart-5: oklch(0.268 0.007 34.298);
-    --sidebar: oklch(0.216 0.006 56.043);
-    --sidebar-foreground: oklch(0.985 0.001 106.423);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
-    --sidebar-primary-foreground: oklch(0.985 0.001 106.423);
-    --sidebar-accent: oklch(0.268 0.007 34.298);
-    --sidebar-accent-foreground: oklch(0.985 0.001 106.423);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.553 0.013 58.071);
+    --ds-bg: #0e0e10;
+    --ds-bg-alt: #1b1c1f;
+    --ds-surface: #161618;
+    --ds-overlay-scrim: rgba(0, 0, 0, .62);
+    --ds-ink: #f3f3f1;
+    --ds-ink-soft: #c7c8cc;
+    --ds-ink-faint: #8b8d97;
+    --ds-rule: #2c2d31;
+    --ds-rule-soft: #232428;
+    --ds-accent-bg: rgba(255, 42, 0, .16);
+    --ds-green-bg: rgba(46, 125, 79, .20);
+    --ds-orange-bg: rgba(255, 85, 0, .16);
+    --ds-red-bg: rgba(192, 57, 43, .20);
+    --ds-info-bg: rgba(20, 136, 166, .20);
+    --ds-grey-bg: rgba(255, 255, 255, .08);
 }
 
 @layer base {
