@@ -1,0 +1,34 @@
+import { Button } from "@workspace/ui/components/button"
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@workspace/ui/components/drawer"
+
+const DIRECTIONS = ["down", "up", "left", "right"] as const
+
+export default function DrawerDirections() {
+  return (
+    <div className="flex flex-wrap items-center gap-3">
+      {DIRECTIONS.map((direction) => (
+        <Drawer key={direction} swipeDirection={direction} showSwipeHandle>
+          <DrawerTrigger render={<Button variant="outline" size="sm" />}>
+            {direction}
+          </DrawerTrigger>
+          <DrawerContent>
+            <DrawerHeader>
+              <DrawerTitle>Swipes {direction}</DrawerTitle>
+              <DrawerDescription>
+                Horizontal drawers take 75% width, capped at 24rem from `sm` up;
+                vertical ones cap their height at the viewport less 6rem.
+              </DrawerDescription>
+            </DrawerHeader>
+          </DrawerContent>
+        </Drawer>
+      ))}
+    </div>
+  )
+}

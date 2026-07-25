@@ -1,0 +1,44 @@
+import { Button } from "@workspace/ui/components/button"
+import { Kbd, KbdGroup } from "@workspace/ui/components/kbd"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@workspace/ui/components/tooltip"
+
+// `inline-start` / `inline-end` are the logical sides — they follow direction,
+// where `left` / `right` stay physical. Prefer the logical pair.
+const SIDES = ["top", "inline-end", "bottom", "inline-start"] as const
+
+export default function TooltipSides() {
+  return (
+    <TooltipProvider delay={200}>
+      <div className="flex flex-col items-start gap-6">
+        <div className="flex flex-wrap items-center gap-3">
+          {SIDES.map((side) => (
+            <Tooltip key={side}>
+              <TooltipTrigger render={<Button variant="outline" size="sm" />}>
+                {side}
+              </TooltipTrigger>
+              <TooltipContent side={side}>Anchored {side}</TooltipContent>
+            </Tooltip>
+          ))}
+        </div>
+
+        <Tooltip>
+          <TooltipTrigger render={<Button variant="outline" />}>
+            Save
+          </TooltipTrigger>
+          <TooltipContent>
+            Save changes
+            <KbdGroup>
+              <Kbd>⌘</Kbd>
+              <Kbd>S</Kbd>
+            </KbdGroup>
+          </TooltipContent>
+        </Tooltip>
+      </div>
+    </TooltipProvider>
+  )
+}

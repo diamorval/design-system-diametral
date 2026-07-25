@@ -1,0 +1,38 @@
+import { SlidersHorizontalIcon } from "@phosphor-icons/react"
+
+import { Button } from "@workspace/ui/components/button"
+import { Field, FieldLabel } from "@workspace/ui/components/field"
+import { Input } from "@workspace/ui/components/input"
+import {
+  Popover,
+  PopoverContent,
+  PopoverHeader,
+  PopoverTitle,
+  PopoverTrigger,
+} from "@workspace/ui/components/popover"
+import { Switch } from "@workspace/ui/components/switch"
+
+// Popover traps focus and is dismissible, so interactive content belongs here
+// rather than in a Tooltip — a tooltip is never reachable by keyboard users.
+export default function PopoverWithForm() {
+  return (
+    <Popover>
+      <PopoverTrigger render={<Button variant="outline" size="sm" />}>
+        <SlidersHorizontalIcon /> Display
+      </PopoverTrigger>
+      <PopoverContent align="start" className="w-80">
+        <PopoverHeader>
+          <PopoverTitle>Display options</PopoverTitle>
+        </PopoverHeader>
+        <Field>
+          <FieldLabel htmlFor="popover-rows">Rows per page</FieldLabel>
+          <Input id="popover-rows" type="number" defaultValue={25} />
+        </Field>
+        <Field orientation="horizontal">
+          <Switch id="popover-dense" defaultChecked />
+          <FieldLabel htmlFor="popover-dense">Dense rows</FieldLabel>
+        </Field>
+      </PopoverContent>
+    </Popover>
+  )
+}

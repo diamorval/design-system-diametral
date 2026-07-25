@@ -1,0 +1,29 @@
+import { Meter, MeterLabel, MeterValue } from "@workspace/ui/components/meter"
+
+const USAGE = [
+  { label: "Design", value: 34 },
+  { label: "Engineering", value: 71 },
+  { label: "Support", value: 96 },
+]
+
+// The track and indicator are rendered by `Meter` itself, so per-row colour is a
+// descendant selector on the root rather than a prop.
+function tone(value: number) {
+  if (value >= 90) return "[&_[data-slot=meter-indicator]]:bg-destructive"
+  if (value >= 70)
+    return "[&_[data-slot=meter-indicator]]:bg-[var(--ds-jaune-vif)]"
+  return ""
+}
+
+export default function MeterThresholds() {
+  return (
+    <div className="flex w-full max-w-sm flex-col gap-6">
+      {USAGE.map((row) => (
+        <Meter key={row.label} value={row.value} className={tone(row.value)}>
+          <MeterLabel>{row.label}</MeterLabel>
+          <MeterValue />
+        </Meter>
+      ))}
+    </div>
+  )
+}

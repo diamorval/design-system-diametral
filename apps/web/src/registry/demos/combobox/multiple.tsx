@@ -1,0 +1,61 @@
+import {
+  Combobox,
+  ComboboxChip,
+  ComboboxChips,
+  ComboboxChipsInput,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxItem,
+  ComboboxList,
+  ComboboxValue,
+  useComboboxAnchor,
+} from "@workspace/ui/components/combobox"
+import {
+  Field,
+  FieldDescription,
+  FieldLabel,
+} from "@workspace/ui/components/field"
+
+const SCOPES = [
+  "read:tokens",
+  "write:tokens",
+  "read:components",
+  "write:components",
+  "publish",
+]
+
+// `ComboboxValue` is the render prop for the current selection — `ComboboxChip`
+// takes plain children, so the mapping happens one level up. The anchor ref points
+// the popup at the chips container so it stays aligned as that container grows.
+export default function ComboboxMultiple() {
+  const anchor = useComboboxAnchor()
+
+  return (
+    <Field className="max-w-sm">
+      <FieldLabel>Scopes</FieldLabel>
+      <Combobox items={SCOPES} multiple defaultValue={["read:tokens"]}>
+        <ComboboxChips ref={anchor}>
+          <ComboboxValue>
+            {(selected: string[]) =>
+              selected.map((scope) => (
+                <ComboboxChip key={scope}>{scope}</ComboboxChip>
+              ))
+            }
+          </ComboboxValue>
+          <ComboboxChipsInput placeholder="Add a scope…" />
+        </ComboboxChips>
+        <ComboboxContent anchor={anchor}>
+          <ComboboxEmpty>No scope found.</ComboboxEmpty>
+          <ComboboxList>
+            {(scope: string) => (
+              <ComboboxItem key={scope} value={scope}>
+                {scope}
+              </ComboboxItem>
+            )}
+          </ComboboxList>
+        </ComboboxContent>
+      </Combobox>
+      <FieldDescription>Backspace removes the last chip.</FieldDescription>
+    </Field>
+  )
+}

@@ -1,0 +1,43 @@
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@workspace/ui/components/pagination"
+
+// `PaginationLink` renders an anchor through Button's `render`, with
+// `nativeButton={false}` — so it stays a real link and middle-click still works.
+export default function PaginationBasic() {
+  return (
+    <Pagination>
+      <PaginationContent>
+        <PaginationItem>
+          <PaginationPrevious href="#pagination" />
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="#pagination">1</PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="#pagination" isActive>
+            2
+          </PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="#pagination">3</PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationEllipsis />
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="#pagination">12</PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationNext href="#pagination" />
+        </PaginationItem>
+      </PaginationContent>
+    </Pagination>
+  )
+}
