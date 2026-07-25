@@ -113,7 +113,12 @@
     --ds-overlay-scrim: rgba(22, 22, 22, .5);
     --ds-ink: var(--ds-noir);
     --ds-ink-soft: var(--ds-grey-dark);
-    --ds-ink-faint: var(--ds-gris);
+    /* Deeper than the raw Gris primitive (#767884), which only reaches 4.38:1
+       on white. This clears WCAG AA (4.5:1) on both white and --ds-bg-alt.
+       Decoupled from --ds-gris on purpose — Gris stays charter-canonical for
+       the brand swatch and the neutral status family, exactly as v1 does in
+       css/tokens.css. */
+    --ds-ink-faint: #6c6f7d;
     --ds-on-accent: var(--ds-blanc);
     --ds-rule: var(--ds-grey);
     --ds-rule-soft: var(--ds-grey-faint);
@@ -194,6 +199,12 @@
     --ds-rule-soft: #232428;
     --ds-action: #32333a;
     --ds-on-action: var(--ds-blanc);
+    /* Danger must lift off the charter red on dark: #c0392b reaches only 3.55:1
+       on --ds-bg and 3.13:1 on --ds-bg-alt, so every `text-destructive` fails
+       AA. Smallest lift in the same hue that clears 4.5:1 on all three dark
+       surfaces. v1 never needed this because it only paints danger text on
+       --ds-danger-bg; v2 uses it as bare text. */
+    --ds-danger: #e05a4a;
     --ds-accent-bg: rgba(255, 42, 0, .16);
     --ds-green-bg: rgba(46, 125, 79, .20);
     --ds-orange-bg: rgba(255, 85, 0, .16);

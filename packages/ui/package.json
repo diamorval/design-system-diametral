@@ -47,7 +47,8 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json && node scripts/build-css.mjs",
     "clean": "rm -rf dist",
-    "lint": "eslint",
+    "lint": "eslint && node scripts/lint-components.mjs",
+    "lint:components": "node scripts/lint-components.mjs",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
     "typecheck": "tsc --noEmit",
     "prepack": "pnpm run build"

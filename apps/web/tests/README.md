@@ -36,26 +36,38 @@ single component. A light-only suite would not see it.
 
 ### Current status: report-only
 
-The suite does not pass yet, and the dominant cause is one token rather than many
-component bugs:
+Last measured: **53 / 148 passing**. Two token-level causes have already been
+fixed (`--ds-ink-faint` and the dark `--ds-danger`, both now clearing 4.5:1);
+what remains is the triage below, in descending order of leverage.
 
-| Rule | Count | Root cause |
-| --- | --- | --- |
-| `color-contrast` | ~87 | `--muted-foreground` (`#767884`, v1's `--ds-gris`) scores **4.38:1 on white** and **4.02:1 on the muted/sidebar surface**, where AA needs 4.50. Fails on every light surface. |
-| `label` | 16 | form controls in demos without an associated label |
-| `aria-required-children` | 8 | Base UI composition — a role expecting specific children |
-| `button-name` | 8 | icon-only buttons without an accessible name |
-| `aria-toggle-field-name` | 4 | toggle/switch without an accessible name |
-| `nested-interactive` | 4 | interactive element nested inside another |
+| Rule | Count | Root cause | Whose bug |
+| --- | --- | --- | --- |
+| `color-contrast` | ~71 | `code > span` — **shiki's syntax-highlight palette** against `bg-muted/40`. Not a design token; the highlight theme was never checked for contrast. | docs app |
+| `label` | 16 | demo form controls with no associated label | demos |
+| `aria-required-children` | 8 | a Base UI role whose required child roles are missing in our composition | library |
+| `button-name` | 8 | icon-only buttons with no accessible name | demos / library |
+| `aria-toggle-field-name` | 4 | toggle or switch with no accessible name | demos |
+| `nested-interactive` | 4 | an interactive element nested inside another | library |
+| `scrollable-region-focusable` | 4 | a scrollable region still not focusable | docs app |
 
-The contrast row is a **brand decision, not a test fix**: `--ds-gris` was ported
-byte-identically from v1's `tokens/tokens.json`, so changing it diverges the two
-systems. `--ds-ink-soft` (`#434649`) is declared but mapped to no slot and scores
-8.71:1 — the obvious candidate if the decision is to fix it here.
+The largest item is a **docs-app** problem, not a library one: pick shiki themes
+whose token colours clear 4.5:1 on the code-block background, or lighten the
+background. Fixing it should clear roughly three quarters of the failures without
+touching a component.
 
-`.github/workflows/a11y.yml` therefore runs the suite with `continue-on-error`
-and uploads the report. **To arm the gate:** resolve the token, get the suite
-green, then remove `continue-on-error` and mark the job required.
+`.github/workflows/a11y.yml` runs the suite with `continue-on-error` and uploads
+the report. **To arm the gate:** work the table down, then remove
+`continue-on-error` and mark the job required.
+
+### Known limitation: run-to-run variance
+
+Violation counts move between runs on the same commit (one pair of runs reported
+43 and then 80 `color-contrast` hits). The set of *failing routes* is far more
+stable than the per-run counts, so treat the counts as indicative and the route
+list as the signal. Likely causes are the 400 ms settle in `settle()` being
+marginal for chart animation, and axe evaluating whatever the playground happens
+to have rendered. Worth stabilising before the gate becomes blocking — otherwise
+it will flake.
 
 ## visual suite — curated routes, both themes
 
