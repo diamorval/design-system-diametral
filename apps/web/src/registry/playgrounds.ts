@@ -657,6 +657,10 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
     children: { default: "Scheduled maintenance", label: "title" },
     variantsFrom: "bannerVariants",
   },
+  wordmark: {
+    note: "The lockup SVGs already contain the wordmark text as vector paths — recolour with text-* utilities, don't restyle the text separately.",
+    variantsFrom: "wordmarkVariants",
+  },
 }
 
 export function playgroundFor(slug: string): PlaygroundConfig | undefined {

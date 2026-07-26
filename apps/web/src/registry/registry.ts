@@ -1328,6 +1328,27 @@ export const COMPONENTS: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "wordmark",
+    name: "Wordmark",
+    category: "Layout",
+    description:
+      "The Diametral logo lockup from @diametral/assets, inlined so it recolours with the surrounding text.",
+    examples: [
+      {
+        demo: "wordmark/basic",
+        title: "Basic",
+        description:
+          "The lockup is `currentColor`, so it recolours with the surrounding text — no separate light/dark SVG to swap.",
+      },
+      {
+        demo: "wordmark/square",
+        title: "Square",
+        description:
+          "The wordmark set inside the symbol, for avatar and app-icon-style placements.",
+      },
+    ],
+  },
 
   /* -- Disclosure -------------------------------------------------------- */
   {
