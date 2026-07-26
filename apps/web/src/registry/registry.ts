@@ -1286,6 +1286,27 @@ export const COMPONENTS: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "masonry",
+    name: "Masonry",
+    category: "Layout",
+    description:
+      "A multi-column layout that balances items of uneven height, via CSS columns rather than a JS measurement pass.",
+    examples: [
+      {
+        demo: "masonry/basic",
+        title: "Basic",
+        description:
+          "`columns` becomes a `--columns` custom property, so any integer works — there is no fixed breakpoint list.",
+      },
+      {
+        demo: "masonry/with-cards",
+        title: "Cards",
+        description:
+          "Cards of uneven height are the case columns exist for — a plain grid would leave ragged gaps under the short ones.",
+      },
+    ],
+  },
 
   /* -- Disclosure -------------------------------------------------------- */
   {

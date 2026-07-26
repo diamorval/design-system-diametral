@@ -642,6 +642,17 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
   panel: {
     children: { default: "Notifications", label: "title" },
   },
+  masonry: {
+    note: "`columns` becomes a `--columns` custom property, so any integer works — there is no fixed breakpoint list.",
+    extras: [
+      {
+        prop: "columns",
+        type: "select",
+        options: ["3", "2", "4"],
+        always: true,
+      },
+    ],
+  },
 }
 
 export function playgroundFor(slug: string): PlaygroundConfig | undefined {
