@@ -25,9 +25,15 @@ permissions:
   contents: read
   id-token: write # npm provenance
 
+# Serialize, don't cancel: a second dispatch shouldn't race an in-flight
+# `npm publish` or interrupt one mid-way and leave a half-published version.
+concurrency:
+  group: ${{ github.workflow }}
+
 jobs:
   publish:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
