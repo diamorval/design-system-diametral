@@ -1244,6 +1244,27 @@ export const COMPONENTS: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "page-header",
+    name: "Page Header",
+    category: "Layout",
+    description:
+      "Breadcrumb, title, description and actions for the top of a page, with an optional flush tab strip.",
+    examples: [
+      {
+        demo: "page-header/basic",
+        title: "Basic",
+        description:
+          "Breadcrumb, title, description and actions compose freely — there is no prop bag, only slots.",
+      },
+      {
+        demo: "page-header/with-icon-and-tabs",
+        title: "Icon and tabs",
+        description:
+          "`PageHeaderIcon` reads from the shared icon registry; `PageHeaderTabs` flips the header's bottom rule flush against the tab strip.",
+      },
+    ],
+  },
 
   /* -- Disclosure -------------------------------------------------------- */
   {

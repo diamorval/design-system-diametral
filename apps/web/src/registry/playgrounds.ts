@@ -634,6 +634,11 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
   chart: {
     note: "Chart is configured through its `config` object and recharts children, not through enumerable props — so this panel is empty on purpose. The examples below are the documentation.",
   },
+
+  /* -- Layout & chrome (lane 3) -------------------------------------------- */
+  "page-header": {
+    children: { default: "Team settings", label: "title" },
+  },
 }
 
 export function playgroundFor(slug: string): PlaygroundConfig | undefined {
