@@ -1307,6 +1307,27 @@ export const COMPONENTS: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "banner",
+    name: "Banner",
+    category: "Layout",
+    description:
+      "A full-width, tone-coloured message bar over the shared six-tone family — the same tokens button.tsx's `tone` axis reads.",
+    examples: [
+      {
+        demo: "banner/basic",
+        title: "Basic",
+        description:
+          "Tone sets `--tone-bg`/`--tone-ink` from the tokens shared with status, tag and alert.",
+      },
+      {
+        demo: "banner/with-action",
+        title: "Action and dismiss",
+        description:
+          "BannerAction is a plain flex sibling rather than an absolutely-positioned corner, so it can hold more than one control without overlapping the text.",
+      },
+    ],
+  },
 
   /* -- Disclosure -------------------------------------------------------- */
   {

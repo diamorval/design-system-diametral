@@ -653,6 +653,10 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
       },
     ],
   },
+  banner: {
+    children: { default: "Scheduled maintenance", label: "title" },
+    variantsFrom: "bannerVariants",
+  },
 }
 
 export function playgroundFor(slug: string): PlaygroundConfig | undefined {
