@@ -1349,6 +1349,27 @@ export const COMPONENTS: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "theme-switcher",
+    name: "Theme Switcher",
+    category: "Layout",
+    description:
+      "A light/dark/system toggle, promoted from the docs app's own theme-toggle. Fully controlled — the consumer owns the theme hook.",
+    examples: [
+      {
+        demo: "theme-switcher/basic",
+        title: "Basic",
+        description:
+          "Fully controlled, so the demo holds its own state rather than touching the real app theme.",
+      },
+      {
+        demo: "theme-switcher/in-toolbar",
+        title: "In a toolbar",
+        description:
+          "The typical placement — alongside other controls in a header or toolbar row.",
+      },
+    ],
+  },
 
   /* -- Disclosure -------------------------------------------------------- */
   {
