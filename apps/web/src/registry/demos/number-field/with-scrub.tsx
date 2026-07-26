@@ -18,10 +18,15 @@ export default function NumberFieldWithScrub() {
     <Field className="max-w-xs">
       <NumberField defaultValue={0} step={0.05} min={-0.5} max={0.5}>
         <NumberFieldScrubArea>
-          <FieldLabel>Letter spacing</FieldLabel>
+          <FieldLabel id="number-field-scrub-letter-spacing-label">
+            Letter spacing
+          </FieldLabel>
         </NumberFieldScrubArea>
         <NumberFieldGroup>
-          <NumberFieldInput className="ps-0 text-start" />
+          <NumberFieldInput
+            className="ps-0 text-start"
+            aria-labelledby="number-field-scrub-letter-spacing-label"
+          />
         </NumberFieldGroup>
       </NumberField>
       <FieldDescription>Drag the label left or right.</FieldDescription>

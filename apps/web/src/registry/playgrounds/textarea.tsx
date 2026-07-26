@@ -7,7 +7,7 @@ export default function TextareaPlayground(
 ) {
   return (
     <div className="w-full max-w-sm">
-      <Textarea {...props} />
+      <Textarea aria-label="Textarea preview" {...props} />
     </div>
   )
 }

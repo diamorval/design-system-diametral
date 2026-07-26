@@ -12,7 +12,12 @@ export default function InputOtpWithSeparator() {
 
   return (
     <div className="flex flex-col items-start gap-4">
-      <InputOTP maxLength={6} value={value} onChange={setValue}>
+      <InputOTP
+        maxLength={6}
+        value={value}
+        onChange={setValue}
+        aria-label="One-time code"
+      >
         <InputOTPGroup>
           <InputOTPSlot index={0} />
           <InputOTPSlot index={1} />

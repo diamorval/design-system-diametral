@@ -11,18 +11,33 @@ export default function SliderRange() {
   return (
     <div className="flex w-full max-w-sm flex-col gap-6">
       <Field>
-        <FieldLabel>
+        <FieldLabel id="slider-range-budget-label">
           Budget — {budget[0]}k to {budget[1]}k €
         </FieldLabel>
         <Slider
           value={budget}
           onValueChange={(value) => setBudget(value as number[])}
+          aria-labelledby="slider-range-budget-label"
         />
       </Field>
 
       <div className="flex h-40 items-start gap-8">
-        <Slider orientation="vertical" defaultValue={45} />
-        <Slider orientation="vertical" defaultValue={[20, 80]} />
+        <span id="slider-range-vertical-value-label" className="sr-only">
+          Vertical value
+        </span>
+        <Slider
+          orientation="vertical"
+          defaultValue={45}
+          aria-labelledby="slider-range-vertical-value-label"
+        />
+        <span id="slider-range-vertical-range-label" className="sr-only">
+          Vertical range
+        </span>
+        <Slider
+          orientation="vertical"
+          defaultValue={[20, 80]}
+          aria-labelledby="slider-range-vertical-range-label"
+        />
       </div>
     </div>
   )

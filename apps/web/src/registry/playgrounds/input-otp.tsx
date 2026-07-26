@@ -19,7 +19,7 @@ export default function InputOtpPlayground({
   const props = { ...rest, maxLength: length }
 
   return (
-    <InputOTP {...props}>
+    <InputOTP aria-label="One-time code" {...props}>
       <InputOTPGroup>
         {Array.from({ length }, (_, index) => (
           <InputOTPSlot key={index} index={index} />

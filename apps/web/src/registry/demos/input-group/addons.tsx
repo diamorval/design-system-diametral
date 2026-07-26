@@ -16,7 +16,10 @@ export default function InputGroupAddons() {
         <InputGroupAddon>
           <MagnifyingGlassIcon />
         </InputGroupAddon>
-        <InputGroupInput placeholder="Search components…" />
+        <InputGroupInput
+          placeholder="Search components…"
+          aria-label="Search components"
+        />
       </InputGroup>
 
       <InputGroup>

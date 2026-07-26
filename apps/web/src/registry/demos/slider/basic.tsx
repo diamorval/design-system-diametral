@@ -7,16 +7,27 @@ export default function SliderBasic() {
   return (
     <div className="flex w-full max-w-sm flex-col gap-8">
       <Field>
-        <FieldLabel>Opacity</FieldLabel>
-        <Slider defaultValue={60} />
+        <FieldLabel id="slider-basic-opacity-label">Opacity</FieldLabel>
+        <Slider
+          defaultValue={60}
+          aria-labelledby="slider-basic-opacity-label"
+        />
       </Field>
       <Field>
-        <FieldLabel>Step of 10</FieldLabel>
-        <Slider defaultValue={40} step={10} />
+        <FieldLabel id="slider-basic-step-label">Step of 10</FieldLabel>
+        <Slider
+          defaultValue={40}
+          step={10}
+          aria-labelledby="slider-basic-step-label"
+        />
       </Field>
       <Field>
-        <FieldLabel>Disabled</FieldLabel>
-        <Slider defaultValue={25} disabled />
+        <FieldLabel id="slider-basic-disabled-label">Disabled</FieldLabel>
+        <Slider
+          defaultValue={25}
+          disabled
+          aria-labelledby="slider-basic-disabled-label"
+        />
       </Field>
     </div>
   )

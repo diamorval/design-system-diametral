@@ -18,15 +18,19 @@ const buttonVariants = cva(
           "hover:bg-[color-mix(in_oklch,var(--btn),transparent_90%)] hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground",
         destructive:
           "bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40",
-        link: "text-primary underline underline-offset-4 hover:underline",
+        /* --primary is darkened for AA on light surfaces (globals.css); that
+           same darkened value drops bare text on dark's near-black --ds-bg
+           below 4.5:1 (4.01:1), so dark keeps the original, lighter
+           --ds-rouge, which already cleared 5.13:1 there. */
+        link: "text-primary underline underline-offset-4 hover:underline dark:text-[var(--ds-rouge)]",
       },
       /* Palette axis. Sets the fill (--btn) and its contrast pair (--btn-fg);
          the variants above compose off those two vars, so a tone works across
          solid / outline / ghost without a compound-variant matrix. */
       tone: {
         noir: "[--btn:var(--ds-action)] [--btn-fg:var(--ds-on-action)]",
-        rouge: "[--btn:var(--ds-rouge)] [--btn-fg:var(--ds-blanc)]",
-        marron: "[--btn:var(--ds-marron)] [--btn-fg:var(--ds-blanc)]",
+        rouge: "[--btn:var(--ds-rouge)] [--btn-fg:var(--ds-noir)]",
+        marron: "[--btn:var(--ds-marron)] [--btn-fg:var(--ds-noir)]",
         kaki: "[--btn:var(--ds-kaki)] [--btn-fg:var(--ds-noir)]",
         beige: "[--btn:var(--ds-beige)] [--btn-fg:var(--ds-noir)]",
         vert: "[--btn:var(--ds-vert)] [--btn-fg:var(--ds-noir)]",
