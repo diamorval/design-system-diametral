@@ -495,6 +495,55 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
       { prop: "disabled", type: "boolean" },
     ],
   },
+  "multi-select": {
+    note: "`options` supplies the fixed list; the controls below drive everything else.",
+    extras: [
+      { prop: "placeholder", type: "text", placeholder: "Select…" },
+      { prop: "disabled", type: "boolean" },
+    ],
+  },
+  "tags-input": {
+    extras: [
+      { prop: "placeholder", type: "text", placeholder: "Add a tag…" },
+      { prop: "max", type: "text", placeholder: "No limit" },
+      { prop: "disabled", type: "boolean" },
+    ],
+  },
+  "phone-input": {
+    extras: [
+      {
+        prop: "defaultCountry",
+        type: "select",
+        options: ["FR", "BE", "CH", "LU", "DE", "ES", "IT", "GB", "US", "CA"],
+      },
+      { prop: "disabled", type: "boolean" },
+    ],
+  },
+  editable: {
+    extras: [
+      {
+        prop: "defaultValue",
+        type: "text",
+        placeholder: "Click to rename",
+        always: true,
+      },
+      { prop: "disabled", type: "boolean" },
+    ],
+  },
+  "time-picker": {
+    extras: [
+      { prop: "showSeconds", type: "boolean" },
+      { prop: "disabled", type: "boolean" },
+    ],
+  },
+  "date-range-picker": {
+    note: "Owns its own range state, so the controls below are its only knobs beyond `value`/`onValueChange`.",
+    extras: [
+      { prop: "placeholder", type: "text", placeholder: "Pick a date range" },
+      { prop: "showTime", type: "boolean" },
+      { prop: "numberOfMonths", type: "select", options: ["1", "2"] },
+    ],
+  },
 
   /* -- Investigated: provider-level, cmdk, and the imperative one -------- */
   combobox: {

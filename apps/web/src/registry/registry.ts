@@ -574,6 +574,128 @@ export const COMPONENTS: ComponentDoc[] = [
     ],
   },
   {
+    slug: "multi-select",
+    name: "Multi Select",
+    category: "Forms",
+    description:
+      "An options/value API over Combobox's multiple-select chips mode, for picking several values from a fixed list.",
+    examples: [
+      {
+        demo: "multi-select/basic",
+        title: "Basic",
+        description:
+          "`options` is the whole API — internally this is Combobox in `multiple` mode, so filtering and chip removal come for free.",
+      },
+      {
+        demo: "multi-select/controlled",
+        title: "Controlled",
+        description:
+          "`value` and `onValueChange` take a plain `string[]`, same as the uncontrolled `defaultValue`.",
+      },
+    ],
+  },
+  {
+    slug: "tags-input",
+    name: "Tags Input",
+    category: "Forms",
+    description:
+      "Free-text tokens typed one at a time — Enter or comma commits the draft, Backspace on an empty draft removes the last tag.",
+    examples: [
+      {
+        demo: "tags-input/basic",
+        title: "Basic",
+        description:
+          "Unlike Multi Select there is no fixed option list — any typed value becomes a tag.",
+      },
+      {
+        demo: "tags-input/max",
+        title: "With a limit",
+        description: "`max` stops new tags once the count is reached.",
+      },
+    ],
+  },
+  {
+    slug: "phone-input",
+    name: "Phone Input",
+    category: "Forms",
+    description:
+      "A country dial-code select paired with a national-number field, composing into one E.164-ish string value.",
+    examples: [
+      {
+        demo: "phone-input/basic",
+        title: "Basic",
+        description:
+          "The value is a single string (`+33612345678`) — the dial code and national number are split from it for editing, then rejoined on change.",
+      },
+      {
+        demo: "phone-input/with-field",
+        title: "In a field",
+        description: "`defaultCountry` seeds the dial code before any digits are typed.",
+      },
+    ],
+  },
+  {
+    slug: "editable",
+    name: "Editable",
+    category: "Forms",
+    description:
+      "Inline click-to-edit text — a preview with an edit affordance that swaps to a field, committed on Enter or blur, discarded on Escape.",
+    examples: [
+      {
+        demo: "editable/basic",
+        title: "Basic",
+        description:
+          "The edit button only appears on hover or focus; Escape restores the previous value instead of committing the draft.",
+      },
+      {
+        demo: "editable/controlled",
+        title: "Controlled",
+        description: "`onSubmit` fires only once a draft is committed, not on every keystroke.",
+      },
+    ],
+  },
+  {
+    slug: "time-picker",
+    name: "Time Picker",
+    category: "Forms",
+    description:
+      "Segmented hour/minute/second fields built on Number Field, so arrow keys and typing both clamp and zero-pad without hand-rolled logic.",
+    examples: [
+      {
+        demo: "time-picker/basic",
+        title: "Basic",
+        description:
+          "Each segment is a `NumberField` with no visible increment/decrement buttons — arrow keys still step it.",
+      },
+      {
+        demo: "time-picker/seconds",
+        title: "With seconds",
+        description: "`showSeconds` adds a third segment.",
+      },
+    ],
+  },
+  {
+    slug: "date-range-picker",
+    name: "Date Range Picker",
+    category: "Forms",
+    description:
+      "A Calendar in range mode inside a Popover, with a formatted trigger and an optional pair of Time Pickers for the range's bounds.",
+    examples: [
+      {
+        demo: "date-range-picker/basic",
+        title: "Basic",
+        description:
+          "Owns its own range state via `value`/`defaultValue`, unlike Date Picker which leaves the Calendar to the caller.",
+      },
+      {
+        demo: "date-range-picker/with-time",
+        title: "With time",
+        description:
+          "`showTime` renders a Time Picker under each end of the range — this is the chain's reason for depending on Time Picker.",
+      },
+    ],
+  },
+  {
     slug: "file-upload",
     name: "File Upload",
     category: "Forms",
