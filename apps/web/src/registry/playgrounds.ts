@@ -639,6 +639,9 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
   "page-header": {
     children: { default: "Team settings", label: "title" },
   },
+  panel: {
+    children: { default: "Notifications", label: "title" },
+  },
 }
 
 export function playgroundFor(slug: string): PlaygroundConfig | undefined {

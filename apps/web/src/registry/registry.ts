@@ -1265,6 +1265,27 @@ export const COMPONENTS: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "panel",
+    name: "Panel",
+    category: "Layout",
+    description:
+      "A flat, bordered section container — Card without the shadow, plus a row part for tightly-packed settings lists.",
+    examples: [
+      {
+        demo: "panel/basic",
+        title: "Basic",
+        description:
+          "PanelHeader and PanelFooter borrow Card's `.border-b`/`.border-t` opt-in: add the utility yourself to draw the rule.",
+      },
+      {
+        demo: "panel/rows",
+        title: "Rows",
+        description:
+          "PanelRow is the case v1's Panel handled with a `rows` boolean — here it is its own part instead of a variant flag.",
+      },
+    ],
+  },
 
   /* -- Disclosure -------------------------------------------------------- */
   {
