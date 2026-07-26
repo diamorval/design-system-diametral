@@ -9,9 +9,20 @@
 // what is measured is what consumers get: minified output, no HMR runtime, and
 // the same Tailwind pass that ships.
 
+import { existsSync, readFileSync } from "node:fs"
+import path from "node:path"
 import { defineConfig } from "@playwright/test"
 
-const PORT = 4173
+// Offset comes from apps/web/.env, written by `make worktree-init` — keeps a
+// lane's preview server off the main checkout's port (and other lanes').
+function portOffset() {
+  const envPath = path.resolve(__dirname, ".env")
+  if (!existsSync(envPath)) return 0
+  const match = readFileSync(envPath, "utf8").match(/^PORT_OFFSET=(\d+)/m)
+  return match ? Number(match[1]) : 0
+}
+
+const PORT = 4173 + portOffset()
 
 export default defineConfig({
   testDir: "tests",
