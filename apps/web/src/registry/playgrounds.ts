@@ -634,6 +634,14 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
   chart: {
     note: "Chart is configured through its `config` object and recharts children, not through enumerable props — so this panel is empty on purpose. The examples below are the documentation.",
   },
+
+  /* -- Data display: lane 2 ------------------------------------------------ */
+  status: {
+    children: { default: "Operational" },
+    variantsFrom: "statusVariants",
+    extras: [{ prop: "pulse", type: "boolean" }],
+    note: "`pulse` belongs to StatusIndicator, not Status.",
+  },
 }
 
 export function playgroundFor(slug: string): PlaygroundConfig | undefined {

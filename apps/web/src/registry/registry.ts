@@ -971,6 +971,27 @@ export const COMPONENTS: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "status",
+    name: "Status",
+    category: "Data display",
+    description:
+      "A dot-and-label state indicator across the shared six-tone family — success, warning, danger, critical, neutral, info.",
+    examples: [
+      {
+        demo: "status/tones",
+        title: "Tones",
+        description:
+          "The dot and label share one `--tone` variable, so they never drift from each other.",
+      },
+      {
+        demo: "status/pulse",
+        title: "Pulse",
+        description:
+          "`pulse` lives on `StatusIndicator`, not `Status` — a live state can still pair with a static label.",
+      },
+    ],
+  },
 
   /* -- Navigation -------------------------------------------------------- */
   {
