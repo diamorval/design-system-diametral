@@ -28,6 +28,30 @@ hot-reloads in the docs site. `publishConfig.exports` swaps those entries to
 `dist/` at pack time — verify packaging with `pnpm --filter @diametral/ui pack`,
 not by reading `exports` alone.
 
+## Parallel worktrees
+
+Running several git worktrees at once (parallel branches, parallel agents)
+needs each one on its own dev/preview ports, or they collide on `5173`/`4173`.
+There's no database or docker-compose in this repo — isolation is just a port
+offset:
+
+```bash
+# from inside a linked worktree
+NAME=lane-1 OFFSET=100 make worktree-init   # writes apps/web/.env
+make worktree-verify                        # confirms it took
+```
+
+`apps/web/.env` (git-ignored) shifts both `vite dev` and `vite preview` —
+and the a11y/visual Playwright suites, which drive `vite preview` — by the
+offset. The main checkout is unaffected (no `.env`, ports stay `5173`/`4173`).
+`dev`/`preview`/`test:a11y`/`test:visual` all refuse to start from a linked
+worktree with no `.env`, and refuse a shell-exported `PORT_OFFSET`/
+`WORKTREE_NAME` that disagrees with it (a stale export from another
+worktree's shell shadowing this one's file).
+
+No schema or migration tool exists in this repo, so the migration-ownership
+discipline that applies to stateful stacks doesn't apply here.
+
 ## Adding components
 
 ```bash
