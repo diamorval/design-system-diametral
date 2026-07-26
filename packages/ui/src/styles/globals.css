@@ -139,6 +139,33 @@
        the same reason --ds-ink-faint is decoupled from --ds-gris. 5.43:1. */
     --ds-info-ink: #0f6d85;
 
+    /* Shared tone family — success/warning/danger/critical/neutral/info, each
+       exposing a uniform `-bg` (tint) and `-ink` (AA-safe text) pair so
+       status/tag/banner/alert never special-case one tone's underlying hue.
+       Every `-ink` value is contrast-checked on both themes below; only the
+       ones that fail as bare text get a value distinct from the base tone. */
+    --ds-success-bg: var(--ds-green-bg);
+    --ds-success-ink: var(--ds-green);
+    --ds-warning-bg: var(--ds-orange-bg);
+    /* Raw --ds-orange only reaches 3.21:1 on white — darkened for light text;
+       it already clears 6.02:1 on dark, so dark reuses the base tone below. */
+    --ds-warning-ink: #a33900;
+    --ds-danger-bg: var(--ds-red-bg);
+    --ds-danger-ink: var(--ds-danger);
+    /* Critical is the vivid brand rouge — distinct from --ds-danger's muted
+       charter red, for the rarer "more severe than danger" case. Raw rouge
+       fails AA as light text (3.76:1 on white); darkened to #c81f00 (5.75:1).
+       Dark keeps a lightened rouge (rouge itself only clears bg-alt at a
+       razor-thin 4.53:1). */
+    --ds-critical: var(--ds-rouge);
+    --ds-critical-bg: rgba(255, 42, 0, 0.08);
+    --ds-critical-ink: #c81f00;
+    /* Neutral reuses the already-verified ink-soft/grey-bg tokens rather than
+       inventing a new grey — both clear AA in both themes today. */
+    --ds-neutral: var(--ds-grey-dark);
+    --ds-neutral-bg: var(--ds-grey-bg);
+    --ds-neutral-ink: var(--ds-ink-soft);
+
     /* Tier 3 — the flat parti pris: override this single value to round the
        entire system at once (shadcn derives every other radius via calc). */
     --ds-radius: 0px;
@@ -221,6 +248,14 @@
     --ds-red-bg: rgba(192, 57, 43, .20);
     --ds-info-bg: rgba(20, 136, 166, .20);
     --ds-grey-bg: rgba(255, 255, 255, .08);
+    /* Tone-family inks that fail (or barely clear) as bare text on dark
+       surfaces once lifted off their light-mode value — see the tier-2
+       comments for each one's light-mode ratio. */
+    --ds-success-ink: #4aab70;
+    --ds-warning-ink: var(--ds-orange);
+    --ds-info-ink: #3fb8d6;
+    --ds-critical-ink: #ff5535;
+    --ds-critical-bg: rgba(255, 42, 0, .18);
 }
 
 @layer base {
