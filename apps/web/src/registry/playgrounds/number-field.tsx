@@ -31,7 +31,7 @@ export default function NumberFieldPlayground({
     <NumberField className="max-w-3xs" defaultValue={3} {...props}>
       <NumberFieldGroup>
         <NumberFieldDecrement />
-        <NumberFieldInput />
+        <NumberFieldInput aria-label="Number field preview" />
         <NumberFieldIncrement />
       </NumberFieldGroup>
     </NumberField>

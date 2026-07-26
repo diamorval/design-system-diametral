@@ -5,9 +5,16 @@ import { Textarea } from "@diametral/ui/components/textarea"
 export default function TextareaBasic() {
   return (
     <div className="flex w-full max-w-sm flex-col gap-4">
-      <Textarea placeholder="Type here — the box grows as you write." />
-      <Textarea rows={4} defaultValue="Four rows to start with." />
-      <Textarea disabled placeholder="Disabled" />
+      <Textarea
+        placeholder="Type here — the box grows as you write."
+        aria-label="Message"
+      />
+      <Textarea
+        rows={4}
+        defaultValue="Four rows to start with."
+        aria-label="Prefilled"
+      />
+      <Textarea disabled placeholder="Disabled" aria-label="Disabled" />
     </div>
   )
 }

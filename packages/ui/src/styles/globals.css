@@ -122,7 +122,7 @@
     --ds-on-accent: var(--ds-blanc);
     --ds-rule: var(--ds-grey);
     --ds-rule-soft: var(--ds-grey-faint);
-    --ds-accent: var(--ds-rouge);
+    --ds-accent: #de2500;
     --ds-accent-bg: var(--ds-orange-bg);
     /* Neutral action surface — the default button fill. Kept separate from
        --ds-ink because dark mode must raise it off the page rather than
@@ -133,6 +133,11 @@
     --ds-success: var(--ds-green);
     --ds-warning: var(--ds-orange);
     --ds-danger: var(--ds-red);
+    /* Text-weight variant of --ds-info. The functional blue is tuned as a
+       surface/accent colour and only reaches 3.78:1 on --ds-bg-alt, so it fails
+       WCAG AA as body text. Mirrors v1's `-ink` convention (css/tokens.css) for
+       the same reason --ds-ink-faint is decoupled from --ds-gris. 5.43:1. */
+    --ds-info-ink: #0f6d85;
 
     /* Tier 3 — the flat parti pris: override this single value to round the
        entire system at once (shadcn derives every other radius via calc). */
@@ -203,8 +208,13 @@
        on --ds-bg and 3.13:1 on --ds-bg-alt, so every `text-destructive` fails
        AA. Smallest lift in the same hue that clears 4.5:1 on all three dark
        surfaces. v1 never needed this because it only paints danger text on
-       --ds-danger-bg; v2 uses it as bare text. */
-    --ds-danger: #e05a4a;
+       --ds-danger-bg; v2 uses it as bare text. A second, smaller lift (this
+       value) was needed on top: the button destructive fill (bg-destructive/20
+       over --ds-bg) and the alert description (text-destructive/90 over
+       --ds-surface) dilute the colour toward its backdrop, which drags
+       contrast back down — #e05a4a only reached 4.21:1 there. #e36a5b clears
+       4.62:1 and 4.73:1 respectively. */
+    --ds-danger: #e36a5b;
     --ds-accent-bg: rgba(255, 42, 0, .16);
     --ds-green-bg: rgba(46, 125, 79, .20);
     --ds-orange-bg: rgba(255, 85, 0, .16);

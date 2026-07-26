@@ -9,10 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "./dialog.js"
-import {
-  InputGroup,
-  InputGroupAddon,
-} from "./input-group.js"
+import { InputGroup, InputGroupAddon } from "./input-group.js"
 import { MagnifyingGlassIcon, CheckIcon } from "@phosphor-icons/react"
 
 function Command({
@@ -136,6 +133,7 @@ function CommandSeparator({
   return (
     <CommandPrimitive.Separator
       data-slot="command-separator"
+      aria-hidden="true"
       className={cn("-mx-1.5 my-1.5 h-px bg-border/50", className)}
       {...props}
     />

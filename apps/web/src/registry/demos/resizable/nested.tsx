@@ -4,9 +4,15 @@ import {
   ResizablePanelGroup,
 } from "@diametral/ui/components/resizable"
 
+// react-resizable-panels wraps each panel's children in its own `overflow:
+// auto` div; `tabIndex` here gives that scrollable region a focusable
+// descendant (see resizable/basic.tsx).
 function Pane({ label }: { label: string }) {
   return (
-    <div className="flex size-full items-center justify-center p-4 text-xs font-semibold tracking-widest uppercase">
+    <div
+      tabIndex={0}
+      className="flex size-full items-center justify-center p-4 text-xs font-semibold tracking-widest uppercase"
+    >
       {label}
     </div>
   )

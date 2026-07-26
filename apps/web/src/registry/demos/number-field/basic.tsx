@@ -17,11 +17,11 @@ export default function NumberFieldBasic() {
   return (
     <div className="flex w-full max-w-xs flex-col gap-8">
       <Field>
-        <FieldLabel>Seats</FieldLabel>
+        <FieldLabel id="number-field-basic-seats-label">Seats</FieldLabel>
         <NumberField defaultValue={3} min={1} max={20}>
           <NumberFieldGroup>
             <NumberFieldDecrement />
-            <NumberFieldInput />
+            <NumberFieldInput aria-labelledby="number-field-basic-seats-label" />
             <NumberFieldIncrement />
           </NumberFieldGroup>
         </NumberField>
@@ -29,7 +29,7 @@ export default function NumberFieldBasic() {
       </Field>
 
       <Field>
-        <FieldLabel>Day rate</FieldLabel>
+        <FieldLabel id="number-field-basic-day-rate-label">Day rate</FieldLabel>
         <NumberField
           defaultValue={850}
           step={50}
@@ -37,7 +37,7 @@ export default function NumberFieldBasic() {
         >
           <NumberFieldGroup>
             <NumberFieldDecrement />
-            <NumberFieldInput />
+            <NumberFieldInput aria-labelledby="number-field-basic-day-rate-label" />
             <NumberFieldIncrement />
           </NumberFieldGroup>
         </NumberField>

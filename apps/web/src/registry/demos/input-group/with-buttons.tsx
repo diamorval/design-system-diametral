@@ -17,6 +17,7 @@ export default function InputGroupWithButtons() {
         <InputGroupInput
           type={visible ? "text" : "password"}
           defaultValue="charte-2026"
+          aria-label="Password"
         />
         <InputGroupAddon align="inline-end">
           <InputGroupButton

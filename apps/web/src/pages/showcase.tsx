@@ -751,8 +751,11 @@ export function Showcase() {
           </Demo>
 
           <Demo label="Slider / InputOTP" className="grid gap-6 sm:grid-cols-2">
-            <Slider defaultValue={40} />
-            <InputOTP maxLength={6}>
+            <span id="ks-slider-label" className="sr-only">
+              Value
+            </span>
+            <Slider defaultValue={40} aria-labelledby="ks-slider-label" />
+            <InputOTP maxLength={6} aria-label="One-time code">
               <InputOTPGroup>
                 <InputOTPSlot index={0} />
                 <InputOTPSlot index={1} />
@@ -804,11 +807,11 @@ export function Showcase() {
             className="grid gap-6 sm:grid-cols-2"
           >
             <Field>
-              <FieldLabel>Quantity</FieldLabel>
+              <FieldLabel id="ks-quantity-label">Quantity</FieldLabel>
               <NumberField defaultValue={3} min={0} max={99}>
                 <NumberFieldGroup>
                   <NumberFieldDecrement />
-                  <NumberFieldInput />
+                  <NumberFieldInput aria-labelledby="ks-quantity-label" />
                   <NumberFieldIncrement />
                 </NumberFieldGroup>
               </NumberField>
@@ -821,20 +824,20 @@ export function Showcase() {
               allValues={["vite", "next", "astro"]}
             >
               <div className="flex items-center gap-2">
-                <Checkbox id="ks-cg-all" parent />
-                <Label htmlFor="ks-cg-all">All frameworks</Label>
+                <Checkbox aria-labelledby="ks-cg-all-label" parent />
+                <Label id="ks-cg-all-label">All frameworks</Label>
               </div>
               <div className="flex items-center gap-2">
-                <Checkbox id="ks-cg-vite" name="vite" />
-                <Label htmlFor="ks-cg-vite">Vite</Label>
+                <Checkbox aria-labelledby="ks-cg-vite-label" name="vite" />
+                <Label id="ks-cg-vite-label">Vite</Label>
               </div>
               <div className="flex items-center gap-2">
-                <Checkbox id="ks-cg-next" name="next" />
-                <Label htmlFor="ks-cg-next">Next.js</Label>
+                <Checkbox aria-labelledby="ks-cg-next-label" name="next" />
+                <Label id="ks-cg-next-label">Next.js</Label>
               </div>
               <div className="flex items-center gap-2">
-                <Checkbox id="ks-cg-astro" name="astro" />
-                <Label htmlFor="ks-cg-astro">Astro</Label>
+                <Checkbox aria-labelledby="ks-cg-astro-label" name="astro" />
+                <Label id="ks-cg-astro-label">Astro</Label>
               </div>
             </CheckboxGroup>
           </Demo>

@@ -12,10 +12,11 @@ function FileUpload({
   accept,
   multiple = false,
   disabled = false,
+  "aria-label": ariaLabel = "Upload files",
   ...props
 }: Omit<
   React.ComponentProps<"div">,
-  "onDrop" | "onDragOver" | "onDragLeave" | "onClick" | "onKeyDown"
+  "onDrop" | "onDragOver" | "onDragLeave" | "onClick"
 > & {
   onFiles?: (files: File[]) => void
   accept?: string
@@ -36,15 +37,7 @@ function FileUpload({
       data-slot="file-upload"
       data-dragging={dragging || undefined}
       data-disabled={disabled || undefined}
-      role="button"
-      tabIndex={disabled ? -1 : 0}
       onClick={() => inputRef.current?.click()}
-      onKeyDown={(event) => {
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault()
-          inputRef.current?.click()
-        }
-      }}
       onDragOver={(event) => {
         event.preventDefault()
         setDragging(true)
@@ -56,17 +49,22 @@ function FileUpload({
         emit(event.dataTransfer.files)
       }}
       className={cn(
-        "flex w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-none border border-dashed border-input bg-transparent px-6 py-10 text-center outline-none transition-colors hover:bg-muted/50 focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30 data-disabled:pointer-events-none data-disabled:opacity-50 data-dragging:border-ring data-dragging:bg-muted/50",
+        "flex w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-none border border-dashed border-input bg-transparent px-6 py-10 text-center transition-colors outline-none hover:bg-muted/50 has-[input:focus-visible]:border-ring has-[input:focus-visible]:ring-2 has-[input:focus-visible]:ring-ring/30 data-dragging:border-ring data-dragging:bg-muted/50 data-disabled:pointer-events-none data-disabled:opacity-50",
         className
       )}
       {...props}
     >
+      {/* The real file input is already focusable and Enter/Space-operable
+          natively, so this wrapper stays a plain div rather than a nested
+          role="button" — a div and an input both being interactive is what
+          triggered the nested-interactive violation. */}
       <input
         ref={inputRef}
         type="file"
         accept={accept}
         multiple={multiple}
         disabled={disabled}
+        aria-label={ariaLabel}
         className="sr-only"
         onChange={(event) => {
           emit(event.target.files)
@@ -123,9 +121,4 @@ function FileUploadDescription({
   )
 }
 
-export {
-  FileUpload,
-  FileUploadIcon,
-  FileUploadTitle,
-  FileUploadDescription,
-}
+export { FileUpload, FileUploadIcon, FileUploadTitle, FileUploadDescription }

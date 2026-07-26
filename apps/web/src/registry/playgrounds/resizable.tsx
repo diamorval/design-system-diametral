@@ -15,13 +15,19 @@ export default function ResizablePlayground(
       {...props}
     >
       <ResizablePanel defaultSize={35} minSize={20}>
-        <div className="flex size-full items-center justify-center p-4 text-xs font-semibold tracking-widest uppercase">
+        <div
+          tabIndex={0}
+          className="flex size-full items-center justify-center p-4 text-xs font-semibold tracking-widest uppercase"
+        >
           Sidebar
         </div>
       </ResizablePanel>
       <ResizableHandle withHandle />
       <ResizablePanel minSize={30}>
-        <div className="flex size-full items-center justify-center p-4 text-xs font-semibold tracking-widest uppercase">
+        <div
+          tabIndex={0}
+          className="flex size-full items-center justify-center p-4 text-xs font-semibold tracking-widest uppercase"
+        >
           Editor
         </div>
       </ResizablePanel>

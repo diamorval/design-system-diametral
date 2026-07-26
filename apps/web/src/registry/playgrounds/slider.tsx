@@ -16,7 +16,10 @@ export default function SliderPlayground({
 
   return (
     <div className="flex h-40 w-full max-w-xs items-center justify-center">
-      <Slider {...props} />
+      <span id="slider-playground-label" className="sr-only">
+        Slider preview
+      </span>
+      <Slider aria-labelledby="slider-playground-label" {...props} />
     </div>
   )
 }
