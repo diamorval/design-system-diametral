@@ -71,8 +71,12 @@ function BannerDescription({
 }: React.ComponentProps<"div">) {
   return (
     <div
+      // No opacity here on purpose: the tone inks clear AA as bare text, but
+      // fading them toward the tint drags contrast back under 4.5:1 — warning
+      // on dark measured 4.35:1 at opacity-90. BannerTitle's font-medium
+      // already carries the hierarchy, so weight does the work instead.
       data-slot="banner-description"
-      className={cn("opacity-90", className)}
+      className={cn(className)}
       {...props}
     />
   )
