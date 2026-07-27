@@ -630,7 +630,8 @@ export const COMPONENTS: ComponentDoc[] = [
       {
         demo: "phone-input/with-field",
         title: "In a field",
-        description: "`defaultCountry` seeds the dial code before any digits are typed.",
+        description:
+          "`defaultCountry` seeds the dial code before any digits are typed.",
       },
     ],
   },
@@ -650,7 +651,8 @@ export const COMPONENTS: ComponentDoc[] = [
       {
         demo: "editable/controlled",
         title: "Controlled",
-        description: "`onSubmit` fires only once a draft is committed, not on every keystroke.",
+        description:
+          "`onSubmit` fires only once a draft is committed, not on every keystroke.",
       },
     ],
   },

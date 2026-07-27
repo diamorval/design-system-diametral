@@ -1,7 +1,11 @@
 import * as React from "react"
 
 import { MultiSelect } from "@diametral/ui/components/multi-select"
-import { Field, FieldDescription, FieldLabel } from "@diametral/ui/components/field"
+import {
+  Field,
+  FieldDescription,
+  FieldLabel,
+} from "@diametral/ui/components/field"
 
 const SCOPES = [
   { value: "read:tokens", label: "read:tokens" },

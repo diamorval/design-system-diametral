@@ -82,7 +82,9 @@ function DateRangePicker({
           mode="range"
           numberOfMonths={numberOfMonths}
           selected={range}
-          onSelect={(next) => setRange(next ?? { from: undefined, to: undefined })}
+          onSelect={(next) =>
+            setRange(next ?? { from: undefined, to: undefined })
+          }
         />
         {showTime && (
           <div

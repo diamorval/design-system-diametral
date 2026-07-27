@@ -34,7 +34,9 @@ const BY_DIAL_CODE = [...COUNTRIES].sort(
 )
 
 function splitValue(phone: string, fallback: CountryCode) {
-  const match = BY_DIAL_CODE.find((country) => phone.startsWith(country.dialCode))
+  const match = BY_DIAL_CODE.find((country) =>
+    phone.startsWith(country.dialCode)
+  )
   if (!match) {
     return { country: fallback, national: phone.replace(/^\+/, "") }
   }
@@ -97,7 +99,7 @@ function PhoneInput({
         <SelectTrigger
           data-slot="phone-input-country"
           aria-label="Country calling code"
-          className="w-fit shrink-0 border-0 pe-2 ps-0"
+          className="w-fit shrink-0 border-0 ps-0 pe-2"
         >
           <SelectValue />
         </SelectTrigger>

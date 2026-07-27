@@ -73,7 +73,10 @@ function TimePicker({
         disabled={disabled}
         className="w-auto"
       >
-        <NumberFieldInput aria-label="Minutes" className="w-8 px-0 text-center" />
+        <NumberFieldInput
+          aria-label="Minutes"
+          className="w-8 px-0 text-center"
+        />
       </NumberField>
       {showSeconds && (
         <>

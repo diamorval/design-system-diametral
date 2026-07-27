@@ -67,7 +67,11 @@ function MultiSelect({
       onValueChange={setSelected}
       disabled={disabled}
     >
-      <ComboboxChips ref={anchor} data-slot="multi-select" className={className}>
+      <ComboboxChips
+        ref={anchor}
+        data-slot="multi-select"
+        className={className}
+      >
         <ComboboxValue>
           {(values: string[]) =>
             values.map((item) => (

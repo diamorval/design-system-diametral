@@ -1,5 +1,9 @@
 import { TagsInput } from "@diametral/ui/components/tags-input"
-import { Field, FieldDescription, FieldLabel } from "@diametral/ui/components/field"
+import {
+  Field,
+  FieldDescription,
+  FieldLabel,
+} from "@diametral/ui/components/field"
 
 // `max` stops new tags once the count is reached — existing tags stay
 // removable, only `addTag` is blocked.

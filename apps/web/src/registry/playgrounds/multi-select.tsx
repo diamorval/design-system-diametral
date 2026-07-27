@@ -10,7 +10,7 @@ const OPTIONS = [
 ]
 
 export default function MultiSelectPlayground(
-  props: ComponentProps<typeof MultiSelect>
+  props: Omit<ComponentProps<typeof MultiSelect>, "options">
 ) {
   return <MultiSelect options={OPTIONS} {...props} />
 }

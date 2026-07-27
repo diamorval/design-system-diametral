@@ -22,7 +22,10 @@ function Editable({
   disabled = false,
   submitOnBlur = true,
   ...props
-}: Omit<React.ComponentProps<"div">, "onChange" | "defaultValue"> & {
+}: Omit<
+  React.ComponentProps<"div">,
+  "onChange" | "defaultValue" | "onSubmit"
+> & {
   value?: string
   defaultValue?: string
   onValueChange?: (value: string) => void
@@ -132,7 +135,7 @@ function Editable({
         aria-label="Edit"
         disabled={disabled}
         onClick={startEditing}
-        className="opacity-0 focus-visible:opacity-100 group-hover/editable:opacity-100"
+        className="opacity-0 group-hover/editable:opacity-100 focus-visible:opacity-100"
       >
         <PencilSimpleIcon />
       </Button>
