@@ -50,8 +50,11 @@ const statCardDeltaVariants = cva(
   {
     variants: {
       direction: {
-        up: "text-[var(--ds-success)]",
-        down: "text-[var(--ds-danger)]",
+        // The `-ink` variants, not the bare tones: --ds-success is tuned as a
+        // surface colour and only reaches 3.82:1 on dark's --ds-bg, which fails
+        // AA as text. --ds-success-ink is the text-weight value (6.75:1).
+        up: "text-[var(--ds-success-ink)]",
+        down: "text-[var(--ds-danger-ink)]",
       },
     },
   }
