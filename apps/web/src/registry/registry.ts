@@ -992,6 +992,137 @@ export const COMPONENTS: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "tag",
+    name: "Tag",
+    category: "Data display",
+    description:
+      'A boxed, tinted label across the shared six-tone family. Absorbs v1\'s Chip, whose one boolean `warn` axis is now `tone="warning"`.',
+    examples: [
+      { demo: "tag/tones", title: "Tones" },
+      {
+        demo: "tag/in-context",
+        title: "In a list",
+        description: "Where tags usually live: the status column of a row.",
+      },
+    ],
+  },
+  {
+    slug: "description-list",
+    name: "Description List",
+    category: "Data display",
+    description:
+      "Term/detail pairs for record summaries. Renders a real `dl`, so the pairing survives without sight of the layout.",
+    examples: [
+      { demo: "description-list/basic", title: "Basic" },
+      {
+        demo: "description-list/in-card",
+        title: "In a card",
+        description: "Its most common home: the summary block of a record.",
+      },
+    ],
+  },
+  {
+    slug: "stat-card",
+    name: "Stat Card",
+    category: "Data display",
+    description:
+      "A single headline figure with an optional signed delta and sparkline.",
+    examples: [
+      { demo: "stat-card/basic", title: "Basic" },
+      {
+        demo: "stat-card/with-delta",
+        title: "With a delta",
+        description:
+          "The arrow is decorative — the signed figure carries the direction, so colour is never the only cue.",
+      },
+      {
+        demo: "stat-card/with-spark",
+        title: "With a sparkline",
+        description:
+          "The spark is a trend hint, not a chart: no axes, no tooltip. Reach for `chart` when values must be read.",
+      },
+    ],
+  },
+  {
+    slug: "relative-time",
+    name: "Relative Time",
+    category: "Data display",
+    description:
+      'Renders "3 hours ago" from a date, inside a `time` element that keeps the machine-readable timestamp.',
+    examples: [
+      { demo: "relative-time/basic", title: "Basic" },
+      {
+        demo: "relative-time/static",
+        title: "In a table",
+        description:
+          "Where relative stamps earn their keep: a column of them scans faster than absolute dates.",
+      },
+    ],
+  },
+  {
+    slug: "gauge",
+    name: "Gauge",
+    category: "Data display",
+    description:
+      "A radial progress dial for a bounded value, with optional thresholds that recolour the arc.",
+    examples: [
+      { demo: "gauge/basic", title: "Basic" },
+      {
+        demo: "gauge/thresholds",
+        title: "Thresholds",
+        description:
+          "The last threshold the value reaches wins, so list them ascending.",
+      },
+    ],
+  },
+  {
+    slug: "code-block",
+    name: "Code Block",
+    category: "Data display",
+    description:
+      "A framed code surface with a filename head and copy button. Highlighter-agnostic: it takes pre-highlighted HTML, so the package pulls in no syntax highlighter of its own.",
+    examples: [
+      { demo: "code-block/basic", title: "Basic" },
+      {
+        demo: "code-block/with-html",
+        title: "Pre-highlighted",
+        description:
+          "Hand the component markup your own highlighter produced — this docs app uses Shiki, which stays entirely on its side.",
+      },
+    ],
+  },
+  {
+    slug: "snippet",
+    name: "Snippet",
+    category: "Data display",
+    description:
+      "A one-line copyable command. Shares Code Block's copy affordance rather than restating it.",
+    examples: [
+      { demo: "snippet/basic", title: "Basic" },
+      {
+        demo: "snippet/in-context",
+        title: "In context",
+        description: "The install line that opens most documentation pages.",
+      },
+    ],
+  },
+  {
+    slug: "qr-code",
+    name: "QR Code",
+    category: "Data display",
+    description:
+      "Renders a QR code as inline SVG from a hand-rolled byte-mode encoder — no dependency, no network, no canvas. Versions 1-10, all four correction levels.",
+    examples: [
+      { demo: "qr-code/basic", title: "Basic" },
+      {
+        demo: "qr-code/levels",
+        title: "Correction levels",
+        description:
+          "Higher correction survives more damage but holds less data: L 271 bytes down to H 119.",
+      },
+    ],
+  },
 
   /* -- Navigation -------------------------------------------------------- */
   {
