@@ -34,6 +34,10 @@ function MultiSelect({
   placeholder = "Select…",
   emptyText = "No results found.",
   disabled = false,
+  // The chips input is the form control that needs the name — a label on the
+  // Combobox root doesn't reach it, so these are declared here and routed down.
+  "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledBy,
 }: {
   options: MultiSelectOption[]
   value?: string[]
@@ -43,6 +47,8 @@ function MultiSelect({
   emptyText?: string
   disabled?: boolean
   className?: string
+  "aria-label"?: string
+  "aria-labelledby"?: string
 }) {
   const [selected, setSelected] = useControllableValue<string[]>({
     value,
@@ -80,6 +86,8 @@ function MultiSelect({
           }
         </ComboboxValue>
         <ComboboxChipsInput
+          aria-label={ariaLabel}
+          aria-labelledby={ariaLabelledBy}
           placeholder={selected.length === 0 ? placeholder : undefined}
         />
       </ComboboxChips>

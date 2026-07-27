@@ -20,8 +20,13 @@ export default function MultiSelectControlled() {
 
   return (
     <Field className="max-w-sm">
-      <FieldLabel>Scopes</FieldLabel>
-      <MultiSelect options={SCOPES} value={value} onValueChange={setValue} />
+      <FieldLabel id="multi-select-controlled-scopes-label">Scopes</FieldLabel>
+      <MultiSelect
+        options={SCOPES}
+        value={value}
+        onValueChange={setValue}
+        aria-labelledby="multi-select-controlled-scopes-label"
+      />
       <FieldDescription>{value.length} scope(s) selected.</FieldDescription>
     </Field>
   )

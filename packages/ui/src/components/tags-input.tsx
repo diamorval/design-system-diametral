@@ -18,6 +18,11 @@ function TagsInput({
   placeholder,
   disabled = false,
   max,
+  // Routed to the inner input, not the wrapper: the input is the form control
+  // axe checks for a name, and a label on the surrounding div doesn't give it
+  // one. Same reason Slider forwards these down to its Base UI input.
+  "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledBy,
   ...props
 }: Omit<React.ComponentProps<"div">, "onChange" | "defaultValue"> & {
   value?: string[]
@@ -91,6 +96,8 @@ function TagsInput({
         ref={inputRef}
         data-slot="tags-input-field"
         type="text"
+        aria-label={ariaLabel}
+        aria-labelledby={ariaLabelledBy}
         value={draft}
         placeholder={tags.length === 0 ? placeholder : undefined}
         disabled={disabled}

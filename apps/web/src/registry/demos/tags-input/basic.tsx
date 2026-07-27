@@ -10,10 +10,11 @@ import {
 export default function TagsInputBasic() {
   return (
     <Field className="max-w-sm">
-      <FieldLabel>Keywords</FieldLabel>
+      <FieldLabel id="tags-input-basic-keywords-label">Keywords</FieldLabel>
       <TagsInput
         defaultValue={["design-system", "react"]}
         placeholder="Add a keyword…"
+        aria-labelledby="tags-input-basic-keywords-label"
       />
       <FieldDescription>Press Enter or comma to add a tag.</FieldDescription>
     </Field>

@@ -11,5 +11,16 @@ export default function TagsInputPlayground({
     ...(max ? { max: Number(max) } : {}),
   }
 
-  return <TagsInput defaultValue={["design-system"]} {...props} />
+  return (
+    <>
+      <span id="tags-input-playground-label" className="sr-only">
+        Tags
+      </span>
+      <TagsInput
+        defaultValue={["design-system"]}
+        aria-labelledby="tags-input-playground-label"
+        {...props}
+      />
+    </>
+  )
 }

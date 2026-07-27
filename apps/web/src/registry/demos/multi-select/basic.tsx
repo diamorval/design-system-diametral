@@ -14,8 +14,12 @@ const SKILLS = [
 export default function MultiSelectBasic() {
   return (
     <Field className="max-w-sm">
-      <FieldLabel>Skills</FieldLabel>
-      <MultiSelect options={SKILLS} defaultValue={["react"]} />
+      <FieldLabel id="multi-select-basic-skills-label">Skills</FieldLabel>
+      <MultiSelect
+        options={SKILLS}
+        defaultValue={["react"]}
+        aria-labelledby="multi-select-basic-skills-label"
+      />
     </Field>
   )
 }
