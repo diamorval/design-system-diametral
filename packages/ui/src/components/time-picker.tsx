@@ -42,15 +42,16 @@ const outerMarkClassName = "size-7 text-xs"
 const innerMarkClassName = "size-6 text-[0.6875rem] text-muted-foreground"
 
 // The hand sweeps, so it needs a continuous angle rather than a modular one:
-// 55 → 00 minutes has to travel 30° forward, not 330° back.
+// 55 → 00 minutes has to travel 30° forward, not 330° back. The accumulation
+// lives in state and advances in an effect so render stays pure — the CSS
+// transition already runs a frame late, so folding the target in post-commit is
+// invisible.
 function useSweptAngle(target: number) {
-  const angle = React.useRef<number | null>(null)
-  if (angle.current === null) {
-    angle.current = target
-  } else {
-    angle.current += ((((target - angle.current) % 360) + 540) % 360) - 180
-  }
-  return angle.current
+  const [angle, setAngle] = React.useState(target)
+  React.useEffect(() => {
+    setAngle((prev) => prev + ((((target - prev) % 360) + 540) % 360) - 180)
+  }, [target])
+  return angle
 }
 
 function TimeDial({
