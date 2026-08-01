@@ -21,6 +21,25 @@
  */
 export type SelectOption = string | { value: string; label: string }
 
+/**
+ * A `YYYY-MM-DD HH:mm:ss` stamp in local time — the shape a SQL `updated_at`
+ * arrives in. Local rather than UTC because a value carrying no zone is read as
+ * local, so a UTC stamp here would render hours off for anyone outside UTC.
+ *
+ * Fixed at module load: the Relative Time panel needs a start that is recent
+ * whenever the page is opened, and one that holds still while the panel is
+ * driven.
+ */
+function sqlStamp(date: Date) {
+  const pad = (part: number) => String(part).padStart(2, "0")
+  return (
+    `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ` +
+    `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`
+  )
+}
+
+export const TWELVE_MINUTES_AGO = sqlStamp(new Date(Date.now() - 12 * 60_000))
+
 export type Control =
   | { prop: string; type: "boolean"; label?: string; always?: boolean }
   | {
@@ -28,6 +47,13 @@ export type Control =
       type: "text"
       label?: string
       placeholder?: string
+      /**
+       * Starting value, for props the component *requires* — without one a text
+       * control starts empty, which prints nothing and leaves the snippet short
+       * of a prop the preview is plainly rendering. Clearing the field returns
+       * to it, since an empty required prop is not a state worth holding.
+       */
+      default?: string
       always?: boolean
     }
   | {
@@ -744,18 +770,19 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
     extras: [{ prop: "direction", type: "select", options: ["up", "down"] }],
   },
   "relative-time": {
-    note: "The real prop is a `Date` or ISO string; this panel picks a preset offset from a fixed clock so the output stays stable.",
+    note: "`date` takes a row value as it comes: a SQL `2026-08-02 09:12:00`, an ISO string, epoch milliseconds, or a `Date`. Microseconds and a `+02` zone are normalised too. A stamp with no zone counts as local time — append `Z` if the column stores UTC. Leaving `locale` on `—` follows the browser, which is what an app usually wants.",
     extras: [
       {
         prop: "date",
-        type: "select",
-        options: [
-          "12 minutes ago",
-          "5 seconds ago",
-          "3 hours ago",
-          "2 days ago",
-        ],
+        type: "text",
+        placeholder: "2026-08-02 09:12:00",
+        default: TWELVE_MINUTES_AGO,
         always: true,
+      },
+      {
+        prop: "locale",
+        type: "select",
+        options: ["—", "en-GB", "en-US", "fr", "de", "ja"],
       },
     ],
   },
