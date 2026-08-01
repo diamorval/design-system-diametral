@@ -710,6 +710,7 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
   wordmark: {
     note: "The lockup SVGs already contain the wordmark text as vector paths — recolour with text-* utilities, don't restyle the text separately.",
     variantsFrom: "wordmarkVariants",
+    extras: [{ prop: "label", type: "text", placeholder: "Diametral" }],
   },
   "theme-switcher": {
     note: "value/onValueChange are required, so the playground holds its own state to make the panel interactive — nothing here reaches the real app theme.",

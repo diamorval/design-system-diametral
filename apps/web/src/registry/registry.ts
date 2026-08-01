@@ -1434,6 +1434,10 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Layout",
     description:
       "The Diametral logo lockup from @diametral/assets, inlined so it recolours with the surrounding text.",
+    intro: [
+      "Wordmark renders the Diametral lockup as inline JSX, so app chrome — headers, footers, auth screens, empty states — never touches a raw asset file. Two lockups: `horizontal` is the full name, `square` sets it inside the symbol for avatar- and app-icon-sized placements.",
+      "The paths are `currentColor`, so `text-*` utilities recolour the mark exactly like text and there is no light/dark SVG pair to swap. `@diametral/assets` remains the canonical source for non-React consumers such as email and raster exports.",
+    ],
     examples: [
       {
         demo: "wordmark/basic",
@@ -1447,7 +1451,17 @@ export const COMPONENTS: ComponentDoc[] = [
         description:
           "The wordmark set inside the symbol, for avatar and app-icon-style placements.",
       },
+      {
+        demo: "wordmark/app-header",
+        title: "Beside a text label",
+        description:
+          'When the mark sits next to text that already says "Diametral", pass `label=""` — the SVG drops out of the accessibility tree instead of announcing the name twice.',
+      },
     ],
+    parts: {
+      Wordmark:
+        '`label` is the accessible name. Pass `label=""` to make the mark decorative when adjacent text already names it — otherwise screen readers hear "Diametral" twice.',
+    },
   },
   {
     slug: "theme-switcher",
