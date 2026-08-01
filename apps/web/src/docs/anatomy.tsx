@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { anatomy as ANATOMY } from "virtual:demo-source"
 
 import {

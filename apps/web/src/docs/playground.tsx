@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import * as React from "react"
 import { useSearchParams } from "react-router"
 import { CheckIcon, CopyIcon } from "@phosphor-icons/react"
