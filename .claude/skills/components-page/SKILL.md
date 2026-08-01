@@ -34,7 +34,7 @@ Conventions (full worked demos are in `references/exemplar.md`, Surface 2):
 
 - Default-export a single component named `<Component><UseCase>` (e.g. `PanelFormSection`).
 - Realistic content — real labels, plausible values, working sub-components (a footer with `Cancel`/`Save` buttons, not `<Button>Action</Button>`). The demo's code is shown verbatim in the Code tab, so it doubles as copy-paste documentation.
-- One top-of-file comment stating the non-obvious why (a constraint or interaction), never what the JSX does.
+- **No comments.** The demo's code is shown verbatim in the Code tab and reads as copy-paste output; a non-obvious why belongs in the registry example `description`, not in the file.
 - Constrain width on the demo root (`w-full max-w-sm`-style), not the preview.
 
 **Choosing the example set**: cover the component's distinct *shapes of use*, not its prop matrix. The exemplar's set — Basic (self-contained summary), Settings rows (a divided list), Form section (fields + acting footer) — each answers "when would I build this?". Variant sweeps (sizes, tones) earn a demo only when the axis is the component's point. Three to five examples is the healthy range.

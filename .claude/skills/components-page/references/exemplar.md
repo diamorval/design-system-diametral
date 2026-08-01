@@ -61,7 +61,8 @@ backticks; `parts` only speaks where nesting can't show the constraint.
 
 ## Surface 2 — Demo files (`demos/<slug>/*.tsx`)
 
-Each demo: one top-of-file comment stating a non-obvious *why*, realistic
+Each demo: no comments (the file is shown verbatim in the Code tab — any
+non-obvious *why* goes in the registry example `description`), realistic
 content (real labels, working sub-components), width constrained on the demo
 root, default export named `<Component><UseCase>`. The set covers shapes of
 use — summary block, settings list, form group — not a prop matrix.
@@ -78,9 +79,6 @@ import {
   PanelTitle,
 } from "@diametral/ui/components/panel"
 
-// Flat and bordered, no shadow — the surface Card reserves for elevated
-// content. PanelHeader/PanelFooter borrow Card's `.border-b`/`.border-t`
-// opt-in: add the utility yourself to draw the rule.
 export default function PanelBasic() {
   return (
     <Panel className="w-full max-w-sm">
@@ -122,8 +120,6 @@ const SETTINGS = [
   { id: "mentions", label: "Mentions", on: true },
 ]
 
-// PanelRow already carries its own horizontal padding, so PanelContent drops
-// its own with `px-0` rather than the two stacking.
 export default function PanelRows() {
   return (
     <Panel className="w-full max-w-sm">
@@ -165,9 +161,6 @@ import {
   PanelTitle,
 } from "@diametral/ui/components/panel"
 
-// The footer is where a form section differs from a summary panel: the
-// actions live inside the boundary, so the `border-t` rule separates them
-// from the fields they commit.
 export default function PanelFormSection() {
   return (
     <Panel className="w-full max-w-sm">
