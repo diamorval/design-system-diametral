@@ -1360,20 +1360,34 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Layout",
     description:
       "A multi-column layout that balances items of uneven height, via CSS columns rather than a JS measurement pass.",
+    intro: [
+      "Masonry packs children of uneven height into balanced columns — the pinboard layout a plain grid cannot produce without leaving gaps under the short items. Reach for it when the children are self-contained tiles (cards, images, notes) and reading order across columns does not matter.",
+      "It is CSS multi-column underneath, not a JS measurement pass: `columns` becomes a `--columns` custom property, so any integer works, and items flow down each column in source order — the first children fill the left column rather than the top row. Each child gets `break-inside-avoid`, so a tile never splits across two columns.",
+    ],
     examples: [
       {
         demo: "masonry/basic",
         title: "Basic",
         description:
-          "`columns` becomes a `--columns` custom property, so any integer works — there is no fixed breakpoint list.",
+          "Uneven blocks balancing into three columns. The numbering makes the column-first flow visible — item 2 sits below item 1, not beside it.",
       },
       {
         demo: "masonry/with-cards",
-        title: "Cards",
+        title: "Card wall",
         description:
-          "Cards of uneven height are the case columns exist for — a plain grid would leave ragged gaps under the short ones.",
+          "A wall of cards with bodies of different lengths — the case columns exist for, where a plain grid would leave ragged gaps under the short ones.",
+      },
+      {
+        demo: "masonry/gallery",
+        title: "Media gallery",
+        description:
+          "Mixed-ratio media tiles: each `AspectRatio` child sizes itself, so portrait and landscape frames interleave without a row grid forcing them to share a height.",
       },
     ],
+    parts: {
+      Masonry:
+        "Spacing lives on the children (`*:mb-4 *:break-inside-avoid`), so a child carrying its own margin fights the rhythm — and source order flows down columns, not across rows.",
+    },
   },
   {
     slug: "banner",
