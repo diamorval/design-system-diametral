@@ -1033,6 +1033,33 @@ export const COMPONENTS: ComponentDoc[] = [
     ],
   },
   {
+    slug: "toc",
+    name: "Toc",
+    category: "Navigation",
+    description:
+      "The in-page anchor rail — a sticky list of the sections on the current page.",
+    examples: [
+      {
+        demo: "toc/basic",
+        title: "Basic",
+        description:
+          'The root is a `<nav>` labelled "On this page", so it lands in the landmark list; `TocLabel` is the visible echo of that name. Each link pulls its own border over the list\'s rail with `-ms-px`, so hovering lights a segment instead of drawing a second line.',
+      },
+      {
+        demo: "toc/current-section",
+        title: "Current section",
+        description:
+          "No scroll-spy is built in — the component holds no state. Mark the active entry with `aria-current` and style it with the `aria-[current]:` variant.",
+      },
+      {
+        demo: "toc/nested",
+        title: "Nested sections",
+        description:
+          "`level` is depth in the list, not heading rank — 1 is a section, 2 a subsection. It indents the link's text while leaving its border on the rail, so depth reads as one line with steps rather than a second, indented rail.",
+      },
+    ],
+  },
+  {
     slug: "navigation-menu",
     name: "Navigation Menu",
     category: "Navigation",

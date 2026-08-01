@@ -10,6 +10,13 @@ import {
   EmptyHeader,
   EmptyTitle,
 } from "@diametral/ui/components/empty"
+import {
+  Toc,
+  TocItem,
+  TocLabel,
+  TocLink,
+  TocList,
+} from "@diametral/ui/components/toc"
 
 import { ExampleBlock } from "@/docs/example"
 import { Playground } from "@/docs/playground"
@@ -134,33 +141,23 @@ export function ComponentPage() {
       </article>
 
       {(playground ? 1 : 0) + examples.length > 1 ? (
-        <nav className="sticky top-8 hidden h-fit w-44 shrink-0 xl:block">
-          <p className="mb-3 font-mono text-[11px] tracking-wide text-muted-foreground uppercase">
-            On this page
-          </p>
-          <ul className="flex flex-col gap-2 border-s border-border">
+        <Toc className="hidden xl:block">
+          <TocLabel>On this page</TocLabel>
+          <TocList>
             {playground ? (
-              <li>
-                <a
-                  href="#playground"
-                  className="-ms-px block border-s border-transparent ps-3 text-sm text-muted-foreground hover:border-foreground hover:text-foreground"
-                >
-                  Playground
-                </a>
-              </li>
+              <TocItem>
+                <TocLink href="#playground">Playground</TocLink>
+              </TocItem>
             ) : null}
             {examples.map((example) => (
-              <li key={example.demo}>
-                <a
-                  href={`#${exampleAnchor(example)}`}
-                  className="-ms-px block border-s border-transparent ps-3 text-sm text-muted-foreground hover:border-foreground hover:text-foreground"
-                >
+              <TocItem key={example.demo}>
+                <TocLink href={`#${exampleAnchor(example)}`}>
                   {example.title}
-                </a>
-              </li>
+                </TocLink>
+              </TocItem>
             ))}
-          </ul>
-        </nav>
+          </TocList>
+        </Toc>
       ) : null}
     </div>
   )
