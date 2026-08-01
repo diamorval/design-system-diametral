@@ -14,6 +14,13 @@
  * `value` — where omitting it at the default would emit code that does not
  * compile. Optional props should leave it off so an untouched panel prints clean.
  */
+/**
+ * A plain string is both the value and its own label. `{ value, label }` splits
+ * them — e.g. the real component name as the value the code prints (`GearIcon`)
+ * against a shorter label the panel shows (`Gear`).
+ */
+export type SelectOption = string | { value: string; label: string }
+
 export type Control =
   | { prop: string; type: "boolean"; label?: string; always?: boolean }
   | {
@@ -26,9 +33,16 @@ export type Control =
   | {
       prop: string
       type: "select"
-      options: string[]
+      options: SelectOption[]
       label?: string
       always?: boolean
+      /**
+       * The value names a component rather than a prop value: it is substituted
+       * into the playground's `{prop}` marker as `<Value />` instead of being
+       * printed as an attribute. The playground file must render the matching
+       * component itself — the panel only passes the name through.
+       */
+      marker?: "element"
     }
 
 export type PlaygroundConfig = {
@@ -42,6 +56,12 @@ export type PlaygroundConfig = {
    * inside MarkerContent, Checkbox inside its Label.
    */
   children?: { default: string; label?: string }
+  /**
+   * Additional editable text markers beyond `children` — each key needs its own
+   * literal `{key}` marker in the playground's JSX. Tracked in the generated
+   * snippet exactly like `children` is.
+   */
+  texts?: Record<string, { default: string; label?: string }>
   /** Shown above the controls when the subject needs explaining. */
   note?: string
 }
@@ -633,6 +653,73 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
   },
   chart: {
     note: "Chart is configured through its `config` object and recharts children, not through enumerable props — so this panel is empty on purpose. The examples below are the documentation.",
+  },
+
+  /* -- Layout & chrome (lane 3) -------------------------------------------- */
+  "page-header": {
+    children: { default: "Team settings", label: "title" },
+    texts: {
+      description: { default: "Manage members, roles and billing." },
+      action: { default: "Invite" },
+    },
+    note: "PageHeader has no prop bag, only slots — the controls drive its parts rather than a props object.",
+    extras: [
+      {
+        prop: "icon",
+        type: "select",
+        marker: "element",
+        options: [
+          { value: "UsersIcon", label: "Users" },
+          { value: "GearIcon", label: "Gear" },
+        ],
+      },
+    ],
+  },
+  panel: {
+    children: { default: "Notifications", label: "title" },
+    texts: {
+      description: { default: "Choose which updates land in your inbox." },
+      row: { default: "Email alerts", label: "row label" },
+      action: { default: "Manage", label: "footer action" },
+    },
+    note: "`size` is not a cva axis — it rewrites `--panel-spacing`, so it retunes the padding of every part at once.",
+    extras: [{ prop: "size", type: "select", options: ["default", "sm"] }],
+  },
+  masonry: {
+    note: "`columns` becomes a `--columns` custom property, so any integer works — there is no fixed breakpoint list.",
+    extras: [
+      {
+        prop: "columns",
+        type: "select",
+        options: ["3", "2", "4"],
+        always: true,
+      },
+    ],
+  },
+  banner: {
+    children: { default: "Scheduled maintenance", label: "title" },
+    texts: {
+      description: {
+        default:
+          "The staging environment is unavailable from 10pm to midnight UTC.",
+      },
+      action: { default: "View status", label: "action label" },
+    },
+    variantsFrom: "bannerVariants",
+  },
+  wordmark: {
+    note: "The lockup SVGs already contain the wordmark text as vector paths — recolour with text-* utilities, don't restyle the text separately.",
+    variantsFrom: "wordmarkVariants",
+  },
+  "theme-switcher": {
+    note: "value/onValueChange are required, so the playground holds its own state to make the panel interactive — nothing here reaches the real app theme.",
+    extras: [
+      {
+        prop: "variant",
+        type: "select",
+        options: ["segmented", "cycle", "dropdown"],
+      },
+    ],
   },
 
   /* -- Data display: lane 2 ------------------------------------------------ */

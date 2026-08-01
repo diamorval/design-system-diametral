@@ -5,6 +5,11 @@ import { codeToHtml } from "shiki"
 import type { Plugin } from "vite"
 
 import {
+  extractAnatomy,
+  type Anatomy,
+  type AnatomySource,
+} from "./extract-anatomy"
+import {
   extractPlaygroundBindings,
   extractTemplate,
   extractVariants,
@@ -65,7 +70,10 @@ async function buildDemos() {
   const entries = await Promise.all(
     files.map(async (file) => {
       const code = (await fs.readFile(file, "utf8")).trimEnd()
-      return [toKey(file, DEMOS_DIR), { code, html: await highlight(code) }] as const
+      return [
+        toKey(file, DEMOS_DIR),
+        { code, html: await highlight(code) },
+      ] as const
     })
   )
   return Object.fromEntries(entries)
@@ -77,7 +85,9 @@ async function buildDemos() {
  * throws — a rename in packages/ui must not quietly hollow out a control panel.
  */
 async function buildPlaygrounds() {
-  const declarationsText = await fs.readFile(DECLARATIONS, "utf8").catch(() => "")
+  const declarationsText = await fs
+    .readFile(DECLARATIONS, "utf8")
+    .catch(() => "")
   const bindings = declarationsText
     ? extractPlaygroundBindings(DECLARATIONS, declarationsText)
     : {}
@@ -122,6 +132,48 @@ async function buildPlaygrounds() {
   return { variants, templates }
 }
 
+/**
+ * The composition grammar of every component, merged from its demos, its
+ * playground and its own source. Derived rather than declared: 432 parts across
+ * 80 components is more than anyone will keep true by hand, and the demos
+ * already are the truth.
+ */
+async function buildAnatomy() {
+  const componentFiles = (await listFiles(UI_COMPONENTS)).sort()
+  const anatomy: Record<string, Anatomy> = {}
+
+  for (const file of componentFiles) {
+    const slug = path.basename(file, ".tsx")
+    const demoFiles = (await listFiles(path.join(DEMOS_DIR, slug))).sort()
+    const sources: AnatomySource[] = await Promise.all(
+      demoFiles.map(async (demo) => ({
+        label: toKey(demo, DEMOS_DIR),
+        fileName: demo,
+        text: await fs.readFile(demo, "utf8"),
+      }))
+    )
+
+    const playground = path.join(PLAYGROUNDS_DIR, `${slug}.tsx`)
+    const playgroundText = await fs
+      .readFile(playground, "utf8")
+      .catch(() => undefined)
+    if (playgroundText !== undefined) {
+      sources.push({
+        label: "playground",
+        fileName: playground,
+        text: playgroundText,
+      })
+    }
+
+    anatomy[slug] = extractAnatomy(
+      { fileName: file, text: await fs.readFile(file, "utf8") },
+      sources
+    )
+  }
+
+  return anatomy
+}
+
 export function demoSource(): Plugin {
   return {
     name: "diametral:demo-source",
@@ -132,15 +184,17 @@ export function demoSource(): Plugin {
 
     async load(id) {
       if (id !== RESOLVED_ID) return
-      const [sources, playgrounds] = await Promise.all([
+      const [sources, playgrounds, anatomy] = await Promise.all([
         buildDemos(),
         buildPlaygrounds(),
+        buildAnatomy(),
       ])
       return [
         `export const sources = ${JSON.stringify(sources)}`,
         `export const palette = ${JSON.stringify(palette)}`,
         `export const variants = ${JSON.stringify(playgrounds.variants)}`,
         `export const templates = ${JSON.stringify(playgrounds.templates)}`,
+        `export const anatomy = ${JSON.stringify(anatomy)}`,
       ].join("\n")
     },
 
