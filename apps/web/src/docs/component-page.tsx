@@ -166,7 +166,12 @@ export function ComponentPage() {
       </article>
 
       {(playground ? 1 : 0) + examples.length > 1 ? (
-        <Toc className="hidden xl:block">
+        <Toc
+          // The layout header is sticky at top-0 and 3.75rem tall (py-3 + h-9),
+          // so the rail parks below it keeping the 2.5rem of main padding it
+          // starts with rather than sliding under the header.
+          className="hidden xl:top-25 xl:block"
+        >
           <TocLabel>On this page</TocLabel>
           <TocList>
             {playground ? (
