@@ -721,6 +721,82 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
       },
     ],
   },
+
+  /* -- Data display: lane 2 ------------------------------------------------ */
+  status: {
+    children: { default: "Operational" },
+    variantsFrom: "statusVariants",
+    extras: [{ prop: "pulse", type: "boolean" }],
+    note: "`pulse` belongs to StatusIndicator, not Status.",
+  },
+  tag: {
+    children: { default: "In review" },
+    variantsFrom: "tagVariants",
+  },
+  "description-list": {
+    note: "The parts are plain dt/dd elements with no variant axis — composition is the API, so only the first term is editable here.",
+    children: { default: "Client", label: "term" },
+  },
+  "stat-card": {
+    note: "`direction` belongs to StatCardDelta, not StatCard; the panel routes it there.",
+    children: { default: "Missions actives", label: "label" },
+    texts: { value: { default: "1 284", label: "figure" } },
+    extras: [{ prop: "direction", type: "select", options: ["up", "down"] }],
+  },
+  "relative-time": {
+    note: "The real prop is a `Date` or ISO string; this panel picks a preset offset from a fixed clock so the output stays stable.",
+    extras: [
+      {
+        prop: "date",
+        type: "select",
+        options: [
+          "12 minutes ago",
+          "5 seconds ago",
+          "3 hours ago",
+          "2 days ago",
+        ],
+        always: true,
+      },
+    ],
+  },
+  gauge: {
+    note: "The arc fills by fraction, so `value` only reads as a percentage while `max` stays at 100.",
+    extras: [
+      {
+        prop: "value",
+        type: "select",
+        options: ["62", "0", "25", "88", "100"],
+        always: true,
+      },
+      { prop: "max", type: "select", options: ["100", "10", "256", "500"] },
+      { prop: "label", type: "text", placeholder: "CPU" },
+    ],
+  },
+  "code-block": {
+    note: "Highlighter-agnostic: `CodeBlockBody` takes plain `code` or pre-highlighted `html`. The parts carry no variant axis, so only the filename is editable here.",
+    children: { default: "terminal", label: "filename" },
+  },
+  snippet: {
+    extras: [
+      {
+        prop: "value",
+        type: "text",
+        placeholder: "pnpm add @diametral/ui",
+        always: true,
+      },
+    ],
+  },
+  "qr-code": {
+    extras: [
+      {
+        prop: "value",
+        type: "text",
+        placeholder: "https://diametral.com",
+        always: true,
+      },
+      { prop: "level", type: "select", options: ["M", "L", "Q", "H"] },
+    ],
+  },
 }
 
 export function playgroundFor(slug: string): PlaygroundConfig | undefined {

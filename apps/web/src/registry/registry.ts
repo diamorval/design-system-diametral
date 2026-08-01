@@ -984,6 +984,304 @@ export const COMPONENTS: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "status",
+    name: "Status",
+    category: "Data display",
+    description:
+      "A dot-and-label state indicator across the shared six-tone family — success, warning, danger, critical, neutral, info.",
+    intro: [
+      "Status is the smallest state readout in the system: a coloured dot and a word, sized to sit inline in a table cell, a list row or a page header. Reach for it when the state is a fact about one thing — a service, a job, a deployment. A boxed, filled label is `Tag`; a full-width coloured strip is `Banner`.",
+      "`tone` sets a single `--tone` variable on the root that both parts read, so the dot and the label can never drift apart. The tones are the `-ink` values, tuned to pass AA as text on both themes — keep the label at full opacity and use weight for hierarchy.",
+    ],
+    examples: [
+      {
+        demo: "status/tones",
+        title: "Tones",
+        description:
+          "The six tones of the shared family. The dot and label share one `--tone` variable, so they never drift from each other.",
+      },
+      {
+        demo: "status/pulse",
+        title: "Pulse",
+        description:
+          "`pulse` lives on `StatusIndicator`, not `Status` — a live state can still pair with a static label, and the ping only runs under `motion-safe`.",
+      },
+      {
+        demo: "status/in-service-list",
+        title: "In a service list",
+        description:
+          "Where statuses earn their keep: a column of them scans in one pass. The root is `inline-flex`, so it drops into a row without a wrapper.",
+      },
+    ],
+    parts: {
+      Status:
+        "Sets `--tone` and nothing else — both parts read it, so a part rendered outside a Status comes out uncoloured.",
+      StatusIndicator:
+        "`aria-hidden`, so colour is never the only cue — the label carries the meaning. `pulse` belongs here, not on the root.",
+      StatusLabel:
+        "Bare text at `--tone`. Fading it with opacity re-opens the contrast failure the `-ink` tones were chosen to fix.",
+    },
+  },
+  {
+    slug: "tag",
+    name: "Tag",
+    category: "Data display",
+    description:
+      'A boxed, tinted label across the shared six-tone family. Absorbs v1\'s Chip, whose one boolean `warn` axis is now `tone="warning"`.',
+    intro: [
+      "Tag is the boxed, tinted label: a filled background with matching ink, sized for a status column or a row of attributes. Reach for it when the label should read as an object you can scan a column of — `Badge` is the bare typographic emphasis, and `Status` is the dot-and-word that sits inline in running text.",
+      "Each tone sets `--tone-bg` and `--tone-ink` as a pair, so a tone can never be half-applied. The six tones are the same family `status`, `banner` and `alert` draw from, which is what lets a danger tag and a danger banner mean the same thing on the same page.",
+    ],
+    examples: [
+      {
+        demo: "tag/tones",
+        title: "Tones",
+        description:
+          "The six tones of the shared family. Each sets `--tone-bg` and `--tone-ink` together — v1's boolean `warn` axis is the `warning` tone here.",
+      },
+      {
+        demo: "tag/in-context",
+        title: "In a list",
+        description:
+          "Where tags usually live: the status column of a row. The root is `w-fit shrink-0`, so it never stretches to the row and never gets squeezed by the label beside it.",
+      },
+      {
+        demo: "tag/with-icon",
+        title: "With a leading icon",
+        description:
+          "The root's `gap-1.5` is there for a glyph. Keep the icon `aria-hidden` — the word carries the meaning, so the tag still reads without it.",
+      },
+    ],
+  },
+  {
+    slug: "description-list",
+    name: "Description List",
+    category: "Data display",
+    description:
+      "Term/detail pairs for record summaries. Renders a real `dl`, so the pairing survives without sight of the layout.",
+    intro: [
+      "Description List is the record-summary primitive: term-and-detail pairs in a two-column grid. Reach for it whenever a block answers `what are the fields of this thing?` — an invoice head, a mission summary, a settings readout. A scannable column of many records is `Table`.",
+      "The grid columns live on the root, so terms and details must be direct children: pairs flow as consecutive grid cells with no row wrapper. Wrapping a pair in a `div` breaks the alignment for the whole list.",
+    ],
+    examples: [
+      {
+        demo: "description-list/basic",
+        title: "Basic",
+        description:
+          "The term column is `auto`-sized and the detail column takes the rest, so the widest term sets the gutter for every row.",
+      },
+      {
+        demo: "description-list/in-card",
+        title: "In a card",
+        description:
+          "Its most common home: the summary block of a record. The rules come from each pair's own `border-t`, with `first-of-type` suppressing the leading one — the list needs no divider of its own.",
+      },
+      {
+        demo: "description-list/rich-details",
+        title: "Details that aren't text",
+        description:
+          "A detail can hold a `Status` or a `Tag`, not just a string. The `dd` is padded for text, so a boxed control makes its row slightly taller than its neighbours.",
+      },
+    ],
+    parts: {
+      DescriptionList:
+        "Owns the `auto 1fr` grid, so every term and detail must be a direct child — a wrapper around a pair drops it out of the columns.",
+      DescriptionTerm:
+        "`whitespace-nowrap`: a long term widens the first column for the whole list rather than wrapping.",
+      DescriptionDetail:
+        "`tabular-nums`, so a column of amounts or dates lines up digit for digit.",
+    },
+  },
+  {
+    slug: "stat-card",
+    name: "Stat Card",
+    category: "Data display",
+    description:
+      "A single headline figure with an optional signed delta and sparkline.",
+    intro: [
+      "Stat Card is the dashboard tile: one label, one headline figure, and optionally how it moved and where it has been. Reach for it for the KPI row at the top of a page. When the numbers themselves have to be read rather than glanced at, that is `Chart`.",
+      "Every part is optional and carries its own top margin, so the vertical rhythm holds whichever ones you leave out. The card sets no width — size it from the grid it sits in.",
+    ],
+    examples: [
+      {
+        demo: "stat-card/basic",
+        title: "Basic",
+        description:
+          "Label and figure only, which is most of the use. The tiles take their width from the row, not from the component.",
+      },
+      {
+        demo: "stat-card/with-delta",
+        title: "With a delta",
+        description:
+          "The arrow is `aria-hidden` — the signed figure carries the direction, so colour is never the only cue. `direction` uses the `-ink` tones, the text-weight values that pass AA on both themes.",
+      },
+      {
+        demo: "stat-card/with-spark",
+        title: "With a sparkline",
+        description:
+          "The spark is a trend hint, not a chart: no axes, no tooltip. `StatCardSpark` is a bare slot, so a hand-drawn polyline needs no chart dependency — reach for `chart` when values must be read.",
+      },
+    ],
+    parts: {
+      StatCard:
+        "Border, surface and padding, with no width of its own — the grid around it decides the size.",
+      StatCardLabel:
+        "The caption, not a heading: uppercase and muted at 11px, and it takes no heading element.",
+      StatCardValue:
+        "Heading face and `tabular-nums`. Its `mt-2` is what separates it from the label, so a card without one closes up on its own.",
+      StatCardDelta:
+        "`direction` is the whole axis and it draws the arrow itself — pass the signed figure as children so the direction survives without colour.",
+      StatCardSpark:
+        "A slot with a top margin and nothing else. Keep whatever goes in it `aria-hidden`; the figure above already carries the number.",
+    },
+  },
+  {
+    slug: "relative-time",
+    name: "Relative Time",
+    category: "Data display",
+    description:
+      'Renders "3 hours ago" from a date, inside a `time` element that keeps the machine-readable timestamp.',
+    examples: [
+      { demo: "relative-time/basic", title: "Basic" },
+      {
+        demo: "relative-time/static",
+        title: "In a table",
+        description:
+          "Where relative stamps earn their keep: a column of them scans faster than absolute dates.",
+      },
+    ],
+  },
+  {
+    slug: "gauge",
+    name: "Gauge",
+    category: "Data display",
+    description:
+      "A radial progress dial for a bounded value, with optional thresholds that recolour the arc.",
+    intro: [
+      "Gauge is the radial readout for one bounded value: a 270° dial with the figure in the middle. Reach for it when a single number wants to be read against its ceiling — utilisation, a score, a quota. For the same value inside a row or a list, `Progress` and `Meter` take far less room.",
+      'It is a single component, not a compound one: everything is props. The arc is drawn with `stroke-dasharray` over one fixed path, so the value animates with no path recomputation, and the whole dial is one `role="img"` whose label reads `label: value of max`.',
+    ],
+    examples: [
+      {
+        demo: "gauge/basic",
+        title: "Basic",
+        description:
+          "`max` defaults to 100 but takes any ceiling — the second dial reads 128 of 256 and fills by fraction, not by percentage.",
+      },
+      {
+        demo: "gauge/thresholds",
+        title: "Thresholds",
+        description:
+          "The last threshold the value reaches wins, so list them ascending. `color` overrides them outright, which is why the two are not usually passed together.",
+      },
+      {
+        demo: "gauge/formatted",
+        title: "Units and density",
+        description:
+          "`format` decides the centre text only — the `aria-label` still reads the raw value against `max`. The figure scales with `size`, so keep the formatted string short; `thickness` retunes the ring without touching the geometry.",
+      },
+    ],
+  },
+  {
+    slug: "code-block",
+    name: "Code Block",
+    category: "Data display",
+    description:
+      "A framed code surface with a filename head and copy button. Highlighter-agnostic: it takes pre-highlighted HTML, so the package pulls in no syntax highlighter of its own.",
+    intro: [
+      "Code Block is the framed code surface: a dark panel, an optional head carrying a filename and a copy button, and a scrolling body. Reach for it for a multi-line sample; a single copyable command is `Snippet`, the one-line sibling that shares this component's copy button.",
+      "The panel is dark in both themes — its colours come from the fixed `--ds-noir` scale rather than the theme tokens, so a sample reads the same on a light page. Highlighting stays out: `CodeBlockBody` takes plain `code` or pre-highlighted `html`, so the package depends on no highlighter of its own.",
+    ],
+    examples: [
+      {
+        demo: "code-block/basic",
+        title: "Basic",
+        description:
+          "The full shape: filename left, copy button right, code below. `CodeBlockCopyButton` takes the raw text as `value`, independent of what is rendered.",
+      },
+      {
+        demo: "code-block/with-html",
+        title: "Pre-highlighted",
+        description:
+          "Hand the component markup your own highlighter produced — this docs app uses Shiki, which stays entirely on its side. `html` goes through `dangerouslySetInnerHTML`, so pass a trusted highlighter's output over your own source, never raw user input.",
+      },
+      {
+        demo: "code-block/scrollable",
+        title: "Long samples",
+        description:
+          "Cap the height on `CodeBlockBody`, which owns the `overflow-auto`. Capping the root clips instead of scrolling — it is `overflow-hidden` so the panel keeps its edges. A body that actually scrolls needs `tabIndex={0}` and a label, or keyboard users cannot reach the rest of the code.",
+      },
+    ],
+    parts: {
+      CodeBlock:
+        "Fixes the dark panel colours in both themes and clips its children — height caps belong on the body, not here.",
+      CodeBlockHead:
+        "A `justify-between` row and nothing more: two children split left and right, one child takes the width.",
+      CodeBlockFilename:
+        "Uppercase tracked-out label text, not a heading — it is a caption for the panel, so it takes no heading level.",
+      CodeBlockBody:
+        "Owns the scrolling, so height caps and the `tabIndex={0}` a scrolling region needs both belong here. `html` renders through `dangerouslySetInnerHTML` and wins over `code` and `children` when both are passed.",
+      CodeBlockCopyButton:
+        "`value` is what reaches the clipboard, deliberately independent of what is rendered. Its own `aria-label` flips to `Copied` for two seconds.",
+    },
+  },
+  {
+    slug: "snippet",
+    name: "Snippet",
+    category: "Data display",
+    description:
+      "A one-line copyable command. Shares Code Block's copy affordance rather than restating it.",
+    intro: [
+      "Snippet is the one-line copyable value: an install command, an API key, a connection string. Reach for it wherever the reader's next action is `copy this`. A multi-line sample belongs in `Code Block`, whose copy button this component reuses rather than restating.",
+      "`value` is what reaches the clipboard and `children` is what renders, so a secret can show obscured while the full string still copies. The root is `inline-flex max-w-full`, so it sits inside a table cell or a `dd` without stretching it.",
+    ],
+    examples: [
+      {
+        demo: "snippet/basic",
+        title: "Basic",
+        description:
+          "With no `children`, `value` is both what shows and what copies — the common case for an install line.",
+      },
+      {
+        demo: "snippet/in-context",
+        title: "Obscured secret",
+        description:
+          "Where `children` earns its keep: the key renders masked in a record summary while `value` keeps the full string that reaches the clipboard.",
+      },
+    ],
+  },
+  {
+    slug: "qr-code",
+    name: "QR Code",
+    category: "Data display",
+    description:
+      "Renders a QR code as inline SVG from a hand-rolled byte-mode encoder — no dependency, no network, no canvas. Versions 1-10, all four correction levels.",
+    intro: [
+      "QR Code turns a string into a scannable inline SVG — a URL on a printed page, an `otpauth://` secret for two-factor enrolment, a token on a kiosk screen. Everything happens locally: no image service, no canvas, no network round trip, and nothing to configure but `value`.",
+      "The encoder is hand-rolled byte mode, versions 1 to 10, so the ceiling is 271 bytes at level L. Modules are fixed black on a white quiet zone rather than themed — a code has to hold its contrast to scan, which is the one deliberate exception to the token rule in this package. A payload over capacity renders a dashed error box instead of throwing.",
+    ],
+    examples: [
+      {
+        demo: "qr-code/basic",
+        title: "Basic",
+        description:
+          "`value` is effectively the whole API — the code is square, `size` is its rendered width in px, and the quiet zone is drawn inside that box.",
+      },
+      {
+        demo: "qr-code/levels",
+        title: "Correction levels",
+        description:
+          "Higher correction survives more damage — a logo overlay, a torn corner — but holds less data: L 271 bytes down to H 119.",
+      },
+      {
+        demo: "qr-code/in-card",
+        title: "Scan or type",
+        description:
+          "The two-factor shape: the same secret as a code and as a `Snippet`, since a reader on the device showing the code cannot scan their own screen. The quiet zone stays white on dark, which is what keeps it scannable.",
+      },
+    ],
+  },
 
   /* -- Navigation -------------------------------------------------------- */
   {
