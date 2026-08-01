@@ -15,6 +15,10 @@ export type Anatomy = {
   rows: AnatomyRow[]
   /** Exported part names, in `export { … }` order. */
   parts: string[]
+  /** Type-only exports (`export type { TimeValue }`) — importable, never JSX.
+   *  `decl` is the declaration's own source text, shown when the row is
+   *  selected in the part index. */
+  types: { name: string; decl?: string }[]
   /** Part -> the `data-slot` values it renders, for the preview highlight. */
   slots: Record<string, string[]>
   /** Exported but placed nowhere — no demo and no internal usage. */
@@ -42,9 +46,13 @@ function parse(fileName: string, text: string) {
  * Part names come from the module's own `export { … }` clause rather than from
  * its function declarations: that is the surface a consumer can actually write,
  * and it excludes the cva consts and internal helpers that sit beside them.
+ * Type-only exports (`export type { MultiSelectOption }`) are split into their
+ * own list — a type is never written as a JSX tag, so it could never be placed
+ * by `collect` below and would sit forever as a dead "no example" orphan.
  */
 function exportedParts(source: ts.SourceFile) {
-  const names: string[] = []
+  const parts: string[] = []
+  const typeNames: string[] = []
   const visit = (node: ts.Node) => {
     if (
       ts.isExportDeclaration(node) &&
@@ -53,13 +61,34 @@ function exportedParts(source: ts.SourceFile) {
     ) {
       for (const element of node.exportClause.elements) {
         const name = element.name.text
-        if (/^[A-Z][A-Za-z]*$/.test(name)) names.push(name)
+        if (!/^[A-Z][A-Za-z]*$/.test(name)) continue
+        if (node.isTypeOnly || element.isTypeOnly) typeNames.push(name)
+        else parts.push(name)
       }
     }
     ts.forEachChild(node, visit)
   }
   visit(source)
-  return names
+  return {
+    parts,
+    types: typeNames.map((name) => ({ name, decl: declOf(source, name) })),
+  }
+}
+
+/** The declaration's own source text (`type TimeValue = { … }`), verbatim. */
+function declOf(source: ts.SourceFile, name: string) {
+  let decl: string | undefined
+  const visit = (node: ts.Node) => {
+    if (
+      (ts.isTypeAliasDeclaration(node) || ts.isInterfaceDeclaration(node)) &&
+      node.name.text === name
+    ) {
+      decl = node.getText(source)
+    }
+    ts.forEachChild(node, visit)
+  }
+  visit(source)
+  return decl
 }
 
 /**
@@ -115,7 +144,7 @@ export function extractAnatomy(
   demos: AnatomySource[]
 ): Anatomy {
   const componentSource = parse(component.fileName, component.text)
-  const parts = exportedParts(componentSource)
+  const { parts, types } = exportedParts(componentSource)
   const slots = slotMap(componentSource, parts)
 
   type Edge = {
@@ -218,6 +247,7 @@ export function extractAnatomy(
   return {
     rows,
     parts,
+    types,
     slots,
     orphans: parts.filter((part) => !placed.has(part)),
     coverage,

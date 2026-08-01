@@ -541,6 +541,61 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
       { prop: "disabled", type: "boolean" },
     ],
   },
+  "multi-select": {
+    note: "`options` supplies the fixed list; the controls below drive everything else. `emptyText` only shows once a filter query matches nothing.",
+    extras: [
+      { prop: "placeholder", type: "text", placeholder: "Select…" },
+      { prop: "emptyText", type: "text", placeholder: "No results found." },
+      { prop: "disabled", type: "boolean" },
+    ],
+  },
+  "tags-input": {
+    note: "Enter or comma commits the draft, Backspace on an empty draft removes the last tag — the controls below cover everything else.",
+    extras: [
+      { prop: "placeholder", type: "text", placeholder: "Add a tag…" },
+      { prop: "max", type: "text", placeholder: "No limit" },
+      { prop: "disabled", type: "boolean" },
+    ],
+  },
+  "phone-input": {
+    note: "The value is one string; `defaultCountry` only seeds the dial code while the value carries none of its own.",
+    extras: [
+      {
+        prop: "defaultCountry",
+        type: "select",
+        options: ["FR", "BE", "CH", "LU", "DE", "ES", "IT", "GB", "US", "CA"],
+      },
+      { prop: "placeholder", type: "text", placeholder: "6 12 34 56 78" },
+      { prop: "disabled", type: "boolean" },
+    ],
+  },
+  editable: {
+    extras: [
+      {
+        prop: "defaultValue",
+        type: "text",
+        placeholder: "Click to rename",
+        always: true,
+      },
+      { prop: "disabled", type: "boolean" },
+    ],
+  },
+  "time-picker": {
+    note: "A 24-hour clock with no roll-over between segments — clamping and zero-padding both come from Number Field, and `picker` chooses what the clock button opens.",
+    extras: [
+      { prop: "picker", type: "select", options: ["dial", "list", "none"] },
+      { prop: "showSeconds", type: "boolean" },
+      { prop: "disabled", type: "boolean" },
+    ],
+  },
+  "date-range-picker": {
+    note: "Owns its own range state, so the controls below are its only knobs beyond `value`/`onValueChange`.",
+    extras: [
+      { prop: "placeholder", type: "text", placeholder: "Pick a date range" },
+      { prop: "showTime", type: "boolean" },
+      { prop: "numberOfMonths", type: "select", options: ["2", "1"] },
+    ],
+  },
 
   /* -- Investigated: provider-level, cmdk, and the imperative one -------- */
   combobox: {

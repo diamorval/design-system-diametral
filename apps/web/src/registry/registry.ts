@@ -587,6 +587,196 @@ export const COMPONENTS: ComponentDoc[] = [
     ],
   },
   {
+    slug: "multi-select",
+    name: "Multi Select",
+    category: "Forms",
+    description:
+      "An options/value API over Combobox's multiple-select chips mode, for picking several values from a fixed list.",
+    intro: [
+      "Multi Select is the closed wrapper over Combobox's `multiple` mode: pass `options`, read back a `string[]`. Reach for it when the list is fixed and you want filtering and chips without re-deriving the `ComboboxValue`, chip and anchor wiring by hand — Combobox itself when you need to own that markup, Select when only one value is allowed, and Tags Input when the values are free text rather than a list.",
+      "The prop list is closed: there is no `...props` passthrough, so `className` is the only thing that reaches the DOM. `aria-label` and `aria-labelledby` are the exception — they are forwarded down to the chips input, because that is the form control that needs a name and a label on the root would never reach it.",
+    ],
+    examples: [
+      {
+        demo: "multi-select/basic",
+        title: "Basic",
+        description:
+          "`options` is the whole API — value/label pairs in, a `string[]` out. Internally this is Combobox in `multiple` mode, so filtering and chip removal come for free.",
+      },
+      {
+        demo: "multi-select/controlled",
+        title: "Controlled",
+        description:
+          "`value` and `onValueChange` take a plain `string[]`, same as the uncontrolled `defaultValue` — enough for the page to react to a selection.",
+      },
+      {
+        demo: "multi-select/filter-bar",
+        title: "Filter bar",
+        description:
+          "A filter above a list, with no visible label to point at: `aria-label` names the chips input directly. `placeholder` doubles as the unfiltered state — it is suppressed the moment anything is selected.",
+      },
+    ],
+    parts: {
+      MultiSelect:
+        "The popup anchors to the chips row rather than the root, so it stays aligned as chips wrap onto a second line. Name it with `aria-label` or `aria-labelledby` — both land on the inner chips input, not the wrapper.",
+    },
+  },
+  {
+    slug: "tags-input",
+    name: "Tags Input",
+    category: "Forms",
+    description:
+      "Free-text tokens typed one at a time — Enter or comma commits the draft, Backspace on an empty draft removes the last tag.",
+    intro: [
+      "Tags Input collects free-text tokens one at a time: type, press Enter or comma, and the draft becomes a tag. Reach for it when the values are not known in advance — keywords, recipients, labels. When they come from a fixed list, Multi Select gives you the same chips with filtering and no typos.",
+      "Rejections are silent by design: an empty draft, a duplicate, or anything past `max` clears the input without adding a tag and without firing a callback. Backspace on an empty draft deletes the last tag in one step — the remove buttons are `tabIndex={-1}`, so that is the keyboard path — and pasting `a,b,c` lands as a single draft, since the comma only commits as a keystroke.",
+    ],
+    examples: [
+      {
+        demo: "tags-input/basic",
+        title: "Basic",
+        description:
+          "Unlike Multi Select there is no fixed option list — any typed value becomes a tag. `aria-labelledby` is forwarded to the inner input, so pointing a label at it names the real control; a label on the wrapper would leave the field unnamed.",
+      },
+      {
+        demo: "tags-input/max",
+        title: "With a limit",
+        description:
+          "`max` stops new tags once the count is reached. Existing tags stay removable — only adding is blocked, and the rejected draft is cleared either way.",
+      },
+      {
+        demo: "tags-input/controlled",
+        title: "Controlled",
+        description:
+          "`value`/`onValueChange` hand you the array the form will submit, and are the only way to add an affordance the component does not ship — here, a Clear all button.",
+      },
+    ],
+  },
+  {
+    slug: "phone-input",
+    name: "Phone Input",
+    category: "Forms",
+    description:
+      "A country dial-code select paired with a national-number field, composing into one E.164-ish string value.",
+    intro: [
+      'Phone Input pairs a dial-code Select with a national-number Input inside a single underline, and hands back one string (`+33612345678`) rather than a country/number pair. Reach for it when a form needs a phone number in one field; when it only needs digits, a plain Input with `type="tel"` is enough.',
+      "The dial-code table is hand-rolled and covers ten markets, so there is no `libphonenumber` in the bundle, no per-country grouping and no length validation — `placeholder` only suggests the shape. The split is derived from the value on every render rather than held in state, which is why `US` and `CA` both write `+1` and a `+1…` value always reads back as `US`.",
+    ],
+    examples: [
+      {
+        demo: "phone-input/basic",
+        title: "Basic",
+        description:
+          "The value is a single string (`+33612345678`) — the dial code and national number are split from it for editing, then rejoined on change.",
+      },
+      {
+        demo: "phone-input/with-field",
+        title: "In a field",
+        description:
+          "`defaultCountry` seeds the dial code before any digits are typed, which is what an empty controlled field needs — the split falls back to it whenever the value carries no recognised dial code.",
+      },
+      {
+        demo: "phone-input/contact-form",
+        title: "Contact form",
+        description:
+          "Beside plain fields in a form: one value goes to the server, dial code included, so there is no second country field to keep in sync.",
+      },
+    ],
+    parts: {
+      PhoneInput:
+        "The two inner controls carry hardcoded `aria-label`s (`Country calling code`, `Phone number`) and accept no override, so a surrounding `FieldLabel` is a visual caption rather than a programmatic one. Typed characters are sanitised to digits and spaces, which is why the stored string is E.164-ish rather than strictly E.164.",
+    },
+  },
+  {
+    slug: "editable",
+    name: "Editable",
+    category: "Forms",
+    description:
+      "Inline click-to-edit text — a preview with an edit affordance that swaps to a field, committed on Enter or blur, discarded on Escape.",
+    examples: [
+      {
+        demo: "editable/basic",
+        title: "Basic",
+        description:
+          "The edit button only appears on hover or focus; Escape restores the previous value instead of committing the draft.",
+      },
+      {
+        demo: "editable/controlled",
+        title: "Controlled",
+        description:
+          "`onSubmit` fires only once a draft is committed, not on every keystroke.",
+      },
+    ],
+  },
+  {
+    slug: "time-picker",
+    name: "Time Picker",
+    category: "Forms",
+    description:
+      "Segmented hour/minute/second fields built on Number Field, plus a clock button that opens the same value as a dial or a scrolling list.",
+    intro: [
+      'Time Picker is three Number Fields sharing one underline: hours, minutes and — behind `showSeconds` — seconds, each typed or stepped with the arrow keys. Beside them sits a clock button that opens a Popover for pointer users: `picker="dial"` (the default) draws a 24-hour face, `picker="list"` stacks scrolling columns, and `picker="none"` drops the button entirely. Reach for it when a form needs a clock time on its own, pair it with Date Picker when the answer is a moment, and use Date Range Picker\'s `showTime` when it is a range.',
+      "Clamping, zero-padding and stepping all come from Number Field, so nothing is hand-rolled — and nothing rolls over either: 60 minutes clamps to 59 instead of carrying into hours. The clock is 24-hour only, with no `hourCycle` or AM/PM, and a cleared segment reads back as `0` rather than `undefined`. The dial's minute face lands on the fives; the segments stay the way to reach a minute in between.",
+    ],
+    examples: [
+      {
+        demo: "time-picker/basic",
+        title: "Basic",
+        description:
+          "Each segment is a `NumberField` with no visible increment/decrement buttons — arrow keys still step it, and typing clamps and zero-pads.",
+      },
+      {
+        demo: "time-picker/dial",
+        title: "Clock dial",
+        description:
+          "The default popover: hours 0–11 ring the face and 12–23 sit on an inner ring, picking an hour advances to the minute face, and picking a minute closes.",
+      },
+      {
+        demo: "time-picker/list",
+        title: "Scrolling list",
+        description:
+          '`picker="list"` swaps the face for one scrolling column per segment — every minute and second is reachable, and the columns scroll to the current value on open.',
+      },
+      {
+        demo: "time-picker/seconds",
+        title: "With seconds",
+        description:
+          "`showSeconds` adds a third segment. Clearing a segment coerces it to `0`, so once seconds is shown it is always a number in the value.",
+      },
+      {
+        demo: "time-picker/with-date",
+        title: "Date and time",
+        description:
+          "The recipe Date Range Picker uses internally: keep the `Date` and the `TimeValue` in separate state, then fold the time in with `setHours` when you need one instant.",
+      },
+    ],
+    parts: {
+      TimePicker:
+        'Increment and decrement buttons are deliberately not rendered — the input alone carries arrow-key, PageUp/PageDown and wheel stepping. Each segment gets a hardcoded English `aria-label` and the wrapper has no `role="group"`, so a surrounding label names nothing programmatically. The popover is a pointer affordance layered on top: every value it can set is already reachable from the segments by keyboard.',
+    },
+  },
+  {
+    slug: "date-range-picker",
+    name: "Date Range Picker",
+    category: "Forms",
+    description:
+      "A Calendar in range mode inside a Popover, with a formatted trigger and an optional pair of Time Pickers for the range's bounds.",
+    examples: [
+      {
+        demo: "date-range-picker/basic",
+        title: "Basic",
+        description:
+          "Owns its own range state via `value`/`defaultValue`, unlike Date Picker which leaves the Calendar to the caller.",
+      },
+      {
+        demo: "date-range-picker/with-time",
+        title: "With time",
+        description:
+          "`showTime` renders a Time Picker under each end of the range — this is the chain's reason for depending on Time Picker.",
+      },
+    ],
+  },
+  {
     slug: "file-upload",
     name: "File Upload",
     category: "Forms",
