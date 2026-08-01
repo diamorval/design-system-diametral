@@ -555,8 +555,9 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
     ],
   },
   "time-picker": {
-    note: "A 24-hour clock with no roll-over between segments — clamping and zero-padding both come from Number Field.",
+    note: "A 24-hour clock with no roll-over between segments — clamping and zero-padding both come from Number Field, and `picker` chooses what the clock button opens.",
     extras: [
+      { prop: "picker", type: "select", options: ["dial", "list", "none"] },
       { prop: "showSeconds", type: "boolean" },
       { prop: "disabled", type: "boolean" },
     ],
