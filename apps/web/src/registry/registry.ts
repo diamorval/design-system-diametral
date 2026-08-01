@@ -10,7 +10,20 @@ export type ComponentDoc = {
   name: string
   description: string
   category: string
+  /**
+   * Optional when-to-use paragraphs rendered under the description — one
+   * `Prose` block per entry, so backticks are the only markup. The description
+   * stays the one-line tagline; this is where "reach for it when…" lives.
+   */
+  intro?: string[]
   examples?: Example[]
+  /**
+   * Notes keyed by part name, surfaced when that part is selected in the
+   * anatomy tree. Deliberately sparse: the tree itself is derived, so this is
+   * only for what a reader cannot infer from the nesting — write an entry when a
+   * part has a gotcha and leave the rest silent.
+   */
+  parts?: Record<string, string>
 }
 
 /**
@@ -1157,6 +1170,33 @@ export const COMPONENTS: ComponentDoc[] = [
     ],
   },
   {
+    slug: "toc",
+    name: "Toc",
+    category: "Navigation",
+    description:
+      "The in-page anchor rail — a sticky list of the sections on the current page.",
+    examples: [
+      {
+        demo: "toc/basic",
+        title: "Basic",
+        description:
+          'The root is a `<nav>` labelled "On this page", so it lands in the landmark list; `TocLabel` is the visible echo of that name. Each link pulls its own border over the list\'s rail with `-ms-px`, so hovering lights a segment instead of drawing a second line.',
+      },
+      {
+        demo: "toc/current-section",
+        title: "Current section",
+        description:
+          "No scroll-spy is built in — the component holds no state. Mark the active entry with `aria-current` and style it with the `aria-[current]:` variant.",
+      },
+      {
+        demo: "toc/nested",
+        title: "Nested sections",
+        description:
+          "`level` is depth in the list, not heading rank — 1 is a section, 2 a subsection. It indents the link's text while leaving its border on the rail, so depth reads as one line with steps rather than a second, indented rail.",
+      },
+    ],
+  },
+  {
     slug: "navigation-menu",
     name: "Navigation Menu",
     category: "Navigation",
@@ -1367,6 +1407,232 @@ export const COMPONENTS: ComponentDoc[] = [
           "`setApi` hands back the Embla instance, which is how you build your own indicators or drive it from elsewhere.",
       },
     ],
+  },
+  {
+    slug: "page-header",
+    name: "Page Header",
+    category: "Layout",
+    description:
+      "Breadcrumb, title, description and actions for the top of a page, with an optional flush tab strip.",
+    examples: [
+      {
+        demo: "page-header/basic",
+        title: "Basic",
+        description: "Just a title and description, no prop bag, only slots.",
+      },
+      {
+        demo: "page-header/advanced",
+        title: "Advanced",
+        description:
+          "Breadcrumb, title, description and actions compose freely alongside the title.",
+      },
+      {
+        demo: "page-header/with-tabs",
+        title: "With tabs and icon",
+        description:
+          "`PageHeaderTabs` flips the header's bottom rule flush against the tab strip; `Tabs` wraps the header so the panels render below it. `PageHeaderIcon` sizes and mutes whatever Phosphor icon you hand it.",
+      },
+    ],
+  },
+  {
+    slug: "panel",
+    name: "Panel",
+    category: "Layout",
+    description:
+      "A flat, bordered section container — Card without the shadow, plus a row part for tightly-packed settings lists.",
+    intro: [
+      "Panel is the flat sibling of Card: the same header, content and footer skeleton, but a plain border instead of elevation. Reach for it when a region needs a boundary without needing to float — settings sections, form groups, tiles that sit inside the page rather than on top of it.",
+      "The root owns `--panel-spacing`, which every part reads for its padding, so density changes in one place. For tightly-packed label-and-control lists, `PanelRow` replaces v1's `rows` boolean with a part you compose in.",
+    ],
+    examples: [
+      {
+        demo: "panel/basic",
+        title: "Basic",
+        description:
+          "A self-contained summary block: header, prose content, one footer action. Rules are opt-in — PanelHeader and PanelFooter borrow Card's `.border-b`/`.border-t` convention, so add the utility yourself to draw them.",
+      },
+      {
+        demo: "panel/rows",
+        title: "Settings rows",
+        description:
+          "The settings-page shape: `PanelRow` packs each label-and-control pair into a divided list. Rows carry their own padding, so PanelContent passes `px-0` rather than stacking the two.",
+      },
+      {
+        demo: "panel/form-section",
+        title: "Form section",
+        description:
+          "A form group with its actions kept inside the boundary: fields in PanelContent, cancel/save in a ruled PanelFooter — the footer earns its keep instead of decorating.",
+      },
+    ],
+    parts: {
+      Panel:
+        "Owns `--panel-spacing`, which every part reads for its padding — a part rendered outside a Panel comes out flush.",
+      PanelHeader:
+        "Bottom padding is keyed off `.border-b`, so a header with no rule stays tight.",
+      PanelTitle:
+        "Type styles only, with no padding of its own — that is why it sits inside PanelHeader. Add your own heading element when the level matters.",
+      PanelContent:
+        "Horizontal padding and nothing else. Pass `px-0` when the children carry their own, as PanelRow does.",
+      PanelFooter: "Mirrors the header: top padding is keyed off `.border-t`.",
+      PanelRow:
+        "Carries its own padding and divider; `last:border-b-0` stops the trailing rule doubling up with the footer's.",
+    },
+  },
+  {
+    slug: "masonry",
+    name: "Masonry",
+    category: "Layout",
+    description:
+      "A multi-column layout that balances items of uneven height, via CSS columns rather than a JS measurement pass.",
+    intro: [
+      "Masonry packs children of uneven height into balanced columns — the pinboard layout a plain grid cannot produce without leaving gaps under the short items. Reach for it when the children are self-contained tiles (cards, images, notes) and reading order across columns does not matter.",
+      "It is CSS multi-column underneath, not a JS measurement pass: `columns` becomes a `--columns` custom property, so any integer works, and items flow down each column in source order — the first children fill the left column rather than the top row. Each child gets `break-inside-avoid`, so a tile never splits across two columns.",
+    ],
+    examples: [
+      {
+        demo: "masonry/basic",
+        title: "Basic",
+        description:
+          "Uneven blocks balancing into three columns. The numbering makes the column-first flow visible — item 2 sits below item 1, not beside it.",
+      },
+      {
+        demo: "masonry/with-cards",
+        title: "Card wall",
+        description:
+          "A wall of cards with bodies of different lengths — the case columns exist for, where a plain grid would leave ragged gaps under the short ones.",
+      },
+      {
+        demo: "masonry/gallery",
+        title: "Media gallery",
+        description:
+          "Mixed-ratio media tiles: each `AspectRatio` child sizes itself, so portrait and landscape frames interleave without a row grid forcing them to share a height.",
+      },
+    ],
+    parts: {
+      Masonry:
+        "Spacing lives on the children (`*:mb-4 *:break-inside-avoid`), so a child carrying its own margin fights the rhythm — and source order flows down columns, not across rows.",
+    },
+  },
+  {
+    slug: "banner",
+    name: "Banner",
+    category: "Layout",
+    description:
+      "A full-width, tone-coloured message bar over the shared six-tone family — the same tokens button.tsx's `tone` axis reads.",
+    intro: [
+      "Banner is the page-level counterpart of Alert: the same icon, title and description anatomy, but full-width, flush-cornered and tinted edge to edge. Reach for it when a message concerns the whole screen or section — a maintenance window, a plan limit, an incident notice — pinned above the content rather than nested inside it.",
+      "`tone` sets `--tone-bg`/`--tone-ink` from the shared six-tone family in globals.css — the same tokens Button's `tone` axis reads — so a banner always matches its sibling controls and a new tone never needs a bespoke colour here.",
+    ],
+    examples: [
+      {
+        demo: "banner/basic",
+        title: "Basic",
+        description:
+          'Icon, title, description. The root carries `role="status"`, so a banner mounted after load is announced without an aria-live wrapper.',
+      },
+      {
+        demo: "banner/with-action",
+        title: "Action and dismiss",
+        description:
+          "`BannerAction` is a plain flex sibling rather than an absolutely-positioned corner, so it can hold more than one control without overlapping the text.",
+      },
+      {
+        demo: "banner/tones",
+        title: "Tones",
+        description:
+          "The full severity ladder. Each tone reads its `--ds-<tone>-bg`/`--ds-<tone>-ink` pair, so the ladder stays in step with Button, Alert and every other tone-aware component.",
+      },
+    ],
+    parts: {
+      Banner:
+        'Carries `role="status"` — mounted banners are announced politely with no aria-live wrapper. A leading `svg` child is auto-sized and top-aligned by the root\'s selectors.',
+      BannerDescription:
+        "Deliberately un-faded: the tone inks clear AA as bare text but drop under 4.5:1 behind opacity, so hierarchy comes from BannerTitle's `font-medium` instead.",
+      BannerAction:
+        "A flex sibling, not an absolutely-positioned corner — several controls fit beside long text without overlap.",
+    },
+  },
+  {
+    slug: "wordmark",
+    name: "Wordmark",
+    category: "Layout",
+    description:
+      "The Diametral logo lockup from @diametral/assets, inlined so it recolours with the surrounding text.",
+    intro: [
+      "Wordmark renders the Diametral lockup as inline JSX, so app chrome — headers, footers, auth screens, empty states — never touches a raw asset file. Two lockups: `horizontal` is the full name, `square` sets it inside the symbol for avatar- and app-icon-sized placements.",
+      "The paths are `currentColor`, so `text-*` utilities recolour the mark exactly like text and there is no light/dark SVG pair to swap. `@diametral/assets` remains the canonical source for non-React consumers such as email and raster exports.",
+    ],
+    examples: [
+      {
+        demo: "wordmark/basic",
+        title: "Basic",
+        description:
+          "The lockup is `currentColor`, so it recolours with the surrounding text — no separate light/dark SVG to swap.",
+      },
+      {
+        demo: "wordmark/square",
+        title: "Square",
+        description:
+          "The wordmark set inside the symbol, for avatar and app-icon-style placements.",
+      },
+      {
+        demo: "wordmark/app-header",
+        title: "Beside a text label",
+        description:
+          'When the mark sits next to text that already says "Diametral", pass `label=""` — the SVG drops out of the accessibility tree instead of announcing the name twice.',
+      },
+    ],
+    parts: {
+      Wordmark:
+        '`label` is the accessible name. Pass `label=""` to make the mark decorative when adjacent text already names it — otherwise screen readers hear "Diametral" twice.',
+    },
+  },
+  {
+    slug: "theme-switcher",
+    name: "Theme Switcher",
+    category: "Layout",
+    description:
+      "A light/dark/system toggle, promoted from the docs app's own theme-toggle. Fully controlled — the consumer owns the theme hook.",
+    intro: [
+      "ThemeSwitcher is the light/dark/system control for wherever the theme choice lives — an app header, a settings page, a preferences dialog. Three forms share one contract: `segmented` (a joined three-cell ToggleGroup), `cycle` (one icon button that advances through the modes) and `dropdown` (an icon trigger opening a radio menu), so the footprint fits the placement without changing the wiring.",
+      "It is fully controlled: `value` and `onValueChange` are required, and storage, media-query sync and system resolution stay in the consumer's `useTheme()`-style hook — app wiring is not the design system's job. One behaviour is built in: re-clicking the pressed mode is a no-op, because a theme is never \"none\".",
+    ],
+    examples: [
+      {
+        demo: "theme-switcher/basic",
+        title: "Basic",
+        description:
+          "Fully controlled, so the demo holds its own state rather than touching the real app theme.",
+      },
+      {
+        demo: "theme-switcher/cycle",
+        title: "Compact cycle",
+        description:
+          "One 36px button for headers too tight for three cells. The icon shows the current mode; the `aria-label` announces the action, since a click advances to the next mode.",
+      },
+      {
+        demo: "theme-switcher/dropdown",
+        title: "Dropdown",
+        description:
+          "The discoverable compact form: an icon-and-caret trigger opening a `DropdownMenuRadioGroup`, so every mode is visible and one click away.",
+      },
+      {
+        demo: "theme-switcher/in-toolbar",
+        title: "In a toolbar",
+        description:
+          "The typical chrome placement. The `outline` variant and `sm` size are baked in, so it sits flush beside `icon-sm` buttons with no sizing props.",
+      },
+      {
+        demo: "theme-switcher/settings-row",
+        title: "Settings row",
+        description:
+          'The settings-page placement: the switcher drops into a `PanelRow` like any label-and-control pair. The group already carries `aria-label="Theme"`, so the visible text needs no `htmlFor` wiring.',
+      },
+    ],
+    parts: {
+      ThemeSwitcher:
+        'Built on ToggleGroup, but re-pressing the active mode is swallowed — Base UI would otherwise empty the group, and a theme is never "none".',
+    },
   },
 
   /* -- Disclosure -------------------------------------------------------- */
