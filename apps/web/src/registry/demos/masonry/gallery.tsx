@@ -10,8 +10,6 @@ const FRAMES = [
   { caption: "Location scout", ratio: 4 / 3 },
 ]
 
-// Each AspectRatio child sizes itself from its ratio, so portrait and
-// landscape frames interleave — no row grid forcing a shared height.
 export default function MasonryGallery() {
   return (
     <Masonry columns={2} className="w-full max-w-md">

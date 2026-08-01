@@ -15,8 +15,6 @@ import {
   TabsTrigger,
 } from "@diametral/ui/components/tabs"
 
-// `Tabs` wraps the whole block, not just `PageHeaderTabs` — the header only
-// hosts the trigger row, while the panels render below it.
 export default function PageHeaderWithTabs() {
   return (
     <Tabs defaultValue="all" className="w-full">

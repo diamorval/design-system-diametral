@@ -47,9 +47,6 @@ const NOTICES: {
   },
 ]
 
-// Every tone reads the shared --ds-<tone>-bg / --ds-<tone>-ink pair from
-// globals.css — the same tokens Button's tone axis uses — so this ladder
-// stays in step with the rest of the system for free.
 export default function BannerTones() {
   return (
     <div className="flex w-full flex-col gap-2">

@@ -14,9 +14,6 @@ import {
   type ThemeSwitcherMode,
 } from "@diametral/ui/components/theme-switcher"
 
-// The switcher already carries aria-label="Theme" on the group, so the
-// visible row text is a plain span — no htmlFor wiring, unlike the Switch
-// row below where the Label targets the control.
 export default function ThemeSwitcherSettingsRow() {
   const [mode, setMode] = React.useState<ThemeSwitcherMode>("system")
 

@@ -10,9 +10,6 @@ import {
 } from "@diametral/ui/components/banner"
 import { Button } from "@diametral/ui/components/button"
 
-// BannerAction is a flex sibling of BannerContent, not an absolutely-
-// positioned corner — the action and the dismiss button share the row with
-// long text instead of overlapping it.
 export default function BannerWithAction() {
   const [dismissed, setDismissed] = React.useState(false)
 

@@ -1,7 +1,5 @@
 import { Wordmark } from "@diametral/ui/components/wordmark"
 
-// The text label already says "Diametral", so label="" removes the mark from
-// the accessibility tree — without it, screen readers announce the name twice.
 export default function WordmarkAppHeader() {
   return (
     <header className="flex w-full max-w-sm items-center gap-2 border border-border bg-card px-3 py-2">

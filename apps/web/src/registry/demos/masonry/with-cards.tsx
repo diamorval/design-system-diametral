@@ -23,8 +23,6 @@ const NOTES = [
   { title: "Two typefaces", body: "Ufficio for titles, Geist for the rest." },
 ]
 
-// Cards of uneven height are the case columns exist for — a plain grid would
-// leave ragged gaps under the short ones.
 export default function MasonryWithCards() {
   return (
     <Masonry columns={2} className="w-full max-w-2xl">

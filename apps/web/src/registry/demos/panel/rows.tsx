@@ -14,8 +14,6 @@ const SETTINGS = [
   { id: "mentions", label: "Mentions", on: true },
 ]
 
-// PanelRow already carries its own horizontal padding, so PanelContent drops
-// its own with `px-0` rather than the two stacking.
 export default function PanelRows() {
   return (
     <Panel className="w-full max-w-sm">

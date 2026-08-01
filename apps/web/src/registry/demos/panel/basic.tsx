@@ -7,9 +7,6 @@ import {
   PanelTitle,
 } from "@diametral/ui/components/panel"
 
-// Flat and bordered, no shadow — the surface Card reserves for elevated
-// content. PanelHeader/PanelFooter borrow Card's `.border-b`/`.border-t`
-// opt-in: add the utility yourself to draw the rule.
 export default function PanelBasic() {
   return (
     <Panel className="w-full max-w-sm">

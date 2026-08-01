@@ -5,8 +5,6 @@ import {
   type ThemeSwitcherMode,
 } from "@diametral/ui/components/theme-switcher"
 
-// The icon shows the CURRENT mode; the accessible name announces the action
-// ("Switch to dark"), because a click advances light → dark → system → light.
 export default function ThemeSwitcherCycle() {
   const [mode, setMode] = React.useState<ThemeSwitcherMode>("light")
 

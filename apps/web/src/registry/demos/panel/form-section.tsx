@@ -13,9 +13,6 @@ import {
   PanelTitle,
 } from "@diametral/ui/components/panel"
 
-// The footer is where a form section differs from a summary panel: the
-// actions live inside the boundary, so the `border-t` rule separates them
-// from the fields they commit.
 export default function PanelFormSection() {
   return (
     <Panel className="w-full max-w-sm">
