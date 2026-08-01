@@ -23,6 +23,7 @@ Fields and their jobs (don't blur them):
 - `intro?: string[]` — one to two when-to-use paragraphs, one `Prose` block each. Paragraph 1: what it is and when to reach for it. Paragraph 2 (optional): the one architectural fact that changes how you use it (the exemplar's: the root owns `--panel-spacing`). Skip `intro` entirely rather than padding it — the page falls back to the description cleanly.
 - `examples` — each entry is **one use case backed by one demo file** (`demo: "<slug>/<file>"`). Titles name the use, not the prop ("Settings rows", not "Rows"; "Form section", not "With footer"). Descriptions say when you'd build this and name the one non-obvious mechanism in backticks.
 - `parts?: Record<string, string>` — gotcha notes surfaced when a part is selected in the Workbench. Deliberately sparse: only write an entry when a part has a constraint the nesting can't show ("Bottom padding is keyed off `.border-b`"). Silence is correct for obvious parts.
+  **The index that surfaces these only renders when the module exports more than one component, or exports a type** (`hasAnatomy` in `apps/web/src/docs/anatomy.tsx`). A slug with exactly one component export and no type export — `tags-input` — has no index, so a `parts` entry there is dead config that still type-checks and formats clean. Put the constraint in an `intro` paragraph or the relevant example `description` instead.
 
 Prose fields render through `Prose`, which supports **backticks only** — no markdown links, bold, or lists.
 
@@ -43,7 +44,9 @@ Conventions (full worked demos are in `references/exemplar.md`, Surface 2):
 
 Two coordinated pieces:
 
-**`playgrounds/<slug>.tsx`** — a typed template that renders the subject with prop pass-through (`{...props}`). Render **every exported part**: the Workbench's code strip doubles as the anatomy navigator, so an unrendered part is unselectable. Place a literal `{children}` marker for the main editable text and `{key}` markers for each entry in `texts`.
+**`playgrounds/<slug>.tsx`** — a typed template that renders the subject with prop pass-through (`{...props}`). Render **every exported component part**: the Workbench's code strip doubles as the anatomy navigator, so an unrendered part is unselectable. Type-only exports (`export type { TimeValue }`) are not parts — they are listed under their own **Types** heading in the index, and selecting one shows its declaration where a part note would go, so there is nothing to render for them. Place a literal `{children}` marker for the main editable text and `{key}` markers for each entry in `texts`.
+
+Give the subject its accessible name with `aria-label` directly rather than an `sr-only` span plus `aria-labelledby` — the span is invisible in the preview but still prints into the generated snippet, which makes the copyable code read as boilerplate the component does not need.
 
 **`PLAYGROUNDS[slug]` in `playgrounds.ts`** — only what cva cannot know (the full `PlaygroundConfig` type contract is at the end of `references/exemplar.md`):
 
