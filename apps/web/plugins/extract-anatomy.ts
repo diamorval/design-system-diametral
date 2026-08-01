@@ -1,0 +1,225 @@
+import ts from "typescript"
+
+export type AnatomyRow = {
+  part: string
+  depth: number
+  kind: "open" | "close" | "self" | "recurse"
+  /** The nesting was only ever observed in the component's own JSX. */
+  internal?: boolean
+  /** Other parents this part was seen under, when it has more than one. */
+  alsoUnder?: string[]
+}
+
+export type Anatomy = {
+  /** The tree, pre-flattened: ordering and recursion are decided here, once. */
+  rows: AnatomyRow[]
+  /** Exported part names, in `export { … }` order. */
+  parts: string[]
+  /** Part -> the `data-slot` values it renders, for the preview highlight. */
+  slots: Record<string, string[]>
+  /** Exported but placed nowhere — no demo and no internal usage. */
+  orphans: string[]
+  /** Demo key -> the parts it renders, which is what makes a part clickable. */
+  coverage: Record<string, string[]>
+}
+
+export type AnatomySource = { label: string; fileName: string; text: string }
+
+/** Edges observed only here are "rendered for you" rather than composed. */
+const INTERNAL = "(internal)"
+
+function parse(fileName: string, text: string) {
+  return ts.createSourceFile(
+    fileName,
+    text,
+    ts.ScriptTarget.Latest,
+    true,
+    ts.ScriptKind.TSX
+  )
+}
+
+/**
+ * Part names come from the module's own `export { … }` clause rather than from
+ * its function declarations: that is the surface a consumer can actually write,
+ * and it excludes the cva consts and internal helpers that sit beside them.
+ */
+function exportedParts(source: ts.SourceFile) {
+  const names: string[] = []
+  const visit = (node: ts.Node) => {
+    if (
+      ts.isExportDeclaration(node) &&
+      node.exportClause &&
+      ts.isNamedExports(node.exportClause)
+    ) {
+      for (const element of node.exportClause.elements) {
+        const name = element.name.text
+        if (/^[A-Z][A-Za-z]*$/.test(name)) names.push(name)
+      }
+    }
+    ts.forEachChild(node, visit)
+  }
+  visit(source)
+  return names
+}
+
+/**
+ * `PanelHeader` -> `panel-header`, read off each part's own `data-slot` literal.
+ * A part can render several (Field does) and two components render none at all,
+ * which is why this is a list and may be absent.
+ */
+function slotMap(source: ts.SourceFile, parts: string[]) {
+  const slots: Record<string, string[]> = {}
+  const visit = (node: ts.Node) => {
+    if (
+      ts.isFunctionDeclaration(node) &&
+      node.name &&
+      node.body &&
+      parts.includes(node.name.text)
+    ) {
+      const found: string[] = []
+      const dig = (inner: ts.Node) => {
+        if (
+          ts.isJsxAttribute(inner) &&
+          inner.name.getText(source) === "data-slot" &&
+          inner.initializer &&
+          ts.isStringLiteral(inner.initializer)
+        ) {
+          found.push(inner.initializer.text)
+        }
+        ts.forEachChild(inner, dig)
+      }
+      dig(node.body)
+      if (found.length) slots[node.name.text] = [...new Set(found)]
+    }
+    ts.forEachChild(node, visit)
+  }
+  visit(source)
+  return slots
+}
+
+function tagName(node: ts.JsxElement | ts.JsxSelfClosingElement) {
+  const tag = ts.isJsxElement(node) ? node.openingElement.tagName : node.tagName
+  return ts.isIdentifier(tag) ? tag.text : undefined
+}
+
+/**
+ * The composition grammar of a component, merged from every place its parts are
+ * written: each demo, its playground, and the component's own source. No single
+ * demo shows every part — panel's `basic` omits PanelRow and `rows` omits
+ * PanelFooter — so the union is what makes the tree complete without asking any
+ * one demo to be contrived. Parts of *other* modules are ignored: this describes
+ * one module's grammar, not the usages around it.
+ */
+export function extractAnatomy(
+  component: { fileName: string; text: string },
+  demos: AnatomySource[]
+): Anatomy {
+  const componentSource = parse(component.fileName, component.text)
+  const parts = exportedParts(componentSource)
+  const slots = slotMap(componentSource, parts)
+
+  type Edge = {
+    parent: string
+    child: string
+    order: number
+    labels: Set<string>
+  }
+  const edges = new Map<string, Edge>()
+  const rootOrder = new Map<string, number>()
+  const coverage: Record<string, string[]> = {}
+  let order = 0
+
+  const collect = (label: string, source: ts.SourceFile) => {
+    const present = new Set<string>()
+    const walk = (node: ts.Node, ancestor: string | undefined) => {
+      let next = ancestor
+      if (ts.isJsxElement(node) || ts.isJsxSelfClosingElement(node)) {
+        const name = tagName(node)
+        if (name && parts.includes(name)) {
+          present.add(name)
+          if (ancestor) {
+            const key = `${ancestor}>${name}`
+            const edge = edges.get(key) ?? {
+              parent: ancestor,
+              child: name,
+              order: order++,
+              labels: new Set<string>(),
+            }
+            edge.labels.add(label)
+            edges.set(key, edge)
+          } else if (!rootOrder.has(name)) {
+            rootOrder.set(name, order++)
+          }
+          next = name
+        }
+      }
+      ts.forEachChild(node, (child) => walk(child, next))
+    }
+    walk(source, undefined)
+    if (label !== INTERNAL) coverage[label] = [...present]
+  }
+
+  for (const demo of demos) collect(demo.label, parse(demo.fileName, demo.text))
+  // Last, so a nesting the demos already show keeps its earlier order and is
+  // not mislabelled as internal.
+  collect(INTERNAL, componentSource)
+
+  const childrenOf = (parent: string) =>
+    [...edges.values()]
+      .filter((edge) => edge.parent === parent)
+      .sort((a, b) => a.order - b.order)
+
+  const parentsOf = (child: string) =>
+    [...edges.values()].filter((edge) => edge.child === child)
+
+  const rows: AnatomyRow[] = []
+  const placed = new Set<string>()
+
+  const render = (part: string, depth: number, trail: string[]) => {
+    // Recursive grammars are real — SidebarMenuSub nests inside the item that
+    // contains it — so the cycle is reported rather than followed.
+    if (trail.includes(part)) {
+      rows.push({ part, depth, kind: "recurse" })
+      return
+    }
+
+    const parents = parentsOf(part).map((edge) => edge.parent)
+    const alsoUnder = [...new Set(parents)].filter(
+      (parent) => parent !== trail.at(-1)
+    )
+    const internal = parentsOf(part).every(
+      (edge) => edge.labels.size === 1 && edge.labels.has(INTERNAL)
+    )
+    const shared = {
+      part,
+      depth,
+      ...(alsoUnder.length ? { alsoUnder } : {}),
+      ...(internal && parents.length ? { internal: true } : {}),
+    }
+
+    placed.add(part)
+    const children = childrenOf(part)
+    if (!children.length) {
+      rows.push({ ...shared, kind: "self" })
+      return
+    }
+    rows.push({ ...shared, kind: "open" })
+    for (const edge of children) render(edge.child, depth + 1, [...trail, part])
+    rows.push({ part, depth, kind: "close" })
+  }
+
+  const roots = [...rootOrder.entries()]
+    .filter(([name]) => !parentsOf(name).length)
+    .sort((a, b) => a[1] - b[1])
+    .map(([name]) => name)
+
+  for (const root of roots) render(root, 0, [])
+
+  return {
+    rows,
+    parts,
+    slots,
+    orphans: parts.filter((part) => !placed.has(part)),
+    coverage,
+  }
+}

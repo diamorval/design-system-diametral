@@ -2,6 +2,8 @@ import * as React from "react"
 import { Link, useParams } from "react-router"
 import { CheckIcon, CopyIcon } from "@phosphor-icons/react"
 
+import { anatomy } from "virtual:demo-source"
+
 import { Badge } from "@diametral/ui/components/badge"
 import { Button } from "@diametral/ui/components/button"
 import {
@@ -19,15 +21,27 @@ import {
 } from "@diametral/ui/components/toc"
 
 import { ExampleBlock } from "@/docs/example"
-import { Playground } from "@/docs/playground"
 import { Prose } from "@/docs/prose"
+import { Workbench } from "@/docs/workbench"
 import { demoKeysFor } from "@/registry/demos"
 import { hasPlayground } from "@/registry/playground-registry"
 import { exampleAnchor, findComponent, importPath } from "@/registry/registry"
 
+/** Enough names to recognise the module, before a 23-export line stops reading. */
+const SHOWN_EXPORTS = 4
+
 function ImportLine({ slug }: { slug: string }) {
   const [copied, setCopied] = React.useState(false)
-  const line = `import { … } from "${importPath(slug)}"`
+  const parts = anatomy[slug]?.parts ?? []
+  const statement = `import { ${parts.join(", ")} } from "${importPath(slug)}"`
+  const shown = parts.length
+    ? [
+        ...parts.slice(0, SHOWN_EXPORTS),
+        ...(parts.length > SHOWN_EXPORTS
+          ? [`+${parts.length - SHOWN_EXPORTS}`]
+          : []),
+      ].join(", ")
+    : "…"
 
   React.useEffect(() => {
     if (!copied) return
@@ -37,13 +51,19 @@ function ImportLine({ slug }: { slug: string }) {
 
   return (
     <div className="flex items-center gap-2 border border-border bg-muted/40 px-3 py-2">
-      <code className="flex-1 truncate font-mono text-xs">{line}</code>
+      <code className="flex-1 truncate font-mono text-xs">
+        {`import { ${shown} } from "${importPath(slug)}"`}
+      </code>
       <Button
         size="icon-sm"
         variant="ghost"
-        aria-label={copied ? "Copied" : "Copy import path"}
+        aria-label={copied ? "Copied" : "Copy import statement"}
+        // The line is truncated for reading; what gets copied is the whole
+        // statement, which is what the display has always implied.
         onClick={async () => {
-          await navigator.clipboard.writeText(importPath(slug))
+          await navigator.clipboard.writeText(
+            parts.length ? statement : importPath(slug)
+          )
           setCopied(true)
         }}
       >
@@ -97,9 +117,11 @@ export function ComponentPage() {
           </div>
         </header>
 
-        <div className="mb-12">
-          <Playground slug={component.slug} />
-        </div>
+        {playground ? (
+          <div className="mb-6">
+            <Workbench component={component} />
+          </div>
+        ) : null}
 
         {examples.length > 0 ? (
           <div className="flex flex-col gap-12">
@@ -109,7 +131,10 @@ export function ComponentPage() {
             {orphans.map((key) => (
               <ExampleBlock
                 key={key}
-                example={{ demo: key, title: key.split("/").slice(1).join(" ") }}
+                example={{
+                  demo: key,
+                  title: key.split("/").slice(1).join(" "),
+                }}
               />
             ))}
           </div>
@@ -146,7 +171,7 @@ export function ComponentPage() {
           <TocList>
             {playground ? (
               <TocItem>
-                <TocLink href="#playground">Playground</TocLink>
+                <TocLink href="#workbench">Workbench</TocLink>
               </TocItem>
             ) : null}
             {examples.map((example) => (

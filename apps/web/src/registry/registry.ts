@@ -11,6 +11,13 @@ export type ComponentDoc = {
   description: string
   category: string
   examples?: Example[]
+  /**
+   * Notes keyed by part name, surfaced when that part is selected in the
+   * anatomy tree. Deliberately sparse: the tree itself is derived, so this is
+   * only for what a reader cannot infer from the nesting — write an entry when a
+   * part has a gotcha and leave the rest silent.
+   */
+  parts?: Record<string, string>
 }
 
 /**
@@ -1317,6 +1324,19 @@ export const COMPONENTS: ComponentDoc[] = [
           "PanelRow is the case v1's Panel handled with a `rows` boolean — here it is its own part instead of a variant flag.",
       },
     ],
+    parts: {
+      Panel:
+        "Owns `--panel-spacing`, which every part reads for its padding — a part rendered outside a Panel comes out flush.",
+      PanelHeader:
+        "Bottom padding is keyed off `.border-b`, so a header with no rule stays tight.",
+      PanelTitle:
+        "Type styles only, with no padding of its own — that is why it sits inside PanelHeader. Add your own heading element when the level matters.",
+      PanelContent:
+        "Horizontal padding and nothing else. Pass `px-0` when the children carry their own, as PanelRow does.",
+      PanelFooter: "Mirrors the header: top padding is keyed off `.border-t`.",
+      PanelRow:
+        "Carries its own padding and divider; `last:border-b-0` stops the trailing rule doubling up with the footer's.",
+    },
   },
   {
     slug: "masonry",

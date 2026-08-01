@@ -1,10 +1,6 @@
 import * as React from "react"
 import { useSearchParams } from "react-router"
-import {
-  ArrowCounterClockwiseIcon,
-  CheckIcon,
-  CopyIcon,
-} from "@phosphor-icons/react"
+import { CheckIcon, CopyIcon } from "@phosphor-icons/react"
 
 import { palette } from "virtual:demo-source"
 
@@ -19,9 +15,10 @@ import {
   SelectValue,
 } from "@diametral/ui/components/select"
 import { Switch } from "@diametral/ui/components/switch"
+import { cn } from "@diametral/ui/lib/utils"
 
 import { formatJsx } from "@/docs/format-jsx"
-import { tokenizeJsx, type TokenKind } from "@/docs/tokenize-jsx"
+import { tokenizeJsx, type Token, type TokenKind } from "@/docs/tokenize-jsx"
 import { useCopy } from "@/docs/use-copy"
 import { getPlayground, type Axis } from "@/registry/playground-registry"
 import type { Control, SelectOption } from "@/registry/playgrounds"
@@ -60,7 +57,12 @@ function extraDefault(control: Control) {
   return ""
 }
 
-export function Playground({ slug }: { slug: string }) {
+/**
+ * The playground's control state and the rail that drives it, with no layout of
+ * its own: the Workbench places the rail, and owns the preview and the code
+ * strip that `renderProps` and `code` feed.
+ */
+export function usePlaygroundControls(slug: string) {
   const playground = getPlayground(slug)
   const [params, setParams] = useSearchParams()
 
@@ -143,124 +145,100 @@ export function Playground({ slug }: { slug: string }) {
     extras.some((control) => params.has(control.prop)) ||
     textControls.some((control) => params.has(control.key))
 
-  return (
-    <section id="playground" className="scroll-mt-20">
-      <header className="mb-3 flex items-baseline justify-between gap-4">
-        <h2 className="font-heading text-base font-semibold tracking-wider uppercase">
-          Playground
-        </h2>
-        {touched ? (
-          <Button
-            variant="ghost"
-            size="xs"
-            onClick={() =>
-              setParams({}, { replace: true, preventScrollReset: true })
-            }
-          >
-            <ArrowCounterClockwiseIcon /> Reset
-          </Button>
-        ) : null}
-      </header>
+  return {
+    Subject,
+    renderProps,
+    code,
+    note,
+    touched,
+    reset: () => setParams({}, { replace: true, preventScrollReset: true }),
+    hasControls: axes.length > 0 || extras.length > 0,
+    rail: (
+      <>
+        {textControls.map((control) => (
+          <ControlRow key={control.key} label={control.label ?? control.key}>
+            <Input
+              value={textValues[control.key]}
+              placeholder={control.default}
+              onChange={(event) =>
+                setText(control.key, event.target.value, control.default)
+              }
+              aria-label={control.label ?? control.key}
+            />
+          </ControlRow>
+        ))}
 
-      {note ? (
-        <p className="mb-3 max-w-2xl text-sm text-muted-foreground">{note}</p>
-      ) : null}
+        {axes.map((axis) => (
+          <ControlRow key={axis.prop} label={axis.prop}>
+            <PanelSelect
+              label={axis.prop}
+              value={axisValue(axis)}
+              // UNSET is only offered when cva declares no default for this axis.
+              options={axis.default ? axis.options : [UNSET, ...axis.options]}
+              onValueChange={(value) => set(axis.prop, value)}
+            />
+          </ControlRow>
+        ))}
 
-      <div className="grid border border-border lg:grid-cols-[1fr_260px]">
-        <div className="flex min-h-56 items-center justify-center p-8">
-          <Subject {...renderProps} />
-        </div>
+        {extras.map((control) => {
+          const label = control.label ?? control.prop
+          const value = extraValue(control)
 
-        <aside className="flex flex-col gap-4 border-t border-border p-4 lg:border-s lg:border-t-0">
-          {textControls.map((control) => (
-            <ControlRow key={control.key} label={control.label ?? control.key}>
-              <Input
-                value={textValues[control.key]}
-                placeholder={control.default}
-                onChange={(event) =>
-                  setText(control.key, event.target.value, control.default)
-                }
-                aria-label={control.label ?? control.key}
-              />
-            </ControlRow>
-          ))}
-
-          {axes.map((axis) => (
-            <ControlRow key={axis.prop} label={axis.prop}>
-              <PanelSelect
-                label={axis.prop}
-                value={axisValue(axis)}
-                // UNSET is only offered when cva declares no default for this axis.
-                options={axis.default ? axis.options : [UNSET, ...axis.options]}
-                onValueChange={(value) => set(axis.prop, value)}
-              />
-            </ControlRow>
-          ))}
-
-          {extras.map((control) => {
-            const label = control.label ?? control.prop
-            const value = extraValue(control)
-
-            if (control.type === "boolean") {
-              return (
-                <div
-                  key={control.prop}
-                  className="flex items-center justify-between gap-3"
-                >
-                  {/* Label uppercases by default and only reverts via a
+          if (control.type === "boolean") {
+            return (
+              <div
+                key={control.prop}
+                className="flex items-center justify-between gap-3"
+              >
+                {/* Label uppercases by default and only reverts via a
                       peer-* rule that needs the switch to come first; the panel
                       puts the label first, so the type is set explicitly. */}
-                  <Label
-                    htmlFor={`pg-${control.prop}`}
-                    className="font-mono text-xs font-normal tracking-normal text-muted-foreground normal-case"
-                  >
-                    {label}
-                  </Label>
-                  <Switch
-                    id={`pg-${control.prop}`}
-                    checked={value === true}
-                    onCheckedChange={(checked) => set(control.prop, checked)}
-                  />
-                </div>
-              )
-            }
+                <Label
+                  htmlFor={`pg-${control.prop}`}
+                  className="font-mono text-xs font-normal tracking-normal text-muted-foreground normal-case"
+                >
+                  {label}
+                </Label>
+                <Switch
+                  id={`pg-${control.prop}`}
+                  checked={value === true}
+                  onCheckedChange={(checked) => set(control.prop, checked)}
+                />
+              </div>
+            )
+          }
 
-            if (control.type === "select") {
-              return (
-                <ControlRow key={control.prop} label={label}>
-                  <PanelSelect
-                    label={label}
-                    value={String(value)}
-                    options={control.options}
-                    onValueChange={(next) => set(control.prop, next)}
-                  />
-                </ControlRow>
-              )
-            }
-
+          if (control.type === "select") {
             return (
               <ControlRow key={control.prop} label={label}>
-                <Input
+                <PanelSelect
+                  label={label}
                   value={String(value)}
-                  placeholder={control.placeholder}
-                  onChange={(event) => set(control.prop, event.target.value)}
-                  aria-label={label}
+                  options={control.options}
+                  onValueChange={(next) => set(control.prop, next)}
                 />
               </ControlRow>
             )
-          })}
+          }
 
-          {axes.length === 0 && extras.length === 0 ? (
-            <p className="text-xs text-muted-foreground">
-              No controls declared.
-            </p>
-          ) : null}
-        </aside>
-      </div>
+          return (
+            <ControlRow key={control.prop} label={label}>
+              <Input
+                value={String(value)}
+                placeholder={control.placeholder}
+                onChange={(event) => set(control.prop, event.target.value)}
+                aria-label={label}
+              />
+            </ControlRow>
+          )
+        })}
 
-      <GeneratedCode code={code} />
-    </section>
-  )
+        {axes.length === 0 && extras.length === 0 ? (
+          <p className="text-xs text-muted-foreground">No controls declared.</p>
+        ) : null}
+      </>
+    ),
+  }
 }
 
 function ControlRow({
@@ -325,9 +303,76 @@ function PanelSelect({
   )
 }
 
-function GeneratedCode({ code }: { code: string }) {
+/**
+ * Every token span of the element written as `part`, from its `<` through its
+ * matching `>`. A part written more than once yields a range each time, so a
+ * selection never implies there is only one of it.
+ *
+ * The tokenizer is flat, so nesting is recovered here with a stack: `</` arrives
+ * as its own punct token, and a `/>` before the next tag marks a self-closing
+ * element.
+ */
+function partRanges(tokens: Token[], part: string) {
+  const ranges: Array<[number, number]> = []
+  const open: Array<{ name: string; from: number }> = []
+
+  for (let index = 0; index < tokens.length; index += 1) {
+    if (tokens[index].kind !== "tag") continue
+    const name = tokens[index].text
+
+    if (tokens[index - 1]?.text === "</") {
+      const element = open.pop()
+      if (element?.name !== part) continue
+      // Include the closing `>` that follows the tag name.
+      let end = index
+      while (end < tokens.length && tokens[end].text !== ">") end += 1
+      ranges.push([element.from, Math.min(end, tokens.length - 1)])
+      continue
+    }
+
+    let cursor = index + 1
+    while (
+      cursor < tokens.length &&
+      tokens[cursor].text !== ">" &&
+      tokens[cursor].text !== "/>"
+    ) {
+      cursor += 1
+    }
+    // `index - 1` is the `<` that opened this tag.
+    if (tokens[cursor]?.text === "/>") {
+      if (name === part) ranges.push([index - 1, cursor])
+    } else {
+      open.push({ name, from: index - 1 })
+    }
+  }
+
+  return ranges
+}
+
+/**
+ * A passive view that answers the index beside it: the selected part's tags are
+ * tinted and everything outside that element is blurred, the same isolation the
+ * preview does. Nothing here is clickable — the snippet stays a snippet, so
+ * selecting text to copy it still works.
+ */
+export function GeneratedCode({
+  code,
+  selected,
+  hovered,
+}: {
+  code: string
+  selected?: string | null
+  hovered?: string | null
+}) {
   const { copied, copy } = useCopy(code)
   const tokens = React.useMemo(() => tokenizeJsx(code), [code])
+  const focus = selected ?? hovered ?? null
+  const ranges = React.useMemo(
+    () => (focus ? partRanges(tokens, focus) : []),
+    [tokens, focus]
+  )
+  const inFocus = (index: number) =>
+    ranges.some(([from, to]) => index >= from && index <= to)
 
   return (
     <div className="group/code relative border border-t-0 border-border">
@@ -345,6 +390,20 @@ function GeneratedCode({ code }: { code: string }) {
           {tokens.map((token, index) => (
             <span
               key={index}
+              className={cn(
+                focus && "transition-[filter,opacity] duration-200",
+                focus &&
+                  !inFocus(index) &&
+                  // Whitespace carries no meaning to dim, and blurring it only
+                  // makes the indentation shimmer.
+                  token.text.trim() !== "" &&
+                  "opacity-30 blur-[1.5px]",
+                focus &&
+                  inFocus(index) &&
+                  token.kind === "tag" &&
+                  token.text === focus &&
+                  "rounded-[2px] bg-muted-foreground/25"
+              )}
               style={
                 {
                   "--shiki-light": palette.light[TOKEN_ROLE[token.kind]],

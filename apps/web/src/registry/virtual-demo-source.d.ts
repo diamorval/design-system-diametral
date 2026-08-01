@@ -16,4 +16,10 @@ declare module "virtual:demo-source" {
 
   /** The JSX each playground file renders, still holding its `{...props}`. */
   export const templates: Record<string, string>
+
+  /** Composition grammar per slug, merged from demos, playground and source. */
+  export const anatomy: Record<
+    string,
+    import("../../plugins/extract-anatomy").Anatomy
+  >
 }

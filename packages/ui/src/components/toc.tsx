@@ -9,7 +9,7 @@ function Toc({ className, ...props }: React.ComponentProps<"nav">) {
     <nav
       aria-label="On this page"
       data-slot="toc"
-      className={cn("sticky top-8 h-fit w-44 shrink-0", className)}
+      className={cn("sticky top-8 h-fit shrink-0", className)}
       {...props}
     />
   )
