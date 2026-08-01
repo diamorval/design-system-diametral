@@ -12,7 +12,6 @@
 const PRINT_WIDTH = 80
 const INDENT = 2
 const PROPS_MARKER = "{...props}"
-const CHILDREN_MARKER = "{children}"
 
 /** Index of the `>` closing the tag that starts at `from`. */
 function findTagEnd(source: string, from: number) {
@@ -77,15 +76,31 @@ export function serializeChildren(text: string) {
   return `{${JSON.stringify(text)}}`
 }
 
+/**
+ * Every entry replaces its own `{key}` marker — `{children}` is just the
+ * conventional name for the first one. A playground can declare more (e.g.
+ * `{description}`, `{action}`) as long as its JSX contains the matching marker.
+ */
 export function formatJsx(
   template: string,
   attributes: string[],
-  children?: string
+  texts?: Record<string, string>,
+  elements?: Record<string, string>
 ) {
   let source = template
 
-  if (children !== undefined && source.includes(CHILDREN_MARKER)) {
-    source = source.replace(CHILDREN_MARKER, serializeChildren(children))
+  // Elements first: these insert real JSX, so they must not be escaped the way
+  // text is.
+  for (const [key, value] of Object.entries(elements ?? {})) {
+    const marker = `{${key}}`
+    if (source.includes(marker)) source = source.replace(marker, `<${value} />`)
+  }
+
+  for (const [key, value] of Object.entries(texts ?? {})) {
+    const marker = `{${key}}`
+    if (source.includes(marker)) {
+      source = source.replace(marker, serializeChildren(value))
+    }
   }
 
   const markerIndex = source.indexOf(PROPS_MARKER)
@@ -131,10 +146,7 @@ export function formatJsx(
   // though the line still fits. Self-closing tags have no children to hug and
   // are governed by width alone. (Verified against prettier 3.8.3.)
   const canHugChildren = !hasInlineChildren || all.length <= 1
-  if (
-    canHugChildren &&
-    (indent + openInline + tail).length <= PRINT_WIDTH
-  ) {
+  if (canHugChildren && (indent + openInline + tail).length <= PRINT_WIDTH) {
     return source.slice(0, openStart) + openInline + source.slice(openEnd + 1)
   }
 

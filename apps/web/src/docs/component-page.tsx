@@ -2,6 +2,8 @@ import * as React from "react"
 import { Link, useParams } from "react-router"
 import { CheckIcon, CopyIcon } from "@phosphor-icons/react"
 
+import { anatomy } from "virtual:demo-source"
+
 import { Badge } from "@diametral/ui/components/badge"
 import { Button } from "@diametral/ui/components/button"
 import {
@@ -10,17 +12,36 @@ import {
   EmptyHeader,
   EmptyTitle,
 } from "@diametral/ui/components/empty"
+import {
+  Toc,
+  TocItem,
+  TocLabel,
+  TocLink,
+  TocList,
+} from "@diametral/ui/components/toc"
 
 import { ExampleBlock } from "@/docs/example"
-import { Playground } from "@/docs/playground"
 import { Prose } from "@/docs/prose"
+import { Workbench } from "@/docs/workbench"
 import { demoKeysFor } from "@/registry/demos"
 import { hasPlayground } from "@/registry/playground-registry"
 import { exampleAnchor, findComponent, importPath } from "@/registry/registry"
 
+/** Enough names to recognise the module, before a 23-export line stops reading. */
+const SHOWN_EXPORTS = 4
+
 function ImportLine({ slug }: { slug: string }) {
   const [copied, setCopied] = React.useState(false)
-  const line = `import { … } from "${importPath(slug)}"`
+  const parts = anatomy[slug]?.parts ?? []
+  const statement = `import { ${parts.join(", ")} } from "${importPath(slug)}"`
+  const shown = parts.length
+    ? [
+        ...parts.slice(0, SHOWN_EXPORTS),
+        ...(parts.length > SHOWN_EXPORTS
+          ? [`+${parts.length - SHOWN_EXPORTS}`]
+          : []),
+      ].join(", ")
+    : "…"
 
   React.useEffect(() => {
     if (!copied) return
@@ -30,13 +51,19 @@ function ImportLine({ slug }: { slug: string }) {
 
   return (
     <div className="flex items-center gap-2 border border-border bg-muted/40 px-3 py-2">
-      <code className="flex-1 truncate font-mono text-xs">{line}</code>
+      <code className="flex-1 truncate font-mono text-xs">
+        {`import { ${shown} } from "${importPath(slug)}"`}
+      </code>
       <Button
         size="icon-sm"
         variant="ghost"
-        aria-label={copied ? "Copied" : "Copy import path"}
+        aria-label={copied ? "Copied" : "Copy import statement"}
+        // The line is truncated for reading; what gets copied is the whole
+        // statement, which is what the display has always implied.
         onClick={async () => {
-          await navigator.clipboard.writeText(importPath(slug))
+          await navigator.clipboard.writeText(
+            parts.length ? statement : importPath(slug)
+          )
           setCopied(true)
         }}
       >
@@ -85,27 +112,42 @@ export function ComponentPage() {
             {component.name}
           </h1>
           <Prose className="mt-2 max-w-2xl">{component.description}</Prose>
+          {component.intro?.map((paragraph) => (
+            <Prose key={paragraph} className="mt-3 max-w-2xl">
+              {paragraph}
+            </Prose>
+          ))}
           <div className="mt-5 max-w-2xl">
             <ImportLine slug={component.slug} />
           </div>
         </header>
 
-        <div className="mb-12">
-          <Playground slug={component.slug} />
-        </div>
+        {playground ? (
+          <div className="mb-6">
+            <Workbench component={component} />
+          </div>
+        ) : null}
 
         {examples.length > 0 ? (
-          <div className="flex flex-col gap-12">
-            {examples.map((example) => (
-              <ExampleBlock key={example.demo} example={example} />
-            ))}
-            {orphans.map((key) => (
-              <ExampleBlock
-                key={key}
-                example={{ demo: key, title: key.split("/").slice(1).join(" ") }}
-              />
-            ))}
-          </div>
+          <section id="examples" className="scroll-mt-20">
+            <h2 className="mb-6 font-heading text-base font-semibold tracking-wider uppercase">
+              Examples
+            </h2>
+            <div className="flex flex-col gap-12">
+              {examples.map((example) => (
+                <ExampleBlock key={example.demo} example={example} />
+              ))}
+              {orphans.map((key) => (
+                <ExampleBlock
+                  key={key}
+                  example={{
+                    demo: key,
+                    title: key.split("/").slice(1).join(" "),
+                  }}
+                />
+              ))}
+            </div>
+          </section>
         ) : playground ? (
           // A playground already gives this page working content, so the missing
           // examples are a footnote rather than an empty state.
@@ -134,33 +176,33 @@ export function ComponentPage() {
       </article>
 
       {(playground ? 1 : 0) + examples.length > 1 ? (
-        <nav className="sticky top-8 hidden h-fit w-44 shrink-0 xl:block">
-          <p className="mb-3 font-mono text-[11px] tracking-wide text-muted-foreground uppercase">
-            On this page
-          </p>
-          <ul className="flex flex-col gap-2 border-s border-border">
+        <Toc
+          // The layout header is sticky at top-0 and 3.75rem tall (py-3 + h-9),
+          // so the rail parks below it keeping the 2.5rem of main padding it
+          // starts with rather than sliding under the header.
+          className="hidden xl:top-25 xl:block"
+        >
+          <TocLabel>On this page</TocLabel>
+          <TocList>
             {playground ? (
-              <li>
-                <a
-                  href="#playground"
-                  className="-ms-px block border-s border-transparent ps-3 text-sm text-muted-foreground hover:border-foreground hover:text-foreground"
-                >
-                  Playground
-                </a>
-              </li>
+              <TocItem>
+                <TocLink href="#workbench">Workbench</TocLink>
+              </TocItem>
+            ) : null}
+            {examples.length > 0 ? (
+              <TocItem>
+                <TocLink href="#examples">Examples</TocLink>
+              </TocItem>
             ) : null}
             {examples.map((example) => (
-              <li key={example.demo}>
-                <a
-                  href={`#${exampleAnchor(example)}`}
-                  className="-ms-px block border-s border-transparent ps-3 text-sm text-muted-foreground hover:border-foreground hover:text-foreground"
-                >
+              <TocItem key={example.demo} level={2}>
+                <TocLink href={`#${exampleAnchor(example)}`}>
                   {example.title}
-                </a>
-              </li>
+                </TocLink>
+              </TocItem>
             ))}
-          </ul>
-        </nav>
+          </TocList>
+        </Toc>
       ) : null}
     </div>
   )
