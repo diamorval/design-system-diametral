@@ -14,6 +14,13 @@
  * `value` — where omitting it at the default would emit code that does not
  * compile. Optional props should leave it off so an untouched panel prints clean.
  */
+/**
+ * A plain string is both the value and its own label. `{ value, label }` splits
+ * them — e.g. the real component name as the value the code prints (`GearIcon`)
+ * against a shorter label the panel shows (`Gear`).
+ */
+export type SelectOption = string | { value: string; label: string }
+
 export type Control =
   | { prop: string; type: "boolean"; label?: string; always?: boolean }
   | {
@@ -26,9 +33,16 @@ export type Control =
   | {
       prop: string
       type: "select"
-      options: string[]
+      options: SelectOption[]
       label?: string
       always?: boolean
+      /**
+       * The value names a component rather than a prop value: it is substituted
+       * into the playground's `{prop}` marker as `<Value />` instead of being
+       * printed as an attribute. The playground file must render the matching
+       * component itself — the panel only passes the name through.
+       */
+      marker?: "element"
     }
 
 export type PlaygroundConfig = {
@@ -42,6 +56,12 @@ export type PlaygroundConfig = {
    * inside MarkerContent, Checkbox inside its Label.
    */
   children?: { default: string; label?: string }
+  /**
+   * Additional editable text markers beyond `children` — each key needs its own
+   * literal `{key}` marker in the playground's JSX. Tracked in the generated
+   * snippet exactly like `children` is.
+   */
+  texts?: Record<string, { default: string; label?: string }>
   /** Shown above the controls when the subject needs explaining. */
   note?: string
 }
@@ -638,6 +658,22 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
   /* -- Layout & chrome (lane 3) -------------------------------------------- */
   "page-header": {
     children: { default: "Team settings", label: "title" },
+    texts: {
+      description: { default: "Manage members, roles and billing." },
+      action: { default: "Invite" },
+    },
+    note: "PageHeader has no prop bag, only slots — the controls drive its parts rather than a props object.",
+    extras: [
+      {
+        prop: "icon",
+        type: "select",
+        marker: "element",
+        options: [
+          { value: "UsersIcon", label: "Users" },
+          { value: "GearIcon", label: "Gear" },
+        ],
+      },
+    ],
   },
   panel: {
     children: { default: "Notifications", label: "title" },

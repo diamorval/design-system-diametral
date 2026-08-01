@@ -24,6 +24,7 @@ export type Playground = {
   axes: Axis[]
   extras: Control[]
   children?: { default: string; label?: string }
+  texts?: Record<string, { default: string; label?: string }>
   note?: string
 }
 
@@ -59,6 +60,7 @@ for (const [file, mod] of Object.entries(modules)) {
     axes,
     extras: config.extras ?? [],
     children: config.children,
+    texts: config.texts,
     note: config.note,
   })
 }

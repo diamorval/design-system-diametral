@@ -1,7 +1,6 @@
 import * as React from "react"
 
 import { cn } from "../lib/utils.js"
-import { Icon, type IconName } from "./icon.js"
 
 function PageHeader({ className, ...props }: React.ComponentProps<"header">) {
   return (
@@ -32,16 +31,14 @@ function PageHeaderHeading({
   )
 }
 
-function PageHeaderIcon({
-  name,
-  className,
-  ...props
-}: { name: IconName } & Omit<React.ComponentProps<typeof Icon>, "name">) {
+function PageHeaderIcon({ className, ...props }: React.ComponentProps<"span">) {
   return (
-    <Icon
-      name={name}
+    <span
       data-slot="page-header-icon"
-      className={cn("size-5 shrink-0 text-muted-foreground", className)}
+      className={cn(
+        "flex h-8 shrink-0 items-center text-muted-foreground [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-6",
+        className
+      )}
       {...props}
     />
   )

@@ -1,3 +1,5 @@
+import { BellIcon } from "@phosphor-icons/react"
+
 import {
   PageHeader,
   PageHeaderDescription,
@@ -15,13 +17,15 @@ import {
 
 // `Tabs` wraps the whole block, not just `PageHeaderTabs` — the header only
 // hosts the trigger row, while the panels render below it.
-export default function PageHeaderWithIconAndTabs() {
+export default function PageHeaderWithTabs() {
   return (
     <Tabs defaultValue="all" className="w-full">
       <PageHeader>
         <PageHeaderHeading>
           <div className="flex items-start gap-3">
-            <PageHeaderIcon name="bell" />
+            <PageHeaderIcon>
+              <BellIcon />
+            </PageHeaderIcon>
             <div className="flex flex-col gap-1">
               <PageHeaderTitle>Notifications</PageHeaderTitle>
               <PageHeaderDescription>

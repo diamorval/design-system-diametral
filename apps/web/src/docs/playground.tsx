@@ -24,9 +24,14 @@ import { formatJsx } from "@/docs/format-jsx"
 import { tokenizeJsx, type TokenKind } from "@/docs/tokenize-jsx"
 import { useCopy } from "@/docs/use-copy"
 import { getPlayground, type Axis } from "@/registry/playground-registry"
-import type { Control } from "@/registry/playgrounds"
+import type { Control, SelectOption } from "@/registry/playgrounds"
 
 const UNSET = "—"
+
+const optionValue = (option: SelectOption) =>
+  typeof option === "string" ? option : option.value
+const optionLabel = (option: SelectOption) =>
+  typeof option === "string" ? option : option.label
 
 const TOKEN_ROLE: Record<TokenKind, keyof typeof palette.light> = {
   tag: "tag",
@@ -51,7 +56,7 @@ function serialize(prop: string, value: string | boolean) {
 
 function extraDefault(control: Control) {
   if (control.type === "boolean") return false
-  if (control.type === "select") return control.options[0]
+  if (control.type === "select") return optionValue(control.options[0])
   return ""
 }
 
@@ -60,7 +65,14 @@ export function Playground({ slug }: { slug: string }) {
   const [params, setParams] = useSearchParams()
 
   if (!playground) return null
-  const { Subject, template, axes, extras, children, note } = playground
+  const { Subject, template, axes, extras, children, texts, note } = playground
+
+  // `children` is just the conventional first entry — every text marker is
+  // resolved and printed the same way.
+  const textControls = [
+    ...(children ? [{ key: "children", ...children }] : []),
+    ...Object.entries(texts ?? {}).map(([key, config]) => ({ key, ...config })),
+  ]
 
   const axisValue = (axis: Axis) =>
     params.get(axis.prop) ?? axis.default ?? UNSET
@@ -79,10 +91,24 @@ export function Playground({ slug }: { slug: string }) {
     setParams(next, { replace: true, preventScrollReset: true })
   }
 
+  /**
+   * Text markers can't use `set`: their default is real content, not "", so
+   * dropping an emptied field would refill the box from the default and make it
+   * impossible to clear one and type something else. An empty marker is a real
+   * choice and stays in the URL; only typing the default back removes it.
+   */
+  function setText(key: string, value: string, fallback: string) {
+    const next = new URLSearchParams(params)
+    if (value === fallback) next.delete(key)
+    else next.set(key, value)
+    setParams(next, { replace: true, preventScrollReset: true })
+  }
+
   // What renders: every resolved value. What we print: only what differs from
   // the component's own defaults.
   const renderProps: Record<string, unknown> = {}
   const printed: string[] = []
+  const elementValues: Record<string, string> = {}
 
   for (const axis of axes) {
     const value = axisValue(axis)
@@ -95,22 +121,27 @@ export function Playground({ slug }: { slug: string }) {
     const value = extraValue(control)
     if (value === false || value === "") continue
     renderProps[control.prop] = value
+    if (control.type === "select" && control.marker === "element") {
+      elementValues[control.prop] = String(value)
+      continue
+    }
     if (control.always || value !== extraDefault(control)) {
       printed.push(serialize(control.prop, value))
     }
   }
 
-  const childrenText = children
-    ? (params.get("children") ?? children.default)
-    : undefined
-  if (childrenText !== undefined) renderProps.children = childrenText
+  const textValues: Record<string, string> = {}
+  for (const control of textControls) {
+    textValues[control.key] = params.get(control.key) ?? control.default
+    renderProps[control.key] = textValues[control.key]
+  }
 
-  const code = formatJsx(template, printed, childrenText)
+  const code = formatJsx(template, printed, textValues, elementValues)
 
   const touched =
     axes.some((axis) => params.has(axis.prop)) ||
     extras.some((control) => params.has(control.prop)) ||
-    params.has("children")
+    textControls.some((control) => params.has(control.key))
 
   return (
     <section id="playground" className="scroll-mt-20">
@@ -141,16 +172,18 @@ export function Playground({ slug }: { slug: string }) {
         </div>
 
         <aside className="flex flex-col gap-4 border-t border-border p-4 lg:border-s lg:border-t-0">
-          {children ? (
-            <ControlRow label={children.label ?? "children"}>
+          {textControls.map((control) => (
+            <ControlRow key={control.key} label={control.label ?? control.key}>
               <Input
-                value={childrenText ?? ""}
-                placeholder={children.default}
-                onChange={(event) => set("children", event.target.value)}
-                aria-label={children.label ?? "children"}
+                value={textValues[control.key]}
+                placeholder={control.default}
+                onChange={(event) =>
+                  setText(control.key, event.target.value, control.default)
+                }
+                aria-label={control.label ?? control.key}
               />
             </ControlRow>
-          ) : null}
+          ))}
 
           {axes.map((axis) => (
             <ControlRow key={axis.prop} label={axis.prop}>
@@ -246,9 +279,10 @@ function ControlRow({
 }
 
 /**
- * Every panel choice is a plain string whose label is the value itself, so the
- * root needs no `items` map — `SelectValue` printing the raw value is exactly
- * what we want here.
+ * A plain string option is both its own value and label. `SelectValue` needs no
+ * `items` map either way — Base UI resolves the trigger's displayed text from
+ * whichever `SelectItem`'s value matches, reading its rendered children as the
+ * label, so a `{ value, label }` option shows its shorter label there too.
  *
  * Base UI types the emitted value as nullable because a Select can be cleared;
  * the panel offers no clear affordance, so a null falls back to UNSET.
@@ -261,11 +295,19 @@ function PanelSelect({
 }: {
   label: string
   value: string
-  options: readonly string[]
+  options: readonly SelectOption[]
   onValueChange: (value: string) => void
 }) {
+  // The trigger's text is resolved from `items`, not from the rendered
+  // SelectItem children — without this map a `{ value, label }` option shows its
+  // raw value once selected, even though the list showed the label.
+  const items = Object.fromEntries(
+    options.map((option) => [optionValue(option), optionLabel(option)])
+  )
+
   return (
     <Select
+      items={items}
       value={value}
       onValueChange={(next: string | null) => onValueChange(next ?? UNSET)}
     >
@@ -274,8 +316,8 @@ function PanelSelect({
       </SelectTrigger>
       <SelectContent>
         {options.map((option) => (
-          <SelectItem key={option} value={option}>
-            {option}
+          <SelectItem key={optionValue(option)} value={optionValue(option)}>
+            {optionLabel(option)}
           </SelectItem>
         ))}
       </SelectContent>

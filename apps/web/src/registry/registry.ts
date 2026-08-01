@@ -1281,14 +1281,19 @@ export const COMPONENTS: ComponentDoc[] = [
       {
         demo: "page-header/basic",
         title: "Basic",
-        description:
-          "Breadcrumb, title, description and actions compose freely — there is no prop bag, only slots.",
+        description: "Just a title and description, no prop bag, only slots.",
       },
       {
-        demo: "page-header/with-icon-and-tabs",
-        title: "Icon and tabs",
+        demo: "page-header/advanced",
+        title: "Advanced",
         description:
-          "`PageHeaderIcon` reads from the shared icon registry; `PageHeaderTabs` flips the header's bottom rule flush against the tab strip.",
+          "Breadcrumb, title, description and actions compose freely alongside the title.",
+      },
+      {
+        demo: "page-header/with-tabs",
+        title: "With tabs and icon",
+        description:
+          "`PageHeaderTabs` flips the header's bottom rule flush against the tab strip; `Tabs` wraps the header so the panels render below it. `PageHeaderIcon` sizes and mutes whatever Phosphor icon you hand it.",
       },
     ],
   },
