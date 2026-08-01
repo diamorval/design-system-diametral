@@ -12,15 +12,6 @@ export default function TagsInputPlayground({
   }
 
   return (
-    <>
-      <span id="tags-input-playground-label" className="sr-only">
-        Tags
-      </span>
-      <TagsInput
-        defaultValue={["design-system"]}
-        aria-labelledby="tags-input-playground-label"
-        {...props}
-      />
-    </>
+    <TagsInput defaultValue={["design-system"]} aria-label="Tags" {...props} />
   )
 }

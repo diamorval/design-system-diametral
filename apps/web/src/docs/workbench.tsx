@@ -45,6 +45,10 @@ export function Workbench({ component }: { component: ComponentDoc }) {
 
   const inTemplate = data?.coverage.playground ?? []
   const note = selected ? component.parts?.[selected] : undefined
+  // A selected type has no part note — its declaration is the description.
+  const typeDecl = selected
+    ? data?.types.find((t) => t.name === selected)?.decl
+    : undefined
 
   return (
     <section id="workbench" className="scroll-mt-20">
@@ -104,6 +108,12 @@ export function Workbench({ component }: { component: ComponentDoc }) {
           {note ? (
             <div className="border-t border-border px-4 py-3">
               <Prose className="text-xs">{`\`${selected}\` — ${note}`}</Prose>
+            </div>
+          ) : typeDecl ? (
+            <div className="border-t border-border px-4 py-3">
+              <pre className="overflow-x-auto font-mono text-xs leading-relaxed text-muted-foreground">
+                {typeDecl}
+              </pre>
             </div>
           ) : null}
         </div>

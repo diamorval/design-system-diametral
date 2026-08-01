@@ -33,12 +33,18 @@ const SHOWN_EXPORTS = 4
 function ImportLine({ slug }: { slug: string }) {
   const [copied, setCopied] = React.useState(false)
   const parts = anatomy[slug]?.parts ?? []
-  const statement = `import { ${parts.join(", ")} } from "${importPath(slug)}"`
-  const shown = parts.length
+  // Type exports ride along with their inline `type` keyword, so the copied
+  // statement is the real import a consumer would write.
+  const names = [
+    ...parts,
+    ...(anatomy[slug]?.types ?? []).map(({ name }) => `type ${name}`),
+  ]
+  const statement = `import { ${names.join(", ")} } from "${importPath(slug)}"`
+  const shown = names.length
     ? [
-        ...parts.slice(0, SHOWN_EXPORTS),
-        ...(parts.length > SHOWN_EXPORTS
-          ? [`+${parts.length - SHOWN_EXPORTS}`]
+        ...names.slice(0, SHOWN_EXPORTS),
+        ...(names.length > SHOWN_EXPORTS
+          ? [`+${names.length - SHOWN_EXPORTS}`]
           : []),
       ].join(", ")
     : "…"
@@ -62,7 +68,7 @@ function ImportLine({ slug }: { slug: string }) {
         // statement, which is what the display has always implied.
         onClick={async () => {
           await navigator.clipboard.writeText(
-            parts.length ? statement : importPath(slug)
+            names.length ? statement : importPath(slug)
           )
           setCopied(true)
         }}

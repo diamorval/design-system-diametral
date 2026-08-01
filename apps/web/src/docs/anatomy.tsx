@@ -14,10 +14,15 @@ export function anatomyFor(slug: string) {
   return ANATOMY[slug]
 }
 
-/** A single part is a component, not a composition — nothing to navigate. */
+/**
+ * A single part is a component, not a composition — nothing to navigate.
+ * Type exports still earn the index: they are part of the import surface, and
+ * the lone component row is what carries the part note.
+ */
 export function hasAnatomy(slug: string) {
   const data = ANATOMY[slug]
-  return (data?.parts.length ?? 0) > 1
+  if (!data) return false
+  return data.parts.length > 1 || data.types.length > 0
 }
 
 /**
@@ -198,6 +203,31 @@ export function PartIndex({
           </TocItem>
         ))}
       </TocList>
+      {data.types.length ? (
+        // Types are import surface, not composition: never a JSX tag, so they
+        // get their own list here instead of a dead row in the tree above.
+        // Selecting one swaps the note strip to the declaration itself.
+        <>
+          <TocLabel className="mt-4 mb-2">Types</TocLabel>
+          <TocList className="gap-0.5">
+            {data.types.map(({ name }) => (
+              <TocItem key={name}>
+                <TocLink
+                  render={<button type="button" />}
+                  aria-pressed={selected === name}
+                  onClick={() => onSelect(name)}
+                  className={cn(
+                    "w-full cursor-pointer ps-3 pe-2 text-start font-mono text-xs leading-snug",
+                    selected === name && "border-foreground text-foreground"
+                  )}
+                >
+                  {name}
+                </TocLink>
+              </TocItem>
+            ))}
+          </TocList>
+        </>
+      ) : null}
     </Toc>
   )
 }

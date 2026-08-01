@@ -12,16 +12,5 @@ const OPTIONS = [
 export default function MultiSelectPlayground(
   props: Omit<ComponentProps<typeof MultiSelect>, "options">
 ) {
-  return (
-    <>
-      <span id="multi-select-playground-label" className="sr-only">
-        Frameworks
-      </span>
-      <MultiSelect
-        options={OPTIONS}
-        aria-labelledby="multi-select-playground-label"
-        {...props}
-      />
-    </>
-  )
+  return <MultiSelect options={OPTIONS} aria-label="Frameworks" {...props} />
 }
