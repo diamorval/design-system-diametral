@@ -5,10 +5,70 @@ import * as React from "react"
 import { Icon } from "./icon.js"
 import { cn } from "../lib/utils.js"
 
+// Terminal palette for the dark panel: the four brights read at AA against
+// --ds-noir, and are the same hues the docs app's dark shiki theme lands on, so
+// a `code` block and an `html` block sit side by side without clashing.
+const TOKEN_COLOR = {
+  comment: "text-[var(--ds-gris)]",
+  string: "text-[var(--ds-vert)]",
+  keyword: "text-[var(--ds-orange)]",
+  number: "text-[var(--ds-jaune-vif)]",
+  type: "text-[var(--ds-bleu)]",
+} as const
+
+const KEYWORDS =
+  "import|from|export|default|const|let|var|function|return|await|async|class|extends|implements|interface|type|enum|new|delete|typeof|instanceof|as|in|of|if|else|switch|case|break|continue|for|while|do|try|catch|finally|throw|yield|void|this|super|null|undefined|true|false|satisfies"
+
+/**
+ * One pass, one regex: comments, then strings, then bare words. Order is the
+ * whole disambiguation strategy — `// const x` must be claimed by the comment
+ * branch before `const` can be seen as a keyword.
+ *
+ * Capitalized identifiers stand in for "type or component". That is a
+ * convention rather than a parse, which is the right trade for a display-only
+ * block: a wrong colour costs nothing, and a real parser costs megabytes. The
+ * one case worth excluding is a word right after `>`, because that is JSX child
+ * text — otherwise `<Button>Save changes</Button>` paints its own label cyan.
+ */
+const TOKEN_PATTERN = new RegExp(
+  [
+    "(?<comment>\\/\\/[^\\n]*|\\/\\*[\\s\\S]*?\\*\\/)",
+    "(?<string>`(?:\\\\.|[^`\\\\])*`|\"(?:\\\\.|[^\"\\\\])*\"|'(?:\\\\.|[^'\\\\])*')",
+    `(?<keyword>\\b(?:${KEYWORDS})\\b)`,
+    "(?<number>\\b\\d+(?:\\.\\d+)?\\b)",
+    "(?<type>(?<!>)\\b[A-Z][A-Za-z0-9_]*\\b)",
+  ].join("|"),
+  "g"
+)
+
+function highlight(code: string) {
+  const nodes: React.ReactNode[] = []
+  let last = 0
+
+  for (const match of code.matchAll(TOKEN_PATTERN)) {
+    const [kind] = Object.entries(match.groups ?? {}).find(
+      ([, value]) => value !== undefined
+    )!
+    if (match.index > last) nodes.push(code.slice(last, match.index))
+    nodes.push(
+      <span
+        key={match.index}
+        className={TOKEN_COLOR[kind as keyof typeof TOKEN_COLOR]}
+      >
+        {match[0]}
+      </span>
+    )
+    last = match.index + match[0].length
+  }
+
+  if (last < code.length) nodes.push(code.slice(last))
+  return nodes
+}
+
 // A dark, flat panel for a code sample (v1: css/components/code-block.css).
-// Deliberately highlighter-agnostic: `CodeBlockBody` accepts pre-highlighted
-// HTML via `html` (what a Shiki-powered docs app renders) as well as plain
-// `code`/`children`, so this package never depends on a highlighter itself.
+// `CodeBlockBody` takes plain `code` and colours it with the tiny tokenizer
+// above, or pre-highlighted `html` (what a Shiki-powered docs app renders) when
+// you want a real grammar. `children` is passed through untouched.
 function CodeBlock({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -58,7 +118,7 @@ function CodeBlockBody({
   children,
   ...props
 }: Omit<React.ComponentProps<"pre">, "children"> & {
-  /** Plain code text, rendered as-is (no highlighting). */
+  /** Plain code text, tokenized and coloured on the way in. */
   code?: string
   /**
    * Pre-highlighted markup, e.g. from the docs app's own Shiki pass. Rendered
@@ -80,7 +140,7 @@ function CodeBlockBody({
       {html ? (
         <code dangerouslySetInnerHTML={{ __html: html }} />
       ) : (
-        <code>{code ?? children}</code>
+        <code>{code === undefined ? children : highlight(code)}</code>
       )}
     </pre>
   )

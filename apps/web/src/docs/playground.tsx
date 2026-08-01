@@ -55,7 +55,7 @@ function serialize(prop: string, value: string | boolean) {
 function extraDefault(control: Control) {
   if (control.type === "boolean") return false
   if (control.type === "select") return optionValue(control.options[0])
-  return ""
+  return control.default ?? ""
 }
 
 /**
