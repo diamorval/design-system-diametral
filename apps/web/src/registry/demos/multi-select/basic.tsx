@@ -9,8 +9,6 @@ const SKILLS = [
   { value: "solid", label: "Solid" },
 ]
 
-// `options` is the whole API — value/label pairs in, a string[] out. Internally
-// this is Combobox in `multiple` mode, so filtering and chip removal come free.
 export default function MultiSelectBasic() {
   return (
     <Field className="max-w-sm">

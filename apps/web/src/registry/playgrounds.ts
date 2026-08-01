@@ -516,13 +516,15 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
     ],
   },
   "multi-select": {
-    note: "`options` supplies the fixed list; the controls below drive everything else.",
+    note: "`options` supplies the fixed list; the controls below drive everything else. `emptyText` only shows once a filter query matches nothing.",
     extras: [
       { prop: "placeholder", type: "text", placeholder: "Select…" },
+      { prop: "emptyText", type: "text", placeholder: "No results found." },
       { prop: "disabled", type: "boolean" },
     ],
   },
   "tags-input": {
+    note: "Enter or comma commits the draft, Backspace on an empty draft removes the last tag — the controls below cover everything else.",
     extras: [
       { prop: "placeholder", type: "text", placeholder: "Add a tag…" },
       { prop: "max", type: "text", placeholder: "No limit" },
@@ -530,12 +532,14 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
     ],
   },
   "phone-input": {
+    note: "The value is one string; `defaultCountry` only seeds the dial code while the value carries none of its own.",
     extras: [
       {
         prop: "defaultCountry",
         type: "select",
         options: ["FR", "BE", "CH", "LU", "DE", "ES", "IT", "GB", "US", "CA"],
       },
+      { prop: "placeholder", type: "text", placeholder: "6 12 34 56 78" },
       { prop: "disabled", type: "boolean" },
     ],
   },
@@ -551,6 +555,7 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
     ],
   },
   "time-picker": {
+    note: "A 24-hour clock with no roll-over between segments — clamping and zero-padding both come from Number Field.",
     extras: [
       { prop: "showSeconds", type: "boolean" },
       { prop: "disabled", type: "boolean" },

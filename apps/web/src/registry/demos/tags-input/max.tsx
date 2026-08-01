@@ -5,8 +5,6 @@ import {
   FieldLabel,
 } from "@diametral/ui/components/field"
 
-// `max` stops new tags once the count is reached — existing tags stay
-// removable, only `addTag` is blocked.
 export default function TagsInputMax() {
   return (
     <Field className="max-w-sm">

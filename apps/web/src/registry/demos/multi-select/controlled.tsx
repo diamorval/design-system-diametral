@@ -14,7 +14,6 @@ const SCOPES = [
   { value: "publish", label: "publish" },
 ]
 
-// A controlled `value` lets the page react to a selection — here, just a count.
 export default function MultiSelectControlled() {
   const [value, setValue] = React.useState<string[]>(["read:tokens"])
 

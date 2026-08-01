@@ -1,7 +1,6 @@
 import { TimePicker } from "@diametral/ui/components/time-picker"
 import { Field, FieldLabel } from "@diametral/ui/components/field"
 
-// `showSeconds` adds a third segment.
 export default function TimePickerSeconds() {
   return (
     <Field className="w-fit">

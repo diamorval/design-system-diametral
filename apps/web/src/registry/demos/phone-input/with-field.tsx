@@ -7,8 +7,6 @@ import {
   FieldLabel,
 } from "@diametral/ui/components/field"
 
-// `defaultCountry` seeds the dial code before any digits are typed — useful
-// when the field starts empty rather than pre-filled.
 export default function PhoneInputWithField() {
   const [value, setValue] = React.useState("")
 
