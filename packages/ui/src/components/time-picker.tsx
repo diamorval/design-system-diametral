@@ -7,7 +7,6 @@ import { cn } from "../lib/utils.js"
 import { useControllableValue } from "../hooks/use-controllable-value.js"
 import { NumberField, NumberFieldInput } from "./number-field.js"
 import { Popover, PopoverContent, PopoverTrigger } from "./popover.js"
-import { ScrollArea } from "./scroll-area.js"
 
 type TimeValue = {
   hours: number
@@ -166,6 +165,71 @@ function TimeDial({
   )
 }
 
+const COLUMN_HEIGHT = 224
+const ITEM_HEIGHT = 32
+
+function TimeColumn({
+  label,
+  count,
+  value,
+  onSelect,
+}: {
+  label: string
+  count: number
+  value: number
+  onSelect: (mark: number) => void
+}) {
+  const viewport = React.useRef<HTMLDivElement>(null)
+  const settled = React.useRef(false)
+
+  // The column opens already parked on its value; only later changes are worth
+  // a scroll animation, and only when the user hasn't asked for less motion.
+  React.useLayoutEffect(() => {
+    const node = viewport.current
+    if (!node) return
+    const top = value * ITEM_HEIGHT
+    if (settled.current) {
+      const reduced = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches
+      node.scrollTo({ top, behavior: reduced ? "instant" : "smooth" })
+      return
+    }
+    settled.current = true
+    // The popover only gets its box once Base UI has positioned it; a scroll
+    // issued before that frame lands on a zero-height element and is dropped.
+    const frame = requestAnimationFrame(() =>
+      node.scrollTo({ top, behavior: "instant" })
+    )
+    return () => cancelAnimationFrame(frame)
+  }, [value])
+
+  return (
+    <div
+      ref={viewport}
+      role="group"
+      aria-label={label}
+      className="no-scrollbar flex w-13 snap-y snap-mandatory flex-col overflow-y-auto overscroll-contain"
+      style={{
+        height: COLUMN_HEIGHT,
+        paddingBlock: (COLUMN_HEIGHT - ITEM_HEIGHT) / 2,
+      }}
+    >
+      {Array.from({ length: count }, (_, mark) => (
+        <button
+          key={mark}
+          type="button"
+          aria-pressed={value === mark}
+          onClick={() => onSelect(mark)}
+          className="h-8 shrink-0 snap-center text-xs tabular-nums transition-colors duration-150 outline-none hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring/30 aria-pressed:bg-foreground aria-pressed:text-background"
+        >
+          {pad(mark)}
+        </button>
+      ))}
+    </div>
+  )
+}
+
 function TimeList({
   value,
   onValueChange,
@@ -184,37 +248,15 @@ function TimeList({
   ] as const
 
   return (
-    <div data-slot="time-picker-list" className="flex h-56 gap-1">
+    <div data-slot="time-picker-list" className="flex gap-1">
       {columns.map((column) => (
-        <ScrollArea key={column.part} className="w-13">
-          <div
-            role="group"
-            aria-label={column.label}
-            className="flex flex-col pe-2"
-          >
-            {Array.from({ length: column.count }, (_, mark) => {
-              const selected = (value[column.part] ?? 0) === mark
-              return (
-                <button
-                  key={mark}
-                  type="button"
-                  aria-pressed={selected}
-                  ref={
-                    selected
-                      ? (node) => node?.scrollIntoView({ block: "nearest" })
-                      : undefined
-                  }
-                  onClick={() =>
-                    onValueChange({ ...value, [column.part]: mark })
-                  }
-                  className="h-8 shrink-0 text-xs tabular-nums transition-colors outline-none hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring/30 aria-pressed:bg-foreground aria-pressed:text-background"
-                >
-                  {pad(mark)}
-                </button>
-              )
-            })}
-          </div>
-        </ScrollArea>
+        <TimeColumn
+          key={column.part}
+          label={column.label}
+          count={column.count}
+          value={value[column.part] ?? 0}
+          onSelect={(mark) => onValueChange({ ...value, [column.part]: mark })}
+        />
       ))}
     </div>
   )
@@ -247,6 +289,7 @@ function TimePicker({
     onChange: onValueChange,
   })
   const [open, setOpen] = React.useState(false)
+  const surface = React.useRef<HTMLDivElement>(null)
 
   const setPart = (part: keyof TimeValue) => (next: number | null) => {
     setTime({ ...time, [part]: next ?? 0 })
@@ -330,20 +373,25 @@ function TimePicker({
         data-slot="time-picker-content"
         align="start"
         className="w-auto p-3"
+        initialFocus={surface}
       >
-        {picker === "list" ? (
-          <TimeList
-            value={time}
-            onValueChange={setTime}
-            showSeconds={showSeconds}
-          />
-        ) : (
-          <TimeDial
-            value={time}
-            onValueChange={setTime}
-            onDone={() => setOpen(false)}
-          />
-        )}
+        {/* Base UI otherwise opens on the first mark, and focusing a mark
+            scrolls its column back to the top. */}
+        <div ref={surface} tabIndex={-1} className="outline-none">
+          {picker === "list" ? (
+            <TimeList
+              value={time}
+              onValueChange={setTime}
+              showSeconds={showSeconds}
+            />
+          ) : (
+            <TimeDial
+              value={time}
+              onValueChange={setTime}
+              onDone={() => setOpen(false)}
+            />
+          )}
+        </div>
       </PopoverContent>
     </Popover>
   )
