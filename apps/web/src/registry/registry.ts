@@ -1469,6 +1469,10 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Layout",
     description:
       "A light/dark/system toggle, promoted from the docs app's own theme-toggle. Fully controlled — the consumer owns the theme hook.",
+    intro: [
+      "ThemeSwitcher is the light/dark/system segmented control for wherever the theme choice lives — an app header, a settings page, a preferences dialog. It renders the three modes as one joined ToggleGroup with icon cells.",
+      "It is fully controlled: `value` and `onValueChange` are required, and storage, media-query sync and system resolution stay in the consumer's `useTheme()`-style hook — app wiring is not the design system's job. One behaviour is built in: re-clicking the pressed mode is a no-op, because a theme is never \"none\".",
+    ],
     examples: [
       {
         demo: "theme-switcher/basic",
@@ -1480,9 +1484,19 @@ export const COMPONENTS: ComponentDoc[] = [
         demo: "theme-switcher/in-toolbar",
         title: "In a toolbar",
         description:
-          "The typical placement — alongside other controls in a header or toolbar row.",
+          "The typical chrome placement. The `outline` variant and `sm` size are baked in, so it sits flush beside `icon-sm` buttons with no sizing props.",
+      },
+      {
+        demo: "theme-switcher/settings-row",
+        title: "Settings row",
+        description:
+          'The settings-page placement: the switcher drops into a `PanelRow` like any label-and-control pair. The group already carries `aria-label="Theme"`, so the visible text needs no `htmlFor` wiring.',
       },
     ],
+    parts: {
+      ThemeSwitcher:
+        'Built on ToggleGroup, but re-pressing the active mode is swallowed — Base UI would otherwise empty the group, and a theme is never "none".',
+    },
   },
 
   /* -- Disclosure -------------------------------------------------------- */

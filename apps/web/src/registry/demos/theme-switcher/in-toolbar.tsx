@@ -8,6 +8,8 @@ import {
   type ThemeSwitcherMode,
 } from "@diametral/ui/components/theme-switcher"
 
+// The outline variant and sm size are baked into the component, so it sits
+// flush beside icon-sm buttons in a toolbar row with no sizing props.
 export default function ThemeSwitcherInToolbar() {
   const [mode, setMode] = React.useState<ThemeSwitcherMode>("system")
 
