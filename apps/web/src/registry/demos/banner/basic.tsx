@@ -7,6 +7,8 @@ import {
   BannerTitle,
 } from "@diametral/ui/components/banner"
 
+// The root carries role="status", so a banner mounted after page load is
+// announced politely without wrapping it in an aria-live region yourself.
 export default function BannerBasic() {
   return (
     <Banner tone="info">

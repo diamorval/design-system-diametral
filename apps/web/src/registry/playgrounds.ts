@@ -698,6 +698,13 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
   },
   banner: {
     children: { default: "Scheduled maintenance", label: "title" },
+    texts: {
+      description: {
+        default:
+          "The staging environment is unavailable from 10pm to midnight UTC.",
+      },
+      action: { default: "View status", label: "action label" },
+    },
     variantsFrom: "bannerVariants",
   },
   wordmark: {

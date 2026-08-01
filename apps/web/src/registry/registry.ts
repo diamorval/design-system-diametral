@@ -1395,20 +1395,38 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Layout",
     description:
       "A full-width, tone-coloured message bar over the shared six-tone family — the same tokens button.tsx's `tone` axis reads.",
+    intro: [
+      "Banner is the page-level counterpart of Alert: the same icon, title and description anatomy, but full-width, flush-cornered and tinted edge to edge. Reach for it when a message concerns the whole screen or section — a maintenance window, a plan limit, an incident notice — pinned above the content rather than nested inside it.",
+      "`tone` sets `--tone-bg`/`--tone-ink` from the shared six-tone family in globals.css — the same tokens Button's `tone` axis reads — so a banner always matches its sibling controls and a new tone never needs a bespoke colour here.",
+    ],
     examples: [
       {
         demo: "banner/basic",
         title: "Basic",
         description:
-          "Tone sets `--tone-bg`/`--tone-ink` from the tokens shared with status, tag and alert.",
+          'Icon, title, description. The root carries `role="status"`, so a banner mounted after load is announced without an aria-live wrapper.',
       },
       {
         demo: "banner/with-action",
         title: "Action and dismiss",
         description:
-          "BannerAction is a plain flex sibling rather than an absolutely-positioned corner, so it can hold more than one control without overlapping the text.",
+          "`BannerAction` is a plain flex sibling rather than an absolutely-positioned corner, so it can hold more than one control without overlapping the text.",
+      },
+      {
+        demo: "banner/tones",
+        title: "Tones",
+        description:
+          "The full severity ladder. Each tone reads its `--ds-<tone>-bg`/`--ds-<tone>-ink` pair, so the ladder stays in step with Button, Alert and every other tone-aware component.",
       },
     ],
+    parts: {
+      Banner:
+        'Carries `role="status"` — mounted banners are announced politely with no aria-live wrapper. A leading `svg` child is auto-sized and top-aligned by the root\'s selectors.',
+      BannerDescription:
+        "Deliberately un-faded: the tone inks clear AA as bare text but drop under 4.5:1 behind opacity, so hierarchy comes from BannerTitle's `font-medium` instead.",
+      BannerAction:
+        "A flex sibling, not an absolutely-positioned corner — several controls fit beside long text without overlap.",
+    },
   },
   {
     slug: "wordmark",
