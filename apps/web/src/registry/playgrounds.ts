@@ -567,7 +567,7 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
     extras: [
       { prop: "placeholder", type: "text", placeholder: "Pick a date range" },
       { prop: "showTime", type: "boolean" },
-      { prop: "numberOfMonths", type: "select", options: ["1", "2"] },
+      { prop: "numberOfMonths", type: "select", options: ["2", "1"] },
     ],
   },
 

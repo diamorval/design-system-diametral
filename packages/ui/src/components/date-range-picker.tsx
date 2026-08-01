@@ -41,10 +41,22 @@ function DateRangePicker({
     onChange: onValueChange,
   })
 
+  const withTime = showTime ? `${dateFormat}, p` : dateFormat
+  // A same-day range only needs its date printed once, which is the common
+  // shape once `showTime` is on — "Jul 6, 2026, 9:00 AM – 5:30 PM".
+  const sameDay =
+    range.from &&
+    range.to &&
+    range.from.toDateString() === range.to.toDateString()
+
   const label = range.from
     ? range.to
-      ? `${format(range.from, dateFormat)} – ${format(range.to, dateFormat)}`
-      : format(range.from, dateFormat)
+      ? sameDay
+        ? showTime
+          ? `${format(range.from, withTime)} – ${format(range.to, "p")}`
+          : format(range.from, dateFormat)
+        : `${format(range.from, withTime)} – ${format(range.to, withTime)}`
+      : format(range.from, withTime)
     : undefined
 
   const setTime = (part: "from" | "to") => (time: TimeValue) => {
@@ -61,11 +73,12 @@ function DateRangePicker({
         data-slot="date-range-picker-trigger"
         render={<Button variant="outline" />}
         className={cn(
-          "w-72 justify-between font-normal tracking-normal normal-case",
+          "justify-between font-normal tracking-normal normal-case",
+          showTime ? "w-96" : "w-72",
           className
         )}
       >
-        <span className={cn(!label && "text-muted-foreground")}>
+        <span className={cn("truncate", !label && "text-muted-foreground")}>
           {label ?? placeholder}
         </span>
         <CalendarBlankIcon
@@ -76,12 +89,13 @@ function DateRangePicker({
       <PopoverContent
         data-slot="date-range-picker-content"
         align="start"
-        className="w-auto gap-3 p-0"
+        className="w-auto gap-0 p-0"
       >
         <Calendar
           mode="range"
           numberOfMonths={numberOfMonths}
           selected={range}
+          defaultMonth={range.from}
           onSelect={(next) =>
             setRange(next ?? { from: undefined, to: undefined })
           }
@@ -89,7 +103,7 @@ function DateRangePicker({
         {showTime && (
           <div
             data-slot="date-range-picker-times"
-            className="flex items-center justify-between gap-3 border-t border-border px-3 pb-3"
+            className="flex items-center justify-between gap-3 border-t border-border p-3"
           >
             <TimePicker
               aria-label="Start time"
