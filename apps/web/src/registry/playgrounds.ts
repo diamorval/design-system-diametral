@@ -713,6 +713,13 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
   },
   "theme-switcher": {
     note: "value/onValueChange are required, so the playground holds its own state to make the panel interactive — nothing here reaches the real app theme.",
+    extras: [
+      {
+        prop: "variant",
+        type: "select",
+        options: ["segmented", "cycle", "dropdown"],
+      },
+    ],
   },
 }
 

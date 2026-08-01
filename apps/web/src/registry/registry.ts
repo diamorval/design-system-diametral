@@ -1470,7 +1470,7 @@ export const COMPONENTS: ComponentDoc[] = [
     description:
       "A light/dark/system toggle, promoted from the docs app's own theme-toggle. Fully controlled — the consumer owns the theme hook.",
     intro: [
-      "ThemeSwitcher is the light/dark/system segmented control for wherever the theme choice lives — an app header, a settings page, a preferences dialog. It renders the three modes as one joined ToggleGroup with icon cells.",
+      "ThemeSwitcher is the light/dark/system control for wherever the theme choice lives — an app header, a settings page, a preferences dialog. Three forms share one contract: `segmented` (a joined three-cell ToggleGroup), `cycle` (one icon button that advances through the modes) and `dropdown` (an icon trigger opening a radio menu), so the footprint fits the placement without changing the wiring.",
       "It is fully controlled: `value` and `onValueChange` are required, and storage, media-query sync and system resolution stay in the consumer's `useTheme()`-style hook — app wiring is not the design system's job. One behaviour is built in: re-clicking the pressed mode is a no-op, because a theme is never \"none\".",
     ],
     examples: [
@@ -1479,6 +1479,18 @@ export const COMPONENTS: ComponentDoc[] = [
         title: "Basic",
         description:
           "Fully controlled, so the demo holds its own state rather than touching the real app theme.",
+      },
+      {
+        demo: "theme-switcher/cycle",
+        title: "Compact cycle",
+        description:
+          "One 36px button for headers too tight for three cells. The icon shows the current mode; the `aria-label` announces the action, since a click advances to the next mode.",
+      },
+      {
+        demo: "theme-switcher/dropdown",
+        title: "Dropdown",
+        description:
+          "The discoverable compact form: an icon-and-caret trigger opening a `DropdownMenuRadioGroup`, so every mode is visible and one click away.",
       },
       {
         demo: "theme-switcher/in-toolbar",
