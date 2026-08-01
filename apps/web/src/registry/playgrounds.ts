@@ -677,6 +677,13 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
   },
   panel: {
     children: { default: "Notifications", label: "title" },
+    texts: {
+      description: { default: "Choose which updates land in your inbox." },
+      row: { default: "Email alerts", label: "row label" },
+      action: { default: "Manage", label: "footer action" },
+    },
+    note: "`size` is not a cva axis — it rewrites `--panel-spacing`, so it retunes the padding of every part at once.",
+    extras: [{ prop: "size", type: "select", options: ["default", "sm"] }],
   },
   masonry: {
     note: "`columns` becomes a `--columns` custom property, so any integer works — there is no fixed breakpoint list.",
