@@ -7,9 +7,6 @@ import {
 
 const POINTS = [4, 7, 6, 9, 8, 12, 11, 15]
 
-// `StatCardSpark` is just a slot — any inline chart goes underneath the
-// figure. A hand-drawn polyline stands in here so the demo needs no chart
-// dependency.
 export default function StatCardWithSpark() {
   const max = Math.max(...POINTS)
   const path = POINTS.map(

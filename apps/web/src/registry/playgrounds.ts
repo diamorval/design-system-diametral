@@ -740,6 +740,7 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
   "stat-card": {
     note: "`direction` belongs to StatCardDelta, not StatCard; the panel routes it there.",
     children: { default: "Missions actives", label: "label" },
+    texts: { value: { default: "1 284", label: "figure" } },
     extras: [{ prop: "direction", type: "select", options: ["up", "down"] }],
   },
   "relative-time": {
@@ -759,6 +760,7 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
     ],
   },
   gauge: {
+    note: "The arc fills by fraction, so `value` only reads as a percentage while `max` stays at 100.",
     extras: [
       {
         prop: "value",
@@ -766,6 +768,7 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
         options: ["62", "0", "25", "88", "100"],
         always: true,
       },
+      { prop: "max", type: "select", options: ["100", "10", "256", "500"] },
       { prop: "label", type: "text", placeholder: "CPU" },
     ],
   },

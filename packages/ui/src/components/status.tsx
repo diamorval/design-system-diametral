@@ -46,13 +46,13 @@ function StatusIndicator({
       data-slot="status-indicator"
       aria-hidden="true"
       className={cn(
-        "relative inline-flex size-1.5 shrink-0 rounded-full bg-[var(--tone)]",
+        "relative inline-flex size-1.5 shrink-0 bg-[var(--tone)]",
         className
       )}
       {...props}
     >
       {pulse && (
-        <span className="absolute inset-0 rounded-full bg-[var(--tone)] motion-safe:animate-ping" />
+        <span className="absolute inset-0 bg-[var(--tone)] motion-safe:animate-ping" />
       )}
     </span>
   )

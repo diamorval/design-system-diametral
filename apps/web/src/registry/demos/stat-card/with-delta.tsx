@@ -5,8 +5,6 @@ import {
   StatCardValue,
 } from "@diametral/ui/components/stat-card"
 
-// The arrow is decorative (`aria-hidden`) — the signed figure in the text is
-// what actually carries the direction, so color is never the only cue.
 export default function StatCardWithDelta() {
   return (
     <div className="flex flex-wrap gap-4">

@@ -5,8 +5,6 @@ import {
 } from "@diametral/ui/components/description-list"
 import { Snippet } from "@diametral/ui/components/snippet"
 
-// `children` overrides what renders (an obscured key) while `value` stays the
-// full string that actually gets copied.
 export default function SnippetInContext() {
   return (
     <DescriptionList className="w-full max-w-sm">

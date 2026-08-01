@@ -1,7 +1,5 @@
 import { QrCode } from "@diametral/ui/components/qr-code"
 
-// Higher error-correction levels survive more damage (a logo overlay, a torn
-// corner) at the cost of a denser, less storage-efficient code.
 export default function QrCodeLevels() {
   return (
     <div className="flex flex-wrap items-start gap-6">

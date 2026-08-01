@@ -10,8 +10,6 @@ import {
   DescriptionTerm,
 } from "@diametral/ui/components/description-list"
 
-// The term column's width is intrinsic (`auto`), so it stays put whichever
-// card it sits in — no shared width to coordinate across rows.
 export default function DescriptionListInCard() {
   return (
     <Card className="w-full max-w-sm">

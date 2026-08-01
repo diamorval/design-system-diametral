@@ -1,7 +1,5 @@
 import { Gauge } from "@diametral/ui/components/gauge"
 
-// The last threshold whose `at` the value reaches wins, so list them
-// ascending — a value of 92 matches both rows below and takes the second.
 export default function GaugeThresholds() {
   return (
     <div className="flex flex-wrap gap-8">
