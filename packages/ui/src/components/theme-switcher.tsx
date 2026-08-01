@@ -33,8 +33,9 @@ function ThemeSwitcher({
       variant="outline"
       size="sm"
       // gap-0 joins the three cells into one control; -ms-px then collapses
-      // the doubled seam where two 1px borders meet.
-      className={cn("gap-0", className)}
+      // the doubled seam where two 1px borders meet. relative anchors the
+      // sliding indicator.
+      className={cn("relative gap-0", className)}
       value={[value]}
       onValueChange={(next) => {
         // Base UI unpresses an already-pressed item, which would leave the
@@ -45,15 +46,31 @@ function ThemeSwitcher({
       aria-label="Theme"
       {...props}
     >
+      {/* The muted fill slides between cells instead of teleporting. Pitch is
+          w-9 minus the 1px seam each non-first cell pulls back with -ms-px.
+          First in the DOM so the cells' borders and icons paint above it. */}
+      <span
+        aria-hidden="true"
+        style={
+          {
+            "--index": MODES.findIndex((m) => m.value === value),
+          } as React.CSSProperties
+        }
+        className="absolute inset-y-0 start-0 w-9 translate-x-[calc(var(--index)*(--spacing(9)-1px))] bg-muted transition-transform duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none rtl:-translate-x-[calc(var(--index)*(--spacing(9)-1px))]"
+      />
       {MODES.map(({ value: mode, label, Icon }) => (
         <ToggleGroupItem
           key={mode}
           value={mode}
           aria-label={label}
           title={label}
-          className="-ms-px w-9 px-0 first:ms-0"
+          // The sliding indicator owns the pressed fill, so the item's own
+          // bg-muted is switched off — otherwise the fill would appear on the
+          // target cell before the indicator arrives. relative keeps the cell
+          // painting above the positioned indicator (DOM order decides).
+          className="relative -ms-px w-9 px-0 text-muted-foreground first:ms-0 aria-pressed:bg-transparent data-[state=on]:bg-transparent"
         >
-          <Icon />
+          <Icon weight={mode === value ? "fill" : "regular"} />
         </ToggleGroupItem>
       ))}
     </ToggleGroup>
