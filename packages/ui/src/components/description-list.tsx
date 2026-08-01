@@ -36,7 +36,7 @@ function DescriptionDetail({
     <dd
       data-slot="description-detail"
       className={cn(
-        "border-t border-border py-2.5 text-sm text-foreground tabular-nums first-of-type:border-t-0",
+        "flex items-start border-t border-border py-2.5 text-sm text-foreground tabular-nums first-of-type:border-t-0",
         className
       )}
       {...props}
