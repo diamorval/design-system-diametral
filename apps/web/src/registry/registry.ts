@@ -10,6 +10,12 @@ export type ComponentDoc = {
   name: string
   description: string
   category: string
+  /**
+   * Optional when-to-use paragraphs rendered under the description — one
+   * `Prose` block per entry, so backticks are the only markup. The description
+   * stays the one-line tagline; this is where "reach for it when…" lives.
+   */
+  intro?: string[]
   examples?: Example[]
   /**
    * Notes keyed by part name, surfaced when that part is selected in the
@@ -1310,18 +1316,28 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Layout",
     description:
       "A flat, bordered section container — Card without the shadow, plus a row part for tightly-packed settings lists.",
+    intro: [
+      "Panel is the flat sibling of Card: the same header, content and footer skeleton, but a plain border instead of elevation. Reach for it when a region needs a boundary without needing to float — settings sections, form groups, tiles that sit inside the page rather than on top of it.",
+      "The root owns `--panel-spacing`, which every part reads for its padding, so density changes in one place. For tightly-packed label-and-control lists, `PanelRow` replaces v1's `rows` boolean with a part you compose in.",
+    ],
     examples: [
       {
         demo: "panel/basic",
         title: "Basic",
         description:
-          "PanelHeader and PanelFooter borrow Card's `.border-b`/`.border-t` opt-in: add the utility yourself to draw the rule.",
+          "A self-contained summary block: header, prose content, one footer action. Rules are opt-in — PanelHeader and PanelFooter borrow Card's `.border-b`/`.border-t` convention, so add the utility yourself to draw them.",
       },
       {
         demo: "panel/rows",
-        title: "Rows",
+        title: "Settings rows",
         description:
-          "PanelRow is the case v1's Panel handled with a `rows` boolean — here it is its own part instead of a variant flag.",
+          "The settings-page shape: `PanelRow` packs each label-and-control pair into a divided list. Rows carry their own padding, so PanelContent passes `px-0` rather than stacking the two.",
+      },
+      {
+        demo: "panel/form-section",
+        title: "Form section",
+        description:
+          "A form group with its actions kept inside the boundary: fields in PanelContent, cancel/save in a ruled PanelFooter — the footer earns its keep instead of decorating.",
       },
     ],
     parts: {

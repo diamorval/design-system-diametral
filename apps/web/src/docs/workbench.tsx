@@ -60,9 +60,7 @@ export function Workbench({ component }: { component: ComponentDoc }) {
       </header>
 
       {controls.note ? (
-        <p className="mb-3 max-w-2xl text-sm text-muted-foreground">
-          {controls.note}
-        </p>
+        <Prose className="mb-3 max-w-2xl">{controls.note}</Prose>
       ) : null}
 
       <PartHighlight

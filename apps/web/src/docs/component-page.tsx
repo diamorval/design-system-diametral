@@ -112,6 +112,11 @@ export function ComponentPage() {
             {component.name}
           </h1>
           <Prose className="mt-2 max-w-2xl">{component.description}</Prose>
+          {component.intro?.map((paragraph) => (
+            <Prose key={paragraph} className="mt-3 max-w-2xl">
+              {paragraph}
+            </Prose>
+          ))}
           <div className="mt-5 max-w-2xl">
             <ImportLine slug={component.slug} />
           </div>
@@ -124,20 +129,25 @@ export function ComponentPage() {
         ) : null}
 
         {examples.length > 0 ? (
-          <div className="flex flex-col gap-12">
-            {examples.map((example) => (
-              <ExampleBlock key={example.demo} example={example} />
-            ))}
-            {orphans.map((key) => (
-              <ExampleBlock
-                key={key}
-                example={{
-                  demo: key,
-                  title: key.split("/").slice(1).join(" "),
-                }}
-              />
-            ))}
-          </div>
+          <section id="examples" className="scroll-mt-20">
+            <h2 className="mb-6 font-heading text-base font-semibold tracking-wider uppercase">
+              Examples
+            </h2>
+            <div className="flex flex-col gap-12">
+              {examples.map((example) => (
+                <ExampleBlock key={example.demo} example={example} />
+              ))}
+              {orphans.map((key) => (
+                <ExampleBlock
+                  key={key}
+                  example={{
+                    demo: key,
+                    title: key.split("/").slice(1).join(" "),
+                  }}
+                />
+              ))}
+            </div>
+          </section>
         ) : playground ? (
           // A playground already gives this page working content, so the missing
           // examples are a footnote rather than an empty state.
@@ -179,8 +189,13 @@ export function ComponentPage() {
                 <TocLink href="#workbench">Workbench</TocLink>
               </TocItem>
             ) : null}
+            {examples.length > 0 ? (
+              <TocItem>
+                <TocLink href="#examples">Examples</TocLink>
+              </TocItem>
+            ) : null}
             {examples.map((example) => (
-              <TocItem key={example.demo}>
+              <TocItem key={example.demo} level={2}>
                 <TocLink href={`#${exampleAnchor(example)}`}>
                   {example.title}
                 </TocLink>

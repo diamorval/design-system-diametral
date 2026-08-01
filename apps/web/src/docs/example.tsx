@@ -29,7 +29,7 @@ export function ExampleBlock({ example }: { example: Example }) {
   return (
     <section id={exampleAnchor(example)} className="scroll-mt-20">
       <header className="mb-3">
-        <h3 className="font-heading text-base font-semibold tracking-wider uppercase">
+        <h3 className="font-heading text-sm font-semibold tracking-wider uppercase">
           {example.title}
         </h3>
         {example.description ? (
