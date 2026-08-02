@@ -44,17 +44,18 @@ const planSchema = z.object({
 const MAX_ITERATIONS = 10;
 
 // Hooks run inside the sandbox before the agent starts each iteration.
-// pnpm install relinks workspace packages from the copied virtual store
-// (node_modules/.pnpm) and fetches anything missing.
+// A clean install in a fresh worktree takes ~10s, so the host node_modules is
+// never copied in: it records `storeDir` as a macOS path and carries darwin
+// binaries, both of which make `pnpm install` fail inside the Linux container.
 const hooks = {
   sandbox: { onSandboxReady: [{ command: "pnpm install" }] },
 };
 
-// Copy the root node_modules (which holds pnpm's virtual store) from the
-// host into the worktree before each sandbox starts. The pnpm install hook
-// above recreates the per-package symlink dirs and handles platform-specific
-// binaries.
-const copyToWorktree = ["node_modules"];
+// docker() defaults to branchStrategy { type: "head" }, which bind-mounts the
+// host working directory itself — an install there would overwrite the
+// developer's node_modules with Linux binaries. Every phase therefore runs in
+// a git worktree instead.
+const branchStrategy = { type: "merge-to-head" } as const;
 
 // ---------------------------------------------------------------------------
 // Main loop
@@ -73,7 +74,9 @@ for (let iteration = 1; iteration <= MAX_ITERATIONS; iteration++) {
   // It outputs a <plan> JSON block — Output.object parses and validates it.
   // -------------------------------------------------------------------------
   const plan = await sandcastle.run({
-    hooks,
+    // No install hook: the planner only reads issues through `gh` and reasons,
+    // so it never needs node_modules.
+    branchStrategy,
     sandbox: docker(),
     name: "planner",
     // One iteration is enough: the planner just needs to read and reason,
@@ -119,7 +122,6 @@ for (let iteration = 1; iteration <= MAX_ITERATIONS; iteration++) {
         branch: issue.branch,
         sandbox: docker(),
         hooks,
-        copyToWorktree,
       });
 
       try {
@@ -209,6 +211,7 @@ for (let iteration = 1; iteration <= MAX_ITERATIONS; iteration++) {
   // -------------------------------------------------------------------------
   await sandcastle.run({
     hooks,
+    branchStrategy,
     sandbox: docker(),
     name: "merger",
     maxIterations: 1,
