@@ -3,8 +3,6 @@ import {
   ToggleGroupItem,
 } from "@diametral/ui/components/toggle-group"
 
-// `spacing={0}` collapses the gap and strips the inner borders, which is what
-// turns a row of toggles into one segmented control.
 export default function ToggleGroupJoined() {
   return (
     <div className="flex flex-wrap items-start gap-8">

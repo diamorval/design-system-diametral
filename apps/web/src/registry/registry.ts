@@ -40,6 +40,10 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Actions",
     description:
       "The primary action trigger. Six variants and an eight-colour brand tone axis that compose independently.",
+    intro: [
+      "Button is the trigger everything else defers to: submit, confirm, open, cancel. `variant` places it in the emphasis order — `default` for the one action a view is about, `secondary`, `outline` and `ghost` for the ones beside it, `link` for navigation that has to read as prose. `destructive` is the functional red and is deliberately not a tone.",
+      "`variant` and `tone` are independent axes rather than a matrix. A tone only sets the fill `--btn` and its contrast pair `--btn-fg`, and every variant composes off those two variables, so a ninth palette colour would work across solid, outline and ghost without a single compound variant.",
+    ],
     examples: [
       {
         demo: "button/variants",
@@ -59,7 +63,12 @@ export const COMPONENTS: ComponentDoc[] = [
         description:
           "On the low-emphasis variants, tone drives the border and hover wash while the label stays `text-foreground` for contrast on light tones like beige and jaune.",
       },
-      { demo: "button/sizes", title: "Sizes" },
+      {
+        demo: "button/sizes",
+        title: "Sizes",
+        description:
+          "Three text sizes and a square `icon` set that matches each of them — an icon-only button carries no label, so it takes an `aria-label`.",
+      },
       {
         demo: "button/icon",
         title: "With icon and loading",
@@ -74,12 +83,22 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Actions",
     description:
       "Joins related buttons into a single segmented control with shared borders.",
+    intro: [
+      "Button Group welds controls that belong to one decision into a single object: a period switcher, a split primary action, a field with its submit beside it. Reach for it when the children share a subject — actions that merely sit near each other want a `gap`, not a seam.",
+      "The group owns that seam, and it owns it through the children's own `data-slot`: the selectors strip the inner radii and collapse each adjacent border, so the children stay ordinary `Button`s, `Input`s and `Select`s. There is no grouped variant to remember, and tones and variants keep working inside it.",
+    ],
     examples: [
       {
         demo: "button-group/basic",
         title: "Basic",
         description:
           "The group owns the seam — children stay ordinary `Button`s, so variants and tones keep working inside it.",
+      },
+      {
+        demo: "button-group/split",
+        title: "Split action",
+        description:
+          "The default action stays one click away and its variations move into a menu. The trigger renders a `Button` through `render`, which is what keeps it inside the seam rather than beside it.",
       },
       {
         demo: "button-group/with-text",
@@ -94,12 +113,24 @@ export const COMPONENTS: ComponentDoc[] = [
           '`orientation="vertical"` stacks the seam; `ButtonGroupSeparator` then needs the opposite orientation to draw across it.',
       },
     ],
+    parts: {
+      ButtonGroup:
+        "Collapses the radii and borders of its children by matching their `data-slot`, so a wrapper element without one drops out of the seam and breaks the run.",
+      ButtonGroupText:
+        "A static label, not a control: no focus ring, no tab stop. Pass `render` to make it a `label` when it names the input beside it.",
+      ButtonGroupSeparator:
+        'A `Separator` defaulting to `vertical`, because it draws across the group rather than along it — a vertical group therefore needs `orientation="horizontal"`.',
+    },
   },
   {
     slug: "toggle",
     name: "Toggle",
     category: "Actions",
     description: "A two-state button for on/off formatting controls.",
+    intro: [
+      "Toggle is a button that stays down: bold, mute, pin, reveal. Reach for it when pressing it changes something the reader can see immediately. A preference a form submits later belongs to `Switch` or `Checkbox` — those carry a value into the submission, where a toggle carries none.",
+      "The pressed state lives on the button's own `aria-pressed`, which is also what the styling hooks, so `defaultPressed` is enough for the uncontrolled case and nothing needs to wrap it to read the state. `toggleVariants` is shared with Toggle Group, so a lone toggle and one inside a group are the same button.",
+    ],
     examples: [
       {
         demo: "toggle/basic",
@@ -119,6 +150,12 @@ export const COMPONENTS: ComponentDoc[] = [
         description:
           "Pass `pressed` with `onPressedChange` when the toggle drives something else on the page.",
       },
+      {
+        demo: "toggle/row-action",
+        title: "Row action",
+        description:
+          "One toggle per row, holding its own state. The icon carries no text, so each one needs an `aria-label` naming its row — the pressed fill is the only other cue.",
+      },
     ],
   },
   {
@@ -127,6 +164,10 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Actions",
     description:
       "A set of toggles with single or multiple selection, sharing one value.",
+    intro: [
+      "Toggle Group binds a set of peer toggles to one value: an alignment picker, a view switcher, a formatting row. Reach for it when the choice takes effect as it is made — a choice a form submits is `RadioGroup` or `Select`, and toggles that control unrelated things want no group at all.",
+      "`variant`, `size` and `spacing` are set on the root and reach the items through context, so items stay bare. `value` is an array in both modes, single and multiple, so only `multiple` changes between them; `spacing={0}` is what turns a row of toggles into one segmented control.",
+    ],
     examples: [
       {
         demo: "toggle-group/single",
@@ -147,6 +188,12 @@ export const COMPONENTS: ComponentDoc[] = [
           "`spacing={0}` removes the gap and the duplicated inner borders, which is what makes it read as one control rather than three.",
       },
     ],
+    parts: {
+      ToggleGroup:
+        "Holds the value for the whole set and hands `variant`, `size` and `spacing` down by context — set them here, not on the items.",
+      ToggleGroupItem:
+        "`value` is required: it is what the item contributes to the group's array. An icon-only item still needs its own `aria-label`.",
+    },
   },
   {
     slug: "toolbar",
@@ -154,6 +201,10 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Actions",
     description:
       "A Base UI toolbar with arrow-key navigation across grouped buttons, inputs and separators.",
+    intro: [
+      "Toolbar is the chrome strip beside a canvas or above a list: formatting actions, view controls, a filter field. Reach for it when a cluster of controls is used over and over and should not cost one tab stop each — a row of buttons a reader passes once is just a flex container.",
+      "The strip is a single tab stop with the arrow keys moving inside it, wrapping at the ends, so a control only joins that ring if it is a Toolbar part: `ToolbarButton`, `ToolbarLink` and `ToolbarInput` are Base UI items rather than styling wrappers. `ToolbarButton` renders a `Button` underneath, so variants and tones still apply.",
+    ],
     examples: [
       {
         demo: "toolbar/basic",
@@ -174,12 +225,29 @@ export const COMPONENTS: ComponentDoc[] = [
           '`orientation="vertical"` switches the axis. `ToolbarSeparator` reads the root orientation and draws across it, so it needs no prop.',
       },
     ],
+    parts: {
+      Toolbar:
+        "Owns the roving focus: one tab stop for the strip, arrow keys within it, wrapping at the ends unless `loopFocus={false}`. Its `disabled` reaches every item, and `orientation` sets the axis the separators draw across.",
+      ToolbarGroup:
+        "Clusters items visually without breaking the ring — arrow keys still run the length of the toolbar. Its own `disabled` covers every item in the group.",
+      ToolbarButton:
+        "Renders a `Button`, so `variant`, `size` and `tone` all apply; it only changes the defaults to `ghost` and `icon-sm`. Icon-only buttons still need an `aria-label`.",
+      ToolbarInput:
+        "A real input inside the ring: the arrow keys move its caret first and only step out of the field once the caret has reached the end, so a filter field costs no second tab stop.",
+      ToolbarSeparator:
+        "Defaults to the opposite orientation of the toolbar, which is the one that draws across it — pass `orientation` only to override that.",
+    },
   },
   {
     slug: "kbd",
     name: "Kbd",
     category: "Actions",
-    description: "Renders a keyboard key or chord inline, in Geist Mono.",
+    description:
+      "Renders a keyboard key or chord inline, sized to sit in a line of text.",
+    intro: [
+      "Kbd prints a key the reader is meant to press: the shortcut on a menu row, the `⌘K` hint inside a search field, the accelerator on a tooltip. One key per element, and `KbdGroup` for a chord.",
+      "It takes its colours from whatever contains it — inside an input group it picks up the input fill, inside a tooltip it inverts onto the dark surface — so a chord dropped into another component needs no props. It is also `pointer-events-none`: the key labels a shortcut, it never fires it.",
+    ],
     examples: [
       {
         demo: "kbd/basic",
@@ -199,6 +267,11 @@ export const COMPONENTS: ComponentDoc[] = [
           "`Kbd` restyles from its container — inside an input group it takes the input fill, inside a tooltip it inverts.",
       },
     ],
+    parts: {
+      Kbd: "A minimum width keeps a single character square while `Esc` or `⌘⇧` widen past it. `pointer-events-none` and `select-none` are deliberate: the handler belongs on the control this annotates.",
+      KbdGroup:
+        "The gap between the keys of one chord, and nothing else. It renders a `kbd` too, so the keys nest inside it legally — no `+` between them.",
+    },
   },
 
   /* -- Forms ------------------------------------------------------------- */
