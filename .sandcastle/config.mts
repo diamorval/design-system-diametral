@@ -11,6 +11,11 @@ export interface PhaseConfig {
 }
 
 export interface SandcastleConfig {
+  /**
+   * Explicit issue numbers from `--issue`. When set the planner is skipped and
+   * exactly these issues are worked — no label filter, no open-state filter.
+   */
+  readonly issues?: readonly string[]
   /** Outer plan→execute→merge cycles per run. Override: SC_LOOPS. */
   readonly maxIterations: number
   /** Lanes running at once in the execute phase. Override: SC_CONCURRENCY. */
@@ -60,11 +65,42 @@ function positiveInt(name: string): number | undefined {
   return n
 }
 
+/** `--issue 9`, `--issue=9`, `--issue 9,12`, or repeated flags. */
+function cliIssues(): readonly string[] | undefined {
+  const args = process.argv.slice(2)
+  const ids: string[] = []
+
+  for (const [i, arg] of args.entries()) {
+    const raw =
+      arg === "--issue"
+        ? args[i + 1]
+        : arg.startsWith("--issue=")
+          ? arg.slice("--issue=".length)
+          : undefined
+    if (raw === undefined) continue
+
+    for (const part of raw.split(",")) {
+      const id = part.trim().replace(/^#/, "")
+      if (!/^\d+$/.test(id)) {
+        throw new Error(`--issue expects issue numbers, got "${part}"`)
+      }
+      ids.push(id)
+    }
+  }
+
+  return ids.length > 0 ? ids : undefined
+}
+
 function withEnvOverrides(base: SandcastleConfig): SandcastleConfig {
   const model = process.env.SC_MODEL
+  const issues = cliIssues()
   return {
     ...base,
-    maxIterations: positiveInt("SC_LOOPS") ?? base.maxIterations,
+    issues,
+    // Looping exists so newly unblocked issues get picked up by the next plan.
+    // With a fixed issue list there is nothing new to discover, so a second
+    // iteration would just re-run the same lanes.
+    maxIterations: issues ? 1 : (positiveInt("SC_LOOPS") ?? base.maxIterations),
     concurrency: positiveInt("SC_CONCURRENCY") ?? base.concurrency,
     phases: model
       ? {

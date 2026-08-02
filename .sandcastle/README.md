@@ -19,13 +19,29 @@ That's the whole thing. It works every open issue labelled `Sandcastle`, 5 at a 
 ## First time today? Do this instead
 
 ```fish
-gh issue reopen 9
-SC_LOOPS=1 SC_CONCURRENCY=1 pnpm sandcastle
+pnpm sandcastle --issue 9
 ```
 
 One issue, one lane, ~20–40 min. If the result looks good, the other 14 will too.
 
 **Do this before any big run.** It's the cheap way to find out the prompts need work.
+
+---
+
+## Work specific issues
+
+```fish
+pnpm sandcastle --issue 9          # one lane
+pnpm sandcastle --issue 9,12,15    # three lanes, still capped by concurrency
+```
+
+`--issue` skips the planner: no dependency graph, no `Sandcastle` label needed, and the issue can even be closed. One loop only — there is nothing new to re-plan.
+
+Concurrency still applies, so `--issue 9,12,15` runs all three (3 < the default 5). To force one at a time:
+
+```fish
+SC_CONCURRENCY=1 pnpm sandcastle --issue 9,12,15
+```
 
 ---
 
@@ -64,23 +80,23 @@ git worktree list | grep sandcastle | awk '{print $1}' | xargs -n1 git worktree 
 
 Open **`.sandcastle/config.mts`**. Everything is there, commented. Nothing else to touch.
 
-| Knob | Default | What it does |
-|---|---|---|
-| `maxIterations` | 10 | plan→work→merge rounds per run |
-| `concurrency` | 5 | lanes at once |
-| `cpus` | 2 | CPU per container |
-| `baseBranch` | `undefined` | `undefined` = fork from the branch you're on |
-| `phases.*.model` | see below | which model each phase uses |
-| `phases.*.effort` | `high` | how hard it thinks |
+| Knob              | Default     | What it does                                 |
+| ----------------- | ----------- | -------------------------------------------- |
+| `maxIterations`   | 10          | plan→work→merge rounds per run               |
+| `concurrency`     | 5           | lanes at once                                |
+| `cpus`            | 2           | CPU per container                            |
+| `baseBranch`      | `undefined` | `undefined` = fork from the branch you're on |
+| `phases.*.model`  | see below   | which model each phase uses                  |
+| `phases.*.effort` | `high`      | how hard it thinks                           |
 
 ### Models per phase
 
-| Phase | Model | Why |
-|---|---|---|
-| planner | `claude-fable-5` | reads issues, decides what can run in parallel |
-| implementer | `claude-opus-5` | writes the code |
-| reviewer | `claude-sonnet-5` | reads one diff — cheap task, cheap model |
-| merger | `claude-opus-5` | **keep this strong.** A bad merge silently deletes another lane's work and closes its issue as "done" |
+| Phase       | Model             | Why                                                                                                   |
+| ----------- | ----------------- | ----------------------------------------------------------------------------------------------------- |
+| planner     | `claude-fable-5`  | reads issues, decides what can run in parallel                                                        |
+| implementer | `claude-opus-5`   | writes the code                                                                                       |
+| reviewer    | `claude-sonnet-5` | reads one diff — cheap task, cheap model                                                              |
+| merger      | `claude-opus-5`   | **keep this strong.** A bad merge silently deletes another lane's work and closes its issue as "done" |
 
 ---
 
@@ -94,7 +110,7 @@ SC_MODEL=claude-haiku-4-5-20251001 pnpm sandcastle   # cheap test, all phases
 
 These last for that one command. Nothing is saved.
 
-⚠️ **Neither limits how many issues get worked.** The planner takes every open `Sandcastle` issue. To work fewer issues, close the ones you don't want.
+⚠️ **Neither limits how many issues get worked.** The planner takes every open `Sandcastle` issue. To pick the issues yourself, use `--issue` (above).
 
 ---
 
@@ -116,12 +132,12 @@ Forget to? Nothing breaks — installs just get slower.
 2. Read the newest log: `ls -t .sandcastle/logs/ | head -1`
 3. Look at the last 50 lines
 
-| Symptom | Cause |
-|---|---|
-| Dies instantly on `pnpm install` | Image is stale → `pnpm sandcastle:image` |
-| Mac crawls, fans max | Lower `concurrency` in config.mts |
-| Nothing merged, no errors | Agents ran but made no commits — read an implementer log |
-| `SC_LOOPS must be a positive integer` | Typo in your env var. Working as designed. |
+| Symptom                               | Cause                                                    |
+| ------------------------------------- | -------------------------------------------------------- |
+| Dies instantly on `pnpm install`      | Image is stale → `pnpm sandcastle:image`                 |
+| Mac crawls, fans max                  | Lower `concurrency` in config.mts                        |
+| Nothing merged, no errors             | Agents ran but made no commits — read an implementer log |
+| `SC_LOOPS must be a positive integer` | Typo in your env var. Working as designed.               |
 
 ---
 

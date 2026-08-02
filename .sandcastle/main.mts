@@ -19,6 +19,8 @@
 //
 // Usage:
 //   pnpm sandcastle
+//   pnpm sandcastle --issue 9        # skip the planner, work issue #9 only
+//   pnpm sandcastle --issue 9,12     # skip the planner, two lanes
 //   SC_LOOPS=1 SC_CONCURRENCY=2 pnpm sandcastle   # one-off smoke run
 //
 // The sandbox image must be built from the repo root (not `sandcastle docker
@@ -26,6 +28,7 @@
 // layer can see the lockfile:
 //   pnpm sandcastle:image
 
+import { execFileSync } from "node:child_process"
 import * as sandcastle from "@ai-hero/sandcastle"
 import { docker } from "@ai-hero/sandcastle/sandboxes/docker"
 import { z } from "zod"
@@ -72,6 +75,24 @@ const logging = (name: string) =>
 const branchStrategy = { type: "merge-to-head" } as const
 
 /**
+ * Build the lane list for `--issue` without the planner: the issues are already
+ * chosen, so all that's missing is each title. The branch name must match the
+ * format in plan-prompt.md or a targeted re-run forks a fresh branch and loses
+ * whatever the previous run committed.
+ */
+const issuesFromCli = (ids: readonly string[]) =>
+  ids.map((id) => {
+    const json = execFileSync("gh", ["issue", "view", id, "--json", "title"], {
+      encoding: "utf8",
+    })
+    return {
+      id,
+      title: JSON.parse(json).title as string,
+      branch: `sandcastle/issue-${id}`,
+    }
+  })
+
+/**
  * Promise.allSettled with a concurrency cap: keeps `limit` lanes in flight and
  * starts the next as soon as a slot frees, rather than waiting on a whole wave.
  */
@@ -114,26 +135,31 @@ for (let iteration = 1; iteration <= config.maxIterations; iteration++) {
   // blocking dependencies on other open issues).
   //
   // It outputs a <plan> JSON block — Output.object parses and validates it.
+  //
+  // `--issue` skips this phase entirely: the selection is already made, so
+  // there is no graph to build and no label or open-state filter to satisfy.
   // -------------------------------------------------------------------------
-  const plan = await sandcastle.run({
-    // No install hook: the planner only reads issues through `gh` and reasons,
-    // so it never needs node_modules.
-    branchStrategy,
-    sandbox: sandbox(),
-    name: "planner",
-    // One iteration is enough: the planner just needs to read and reason,
-    // not write code. (Structured output requires maxIterations: 1.)
-    maxIterations: config.phases.planner.maxIterations,
-    agent: agentFor(config.phases.planner),
-    promptFile: "./.sandcastle/plan-prompt.md",
-    logging: logging("planner"),
-    // Extract and validate the <plan> JSON into a typed object. Throws
-    // StructuredOutputError if the tag is missing, the JSON is malformed, or
-    // validation fails — which aborts the loop.
-    output: sandcastle.Output.object({ tag: "plan", schema: planSchema }),
-  })
-
-  const issues = plan.output.issues
+  const issues = config.issues
+    ? issuesFromCli(config.issues)
+    : (
+        await sandcastle.run({
+          // No install hook: the planner only reads issues through `gh` and
+          // reasons, so it never needs node_modules.
+          branchStrategy,
+          sandbox: sandbox(),
+          name: "planner",
+          // One iteration is enough: the planner just needs to read and reason,
+          // not write code. (Structured output requires maxIterations: 1.)
+          maxIterations: config.phases.planner.maxIterations,
+          agent: agentFor(config.phases.planner),
+          promptFile: "./.sandcastle/plan-prompt.md",
+          logging: logging("planner"),
+          // Extract and validate the <plan> JSON into a typed object. Throws
+          // StructuredOutputError if the tag is missing, the JSON is malformed,
+          // or validation fails — which aborts the loop.
+          output: sandcastle.Output.object({ tag: "plan", schema: planSchema }),
+        })
+      ).output.issues
 
   if (issues.length === 0) {
     // No unblocked work — either everything is done or everything is blocked.
