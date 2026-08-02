@@ -9,8 +9,6 @@ import {
   ToggleGroupItem,
 } from "@diametral/ui/components/toggle-group"
 
-// `value` is an array even in single-select mode — the group supports both, so
-// the shape stays constant and only `multiple` changes.
 export default function ToggleGroupSingle() {
   return (
     <ToggleGroup variant="outline" defaultValue={["left"]}>
