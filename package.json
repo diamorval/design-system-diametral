@@ -9,6 +9,7 @@
     "format": "turbo format",
     "typecheck": "turbo typecheck",
     "sandcastle": "npx tsx .sandcastle/main.mts",
+    "sandcastle:custom": "npx tsx .sandcastle/custom.mts",
     "sandcastle:image": "docker build -f .sandcastle/Dockerfile --build-arg AGENT_UID=$(id -u) --build-arg AGENT_GID=$(id -g) -t sandcastle:design-system-diametral ."
   },
   "devDependencies": {

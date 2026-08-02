@@ -30,6 +30,14 @@ One issue, one lane, ~20–40 min. If the result looks good, the other 14 will t
 
 ## Work specific issues
 
+Interactive (pick issues + overrides from menus, confirm, launch):
+
+```fish
+pnpm sandcastle:custom
+```
+
+Or directly:
+
 ```fish
 pnpm sandcastle --issue 9          # one lane
 pnpm sandcastle --issue 9,12,15    # three lanes, still capped by concurrency
