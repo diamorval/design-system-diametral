@@ -35,7 +35,7 @@ If applicable, use RGR to complete the task.
 
 # FEEDBACK LOOPS
 
-Before committing, run `npm run typecheck` and `npm run test` to ensure the tests pass.
+Before committing, run `pnpm typecheck` and `pnpm lint`. There is no unit-test suite; these two checks plus a successful `pnpm build` are the feedback loops. Never run `pnpm format` (it rewrites the whole repo) — use `prettier --check <your files>` instead.
 
 # COMMIT
 

@@ -44,14 +44,16 @@ const planSchema = z.object({
 const MAX_ITERATIONS = 10;
 
 // Hooks run inside the sandbox before the agent starts each iteration.
-// npm install ensures the sandbox always has fresh dependencies.
+// pnpm install relinks workspace packages from the copied virtual store
+// (node_modules/.pnpm) and fetches anything missing.
 const hooks = {
-  sandbox: { onSandboxReady: [{ command: "npm install" }] },
+  sandbox: { onSandboxReady: [{ command: "pnpm install" }] },
 };
 
-// Copy node_modules from the host into the worktree before each sandbox
-// starts. Avoids a full npm install from scratch; the hook above handles
-// platform-specific binaries and any packages added since the last copy.
+// Copy the root node_modules (which holds pnpm's virtual store) from the
+// host into the worktree before each sandbox starts. The pnpm install hook
+// above recreates the per-package symlink dirs and handles platform-specific
+// binaries.
 const copyToWorktree = ["node_modules"];
 
 // ---------------------------------------------------------------------------
