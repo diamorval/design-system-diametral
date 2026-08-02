@@ -35,6 +35,17 @@ RUN curl -fsSL https://claude.ai/install.sh | bash
 # Add Claude to PATH
 ENV PATH="/home/agent/.local/bin:$PATH"
 
+# Bake the pnpm store from the lockfile so lanes install offline instead of
+# each downloading the full dependency set. One ENV covers both `pnpm fetch`
+# (build) and `pnpm install` (runtime) so their store paths can never diverge —
+# a mismatch fails with ERR_PNPM_NO_OFFLINE_TARBALL.
+# Requires building from the REPO ROOT (see package.json "sandcastle:image"),
+# not `sandcastle docker build-image`, whose context is .sandcastle/.
+ENV npm_config_store_dir=/home/agent/pnpm-store
+COPY --chown=${AGENT_UID}:${AGENT_GID} package.json pnpm-lock.yaml pnpm-workspace.yaml /home/agent/fetch/
+# pnpm fetch leaves a stray node_modules behind (pnpm/pnpm#8623).
+RUN cd /home/agent/fetch && pnpm fetch && rm -rf /home/agent/fetch/node_modules
+
 WORKDIR /home/agent
 
 # In worktree sandbox mode, Sandcastle bind-mounts the git worktree at /home/agent/workspace

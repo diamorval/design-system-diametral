@@ -8,10 +8,12 @@
     "lint": "turbo lint",
     "format": "turbo format",
     "typecheck": "turbo typecheck",
-    "sandcastle": "npx tsx .sandcastle/main.mts"
+    "sandcastle": "npx tsx .sandcastle/main.mts",
+    "sandcastle:image": "docker build -f .sandcastle/Dockerfile --build-arg AGENT_UID=$(id -u) --build-arg AGENT_GID=$(id -g) -t sandcastle:design-system-diametral ."
   },
   "devDependencies": {
     "@ai-hero/sandcastle": "^0.12.0",
+    "@types/node": "^24.12.4",
     "prettier": "^3.8.3",
     "prettier-plugin-tailwindcss": "^0.8.0",
     "turbo": "^2.9.18",

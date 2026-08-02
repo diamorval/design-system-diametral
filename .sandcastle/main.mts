@@ -1,29 +1,35 @@
 // Parallel Planner with Review — four-phase orchestration loop
 //
 // This template drives a multi-phase workflow:
-//   Phase 1 (Plan):             An opus agent analyzes open issues, builds a
+//   Phase 1 (Plan):             An agent analyzes open issues, builds a
 //                               dependency graph, and outputs a <plan> JSON
 //                               listing unblocked issues with branch names.
 //   Phase 2 (Execute + Review): For each issue, a sandbox is created via
-//                               createSandbox(). The implementer runs first
-//                               (100 iterations). If it produces commits, a
-//                               reviewer runs in the same sandbox on the same
-//                               branch (1 iteration). All issue pipelines run
-//                               concurrently via Promise.allSettled().
+//                               createSandbox(). The implementer runs first.
+//                               If it produces commits, a reviewer runs in the
+//                               same sandbox on the same branch. Lanes run
+//                               concurrently, capped at config.concurrency.
 //   Phase 3 (Merge):            A single agent merges all completed branches
 //                               into the current branch.
 //
-// The outer loop repeats up to MAX_ITERATIONS times so that newly unblocked
-// issues are picked up after each round of merges.
+// The outer loop repeats up to config.maxIterations times so that newly
+// unblocked issues are picked up after each round of merges.
+//
+// Every knob lives in ./config.mts — this file holds orchestration only.
 //
 // Usage:
-//   npx tsx .sandcastle/main.mts
-// Or add to package.json:
-//   "scripts": { "sandcastle": "npx tsx .sandcastle/main.mts" }
+//   pnpm sandcastle
+//   SC_LOOPS=1 SC_CONCURRENCY=2 pnpm sandcastle   # one-off smoke run
+//
+// The sandbox image must be built from the repo root (not `sandcastle docker
+// build-image`, whose context is .sandcastle/) so the Dockerfile's pnpm fetch
+// layer can see the lockfile:
+//   pnpm sandcastle:image
 
-import * as sandcastle from "@ai-hero/sandcastle";
-import { docker } from "@ai-hero/sandcastle/sandboxes/docker";
-import { z } from "zod";
+import * as sandcastle from "@ai-hero/sandcastle"
+import { docker } from "@ai-hero/sandcastle/sandboxes/docker"
+import { z } from "zod"
+import { config, type PhaseConfig } from "./config.mts"
 
 // The planner emits its plan as JSON inside <plan> tags; Output.object extracts
 // and validates it against this schema. We use Zod here, but any Standard
@@ -31,45 +37,81 @@ import { z } from "zod";
 // https://standardschema.dev.
 const planSchema = z.object({
   issues: z.array(
-    z.object({ id: z.string(), title: z.string(), branch: z.string() }),
+    z.object({ id: z.string(), title: z.string(), branch: z.string() })
   ),
-});
+})
 
 // ---------------------------------------------------------------------------
-// Configuration
+// Wiring — turns config into the shapes each sandcastle call expects
 // ---------------------------------------------------------------------------
 
-// Maximum number of plan→execute→merge cycles before stopping.
-// Raise this if your backlog is large; lower it for a quick smoke-test run.
-const MAX_ITERATIONS = 10;
+const agentFor = (phase: PhaseConfig) =>
+  sandcastle.claudeCode(phase.model, { effort: phase.effort })
 
-// Hooks run inside the sandbox before the agent starts each iteration.
-// A clean install in a fresh worktree takes ~10s, so the host node_modules is
-// never copied in: it records `storeDir` as a macOS path and carries darwin
-// binaries, both of which make `pnpm install` fail inside the Linux container.
+const sandbox = () => docker({ cpus: config.cpus })
+
+// The store is baked into the image (Dockerfile: pnpm fetch), so this resolves
+// offline. --prefer-offline rather than --offline: a lane whose agent adds a
+// dependency mid-run can still reach the registry on the next iteration.
 const hooks = {
-  sandbox: { onSandboxReady: [{ command: "pnpm install" }] },
-};
+  sandbox: { onSandboxReady: [{ command: "pnpm install --prefer-offline" }] },
+}
+
+// Branch names contain a slash; flatten it so the log path stays a single file.
+const logging = (name: string) =>
+  ({
+    type: "file",
+    path: `.sandcastle/logs/${name.replace(/\//g, "-")}.log`,
+    verbose: config.logging.verbose,
+  }) as const
 
 // docker() defaults to branchStrategy { type: "head" }, which bind-mounts the
 // host working directory itself — an install there would overwrite the
 // developer's node_modules with Linux binaries. Every phase therefore runs in
 // a git worktree instead.
-const branchStrategy = { type: "merge-to-head" } as const;
+const branchStrategy = { type: "merge-to-head" } as const
+
+/**
+ * Promise.allSettled with a concurrency cap: keeps `limit` lanes in flight and
+ * starts the next as soon as a slot frees, rather than waiting on a whole wave.
+ */
+async function allSettledWithLimit<T, R>(
+  items: readonly T[],
+  limit: number,
+  fn: (item: T) => Promise<R>
+): Promise<PromiseSettledResult<R>[]> {
+  const results = new Array<PromiseSettledResult<R>>(items.length)
+  let next = 0
+
+  const worker = async () => {
+    for (let i = next++; i < items.length; i = next++) {
+      try {
+        results[i] = { status: "fulfilled", value: await fn(items[i]!) }
+      } catch (reason) {
+        results[i] = { status: "rejected", reason }
+      }
+    }
+  }
+
+  await Promise.all(
+    Array.from({ length: Math.min(limit, items.length) }, worker)
+  )
+  return results
+}
 
 // ---------------------------------------------------------------------------
 // Main loop
 // ---------------------------------------------------------------------------
 
-for (let iteration = 1; iteration <= MAX_ITERATIONS; iteration++) {
-  console.log(`\n=== Iteration ${iteration}/${MAX_ITERATIONS} ===\n`);
+for (let iteration = 1; iteration <= config.maxIterations; iteration++) {
+  console.log(`\n=== Iteration ${iteration}/${config.maxIterations} ===\n`)
 
   // -------------------------------------------------------------------------
   // Phase 1: Plan
   //
-  // The planning agent (opus, for deeper reasoning) reads the open issue list,
-  // builds a dependency graph, and selects the issues that can be worked in
-  // parallel right now (i.e., no blocking dependencies on other open issues).
+  // The planning agent reads the open issue list, builds a dependency graph,
+  // and selects the issues that can be worked in parallel right now (i.e., no
+  // blocking dependencies on other open issues).
   //
   // It outputs a <plan> JSON block — Output.object parses and validates it.
   // -------------------------------------------------------------------------
@@ -77,33 +119,33 @@ for (let iteration = 1; iteration <= MAX_ITERATIONS; iteration++) {
     // No install hook: the planner only reads issues through `gh` and reasons,
     // so it never needs node_modules.
     branchStrategy,
-    sandbox: docker(),
+    sandbox: sandbox(),
     name: "planner",
     // One iteration is enough: the planner just needs to read and reason,
     // not write code. (Structured output requires maxIterations: 1.)
-    maxIterations: 1,
-    // Opus for planning: dependency analysis benefits from deeper reasoning.
-    agent: sandcastle.claudeCode("claude-opus-4-8"),
+    maxIterations: config.phases.planner.maxIterations,
+    agent: agentFor(config.phases.planner),
     promptFile: "./.sandcastle/plan-prompt.md",
+    logging: logging("planner"),
     // Extract and validate the <plan> JSON into a typed object. Throws
     // StructuredOutputError if the tag is missing, the JSON is malformed, or
     // validation fails — which aborts the loop.
     output: sandcastle.Output.object({ tag: "plan", schema: planSchema }),
-  });
+  })
 
-  const issues = plan.output.issues;
+  const issues = plan.output.issues
 
   if (issues.length === 0) {
     // No unblocked work — either everything is done or everything is blocked.
-    console.log("No unblocked issues to work on. Exiting.");
-    break;
+    console.log("No unblocked issues to work on. Exiting.")
+    break
   }
 
   console.log(
-    `Planning complete. ${issues.length} issue(s) to work in parallel:`,
-  );
+    `Planning complete. ${issues.length} issue(s) to work, ${config.concurrency} at a time:`
+  )
   for (const issue of issues) {
-    console.log(`  ${issue.id}: ${issue.title} → ${issue.branch}`);
+    console.log(`  ${issue.id}: ${issue.title} → ${issue.branch}`)
   }
 
   // -------------------------------------------------------------------------
@@ -113,64 +155,70 @@ for (let iteration = 1; iteration <= MAX_ITERATIONS; iteration++) {
   // and reviewer share the same sandbox instance per branch. The implementer
   // runs first; if it produces commits, the reviewer runs in the same sandbox.
   //
-  // Promise.allSettled means one failing pipeline doesn't cancel the others.
+  // allSettledWithLimit means one failing lane doesn't cancel the others, and
+  // no more than config.concurrency containers run at once.
   // -------------------------------------------------------------------------
 
-  const settled = await Promise.allSettled(
-    issues.map(async (issue) => {
-      const sandbox = await sandcastle.createSandbox({
+  const settled = await allSettledWithLimit(
+    issues,
+    config.concurrency,
+    async (issue) => {
+      const sbx = await sandcastle.createSandbox({
         branch: issue.branch,
-        sandbox: docker(),
+        baseBranch: config.baseBranch,
+        sandbox: sandbox(),
         hooks,
-      });
+      })
 
       try {
         // Run the implementer
-        const implement = await sandbox.run({
+        const implement = await sbx.run({
           name: "implementer",
-          maxIterations: 100,
-          agent: sandcastle.claudeCode("claude-opus-4-8"),
+          maxIterations: config.phases.implementer.maxIterations,
+          agent: agentFor(config.phases.implementer),
           promptFile: "./.sandcastle/implement-prompt.md",
+          logging: logging(`${issue.branch}-implementer`),
           promptArgs: {
             TASK_ID: issue.id,
             ISSUE_TITLE: issue.title,
             BRANCH: issue.branch,
           },
-        });
+        })
 
         // Only review if the implementer produced commits
         if (implement.commits.length > 0) {
-          const review = await sandbox.run({
+          const review = await sbx.run({
             name: "reviewer",
-            maxIterations: 1,
-            agent: sandcastle.claudeCode("claude-opus-4-8"),
+            maxIterations: config.phases.reviewer.maxIterations,
+            agent: agentFor(config.phases.reviewer),
             promptFile: "./.sandcastle/review-prompt.md",
+            logging: logging(`${issue.branch}-reviewer`),
             promptArgs: {
               BRANCH: issue.branch,
             },
-          });
+          })
 
           // Merge commits from both runs so the merge phase sees all of them.
-          // Each sandbox.run() only returns commits from its own run.
+          // Each run() only returns commits from its own run.
           return {
             ...review,
             commits: [...implement.commits, ...review.commits],
-          };
+          }
         }
 
-        return implement;
+        return implement
       } finally {
-        await sandbox.close();
+        await sbx.close()
       }
-    }),
-  );
+    }
+  )
 
   // Log any agents that threw (network error, sandbox crash, etc.).
   for (const [i, outcome] of settled.entries()) {
     if (outcome.status === "rejected") {
       console.error(
-        `  ✗ ${issues[i]!.id} (${issues[i]!.branch}) failed: ${outcome.reason}`,
-      );
+        `  ✗ ${issues[i]!.id} (${issues[i]!.branch}) failed: ${outcome.reason}`
+      )
     }
   }
 
@@ -181,23 +229,23 @@ for (let iteration = 1; iteration <= MAX_ITERATIONS; iteration++) {
     .filter(
       (entry) =>
         entry.outcome.status === "fulfilled" &&
-        entry.outcome.value.commits.length > 0,
+        entry.outcome.value.commits.length > 0
     )
-    .map((entry) => entry.issue);
+    .map((entry) => entry.issue)
 
-  const completedBranches = completedIssues.map((i) => i.branch);
+  const completedBranches = completedIssues.map((i) => i.branch)
 
   console.log(
-    `\nExecution complete. ${completedBranches.length} branch(es) with commits:`,
-  );
+    `\nExecution complete. ${completedBranches.length} branch(es) with commits:`
+  )
   for (const branch of completedBranches) {
-    console.log(`  ${branch}`);
+    console.log(`  ${branch}`)
   }
 
   if (completedBranches.length === 0) {
     // All agents ran but none made commits — nothing to merge this cycle.
-    console.log("No commits produced. Nothing to merge.");
-    continue;
+    console.log("No commits produced. Nothing to merge.")
+    continue
   }
 
   // -------------------------------------------------------------------------
@@ -212,20 +260,21 @@ for (let iteration = 1; iteration <= MAX_ITERATIONS; iteration++) {
   await sandcastle.run({
     hooks,
     branchStrategy,
-    sandbox: docker(),
+    sandbox: sandbox(),
     name: "merger",
-    maxIterations: 1,
-    agent: sandcastle.claudeCode("claude-opus-4-8"),
+    maxIterations: config.phases.merger.maxIterations,
+    agent: agentFor(config.phases.merger),
     promptFile: "./.sandcastle/merge-prompt.md",
+    logging: logging("merger"),
     promptArgs: {
       // A markdown list of branch names, one per line.
       BRANCHES: completedBranches.map((b) => `- ${b}`).join("\n"),
       // A markdown list of issue IDs and titles, one per line.
       ISSUES: completedIssues.map((i) => `- ${i.id}: ${i.title}`).join("\n"),
     },
-  });
+  })
 
-  console.log("\nBranches merged.");
+  console.log("\nBranches merged.")
 }
 
-console.log("\nAll done.");
+console.log("\nAll done.")
