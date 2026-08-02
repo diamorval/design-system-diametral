@@ -261,12 +261,26 @@ const auto = picked.length === 0
 
 const settings = await board("Overrides (one-off, nothing saved)", [
   {
+    key: "delivery",
+    label: "Delivery",
+    options: [
+      { title: "pull requests", value: "pr" },
+      { title: "merge to branch", value: "merge" },
+    ],
+    value: config.delivery,
+    hint: "pr = one PR per branch · merge = straight into this branch",
+  },
+  {
     key: "concurrency",
     label: "Concurrency",
-    options: [1, 2, 3, 4, 5, 6, 8].map((n) => ({ title: String(n), value: n })),
-    value: auto
-      ? config.concurrency
-      : Math.min(config.concurrency, picked.length),
+    // "default" (value 0) = don't emit SC_CONCURRENCY. The lane runner already
+    // caps in-flight lanes at the issue count, so fewer issues than the
+    // default just means fewer containers — no need to lower it here.
+    options: [
+      { title: `default (${config.concurrency})`, value: 0 },
+      ...[1, 2, 3, 4, 6, 8].map((n) => ({ title: String(n), value: n })),
+    ],
+    value: 0,
     hint: "lanes at once",
   },
   {
@@ -283,21 +297,32 @@ const settings = await board("Overrides (one-off, nothing saved)", [
   },
   {
     key: "loops",
-    label: "Loops",
-    options: [1, 2, 3, 5, 10].map((n) => ({ title: String(n), value: n })),
-    value: config.maxIterations,
-    hint: auto ? "plan→work→merge rounds" : "ignored — --issue forces 1",
+    label: "Max loops",
+    // "default" (value 0) = don't emit SC_LOOPS, keep the config.mts default.
+    // It's a cap either way: the run stops early once nothing is left to do
+    // (empty plan, or a --issue round that lands no commits).
+    options: [
+      { title: `default (${config.maxIterations})`, value: 0 },
+      ...[1, 2, 3, 5, 10].map((n) => ({ title: String(n), value: n })),
+    ],
+    value: 0,
+    hint: "cap on plan→work→merge rounds · stops early when done",
   },
 ])
 
+// Value 0 (or "" for model) means "default" — emit nothing, config.mts rules.
 const env: Record<string, string> = {}
-if (settings.concurrency !== config.concurrency)
-  env.SC_CONCURRENCY = String(settings.concurrency)
+if (settings.concurrency) env.SC_CONCURRENCY = String(settings.concurrency)
 if (settings.model) env.SC_MODEL = String(settings.model)
-if (auto && settings.loops !== config.maxIterations)
-  env.SC_LOOPS = String(settings.loops)
+if (settings.loops) env.SC_LOOPS = String(settings.loops)
 
-const args = ["sandcastle", ...(auto ? [] : ["--issue", picked.join(",")])]
+const args = [
+  "sandcastle",
+  ...(auto ? [] : ["--issue", picked.join(",")]),
+  ...(settings.delivery !== config.delivery
+    ? ["--delivery", String(settings.delivery)]
+    : []),
+]
 const shown = [
   ...Object.entries(env).map(([k, v]) => `${k}=${v}`),
   "pnpm",

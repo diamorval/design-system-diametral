@@ -1,6 +1,6 @@
 # Sandcastle
 
-Agents work your GitHub issues in parallel Docker containers, then merge the results into your current branch.
+Agents work your GitHub issues in parallel Docker containers, then open one pull request per issue onto the branch you launched from (or merge directly, with `--delivery merge`).
 
 ---
 
@@ -10,7 +10,13 @@ Agents work your GitHub issues in parallel Docker containers, then merge the res
 pnpm sandcastle
 ```
 
-That's the whole thing. It works every open issue labelled `Sandcastle`, 5 at a time, and merges them into the branch you're standing on.
+That's the whole thing. It works every open issue labelled `Sandcastle`, 5 at a time, and opens a PR per issue onto the branch you're standing on. You review and merge the PRs; merging closes the issue (`Closes #N`).
+
+Prefer the old behaviour — everything merged straight into your branch, issues closed for you:
+
+```fish
+pnpm sandcastle --delivery merge
+```
 
 **Walk away for 1.5–3 hours.**
 
@@ -43,7 +49,7 @@ pnpm sandcastle --issue 9          # one lane
 pnpm sandcastle --issue 9,12,15    # three lanes, still capped by concurrency
 ```
 
-`--issue` skips the planner: no dependency graph, no `Sandcastle` label needed, and the issue can even be closed. One loop only — there is nothing new to re-plan.
+`--issue` skips the planner: no dependency graph, no `Sandcastle` label needed, and the issue can even be closed. Loops work like the normal run — up to `maxIterations` rounds, stopping early once a round lands no commits (everything done or stuck). Later rounds only retry lanes that still produce changes.
 
 Concurrency still applies, so `--issue 9,12,15` runs all three (3 < the default 5). To force one at a time:
 
@@ -88,14 +94,15 @@ git worktree list | grep sandcastle | awk '{print $1}' | xargs -n1 git worktree 
 
 Open **`.sandcastle/config.mts`**. Everything is there, commented. Nothing else to touch.
 
-| Knob              | Default     | What it does                                 |
-| ----------------- | ----------- | -------------------------------------------- |
-| `maxIterations`   | 10          | plan→work→merge rounds per run               |
-| `concurrency`     | 5           | lanes at once                                |
-| `cpus`            | 2           | CPU per container                            |
-| `baseBranch`      | `undefined` | `undefined` = fork from the branch you're on |
-| `phases.*.model`  | see below   | which model each phase uses                  |
-| `phases.*.effort` | `high`      | how hard it thinks                           |
+| Knob              | Default     | What it does                                                                     |
+| ----------------- | ----------- | -------------------------------------------------------------------------------- |
+| `maxIterations`   | 10          | plan→work→merge rounds per run                                                   |
+| `concurrency`     | 5           | lanes at once                                                                    |
+| `cpus`            | 2           | CPU per container                                                                |
+| `baseBranch`      | `undefined` | `undefined` = fork from the branch you're on                                     |
+| `delivery`        | `"pr"`      | `"pr"` = PR per branch · `"merge"` = merge into your branch (flag: `--delivery`) |
+| `phases.*.model`  | see below   | which model each phase uses                                                      |
+| `phases.*.effort` | `high`      | how hard it thinks                                                               |
 
 ### Models per phase
 
@@ -168,7 +175,8 @@ PLAN     1 agent reads your issues, picks what can run in parallel
    ↓
 WORK     5 containers at once — each: implementer writes → reviewer checks
    ↓
-MERGE    1 agent merges every branch into your current branch, closes the issues
+DELIVER  1 agent — pr: push each branch + open a PR onto your branch, unlabel the issue
+                    merge: merge each branch into your branch, close the issue
    ↓
 repeat up to 10 rounds, or stop when nothing is left
 ```

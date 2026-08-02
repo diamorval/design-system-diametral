@@ -21,6 +21,7 @@
 //   pnpm sandcastle
 //   pnpm sandcastle --issue 9        # skip the planner, work issue #9 only
 //   pnpm sandcastle --issue 9,12     # skip the planner, two lanes
+//   pnpm sandcastle --delivery merge # merge into this branch instead of PRs
 //   SC_LOOPS=1 SC_CONCURRENCY=2 pnpm sandcastle   # one-off smoke run
 //
 // The sandbox image must be built from the repo root (not `sandcastle docker
@@ -73,6 +74,17 @@ const logging = (name: string) =>
 // developer's node_modules with Linux binaries. Every phase therefore runs in
 // a git worktree instead.
 const branchStrategy = { type: "merge-to-head" } as const
+
+// The branch this run was launched from. Lanes fork from it (baseBranch
+// defaults to HEAD) and, in PR delivery, pull requests target it. Resolved on
+// the host because sandboxes check out temp branches.
+const departureBranch = execFileSync(
+  "git",
+  ["rev-parse", "--abbrev-ref", "HEAD"],
+  {
+    encoding: "utf8",
+  }
+).trim()
 
 /**
  * Build the lane list for `--issue` without the planner: the issues are already
@@ -271,6 +283,13 @@ for (let iteration = 1; iteration <= config.maxIterations; iteration++) {
   if (completedBranches.length === 0) {
     // All agents ran but none made commits — nothing to merge this cycle.
     console.log("No commits produced. Nothing to merge.")
+    if (config.issues) {
+      // Fixed issue list: a commit-less round means every lane is either done
+      // or stuck — re-running the identical lanes can't change that. (Planner
+      // mode continues instead: the next plan may select different issues.)
+      console.log("Fixed issue list converged. Exiting.")
+      break
+    }
     continue
   }
 
@@ -284,23 +303,31 @@ for (let iteration = 1; iteration <= config.maxIterations; iteration++) {
   // uses to know which branches to merge and which issues to close.
   // -------------------------------------------------------------------------
   await sandcastle.run({
-    hooks,
+    // PR delivery only pushes and calls gh — it never needs node_modules.
+    ...(config.delivery === "merge" ? { hooks } : {}),
     branchStrategy,
     sandbox: sandbox(),
     name: "merger",
     maxIterations: config.phases.merger.maxIterations,
     agent: agentFor(config.phases.merger),
-    promptFile: "./.sandcastle/merge-prompt.md",
+    promptFile:
+      config.delivery === "pr"
+        ? "./.sandcastle/pr-prompt.md"
+        : "./.sandcastle/merge-prompt.md",
     logging: logging("merger"),
     promptArgs: {
       // A markdown list of branch names, one per line.
       BRANCHES: completedBranches.map((b) => `- ${b}`).join("\n"),
       // A markdown list of issue IDs and titles, one per line.
       ISSUES: completedIssues.map((i) => `- ${i.id}: ${i.title}`).join("\n"),
+      // PR delivery: the branch pull requests target.
+      BASE_BRANCH: departureBranch,
     },
   })
 
-  console.log("\nBranches merged.")
+  console.log(
+    config.delivery === "pr" ? "\nPull requests opened." : "\nBranches merged."
+  )
 }
 
 console.log("\nAll done.")

@@ -24,6 +24,12 @@ export interface SandcastleConfig {
   readonly cpus: number
   /** Fork point for new lane branches; undefined = HEAD (the checked-out branch). */
   readonly baseBranch?: string
+  /**
+   * How finished branches are delivered. "pr" pushes each branch and opens a
+   * pull request onto the departure branch (the branch you launched from);
+   * "merge" merges them straight into it. Override: --delivery pr|merge.
+   */
+  readonly delivery: "pr" | "merge"
   /** Per-phase agent settings. SC_MODEL forces one model across all phases. */
   readonly phases: {
     readonly planner: PhaseConfig
@@ -41,6 +47,7 @@ const defaults: SandcastleConfig = {
   concurrency: 5,
   cpus: 2,
   baseBranch: undefined,
+  delivery: "pr",
   phases: {
     // Structured output requires the planner to stay at maxIterations: 1.
     planner: { model: "claude-fable-5", effort: "xhigh", maxIterations: 1 },
@@ -91,17 +98,34 @@ function cliIssues(): readonly string[] | undefined {
   return ids.length > 0 ? ids : undefined
 }
 
+/** `--delivery pr` or `--delivery=merge`. */
+function cliDelivery(): "pr" | "merge" | undefined {
+  const args = process.argv.slice(2)
+  for (const [i, arg] of args.entries()) {
+    const raw =
+      arg === "--delivery"
+        ? args[i + 1]
+        : arg.startsWith("--delivery=")
+          ? arg.slice("--delivery=".length)
+          : undefined
+    if (raw === undefined) continue
+    if (raw !== "pr" && raw !== "merge") {
+      throw new Error(`--delivery expects "pr" or "merge", got "${raw}"`)
+    }
+    return raw
+  }
+  return undefined
+}
+
 function withEnvOverrides(base: SandcastleConfig): SandcastleConfig {
   const model = process.env.SC_MODEL
   const issues = cliIssues()
   return {
     ...base,
     issues,
-    // Looping exists so newly unblocked issues get picked up by the next plan.
-    // With a fixed issue list there is nothing new to discover, so a second
-    // iteration would just re-run the same lanes.
-    maxIterations: issues ? 1 : (positiveInt("SC_LOOPS") ?? base.maxIterations),
+    maxIterations: positiveInt("SC_LOOPS") ?? base.maxIterations,
     concurrency: positiveInt("SC_CONCURRENCY") ?? base.concurrency,
+    delivery: cliDelivery() ?? base.delivery,
     phases: model
       ? {
           planner: { ...base.phases.planner, model },
