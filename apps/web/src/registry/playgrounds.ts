@@ -340,6 +340,8 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
     extras: [{ prop: "disabled", type: "boolean" }],
   },
   "number-field": {
+    texts: { label: { default: "Seats", label: "label" } },
+    note: "The label is wrapped in `NumberFieldScrubArea`, so dragging it sideways changes the value — the part has no chrome of its own, only the cursor it renders.",
     extras: [
       { prop: "step", type: "select", options: ["1", "5", "10", "0.5"] },
       { prop: "min", type: "text", placeholder: "0" },
