@@ -21,34 +21,32 @@ export default function ContextMenuRows() {
   return (
     <ul className="w-full max-w-sm border border-border">
       {FILES.map((file) => (
-        <li key={file.name} className="border-b border-border last:border-b-0">
-          <ContextMenu>
-            <ContextMenuTrigger
-              render={
-                <div className="flex items-center justify-between px-3 py-2 text-sm" />
-              }
-            >
-              <span>{file.name}</span>
-              <span className="text-xs text-muted-foreground">{file.size}</span>
-            </ContextMenuTrigger>
-            <ContextMenuContent>
-              <ContextMenuGroup>
-                <ContextMenuLabel>{file.name}</ContextMenuLabel>
-                <ContextMenuItem>
-                  <DownloadSimpleIcon /> Download
-                </ContextMenuItem>
-                <ContextMenuItem>
-                  <LinkIcon /> Copy link
-                  <ContextMenuShortcut>⌘K</ContextMenuShortcut>
-                </ContextMenuItem>
-              </ContextMenuGroup>
-              <ContextMenuSeparator />
-              <ContextMenuItem variant="destructive">
-                <TrashIcon /> Delete
+        <ContextMenu key={file.name}>
+          <ContextMenuTrigger
+            render={
+              <li className="flex items-center justify-between border-b border-border px-3 py-2 text-sm last:border-b-0" />
+            }
+          >
+            <span>{file.name}</span>
+            <span className="text-xs text-muted-foreground">{file.size}</span>
+          </ContextMenuTrigger>
+          <ContextMenuContent>
+            <ContextMenuGroup>
+              <ContextMenuLabel>{file.name}</ContextMenuLabel>
+              <ContextMenuItem>
+                <DownloadSimpleIcon /> Download
               </ContextMenuItem>
-            </ContextMenuContent>
-          </ContextMenu>
-        </li>
+              <ContextMenuItem>
+                <LinkIcon /> Copy link
+                <ContextMenuShortcut>⌘K</ContextMenuShortcut>
+              </ContextMenuItem>
+            </ContextMenuGroup>
+            <ContextMenuSeparator />
+            <ContextMenuItem variant="destructive">
+              <TrashIcon /> Delete
+            </ContextMenuItem>
+          </ContextMenuContent>
+        </ContextMenu>
       ))}
     </ul>
   )
