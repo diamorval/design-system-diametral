@@ -147,15 +147,22 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
     extras: [{ prop: "isActive", type: "boolean" }],
   },
   "input-group": {
+    children: { default: "Send", label: "button" },
     variantsFrom: "inputGroupAddonVariants",
-    note: "The axis belongs to InputGroupAddon — it positions the addon within the group.",
+    note: "The axis belongs to InputGroupAddon — it positions the addon within the group, and the two block alignments turn the group into a column.",
   },
   "button-group": {
     variantsFrom: "buttonGroupVariants",
   },
   field: {
-    children: { default: "Accept the charter", label: "label" },
+    children: { default: "Email me each release", label: "label" },
+    texts: {
+      legend: { default: "Release notifications", label: "legend" },
+      title: { default: "Private previews", label: "card title" },
+      error: { default: "Enter a valid email address.", label: "error" },
+    },
     variantsFrom: "fieldVariants",
+    note: "The orientation axis belongs to the first row; the rows below it show the invalid state and the selectable-card shape a FieldLabel takes when it wraps a whole Field.",
   },
 
   /* -- Declared-only (no cva axis) --------------------------------------- */
