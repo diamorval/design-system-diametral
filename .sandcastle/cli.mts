@@ -44,13 +44,12 @@ async function run(): Promise<void> {
       return void (await import("./commands/custom.mts"))
     case "image":
       return void (await import("./commands/image.mts"))
-    // The five modules below land in later issues; until then these cases fail
-    // with a module-not-found error, which is expected. Each ts-expect-error
-    // goes away with the file that satisfies it — tsc reports an unused
-    // directive the moment the module exists.
     case "status":
-      // @ts-expect-error commands/status.mts lands in a later issue
       return void (await import("./commands/status.mts"))
+    // Cases still carrying a ts-expect-error await their module in a later
+    // issue; until then they fail with a module-not-found error, which is
+    // expected. Each directive goes away with the file that satisfies it —
+    // tsc reports an unused directive the moment the module exists.
     case "logs":
       // @ts-expect-error commands/logs.mts lands in a later issue
       return void (await import("./commands/logs.mts"))
@@ -58,7 +57,6 @@ async function run(): Promise<void> {
       // @ts-expect-error commands/clean.mts lands in a later issue
       return void (await import("./commands/clean.mts"))
     case "doctor":
-      // @ts-expect-error commands/doctor.mts lands in a later issue
       return void (await import("./commands/doctor.mts"))
     case "config":
       // @ts-expect-error commands/config.mts lands in a later issue
