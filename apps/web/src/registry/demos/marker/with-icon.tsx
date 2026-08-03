@@ -6,8 +6,6 @@ import {
   MarkerIcon,
 } from "@diametral/ui/components/marker"
 
-// `MarkerIcon` is `aria-hidden` — it is decoration, so the meaning has to live
-// in MarkerContent rather than in the glyph.
 export default function MarkerWithIcon() {
   return (
     <div className="flex w-full max-w-md flex-col gap-6">

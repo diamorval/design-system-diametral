@@ -9,8 +9,6 @@ import {
 } from "@diametral/ui/components/item"
 import { Badge } from "@diametral/ui/components/badge"
 
-// `ItemGroup` tightens its own gap when it contains sm/xs items, so the density
-// of a list follows the items rather than needing a matching group prop.
 export default function ItemSizes() {
   return (
     <div className="flex w-full max-w-md flex-col gap-8">

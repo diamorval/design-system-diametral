@@ -7,8 +7,6 @@ import {
   ProgressValue,
 } from "@diametral/ui/components/progress"
 
-// `value={null}` is the indeterminate state — distinct from `0`, which means
-// "started, nothing done yet". Base UI reflects it as data-indeterminate.
 export default function ProgressIndeterminate() {
   const [value, setValue] = React.useState<number | null>(null)
 

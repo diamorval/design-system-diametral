@@ -1008,6 +1008,10 @@ export const COMPONENTS: ComponentDoc[] = [
     name: "Badge",
     category: "Data display",
     description: "A compact status or category label.",
+    intro: [
+      "Badge is the typographic state label: uppercase, letterspaced and boxless. Reach for it when one word of state has to sit inside something that already has a boundary — the status column of a row, a suffix after a heading, a qualifier in running text. `Tag` is the boxed, tinted version for when the label should read as an object you can scan a column of, and `Status` is the dot-and-word pair.",
+      "It contributes no fill, border or padding of its own, so `variant` is a colour axis only and a badge takes exactly the width of its text. It renders a `span` by default and any element through `render`, which is what the `link` variant exists for.",
+    ],
     examples: [
       {
         demo: "badge/variants",
@@ -1034,12 +1038,16 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Data display",
     description:
       "A user image with a text fallback, and a group with overflow count.",
+    intro: [
+      "Avatar is the identity marker: a round image with initials waiting behind it. Reach for it wherever a person or an account has to be recognisable at a glance — a comment header, an assignee cell, a member list. It renders no name of its own, so keep the name in the markup beside it unless the avatar is purely decorative.",
+      "`size` sets `data-size` on the root rather than styling the children directly, so `AvatarBadge` and `AvatarGroupCount` size themselves from the avatar they belong to. A group is scaled by sizing its avatars; the group itself takes no size.",
+    ],
     examples: [
       {
         demo: "avatar/basic",
         title: "Basic",
         description:
-          "The fallback shows until the image resolves and stays if it fails, so initials are the default rather than a broken-image icon.",
+          "The fallback shows until the image resolves and stays if it fails, so initials are the default rather than a broken-image icon. The portrait is inlined as a data URI so the demo needs no network — any `src` behaves the same.",
       },
       {
         demo: "avatar/sizes",
@@ -1053,7 +1061,25 @@ export const COMPONENTS: ComponentDoc[] = [
         description:
           "`AvatarGroup` overlaps its children and rings them in the background colour; `AvatarGroupCount` closes the stack.",
       },
+      {
+        demo: "avatar/in-row",
+        title: "In a member list",
+        description:
+          "Where avatars usually sit: leading a row, inside `ItemMedia`, with the name beside them. The online dot is decoration only — the row says `online` in words too, so the state does not depend on colour.",
+      },
     ],
+    parts: {
+      Avatar:
+        "Sets `data-size`, which every other part reads — a part rendered outside an Avatar falls back to its own default. The border is an `::after` overlay in `mix-blend-darken`, so it darkens a photo's own edge instead of drawing a ring over it.",
+      AvatarImage:
+        "Base UI keeps it unmounted until the image loads, and removes it again if the load fails — which is why the fallback is not conditional. Render both, always.",
+      AvatarBadge:
+        "Positioned absolutely against the root, so it has to be a child of Avatar. It takes no size of its own and drops its icon at `sm`, where a glyph would be unreadable.",
+      AvatarGroup:
+        "Overlaps its children and rings each one in the background colour; the ring is what separates them, so a group on a tinted surface needs that ring recoloured.",
+      AvatarGroupCount:
+        "A counter, not an Avatar. It matches the group's size through `group-has-data-*`, so it follows whatever size the avatars were given.",
+    },
   },
   {
     slug: "item",
@@ -1061,6 +1087,10 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Data display",
     description:
       "A list row with media, content and actions slots — lighter than a Card for repeated rows.",
+    intro: [
+      "Item is the repeated row: media, content and actions in one horizontal band, at three densities. Reach for it for lists of files, members, settings or results — anywhere the same shape repeats and a `Card` per row would be too much furniture. A region that owns the page rather than repeating inside it is still a `Card`.",
+      'ItemGroup is deliberately not a `role="list"`: a list may own only `listitem` children, and Item is polymorphic, so the group cannot assert that role for rows whose element it does not control — asserting it anyway is what produced a critical `aria-required-children` finding in axe. When list semantics matter, own the markup: `role="list"` on the group and `role="listitem"` on each row.',
+    ],
     examples: [
       {
         demo: "item/variants",
@@ -1080,13 +1110,39 @@ export const COMPONENTS: ComponentDoc[] = [
         description:
           "`ItemGroup` tightens its own gap when it contains `sm`/`xs` rows — density follows the items, with no matching prop on the group.",
       },
+      {
+        demo: "item/as-link",
+        title: "Navigable rows",
+        description:
+          "`render` swaps the row's `div` for an anchor, which is what switches on the hover wash and the focus ring — both are keyed off the rendered element being an `a`, not off a prop.",
+      },
     ],
+    parts: {
+      ItemGroup:
+        'A generic container, not a `role="list"` — it cannot vouch for what its polymorphic children render, so the roles are yours to write. It does tighten its own gap when it holds `sm` or `xs` rows, so density follows the items with no matching prop here.',
+      Item: "Polymorphic through `render`. The hover wash and the focus ring are keyed off the rendered element being an anchor, so a plain `div` row stays inert.",
+      ItemMedia:
+        "Top-aligns itself once the row has an `ItemDescription`, keeping icon and title on one line however long the description runs. The `image` variant is the one that sizes and crops.",
+      ItemContent:
+        "Takes the free space; a second `ItemContent` in the same row goes `flex-none`, which is how a trailing meta column keeps its natural width.",
+      ItemTitle:
+        "Uppercase and `line-clamp-1` — a row label, not a heading, so a long name truncates instead of wrapping. Pass your own heading element when the level matters.",
+      ItemHeader:
+        "`basis-full`, so it takes its own line inside the row's flex wrap — that is what lets one row carry a header above its content.",
+      ItemFooter: "Mirrors the header: `basis-full` and `justify-between`.",
+      ItemSeparator:
+        "For inside a row, between header and footer. The space between rows comes from the gap on `ItemGroup` instead.",
+    },
   },
   {
     slug: "marker",
     name: "Marker",
     category: "Data display",
     description: "A small inline badge pairing an icon with a label.",
+    intro: [
+      "Marker is the caption above a group: uppercase, muted, full-width, optionally with a glyph. Reach for it to title a stack of rows, label a section of a form, or divide a feed by day — the small typographic heading that is not a heading element. `Badge` is the inline word of state; `Separator` is the rule with no label.",
+      "The root is `w-full`, so a marker captions whatever follows rather than sitting inline, and the `separator` variant draws its two rules as `::before` and `::after` on that root — the label centres between them with no wrapper markup. Use `render` when the caption should be a real heading element.",
+    ],
     examples: [
       {
         demo: "marker/variants",
@@ -1100,7 +1156,27 @@ export const COMPONENTS: ComponentDoc[] = [
         description:
           "`MarkerIcon` is `aria-hidden`, so the meaning has to be in `MarkerContent` — the glyph is decoration.",
       },
+      {
+        demo: "marker/section-labels",
+        title: "Section labels",
+        description:
+          "The `border` variant as the title of a settings group: the rule spans the full row, so it reads as the section boundary and the group needs no `Separator` of its own.",
+      },
+      {
+        demo: "marker/day-divider",
+        title: "Dividing a feed",
+        description:
+          "The `separator` variant between groups of a feed. Its rules flex into whatever the label leaves, so one marker centres a short day and a long date alike.",
+      },
     ],
+    parts: {
+      Marker:
+        "`w-full`, and the owner of the pseudo-element rules the `separator` variant draws — the label only centres while the marker has its own line.",
+      MarkerIcon:
+        "`aria-hidden` and fixed at `size-4`: decoration. Whatever it means has to be in MarkerContent as well.",
+      MarkerContent:
+        "Goes `flex-none` under the `separator` variant so the rules take the remaining width, and wraps rather than truncating.",
+    },
   },
   {
     slug: "meter",
@@ -1108,12 +1184,16 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Data display",
     description:
       "Displays a measured value within a known range — capacity, not task progress.",
+    intro: [
+      "Meter shows how full something is: disk used, budget consumed, seats taken. Reach for it when the value measures a fixed capacity and can move either way — work advancing towards done is `Progress`, and a single figure that deserves a dial of its own is `Gauge`.",
+      "`Meter` renders its own `MeterTrack` and `MeterIndicator` after whatever children you pass, so children are the label and the value only; writing a track yourself draws a second bar. With no `format`, the value reads as its percentage of the `min`–`max` range — pass a `format`, or a function child on `MeterValue`, when the readout should be the raw figure instead.",
+    ],
     examples: [
       {
         demo: "meter/basic",
         title: "Basic",
         description:
-          "`Meter` renders its own track and indicator, so children are the label and value only — adding a `MeterTrack` draws a second bar.",
+          "`format` takes `Intl.NumberFormatOptions` and applies to `MeterValue`, which is what makes the second row read `128 GB` instead of the `50%` of its range it would print by default.",
       },
       {
         demo: "meter/thresholds",
@@ -1121,27 +1201,67 @@ export const COMPONENTS: ComponentDoc[] = [
         description:
           "Because the indicator is internal, per-row colour is a descendant selector on the root rather than a prop.",
       },
+      {
+        demo: "meter/plan-usage",
+        title: "In a panel",
+        description:
+          "Where capacity readouts usually live: a plan summary with the action under it. Both rows pass a function child to `MeterValue`, which receives the formatted string and the raw number — the way to write `34 of 50 used` where the default would read `68%`.",
+      },
     ],
+    parts: {
+      Meter:
+        "Renders the track and the indicator itself, after your children, and owns `format` — pass only a label and a value unless you want two bars.",
+      MeterTrack:
+        "Rendered for you. Restyle the bar through a descendant selector on the root rather than by adding a second track.",
+      MeterIndicator:
+        "Also internal, and Base UI sets its width inline, so colour is the one thing left to change from outside — which is why thresholds are a selector on the root.",
+      MeterLabel:
+        "Registers itself as the meter's accessible name, so a meter without one needs an `aria-label` on the root.",
+      MeterValue:
+        "`aria-hidden`: the root already announces the value through `aria-valuetext`, so this is the sighted readout only. A function child receives the formatted string and the raw number.",
+    },
   },
   {
     slug: "progress",
     name: "Progress",
     category: "Data display",
     description: "Task completion, with optional label and value slots.",
+    intro: [
+      "Progress reports work advancing towards done: an upload, an import, an indexing pass. Reach for it when the value only moves one way and completion is the point — a measurement of capacity that can fall again is `Meter`, and work whose extent is unknown and unmeasured is `Spinner`.",
+      "`value={null}` is the indeterminate state, and it is the default — distinct from `0`, which means started with nothing done. The root reflects that state as `data-indeterminate`, `data-progressing` or `data-complete`, so a finished bar restyles itself off an attribute instead of the caller comparing `value` to `max`.",
+    ],
     examples: [
       {
         demo: "progress/basic",
         title: "Basic",
         description:
-          "`format` takes `Intl.NumberFormatOptions`, so a 0–1 ratio can render as a percentage without any maths at the call site.",
+          "`Progress` renders its own track and indicator, so children are the label and value only. `format` takes `Intl.NumberFormatOptions`, which is what turns the 0–1 ratio into a percentage — without it the value prints as `value` divided by 100 regardless of `max`, unlike Meter, which reads its range.",
       },
       {
         demo: "progress/indeterminate",
         title: "Indeterminate",
         description:
-          "`value={null}` means unknown — distinct from `0`, which means started but nothing done.",
+          "`value={null}` means unknown — distinct from `0`, which means started but nothing done. A plain `ProgressValue` renders nothing while indeterminate; a function child is handed the literal string `indeterminate` instead.",
+      },
+      {
+        demo: "progress/upload-queue",
+        title: "Upload queue",
+        description:
+          "Several tasks in one list, with the finished bar recoloured off the root's `data-complete` attribute rather than a comparison at the call site. The function child on `ProgressValue` is what lets the completed row read `Done` instead of `100%`.",
       },
     ],
+    parts: {
+      Progress:
+        "Renders the track and the indicator itself, after your children, and carries `data-indeterminate`, `data-progressing` or `data-complete` — style completion off the attribute.",
+      ProgressTrack:
+        "Rendered for you. Restyle the bar through a descendant selector on the root rather than by adding a second track.",
+      ProgressIndicator:
+        "Also internal, and Base UI sets its width inline, so colour is the one thing left to change from outside.",
+      ProgressLabel:
+        "Registers itself as the bar's accessible name, so a bar without one needs an `aria-label` on the root.",
+      ProgressValue:
+        "`aria-hidden`: the root already announces the value through `aria-valuetext`. It renders nothing while `value` is `null` unless you pass a function child.",
+    },
   },
   {
     slug: "skeleton",
@@ -1405,13 +1525,34 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Data display",
     description:
       'Renders "3 hours ago" from a date, inside a `time` element that keeps the machine-readable timestamp.',
+    intro: [
+      "Relative Time turns a timestamp into `3 hours ago` and keeps it advancing while it is mounted. Reach for it in activity feeds, notification lists and updated-at columns, where distance from now is what a reader wants. Past a week it falls back to an absolute date, because `47 days ago` is worse than the date itself.",
+      "`date` takes what a row actually holds: a `Date`, epoch milliseconds, or a database string with a space separator, microseconds and a `+02` zone. A stamp carrying no zone counts as local time, so a column storing UTC has to append `Z`. What renders is a real `time` element with the ISO value in `dateTime` and the full local date in `title`, so the exact moment survives hover and copy.",
+    ],
     examples: [
-      { demo: "relative-time/basic", title: "Basic" },
+      {
+        demo: "relative-time/basic",
+        title: "Basic",
+        description:
+          "The thresholds in one list: seconds, minutes, hours and days stay relative, and anything past a week renders as an absolute date instead.",
+      },
       {
         demo: "relative-time/static",
         title: "In a table",
         description:
-          "Where relative stamps earn their keep: a column of them scans faster than absolute dates.",
+          "Where relative stamps earn their keep: a column of them scans faster than absolute dates. `live={false}` stops the re-render timer, for a snapshot or a server-rendered page that has no need to keep advancing.",
+      },
+      {
+        demo: "relative-time/inputs",
+        title: "What a column can hand over",
+        description:
+          "One instant in the four shapes an API or a database actually returns, all reading identically — plus an unparseable value, which is printed as it arrived under `data-invalid` rather than taking the tree down.",
+      },
+      {
+        demo: "relative-time/locales",
+        title: "Other locales",
+        description:
+          "`locale` goes straight to `Intl.RelativeTimeFormat`, and an invalid tag falls back to the browser instead of throwing. Leaving it unset follows the browser, which is usually what an app wants.",
       },
     ],
   },

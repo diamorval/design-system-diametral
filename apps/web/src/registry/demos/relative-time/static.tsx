@@ -13,8 +13,6 @@ const ROWS = [
   { id: "INV-040", updated: new Date(Date.now() - 26 * 3_600_000) },
 ]
 
-// `live={false}` stops the re-render interval — for a table snapshot or a
-// server-rendered page where the timestamp does not need to keep advancing.
 export default function RelativeTimeStatic() {
   return (
     <Table>
