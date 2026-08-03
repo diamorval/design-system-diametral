@@ -10,9 +10,6 @@ import {
   NumberFieldScrubArea,
 } from "@diametral/ui/components/number-field"
 
-// `NumberFieldScrubArea` turns its children into a drag handle — press and move
-// sideways, the way a design tool's numeric inputs behave. It reads the root's
-// context, so it has to sit *inside* `NumberField`, not beside it.
 export default function NumberFieldWithScrub() {
   return (
     <Field className="max-w-xs">

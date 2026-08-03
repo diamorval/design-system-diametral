@@ -11,8 +11,6 @@ import {
   NumberFieldInput,
 } from "@diametral/ui/components/number-field"
 
-// A real number field, not `<input type="number">`: it clamps to min/max, honours
-// step on the arrow keys, and formats with Intl rather than raw digits.
 export default function NumberFieldBasic() {
   return (
     <div className="flex w-full max-w-xs flex-col gap-8">

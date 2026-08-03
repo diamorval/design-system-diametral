@@ -22,8 +22,6 @@ const TAGS = [
   "typography",
 ]
 
-// Unlike Combobox, Autocomplete is a free-text input with suggestions: whatever is
-// typed stays the value even if it matches nothing in the list.
 export default function AutocompleteBasic() {
   return (
     <Field className="max-w-sm">

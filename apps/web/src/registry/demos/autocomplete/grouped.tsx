@@ -1,5 +1,6 @@
 import {
   Autocomplete,
+  AutocompleteCollection,
   AutocompleteContent,
   AutocompleteEmpty,
   AutocompleteGroup,
@@ -7,17 +8,17 @@ import {
   AutocompleteItem,
   AutocompleteLabel,
   AutocompleteList,
-  AutocompleteStatus,
 } from "@diametral/ui/components/autocomplete"
 import { Field, FieldLabel } from "@diametral/ui/components/field"
 
-const GROUPED = [
+type Category = { value: string; items: string[] }
+
+const GROUPED: Category[] = [
   { value: "Actions", items: ["Button", "Toggle", "Toolbar"] },
   { value: "Overlays", items: ["Dialog", "Popover", "Tooltip"] },
+  { value: "Forms", items: ["Combobox", "Number Field", "Tags Input"] },
 ]
 
-// Grouped items come from the shape of `items`: each entry with an `items` array
-// becomes a group, and the list's function child receives the group.
 export default function AutocompleteGrouped() {
   return (
     <Field className="max-w-sm">
@@ -26,16 +27,17 @@ export default function AutocompleteGrouped() {
         <AutocompleteInput placeholder="Search components…" showClear />
         <AutocompleteContent>
           <AutocompleteEmpty>Nothing matches.</AutocompleteEmpty>
-          <AutocompleteStatus>Suggestions</AutocompleteStatus>
           <AutocompleteList>
-            {(group: { value: string; items: string[] }) => (
-              <AutocompleteGroup key={group.value} items={group.items}>
-                <AutocompleteLabel>{group.value}</AutocompleteLabel>
-                {group.items.map((name) => (
-                  <AutocompleteItem key={name} value={name}>
-                    {name}
-                  </AutocompleteItem>
-                ))}
+            {(category: Category) => (
+              <AutocompleteGroup key={category.value} items={category.items}>
+                <AutocompleteLabel>{category.value}</AutocompleteLabel>
+                <AutocompleteCollection>
+                  {(name: string) => (
+                    <AutocompleteItem key={name} value={name}>
+                      {name}
+                    </AutocompleteItem>
+                  )}
+                </AutocompleteCollection>
               </AutocompleteGroup>
             )}
           </AutocompleteList>

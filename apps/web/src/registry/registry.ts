@@ -514,20 +514,44 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Forms",
     description:
       "A numeric input with increment and decrement controls, scrub support and locale-aware formatting.",
+    intro: [
+      "Number Field is a numeric input that behaves like a control rather than a text box: buttons on either side of the value, arrow-key stepping, clamping to `min`/`max`, and display formatted through `Intl.NumberFormat`. Reach for it when the answer is a number the user will adjust — a quantity, a price, a typographic value — and Slider when the range reads better than the figure. It is also the engine under Time Picker, which is three of these sharing one underline.",
+      'The stored value is a `number | null`, never the input\'s string: `format` changes what is displayed and parsed, never what is held, so a currency field submits `850` rather than `"850,00 €"`, and a cleared field reads back `null` rather than `0`. Stepping comes at three granularities off that one value — `step` on the buttons and arrow keys, `smallStep` with Alt, `largeStep` with Shift — and typed text is clamped into range on blur unless `allowOutOfRange` is set, which is what hands range errors back to native form validation.',
+    ],
     examples: [
       {
         demo: "number-field/basic",
         title: "Basic",
         description:
-          'A real number field, not `<input type="number">`: it clamps to min/max, steps on the arrow keys, and formats through Intl.',
+          'A real number field, not `<input type="number">`: it clamps to `min`/`max`, steps on the arrow keys, and passes `format` straight to `Intl.NumberFormat` — the day rate below is stored as `850`.',
+      },
+      {
+        demo: "number-field/quantity",
+        title: "Quantity steppers",
+        description:
+          "Compact steppers in a list, where the product name is the only label a reader needs: `aria-label` on `NumberFieldInput` names each control, because the visible text is not tied to it. Controlled, so `onValueChange` — which reports `number | null`, hence the `?? 0` — keeps the total in step.",
+      },
+      {
+        demo: "number-field/precision",
+        title: "Coarse and fine steps",
+        description:
+          "One value, three granularities: `step` on the arrow keys and buttons, `smallStep` with Alt, `largeStep` with Shift. `snapOnStep` then aligns the result to the grid whichever one describes, counted from `min` — type 1.53 and stepping up lands on 1.6, not 1.63 — and `allowWheelScrub` adds the wheel while the field has focus.",
       },
       {
         demo: "number-field/with-scrub",
         title: "Scrub area",
         description:
-          "`NumberFieldScrubArea` turns its children into a drag handle — press and move sideways, the way a design tool's numeric inputs work. It reads the root context, so it must sit *inside* `NumberField`; placing it beside the root throws.",
+          "`NumberFieldScrubArea` turns its children into a drag handle — press and move sideways, the way a design tool's numeric inputs work. Here the label itself is the handle, and the input drops its centring so the pair reads as one row.",
       },
     ],
+    parts: {
+      NumberFieldGroup:
+        "Owns the underline and every state drawn on it — focus, `aria-invalid`, disabled — so an input placed outside the group comes out with no chrome at all.",
+      NumberFieldInput:
+        "Centred and `tabular-nums`, sized to sit between the two buttons. Without them, pass `ps-0 text-start` so the value lines up with the label instead of floating mid-field.",
+      NumberFieldScrubArea:
+        'Reads the root\'s context, so it has to sit inside `NumberField` rather than beside it. It renders its own scrub cursor, which is why there is no cursor part to compose; `direction="vertical"` and `pixelSensitivity` are the knobs for how the drag feels.',
+    },
   },
   {
     slug: "input-group",
@@ -561,20 +585,44 @@ export const COMPONENTS: ComponentDoc[] = [
     name: "Input OTP",
     category: "Forms",
     description: "A segmented one-time-code field with per-character slots.",
+    intro: [
+      "Input OTP is for a code of known length that reads as separate characters: an SMS or authenticator confirmation, an email verification, an invite key. Reach for it when the length is fixed and the segmentation helps the reader keep their place — a plain Input is better as soon as the value could be any length, and Field is what wraps either one with a label and an error.",
+      "There is exactly one real `input` behind the slots, transparent and full-width; every `InputOTPSlot` is a plain `div` painted from that input's state through context. That is what keeps paste, password managers and the OS one-time-code suggestion working, and it is why a slot takes an `index` rather than a value, why splitting slots across groups changes nothing about the code, and why the field is named with `aria-label` or an `id` on `InputOTP` itself — `className` reaches the input and `containerClassName` reaches the row around it.",
+    ],
     examples: [
       {
         demo: "input-otp/basic",
         title: "Basic",
         description:
-          "One real input sits behind the slots, which are painted from its state — that is what keeps paste, autofill and the SMS suggestion working.",
+          "Six slots generated from `maxLength`, each addressed by `index`. The value is the whole string, so there is nothing per-slot to collect.",
       },
       {
         demo: "input-otp/with-separator",
         title: "Grouped",
         description:
-          "Slots are addressed by index, so splitting them across groups is presentational and does not touch the value.",
+          "Indexes are absolute across every group, so splitting them 3–3 is presentational and does not touch the value — the readout below is the same string either way.",
+      },
+      {
+        demo: "input-otp/verify-form",
+        title: "Verification form",
+        description:
+          "The confirmation-screen shape: a labelled field, a Verify button held disabled until the code is complete, and a resend beside it. The rejected state is drawn per slot — `aria-invalid` on the root names the control for assistive tech, but the destructive underline lives on `InputOTPSlot`, so it goes to each one.",
+      },
+      {
+        demo: "input-otp/auto-submit",
+        title: "Auto-submit on complete",
+        description:
+          "`onComplete` fires the moment the last character lands, which removes the submit button entirely. Pair it with `disabled` while the request is in flight, or the user can keep typing into a code that is already being checked.",
       },
     ],
+    parts: {
+      InputOTP:
+        "The one real input is this part: `className` lands on it and `containerClassName` on the row, so `aria-label`, `id`, `inputMode` and `autoComplete` all belong here rather than on a group.",
+      InputOTPSlot:
+        "A `div` painted from the input's context by `index` — not a control, so it takes no value and no `onChange`, and an index past `maxLength` renders empty forever. The focus and `aria-invalid` underlines are drawn here, which is why an invalid state has to reach every slot.",
+      InputOTPSeparator:
+        'Always draws a dash: the icon is hardcoded, so children passed to it are ignored. It carries `role="separator"` and no tab stop, since it is punctuation rather than structure.',
+    },
   },
   {
     slug: "combobox",
@@ -582,12 +630,28 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Forms",
     description:
       "An input that filters a list, with single or multi-select and chip display.",
+    intro: [
+      "Combobox is a text input whose value has to come from its list: type to narrow, pick to commit. Reach for it once a Select would be a long scroll — a country, a project, an assignee — and Autocomplete instead when the typed text is itself a valid answer. Multi Select is the closed wrapper over the `multiple` mode below, for when the API you want is `options` in and `string[]` out.",
+      "`items` on the root is the source of truth Base UI filters; the rendered `ComboboxItem`s are only the view, which is why `ComboboxList` takes a function child rather than JSX. Item values need not be strings: a `{ value, label }` object is understood with no configuration, and any other shape needs `itemToStringLabel` for what the input shows and `itemToStringValue` for what a form submits.",
+    ],
     examples: [
       {
         demo: "combobox/basic",
         title: "Basic",
         description:
-          "`items` on the root is the source of truth that Base UI filters; the rendered items are just the view. `ComboboxList` takes a function child.",
+          "The flat case: an array of strings on the root, one function child on `ComboboxList`. `ComboboxEmpty` keys off an empty-state attribute on the popup, so it belongs inside `ComboboxContent` and outside the list.",
+      },
+      {
+        demo: "combobox/grouped",
+        title: "Grouped options",
+        description:
+          "Groups come from the shape of `items`: entries carrying their own `items` array arrive at the list's function child as groups. `ComboboxGroup` republishes its `items` to the `ComboboxCollection` inside it, which is the same mechanism the list's function child uses implicitly for a flat list.",
+      },
+      {
+        demo: "combobox/objects",
+        title: "Ids with labels",
+        description:
+          "Item values as `{ value, label }` objects, so the field displays a project name and the form submits its id — no `itemToStringLabel` needed, since that shape is recognised. Selection is compared with `Object.is`, so keep one array of objects rather than rebuilding it per render.",
       },
       {
         demo: "combobox/multiple",
@@ -596,6 +660,20 @@ export const COMPONENTS: ComponentDoc[] = [
           "`ComboboxChip` takes plain children, so map the selection one level up with `ComboboxValue`'s render prop. Point `anchor` at the chips container so the popup tracks it as it grows.",
       },
     ],
+    parts: {
+      ComboboxInput:
+        "A whole `InputGroup`, not a bare input, and the one part carrying additions of this system's own: `showTrigger` (on by default) and `showClear`. The trigger hides itself whenever a clear button is mounted, so the two never stack in the same corner.",
+      ComboboxContent:
+        "Portalled, and it takes the positioner's `side`, `align`, `sideOffset` and `anchor` props directly rather than nesting a positioner. Pass `anchor` when the field is a chips row, so the popup follows it as chips wrap onto a second line.",
+      ComboboxList:
+        "A function child is the filtered path — Base UI wraps it in a `ComboboxCollection` reading the root's filtered items. Pass JSX children instead and you get a static list that no query touches.",
+      ComboboxEmpty:
+        "Shown by a `data-empty` attribute on the popup, not by conditional rendering, so it has to sit inside `ComboboxContent` and outside `ComboboxList` — and it must stay mounted, since that is what lets it announce the empty result.",
+      ComboboxChip:
+        "Its remove button derives `aria-label` from string children (`Remove publish`). Give an explicit label when the child is an element, or the button reads as a bare `Remove`.",
+      ComboboxTrigger:
+        "Appends its own caret after whatever children it is given, and defaults `aria-label` to `Toggle options` — override it when the field's own label would not make the button's purpose obvious.",
+    },
   },
   {
     slug: "autocomplete",
@@ -603,20 +681,48 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Forms",
     description:
       "Free-text input with suggestions — unlike Combobox, the typed value need not come from the list.",
+    intro: [
+      "Autocomplete is a text input with suggestions attached, where the typed string is the value: the list is a shortcut, never a constraint. Reach for it for search fields, for the answer that is usually but not always one of a known set, and anywhere an “other” option would otherwise be needed. Combobox is the one to use when the value has to come from the list, and Command when the entries are actions rather than answers.",
+      "The root holds no selected value at all — only the input string, through `value`/`onValueChange` — and picking an item simply writes that item's text into the input. `mode` decides what a query does: `list` (the default) filters the list and leaves the input alone, `both` filters and previews the highlighted entry inline, `inline` previews without filtering, `none` does neither. Set `filter` to `null` when something upstream already narrowed `items`, or the same query is applied twice.",
+    ],
     examples: [
       {
         demo: "autocomplete/basic",
         title: "Basic",
         description:
-          "Whatever is typed stays the value even when nothing matches. Use Combobox when the value must come from the list.",
+          "Whatever is typed stays the value even when nothing matches — there is no selection to read back, only the string. Use Combobox when the value must come from the list.",
       },
       {
         demo: "autocomplete/grouped",
         title: "Grouped suggestions",
         description:
-          "Groups come from the shape of `items`: entries carrying their own `items` array arrive at the list's function child as groups.",
+          "Groups come from the shape of `items`: entries carrying their own `items` array arrive at the list's function child as groups, and `AutocompleteCollection` renders the entries of the group it sits in.",
+      },
+      {
+        demo: "autocomplete/inline",
+        title: "Inline completion",
+        description:
+          '`mode="both"` filters the list and completes the highlighted entry inside the input, so a long value like a timezone is a few keystrokes rather than a scroll. It needs `autoHighlight` to have something to preview before the arrow keys are touched.',
+      },
+      {
+        demo: "autocomplete/async",
+        title: "Server-side search",
+        description:
+          "The page owns the results, so `filter={null}` stops Base UI filtering an already-filtered list. `AutocompleteStatus` is the polite live region for that request's state — it stays mounted and swaps its children, which is what lets a screen reader hear the count settle.",
       },
     ],
+    parts: {
+      AutocompleteInput:
+        "An `InputGroup` rather than a bare input, with `showClear` as this system's own addition. There is no trigger part here, unlike Combobox: the popup opens from typing, or from `openOnInputClick`.",
+      AutocompleteContent:
+        "Portalled, and pinned to the anchor's width — unlike Combobox's popup it never grows past the input, so a long suggestion wraps instead of widening the field.",
+      AutocompleteEmpty:
+        "Shown by a `data-empty` attribute on the popup, not by conditional rendering, so it belongs inside `AutocompleteContent` and outside `AutocompleteList`. Swap its children rather than unmounting it — staying mounted is what lets it announce the empty result.",
+      AutocompleteStatus:
+        "A polite live region for the state of the list, not a heading: it announces changes to its children, so unmounting it or filling it with a fixed string wastes it. Loading and result counts are what it is for.",
+      AutocompleteCollection:
+        "Renders the items of the `AutocompleteGroup` above it, or the root's filtered items when there is no group — the same wrapper `AutocompleteList` applies implicitly to a function child.",
+    },
   },
   {
     slug: "calendar",
@@ -812,18 +918,34 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Forms",
     description:
       "Inline click-to-edit text — a preview with an edit affordance that swaps to a field, committed on Enter or blur, discarded on Escape.",
+    intro: [
+      "Editable turns a piece of text into its own editor: a preview with a pencil that surfaces on hover or focus, swapping in place for an `Input` with save and cancel beside it. Reach for it to rename something where it already sits — a document title, a board column, a row label — instead of sending someone to a dialog for one value. As soon as the edit touches more than one value, a Field inside a form is the honest shape.",
+      "It is hand-rolled rather than composed, so the prop list is the whole surface and there are no parts to nest. Enter and blur commit, Escape discards, and `submitOnBlur={false}` makes blur discard too, which leaves the check button and Enter as the only ways through. Two details to know before styling it: the preview is a `span` rather than a button, so the pencil — not the text — is what opens the field, and the inner `Input` carries its own type size, so a heading-sized preview snaps back to field size while it is being edited.",
+    ],
     examples: [
       {
         demo: "editable/basic",
         title: "Basic",
         description:
-          "The edit button only appears on hover or focus; Escape restores the previous value instead of committing the draft.",
+          "Uncontrolled, which is enough for most renames: the component holds the committed value itself. The pencil only appears on hover or focus, and Escape restores the previous value rather than committing the draft.",
+      },
+      {
+        demo: "editable/rows",
+        title: "Rows in a list",
+        description:
+          "One per row, each holding its own value, so nothing above them keeps state. The last row starts empty to show `placeholder`, which stands in for the value in muted text rather than sitting inside the field.",
+      },
+      {
+        demo: "editable/explicit-commit",
+        title: "Commit explicitly",
+        description:
+          "`submitOnBlur={false}` for a value a stray click must not rewrite: blur then runs `onCancel` rather than `onSubmit`, so the check button and Enter are the only ways to commit and a draft left behind is dropped.",
       },
       {
         demo: "editable/controlled",
         title: "Controlled",
         description:
-          "`onSubmit` fires only once a draft is committed, not on every keystroke.",
+          "`value` with `onSubmit` hands the commit to the page — and obliges it to write the value back, since a controlled Editable renders what it is given and would otherwise snap to the old text. `onValueChange` is the same moment, not the keystrokes: there is no callback for the draft.",
       },
     ],
   },
