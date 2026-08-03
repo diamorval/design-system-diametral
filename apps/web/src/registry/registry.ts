@@ -281,13 +281,28 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Forms",
     description:
       "The single-line text field, and the base every other text control borrows its focus ring and invalid styling from.",
+    intro: [
+      "Input is the single-line text control and nothing more — one wrapper over Base UI's input primitive. Reach for it for any value a keyboard produces. It stays deliberately bare: the label, helper text and error message come from `Field`, and anything that has to sit inside the field box — an icon, a unit, a reveal button — comes from `InputGroup`.",
+      "The border is bottom-only, a transparent box with `border-b-input`, so the control reads as a ruled line and focus recolours that rule with `--color-ring`. Invalid styling hangs off `aria-invalid` rather than a prop, which makes the accessibility attribute the switch — and Textarea, InputGroupInput and the pickers all copy this treatment, so it is worth changing in one place.",
+    ],
     examples: [
-      { demo: "input/basic", title: "Basic" },
+      {
+        demo: "input/basic",
+        title: "Basic",
+        description:
+          "The bare control with no wrapper, which is why `aria-label` is doing the labelling — an input with neither a visible label nor an `aria-label` fails an axe check.",
+      },
       {
         demo: "input/with-field",
         title: "With label and description",
         description:
           "`Field` supplies the label association and helper text; `Input` stays a plain control.",
+      },
+      {
+        demo: "input/types",
+        title: "Typed values",
+        description:
+          "`type` swaps the native control, not just the keyboard: `date` brings the platform picker and `file` picks up the `file:` classes the component ships for the browser's own button. Validation props (`min`, `max`, `accept`) pass straight through. For a numeric field with steppers, `Number Field` is the richer sibling.",
       },
       {
         demo: "input/invalid",
@@ -309,6 +324,10 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Forms",
     description:
       "A multi-line text field sharing Input's focus and invalid states.",
+    intro: [
+      "Textarea is the multi-line field: Input's bottom rule, focus and invalid treatment, measured in rows instead of characters. Reach for it when the answer is prose — a description, a message, a set of notes. For a composer whose buttons live inside the field, `InputGroup` takes an `InputGroupTextarea` instead.",
+      "There is no resize handle. `resize-none` is on the box and `field-sizing-content` grows it to fit what is typed, so `rows` sets a floor rather than a height. That growth has no ceiling of its own — cap it with `max-h-*` and `overflow-y-auto` wherever the field sits in a fixed layout.",
+    ],
     examples: [
       {
         demo: "textarea/basic",
@@ -322,6 +341,18 @@ export const COMPONENTS: ComponentDoc[] = [
         description:
           "`aria-invalid` is the switch for the error styling; `FieldError` renders the message.",
       },
+      {
+        demo: "textarea/counter",
+        title: "Character count",
+        description:
+          "Controlled, because the count is read off the value: `maxLength` stops the typing and `FieldDescription` carries the readout, so the count stays inside the row the label already names.",
+      },
+      {
+        demo: "textarea/bounded",
+        title: "Bounded growth",
+        description:
+          "Where auto-growth needs a ceiling: `max-h-40` plus `overflow-y-auto` on the textarea gives it something to scroll inside, while `rows` still decides where it starts. The cap belongs on the control, which is what owns the scrolling.",
+      },
     ],
   },
   {
@@ -330,6 +361,10 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Forms",
     description:
       "An accessible label; pairs with a control via `htmlFor` and dims with its disabled state.",
+    intro: [
+      "Label is the plain `label` element wearing the system's field-heading type: `text-xs`, semibold, uppercase and tracked out. Reach for it when you are wiring a control by hand. Inside a `Field`, prefer `FieldLabel` — it wraps this same component and adds the group's disabled and invalid wiring.",
+      "It restyles itself from the control it sits beside rather than taking a prop: `peer-data-[slot=checkbox]`, `peer-data-[slot=radio-group-item]` and `peer-data-[slot=switch]` trade the heading treatment for sentence case, because a checkbox label is a sentence and a field heading is not. Peer selectors only look backwards, so the control has to come before the label in the DOM.",
+    ],
     examples: [
       {
         demo: "label/basic",
@@ -339,9 +374,21 @@ export const COMPONENTS: ComponentDoc[] = [
       },
       {
         demo: "label/with-controls",
-        title: "With a checkbox or switch",
+        title: "Checkbox and switch rows",
         description:
           "Label restyles itself from the control it follows (`peer-data-[slot=checkbox]`), dropping the uppercase treatment — so the control must come first in the DOM.",
+      },
+      {
+        demo: "label/inline-hints",
+        title: "Inline hints",
+        description:
+          "The root is `flex items-center gap-2`, so a badge or a hint sits inside the label with no extra wrapper. Plain text needs `normal-case font-normal tracking-normal` to opt out of the heading treatment it inherits.",
+      },
+      {
+        demo: "label/disabled",
+        title: "Disabled controls",
+        description:
+          "Two mechanisms, because `peer-disabled` only reaches a label that comes after the control: the checkbox row fades from the peer, and the input row — label first — fades from a wrapper carrying `group` and `data-disabled`.",
       },
     ],
   },
@@ -351,6 +398,10 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Forms",
     description:
       "The form row primitive — label, control, description and error in one accessible group. Replaces the retired `form` component in this system.",
+    intro: [
+      'Field is the form row: a label, its control, the helper text and the error message in one `role="group"` box on a single `gap-3`. Reach for it for every labelled control — it replaces the retired `form` component in this system, and `FieldGroup` stacks the rows so a form needs no ad-hoc margins.',
+      "None of the wiring is automatic: the group mints no ids and reads no form library's state, so `htmlFor`/`id` and `aria-invalid` stay yours to set. What it owns is the reaction — `data-invalid` on the Field turns the whole row destructive and `data-disabled` fades its labels, both through `group/field` selectors the parts already carry.",
+    ],
     examples: [
       {
         demo: "field/basic",
@@ -362,7 +413,19 @@ export const COMPONENTS: ComponentDoc[] = [
         demo: "field/group",
         title: "Field group",
         description:
-          "`FieldGroup` stacks rows with consistent spacing so forms do not need ad-hoc margins.",
+          "`FieldGroup` stacks rows on `gap-10`; a group nested inside another drops to `gap-4`, which is how a sub-section reads as one without extra classes.",
+      },
+      {
+        demo: "field/fieldset",
+        title: "Fieldset and legend",
+        description:
+          "The section shape: `FieldSet` is a real `fieldset` and `FieldLegend` its legend, so the group's name is announced with every control inside it. A description placed straight after the legend tightens against it, and `FieldSeparator` divides the section out of the existing gap rather than adding a row.",
+      },
+      {
+        demo: "field/choices",
+        title: "Horizontal orientation",
+        description:
+          '`orientation="horizontal"` puts the control before the label — the correct order for checkboxes and radios. Wrap a label that carries a description in `FieldContent`: the row keys its `items-start` off that part, so the control aligns to the first line instead of centring against two.',
       },
       {
         demo: "field/invalid",
@@ -370,13 +433,27 @@ export const COMPONENTS: ComponentDoc[] = [
         description:
           "`FieldError` accepts either children or an `errors` array, which it de-duplicates by message and renders as a list when there is more than one.",
       },
-      {
-        demo: "field/choices",
-        title: "Horizontal orientation",
-        description:
-          '`orientation="horizontal"` puts the control before the label — the correct order for checkboxes and radios.',
-      },
     ],
+    parts: {
+      Field:
+        "Nothing sets `data-invalid` for you — pass it here to turn the whole row destructive. `aria-invalid` on the control only recolours the control, so a fully red row wants both.",
+      FieldSet:
+        "Drops its own gap from 6 to 3 when its direct child is a `CheckboxGroup` or a `RadioGroup`, since those already space their own items.",
+      FieldGroup:
+        "`gap-10` between rows, and `gap-4` for a FieldGroup nested in another — sub-sections tighten by nesting rather than by class.",
+      FieldLabel:
+        "`Label` with the group's disabled wiring added, so it inherits the peer restyling too: a checkbox or radio still has to come before it in the DOM. Wrap a whole `Field` in one and it turns into a full-width bordered box that tints while a control inside it is checked — the selectable-card pattern, with no separate component.",
+      FieldTitle:
+        "Renders a `div`, not a `label` — it names a group visually without claiming to label a control, which is what you want above a set of radios that each carry their own FieldLabel.",
+      FieldContent:
+        "The wrapper for a label plus its description in a horizontal row: the Field keys its `items-start` off this part's `data-slot`, so a plain `div` leaves the control centred against two lines of text.",
+      FieldDescription:
+        "Its margins are order-sensitive (`last:mt-0`, `nth-last-2:-mt-1`, and a tighter rule right after a legend), so keep it after the control and before the error rather than the other way round.",
+      FieldSeparator:
+        "Sits in the group's existing gap with `-my-2` rather than adding a row of its own; the optional children print as a centred label over the rule.",
+      FieldError:
+        'Returns `null` with neither children nor a non-empty `errors`, so it can stay mounted through a valid state. `errors` de-duplicates by message and switches to a list past one; the root is `role="alert"`, which announces the message as it appears.',
+    },
   },
   {
     slug: "select",
@@ -535,6 +612,10 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Forms",
     description:
       "Composes addons, icons and buttons around an input inside a single bordered box.",
+    intro: [
+      "Input Group is the bordered box that holds a control plus whatever belongs inside the field with it — a search icon, a currency suffix, a reveal button, a composer's toolbar. Reach for it when the affordance sits within the field's boundary; a control that belongs beside the field is a plain `Button` next to an `Input`.",
+      'The group owns the border and the focus rule, so its control has to be `InputGroupInput` or `InputGroupTextarea` — the same Input and Textarea with their own border stripped and a `data-slot="input-group-control"` for the group to find. Everything else is `has-*` selectors on the root: an `aria-invalid` control anywhere inside turns the rule destructive, and a block-aligned addon releases the fixed height and switches the box to a column.',
+    ],
     examples: [
       {
         demo: "input-group/addons",
@@ -549,12 +630,32 @@ export const COMPONENTS: ComponentDoc[] = [
           "`InputGroupButton` is a Button with its own size scale, sized to sit inside the field rather than beside it.",
       },
       {
+        demo: "input-group/in-field",
+        title: "In a field",
+        description:
+          "The group replaces the control, not the row: label, description and error still come from `Field`. Only the control takes `aria-invalid` — the group's `has-[[data-slot][aria-invalid=true]]` selector is what carries the destructive rule across the whole box.",
+      },
+      {
         demo: "input-group/block-align",
         title: "Stacked addons",
         description:
           "`block-start` / `block-end` stack the addon above or below and switch the group to a column, which is what turns it into a composer.",
       },
     ],
+    parts: {
+      InputGroup:
+        "Owns the border, the focus rule and the invalid rule, all as `has-*` selectors — state lives on the control and the box reacts to it. Its `h-10` holds until a textarea or a block-aligned addon is present, which releases it to `h-auto`.",
+      InputGroupAddon:
+        "Clicking it focuses the group's input, unless the click landed on a button inside. `align` sets the flex order rather than a position, so where the addon sits in your JSX does not matter — but the two block alignments also turn the group into a column.",
+      InputGroupInput:
+        'Input with its own border and ring removed and `data-slot="input-group-control"` set, which is the hook the group\'s focus rule looks for — a bare `Input` in its place leaves the group unable to show focus.',
+      InputGroupTextarea:
+        "The multi-line control, and its presence is what releases the group's fixed height, so the box grows with the message.",
+      InputGroupButton:
+        'A ghost Button at `xs` with its own size scale (`xs`, `sm`, `icon-xs`, `icon-sm`) tuned to fit inside the field. It defaults to `type="button"`, so an icon-only one still needs an `aria-label`.',
+      InputGroupText:
+        "Muted text for a unit, prefix or suffix. It carries no `data-slot`, so the group treats it as decoration rather than as the control it reacts to.",
+    },
   },
   {
     slug: "input-otp",
