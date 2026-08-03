@@ -8,6 +8,7 @@ import {
   MessageContent,
   MessageFooter,
   MessageGroup,
+  MessageHeader,
 } from "@diametral/ui/components/message"
 
 export default function MessagePlayground({
@@ -23,6 +24,7 @@ export default function MessagePlayground({
           </Avatar>
         </MessageAvatar>
         <MessageContent>
+          <MessageHeader>Camille Ferrand</MessageHeader>
           <Bubble variant="muted">
             <BubbleContent>{children}</BubbleContent>
           </Bubble>
