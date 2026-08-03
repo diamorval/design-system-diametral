@@ -282,11 +282,6 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
   accordion: {
     extras: [
       { prop: "multiple", type: "boolean" },
-      {
-        prop: "orientation",
-        type: "select",
-        options: ["horizontal", "vertical"],
-      },
       { prop: "disabled", type: "boolean" },
     ],
   },
