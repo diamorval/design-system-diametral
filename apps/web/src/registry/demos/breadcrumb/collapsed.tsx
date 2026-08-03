@@ -8,8 +8,6 @@ import {
   BreadcrumbSeparator,
 } from "@diametral/ui/components/breadcrumb"
 
-// `BreadcrumbSeparator` renders a caret unless you give it children — passing a
-// character or another icon is how the trail's punctuation changes.
 export default function BreadcrumbCollapsed() {
   return (
     <Breadcrumb>

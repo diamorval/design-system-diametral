@@ -7,8 +7,6 @@ import {
   BreadcrumbSeparator,
 } from "@diametral/ui/components/breadcrumb"
 
-// `BreadcrumbPage` is the current page: not a link, and marked `aria-current`.
-// The separators are `aria-hidden`, so the trail reads cleanly aloud.
 export default function BreadcrumbBasic() {
   return (
     <Breadcrumb>

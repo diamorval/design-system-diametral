@@ -12,8 +12,6 @@ const MENUS = [
   { label: "Company", items: ["About", "Careers", "Contact"] },
 ]
 
-// Moving between triggers keeps one popup and slides it; the content reads
-// `data-activation-direction` to animate towards the side you came from.
 export default function NavigationMenuMultiple() {
   return (
     <NavigationMenu>

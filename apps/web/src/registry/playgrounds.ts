@@ -701,6 +701,12 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
   breadcrumb: {
     children: { default: "Breadcrumb", label: "current page" },
   },
+  toc: {
+    children: { default: "Package manager", label: "link" },
+    texts: { label: { default: "On this page", label: "heading" } },
+    note: "No cva block, so `level` on TocItem is the only axis — and it is depth in the list, not heading rank.",
+    extras: [{ prop: "level", type: "select", options: ["1", "2"] }],
+  },
   card: {
     children: { default: "Charte graphique", label: "title" },
   },
