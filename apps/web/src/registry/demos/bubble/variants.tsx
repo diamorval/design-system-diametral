@@ -14,8 +14,6 @@ const VARIANTS = [
   "destructive",
 ] as const
 
-// The variant styles `BubbleContent` from the `Bubble` wrapper via
-// `*:data-[slot=bubble-content]`, so the content part takes no variant of its own.
 export default function BubbleVariants() {
   return (
     <BubbleGroup className="max-w-md">

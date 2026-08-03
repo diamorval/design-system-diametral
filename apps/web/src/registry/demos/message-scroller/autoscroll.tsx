@@ -11,8 +11,6 @@ import {
   MessageScrollerViewport,
 } from "@diametral/ui/components/message-scroller"
 
-// `scrollAnchor` on the last item is what pins the view to the bottom as
-// messages arrive — and releases it once the reader scrolls up.
 export default function MessageScrollerAutoscroll() {
   const [messages, setMessages] = React.useState(() =>
     Array.from({ length: 6 }, (_, index) => `Message ${index + 1}`)

@@ -17,8 +17,6 @@ const HISTORY = Array.from({ length: 18 }, (_, index) => ({
       : `Message ${index + 1} — the charter defines the palette, the components only read it.`,
 }))
 
-// `MessageScrollerProvider` is required: it holds the scroll state that Root,
-// Viewport and Button all consume. Without it they throw on a missing context.
 export default function MessageScrollerBasic() {
   return (
     <div className="h-72 w-full max-w-md border border-border">
@@ -27,7 +25,11 @@ export default function MessageScrollerBasic() {
           <MessageScrollerViewport className="p-4">
             <MessageScrollerContent className="gap-2">
               {HISTORY.map((message) => (
-                <MessageScrollerItem key={message.id} messageId={message.id}>
+                <MessageScrollerItem
+                  key={message.id}
+                  messageId={message.id}
+                  className="flex flex-col"
+                >
                   <Bubble
                     align={message.mine ? "end" : "start"}
                     variant={message.mine ? "default" : "muted"}

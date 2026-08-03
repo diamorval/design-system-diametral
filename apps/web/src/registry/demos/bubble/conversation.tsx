@@ -14,8 +14,6 @@ const TURNS = [
   { from: "me", text: "Square by charter. That one is not a token." },
 ]
 
-// `align="end"` pushes the bubble to the far side with `self-end`; the group is a
-// plain column, so no per-row wrapper or justify class is needed.
 export default function BubbleConversation() {
   return (
     <BubbleGroup className="max-w-md">

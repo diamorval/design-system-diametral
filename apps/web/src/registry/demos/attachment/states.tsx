@@ -10,8 +10,6 @@ import {
 } from "@diametral/ui/components/attachment"
 import { Spinner } from "@diametral/ui/components/spinner"
 
-// `state` drives the border and media colour: `idle` goes dashed, `error` turns
-// destructive. Nothing else in the tree needs to know which state it is in.
 export default function AttachmentStates() {
   return (
     <div className="flex w-full max-w-md flex-col gap-3">

@@ -2375,6 +2375,10 @@ export const COMPONENTS: ComponentDoc[] = [
     name: "Bubble",
     category: "Conversation",
     description: "Chat bubbles grouped by author.",
+    intro: [
+      "Bubble is the speech-balloon layer of a conversation: a `BubbleGroup` column of turns, each turn a `Bubble` wrapping one `BubbleContent`. Reach for it when the surface reads as a chat — a support thread, an assistant transcript, a row of suggested replies. For a turn that also needs an author and a timestamp, wrap it in Message rather than adding parts here.",
+      "The variant belongs to the wrapper, not the content: `Bubble` styles its own `BubbleContent` through `*:data-[slot=bubble-content]`, which is how `ghost` strips the padding and the background in one place, and how a bubble rendered as a `button` or an `a` picks up a matching hover state for free. Alignment works the same way — inside a Message the bubble follows `group-data-[align=end]/message`, so it only needs its own `align` when it stands outside one.",
+    ],
     examples: [
       {
         demo: "bubble/variants",
@@ -2394,13 +2398,33 @@ export const COMPONENTS: ComponentDoc[] = [
         description:
           "Reactions overhang the bubble edge and are ringed in the card colour, so they read as punched through it rather than stacked beside it.",
       },
+      {
+        demo: "bubble/quick-replies",
+        title: "Quick replies",
+        description:
+          "Suggested answers as tappable bubbles. `BubbleContent` takes a `render` prop, so it becomes a real `button` — and each variant already declares the hover colour that goes with it.",
+      },
     ],
+    parts: {
+      BubbleGroup:
+        "A plain `gap-2` column: turns place themselves through their own `align`, so there is no per-row wrapper and nothing to justify here.",
+      Bubble:
+        "Owns the variant for the pair and styles `BubbleContent` through `*:data-[slot=bubble-content]` — a content part rendered outside a Bubble comes out unstyled. It also carries `max-w-[80%]`, which `ghost` lifts to full width.",
+      BubbleContent:
+        "Pass `render` to make the bubble interactive: as a `button` or an `a` it picks up the hover colour its variant declares. Under `ghost` this part loses its padding and background, which is why an assistant-style answer needs no other override.",
+      BubbleReactions:
+        "Overhangs the bubble edge, ringed in `--card` so it reads as punched through it. On a surface that is not card-coloured, match the ring to that surface.",
+    },
   },
   {
     slug: "message",
     name: "Message",
     category: "Conversation",
     description: "A conversation row with avatar and content.",
+    intro: [
+      "Message is the row around a bubble: an avatar on one side, a column of content on the other, with an optional header for the author and footer for the timestamp or the read state. Reach for it when a transcript needs author identity or per-turn metadata — a plain `BubbleGroup` is enough when the turns speak for themselves.",
+      "`align` is set once, on the row, and every part follows it: the row reverses its own flex direction, `MessageContent` pushes each slotted child to the far side, and a Bubble inside reads `group-data-[align=end]/message`. So no part below takes an alignment prop of its own, and the avatar — `self-end` by default — lifts by 2rem when a `MessageFooter` is present, to stay level with the bubble rather than the metadata line.",
+    ],
     examples: [
       {
         demo: "message/basic",
@@ -2414,7 +2438,29 @@ export const COMPONENTS: ComponentDoc[] = [
         description:
           "When a footer is present the avatar lifts by 2rem so it stays level with the bubble rather than the timestamp.",
       },
+      {
+        demo: "message/assistant",
+        title: "Assistant reply",
+        description:
+          "The full-width answer shape: a `ghost` Bubble drops the balloon entirely, and the header and footer lose their `px-4` in step through `group-has-data-[variant=ghost]/message`, so the whole turn keeps one text edge.",
+      },
+      {
+        demo: "message/attachments",
+        title: "With attachments",
+        description:
+          '`MessageContent` is a column, so a bubble, an `AttachmentGroup` and a footer stack inside one turn — and on `align="end"` every slotted child is pushed across, the attachment row included.',
+      },
     ],
+    parts: {
+      MessageAvatar:
+        "`self-end` so it sits at the bottom of the turn, and it lifts by 2rem when the row contains a `MessageFooter` — it tracks the bubble, not the metadata line.",
+      MessageContent:
+        "The column the rest of the turn sits in. Its direct children that carry a `data-slot` follow the row's `align`, which is why bubbles and attachment rows need no alignment prop.",
+      MessageHeader:
+        "`px-4` lines the author up with the bubble's own text; a `ghost` bubble in the row zeroes it, since ghost content has no padding to match.",
+      MessageFooter:
+        "Mirrors the header, and its presence is what lifts `MessageAvatar` — a footer added late realigns the row rather than sitting under it.",
+    },
   },
   {
     slug: "message-scroller",
@@ -2422,6 +2468,10 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Conversation",
     description:
       "A transcript viewport that keeps itself pinned to the latest message.",
+    intro: [
+      "MessageScroller is the viewport a transcript lives in: it holds the view at the newest message, releases that hold the moment the reader scrolls up, and offers a jump-back button while they are away. Reach for it whenever messages arrive after the first paint — a chat, a streaming answer, a live log — and for a static list Scroll Area is the lighter choice.",
+      "All of the state lives in `MessageScrollerProvider`, which renders no DOM of its own: Root, Viewport, Button and the `useMessageScroller` hooks read it through context, and outside it they throw. Root then fills its parent with `size-full min-h-0`, so the height is set by the box you put the scroller in, never by the scroller itself.",
+    ],
     examples: [
       {
         demo: "message-scroller/basic",
@@ -2435,7 +2485,31 @@ export const COMPONENTS: ComponentDoc[] = [
         description:
           "`scrollAnchor` on the last item pins the view to the bottom as messages arrive, and releases it once the reader scrolls up.",
       },
+      {
+        demo: "message-scroller/older-messages",
+        title: "Loading earlier messages",
+        description:
+          "Prepending history leaves the reader where they were. `preserveScrollOnPrepend` is already the Viewport's default and is written out here only to name it — the older items grow upward instead of shoving the thread down.",
+      },
+      {
+        demo: "message-scroller/jump-to-message",
+        title: "Jumping to a message",
+        description:
+          "`messageId` on each item is the handle `useMessageScroller().scrollToMessage` takes. The hook reads the provider's context, so the jump bar has to sit inside `MessageScrollerProvider` even though it renders outside the scroller.",
+      },
     ],
+    parts: {
+      MessageScrollerProvider:
+        "Required, and renders no DOM: it owns the scroll state, so `autoScroll`, `defaultScrollPosition` and the scroll thresholds are all set here rather than on Root.",
+      MessageScrollerViewport:
+        'The scrolling box, and the accessible one: `role="region"`, focusable, labelled `Messages` unless you pass your own `aria-label`. `preserveScrollOnPrepend` defaults to true, which is what makes loading older messages painless.',
+      MessageScrollerContent:
+        'Carries `role="log"` and `aria-relevant="additions"`, so arriving messages are announced without an aria-live wrapper of your own. It also owns the gap between items.',
+      MessageScrollerItem:
+        "A block wrapper, so give it `flex flex-col` when the bubble inside should follow its own `align`. `messageId` is what `scrollToMessage` and visibility tracking key off; `scrollAnchor` marks the item the view holds on to.",
+      MessageScrollerButton:
+        "Stays mounted when there is nothing to scroll — it goes `inert` and fades out on `data-active=false` rather than unmounting, so nothing shifts under the pointer.",
+    },
   },
   {
     slug: "attachment",
@@ -2443,6 +2517,10 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Conversation",
     description:
       "File metadata display for a message. Not an upload input — see File Upload.",
+    intro: [
+      "Attachment is the chip a file travels in: media thumbnail or icon, name, one line of metadata, and the actions that belong to that file. It only displays — picking files, progress and retry are File Upload's job — so this is what you render for each entry it hands you, in a message, a comment or a review panel.",
+      "Three data attributes on the root drive the whole chip: `size`, `orientation` and `state` are read by every part through `group-data-*`, so no child takes a state prop of its own. Padding is keyed off which slots are present rather than off a prop (`has-data-[slot=…]`), which is why a media-only chip and a full metadata row size correctly with nothing set.",
+    ],
     examples: [
       {
         demo: "attachment/basic",
@@ -2462,7 +2540,25 @@ export const COMPONENTS: ComponentDoc[] = [
         description:
           "`AttachmentGroup` is a snap-scrolling row with a faded edge, so a long list stays on one line instead of wrapping.",
       },
+      {
+        demo: "attachment/clickable",
+        title: "Openable cards",
+        description:
+          "`AttachmentTrigger` is an `absolute inset-0` overlay, so the whole card is one hit target and `render` decides whether it is a link or a button. `AttachmentActions` sits a layer above it, which is how remove stays clickable inside a card that is itself a link.",
+      },
     ],
+    parts: {
+      Attachment:
+        "Owns `state`, `size` and `orientation` as data attributes; every part below reads them through `group-data-*`, so they are set here and nowhere else.",
+      AttachmentMedia:
+        '`variant="image"` expects an `img` child and dims it to 60% while the file is in flight — only `done` and `idle` show the thumbnail in full. The default `icon` variant sizes a bare `svg` for you.',
+      AttachmentTitle:
+        "Truncates to one line, and shimmers while the root is `uploading` or `processing` — progress needs no extra element.",
+      AttachmentTrigger:
+        "An overlay covering the card at `z-10`. `AttachmentActions` is `z-20` so its buttons stay above it; anything else clickable inside the card needs the same lift.",
+      AttachmentGroup:
+        "A snap-scrolling row with faded edges, and `tabIndex={0}` so the list can be scrolled from the keyboard rather than by pointer only.",
+    },
   },
 
   /* -- Utilities --------------------------------------------------------- */
@@ -2472,6 +2568,10 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Utilities",
     description:
       "A provider that sets text direction (LTR/RTL) for every Base UI component beneath it.",
+    intro: [
+      "DirectionProvider tells every Base UI component beneath it which way the document reads. Mount it once at the app root — direction is a whole-tree fact rather than a per-component prop — and mount it again only inside a subtree that genuinely reads the other way, such as a quoted Arabic thread inside an LTR shell.",
+      "It is half of the answer and the `dir` attribute is the other half: the provider is what Base UI's JavaScript reads (floating panel placement, arrow-key order, which end of a Slider is the minimum), while `dir` is what the CSS logical properties read. Set both, from the same value. Components are written with logical properties throughout, so nothing here needs a mirrored stylesheet.",
+    ],
     examples: [
       {
         demo: "direction/rtl",
@@ -2483,7 +2583,13 @@ export const COMPONENTS: ComponentDoc[] = [
         demo: "direction/switching",
         title: "Switching at runtime",
         description:
-          "The provider tells Base UI which way its floating panels and arrow keys should go; the `dir` attribute handles the CSS. Set both.",
+          "One piece of state drives the provider and the `dir` attribute together, which is all a runtime switch is. Components of your own read that value back with `useDirection` instead of threading a prop down.",
+      },
+      {
+        demo: "direction/axis",
+        title: "Controls with an axis",
+        description:
+          "Where the provider earns its keep: Slider's control and thumb, and every composite's arrow-key order, take the direction from context — `dir` alone would mirror the paint and leave the keyboard running backwards.",
       },
     ],
   },

@@ -10,8 +10,6 @@ import {
   ItemTitle,
 } from "@diametral/ui/components/item"
 
-// Components use logical properties (ps/pe, start/end) throughout, so flipping
-// direction is a provider change — no mirrored stylesheet.
 function Row() {
   return (
     <Item variant="outline">

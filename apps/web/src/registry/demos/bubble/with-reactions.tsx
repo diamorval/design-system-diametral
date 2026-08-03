@@ -5,8 +5,6 @@ import {
   BubbleReactions,
 } from "@diametral/ui/components/bubble"
 
-// Reactions are absolutely positioned and overhang the bubble, ringed in the
-// card colour so they punch a hole through the edge rather than sitting beside it.
 export default function BubbleWithReactions() {
   return (
     <BubbleGroup className="max-w-md gap-6 bg-card">

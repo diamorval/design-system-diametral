@@ -15,8 +15,6 @@ const ITEMS = [
   { name: "notes.txt", icon: <FileIcon /> },
 ]
 
-// `AttachmentGroup` is a snap-scrolling row with a faded edge, so a long list of
-// vertical cards stays one line instead of wrapping.
 export default function AttachmentVertical() {
   return (
     <AttachmentGroup className="max-w-sm">

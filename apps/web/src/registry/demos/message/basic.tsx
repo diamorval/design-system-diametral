@@ -8,8 +8,6 @@ import {
   MessageHeader,
 } from "@diametral/ui/components/message"
 
-// `Message` reverses its own flex direction on `align="end"`, so the avatar moves
-// to the trailing side without reordering the markup.
 export default function MessageBasic() {
   return (
     <MessageGroup className="max-w-md">
@@ -36,7 +34,7 @@ export default function MessageBasic() {
           </Avatar>
         </MessageAvatar>
         <MessageContent>
-          <Bubble align="end">
+          <Bubble>
             <BubbleContent>Understood — updating the tokens now.</BubbleContent>
           </Bubble>
         </MessageContent>
