@@ -36,7 +36,8 @@ One issue, one lane, ~20–40 min. If the result looks good, the other 14 will t
 
 ## Work specific issues
 
-Interactive (pick issues + overrides from menus, confirm, launch):
+Interactive (pick issues, then an overrides page, then a per-phase models page,
+confirm, launch):
 
 ```fish
 pnpm sandcastle:custom
@@ -175,7 +176,7 @@ Open **`.sandcastle/config.mts`**. Everything is there, commented. Nothing else 
 
 | Phase       | Model             | Why                                                                                                   |
 | ----------- | ----------------- | ----------------------------------------------------------------------------------------------------- |
-| planner     | `claude-fable-5`  | reads issues, decides what can run in parallel                                                        |
+| planner     | `claude-opus-5`   | reads issues, decides what can run in parallel — a bad plan wastes every lane behind it               |
 | implementer | `claude-opus-5`   | writes the code                                                                                       |
 | reviewer    | `claude-sonnet-5` | reads one diff — cheap task, cheap model                                                              |
 | merger      | `claude-opus-5`   | **keep this strong.** A bad merge silently deletes another lane's work and closes its issue as "done" |
@@ -188,7 +189,12 @@ Open **`.sandcastle/config.mts`**. Everything is there, commented. Nothing else 
 SC_LOOPS=1 pnpm sandcastle                      # one round only
 SC_CONCURRENCY=2 pnpm sandcastle                # gentler on your Mac
 SC_MODEL=claude-haiku-4-5-20251001 pnpm sandcastle   # cheap test, all phases
+SC_MODEL_REVIEWER=claude-haiku-4-5-20251001 pnpm sandcastle   # one phase only
 ```
+
+`SC_MODEL_<PHASE>` — `PLANNER`, `IMPLEMENTER`, `REVIEWER`, `MERGER` — sets one
+phase and beats a blanket `SC_MODEL`. `pnpm sc custom` has a **Models** page
+that writes these for you, one row per phase.
 
 These last for that one command. Nothing is saved.
 

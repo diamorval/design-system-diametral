@@ -185,7 +185,7 @@ export function board(
     return i < 0 ? 0 : i
   })
   let row = 0
-  const help = dim("(↑/↓ field · ←/→ change · enter launch prompt)")
+  const help = dim("(↑/↓ field · ←/→ change · enter next)")
   const width = Math.max(...fields.map((f) => f.label.length))
 
   return keyLoop<Record<string, string | number>>(

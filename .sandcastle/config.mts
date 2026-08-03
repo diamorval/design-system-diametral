@@ -30,7 +30,10 @@ export interface SandcastleConfig {
    * "merge" merges them straight into it. Override: --delivery pr|merge.
    */
   readonly delivery: "pr" | "merge"
-  /** Per-phase agent settings. SC_MODEL forces one model across all phases. */
+  /**
+   * Per-phase agent settings. SC_MODEL_<PHASE> overrides one phase; SC_MODEL
+   * forces every phase that has no scoped override.
+   */
   readonly phases: {
     readonly planner: PhaseConfig
     readonly implementer: PhaseConfig
@@ -50,7 +53,7 @@ const defaults: SandcastleConfig = {
   delivery: "pr",
   phases: {
     // Structured output requires the planner to stay at maxIterations: 1.
-    planner: { model: "claude-fable-5", effort: "xhigh", maxIterations: 1 },
+    planner: { model: "claude-opus-5", effort: "xhigh", maxIterations: 1 },
     implementer: { model: "claude-opus-5", effort: "high", maxIterations: 100 },
     reviewer: { model: "claude-sonnet-5", effort: "high", maxIterations: 1 },
     // The merger keeps a strong model: a bad conflict resolution silently
@@ -117,8 +120,17 @@ function cliDelivery(): "pr" | "merge" | undefined {
   return undefined
 }
 
+/** Scoped SC_MODEL_<PHASE> beats blanket SC_MODEL, which beats the default. */
+function withModel(
+  phase: keyof SandcastleConfig["phases"],
+  base: PhaseConfig
+): PhaseConfig {
+  const model =
+    process.env[`SC_MODEL_${phase.toUpperCase()}`] || process.env.SC_MODEL
+  return model ? { ...base, model } : base
+}
+
 function withEnvOverrides(base: SandcastleConfig): SandcastleConfig {
-  const model = process.env.SC_MODEL
   const issues = cliIssues()
   return {
     ...base,
@@ -126,14 +138,12 @@ function withEnvOverrides(base: SandcastleConfig): SandcastleConfig {
     maxIterations: positiveInt("SC_LOOPS") ?? base.maxIterations,
     concurrency: positiveInt("SC_CONCURRENCY") ?? base.concurrency,
     delivery: cliDelivery() ?? base.delivery,
-    phases: model
-      ? {
-          planner: { ...base.phases.planner, model },
-          implementer: { ...base.phases.implementer, model },
-          reviewer: { ...base.phases.reviewer, model },
-          merger: { ...base.phases.merger, model },
-        }
-      : base.phases,
+    phases: {
+      planner: withModel("planner", base.phases.planner),
+      implementer: withModel("implementer", base.phases.implementer),
+      reviewer: withModel("reviewer", base.phases.reviewer),
+      merger: withModel("merger", base.phases.merger),
+    },
   }
 }
 

@@ -1,6 +1,7 @@
 // Interactive custom run — pick issues, tweak one-off overrides on a settings
-// board, confirm, run. Writes nothing to disk; persistent defaults live in
-// config.mts. UI primitives live in ../prompts.mts.
+// board, then a model per phase on its own board, confirm, run. Writes nothing
+// to disk; persistent defaults live in config.mts. UI primitives live in
+// ../prompts.mts.
 //
 // Usage: pnpm sc custom
 
@@ -16,6 +17,13 @@ import { board, bold, confirm, cyan, dim, multiselect } from "../prompts.mts"
 // Specifier held in a const because a literal would make tsc resolve the query.
 const pickerSpecifier = "../config.mts?picker"
 const { config }: typeof import("../config.mts") = await import(pickerSpecifier)
+
+const MODELS = [
+  { title: "opus 5", value: "claude-opus-5" },
+  { title: "sonnet 5", value: "claude-sonnet-5" },
+  { title: "fable 5", value: "claude-fable-5" },
+  { title: "haiku 4.5", value: "claude-haiku-4-5-20251001" },
+] as const
 
 // --- Main --------------------------------------------------------------------
 
@@ -94,18 +102,6 @@ const settings = await board("Overrides (one-off, nothing saved)", [
     hint: "lanes at once",
   },
   {
-    key: "model",
-    label: "Model",
-    options: [
-      { title: "per-phase defaults", value: "" },
-      { title: "claude-opus-5", value: "claude-opus-5" },
-      { title: "claude-sonnet-5", value: "claude-sonnet-5" },
-      { title: "claude-haiku-4-5", value: "claude-haiku-4-5-20251001" },
-    ],
-    value: "",
-    hint: "forces ALL phases",
-  },
-  {
     key: "loops",
     label: "Max loops",
     // "default" (value 0) = don't emit SC_LOOPS, keep the config.mts default.
@@ -120,11 +116,26 @@ const settings = await board("Overrides (one-off, nothing saved)", [
   },
 ])
 
-// Value 0 (or "" for model) means "default" — emit nothing, config.mts rules.
+// Its own page: four phases with a model each is the one setting you tune
+// phase by phase, and squeezing them onto the board above buries the rest.
+const models = await board(
+  "Models (one-off, per phase)",
+  Object.entries(config.phases).map(([phase, p]) => ({
+    key: phase,
+    label: phase[0]!.toUpperCase() + phase.slice(1),
+    options: [{ title: `default (${p.model})`, value: "" }, ...MODELS],
+    value: "",
+    hint: `effort ${p.effort} · ${p.maxIterations} iteration(s)`,
+  }))
+)
+
+// Value 0 (or "" for a model) means "default" — emit nothing, config.mts rules.
 const env: Record<string, string> = {}
 if (settings.concurrency) env.SC_CONCURRENCY = String(settings.concurrency)
-if (settings.model) env.SC_MODEL = String(settings.model)
 if (settings.loops) env.SC_LOOPS = String(settings.loops)
+for (const [phase, model] of Object.entries(models)) {
+  if (model) env[`SC_MODEL_${phase.toUpperCase()}`] = String(model)
+}
 
 const args = [
   ...(auto ? [] : ["--issue", picked.join(",")]),

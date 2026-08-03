@@ -15,7 +15,15 @@ import { cyan, dim } from "../prompts.mts"
 const DEFAULT = "default"
 
 // Kept as one list so envOrigin and the overrides summary below can't drift.
-const ENV_VARS = ["SC_LOOPS", "SC_CONCURRENCY", "SC_MODEL"] as const
+const ENV_VARS = [
+  "SC_LOOPS",
+  "SC_CONCURRENCY",
+  "SC_MODEL",
+  "SC_MODEL_PLANNER",
+  "SC_MODEL_IMPLEMENTER",
+  "SC_MODEL_REVIEWER",
+  "SC_MODEL_MERGER",
+] as const
 
 /**
  * An override's origin is its mere presence, exactly as withEnvOverrides
@@ -23,6 +31,12 @@ const ENV_VARS = ["SC_LOOPS", "SC_CONCURRENCY", "SC_MODEL"] as const
  */
 function envOrigin(name: (typeof ENV_VARS)[number]): string {
   return process.env[name] ? name : DEFAULT
+}
+
+/** Same precedence as config.mts: the scoped var wins over blanket SC_MODEL. */
+function modelOrigin(phase: string): string {
+  const scoped = `SC_MODEL_${phase.toUpperCase()}`
+  return process.env[scoped] ? scoped : envOrigin("SC_MODEL")
 }
 
 /** The raw value a flag was given, mirroring config.mts's own argv parsing. */
@@ -59,7 +73,7 @@ const rows: Row[] = [
     flagValue("delivery") === undefined ? DEFAULT : "--delivery",
   ],
   ...Object.entries(config.phases).flatMap(([phase, p]): Row[] => [
-    [`phases.${phase}.model`, p.model, envOrigin("SC_MODEL")],
+    [`phases.${phase}.model`, p.model, modelOrigin(phase)],
     [`phases.${phase}.effort`, p.effort, DEFAULT],
     [`phases.${phase}.maxIterations`, String(p.maxIterations), DEFAULT],
   ]),
