@@ -61,7 +61,6 @@ async function run(): Promise<void> {
       // @ts-expect-error commands/doctor.mts lands in a later issue
       return void (await import("./commands/doctor.mts"))
     case "config":
-      // @ts-expect-error commands/config.mts lands in a later issue
       return void (await import("./commands/config.mts"))
     // --help is recognised only in the subcommand position; `pnpm sc run
     // --help` forwards the flag to `run`.
