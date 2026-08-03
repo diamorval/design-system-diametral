@@ -24,7 +24,9 @@ export default function DialogBasic() {
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <DialogClose render={<Button variant="outline" />}>Cancel</DialogClose>
+          <DialogClose render={<Button variant="outline" />}>
+            Cancel
+          </DialogClose>
           <DialogClose render={<Button />}>Copy link</DialogClose>
         </DialogFooter>
       </DialogContent>
