@@ -2377,7 +2377,7 @@ export const COMPONENTS: ComponentDoc[] = [
     description: "Chat bubbles grouped by author.",
     intro: [
       "Bubble is the speech-balloon layer of a conversation: a `BubbleGroup` column of turns, each turn a `Bubble` wrapping one `BubbleContent`. Reach for it when the surface reads as a chat — a support thread, an assistant transcript, a row of suggested replies. For a turn that also needs an author and a timestamp, wrap it in Message rather than adding parts here.",
-      "The variant belongs to the wrapper, not the content: `Bubble` styles its own `BubbleContent` through `*:data-[slot=bubble-content]`, which is how `ghost` strips the padding and the background in one place, and how a bubble rendered as a `button` or an `a` picks up a matching hover state for free. Alignment works the same way — inside a Message the bubble follows `group-data-[align=end]/message`, so it only needs its own `align` when it stands outside one.",
+      "The variant belongs to the wrapper, not the content: `Bubble` styles its own `BubbleContent` through `*:data-[slot=bubble-content]`. That is how `ghost` strips the padding and the background in one place, and how a bubble rendered as a `button` or an `a` picks up a matching hover state for free.",
     ],
     examples: [
       {
@@ -2409,7 +2409,7 @@ export const COMPONENTS: ComponentDoc[] = [
       BubbleGroup:
         "A plain `gap-2` column: turns place themselves through their own `align`, so there is no per-row wrapper and nothing to justify here.",
       Bubble:
-        "Owns the variant for the pair and styles `BubbleContent` through `*:data-[slot=bubble-content]` — a content part rendered outside a Bubble comes out unstyled. It also carries `max-w-[80%]`, which `ghost` lifts to full width.",
+        "Owns the variant for the pair and styles `BubbleContent` through `*:data-[slot=bubble-content]` — a content part rendered outside a Bubble comes out unstyled. It also carries `max-w-[80%]`, which `ghost` lifts to full width. Inside a Message it follows the row's `align`, so it needs its own only when it stands outside one.",
       BubbleContent:
         "Pass `render` to make the bubble interactive: as a `button` or an `a` it picks up the hover colour its variant declares. Under `ghost` this part loses its padding and background, which is why an assistant-style answer needs no other override.",
       BubbleReactions:
@@ -2423,7 +2423,7 @@ export const COMPONENTS: ComponentDoc[] = [
     description: "A conversation row with avatar and content.",
     intro: [
       "Message is the row around a bubble: an avatar on one side, a column of content on the other, with an optional header for the author and footer for the timestamp or the read state. Reach for it when a transcript needs author identity or per-turn metadata — a plain `BubbleGroup` is enough when the turns speak for themselves.",
-      "`align` is set once, on the row, and every part follows it: the row reverses its own flex direction, `MessageContent` pushes each slotted child to the far side, and a Bubble inside reads `group-data-[align=end]/message`. So no part below takes an alignment prop of its own, and the avatar — `self-end` by default — lifts by 2rem when a `MessageFooter` is present, to stay level with the bubble rather than the metadata line.",
+      "`align` is set once, on the row, and every part follows it: the row reverses its own flex direction, `MessageContent` pushes each slotted child to the far side, and a Bubble inside reads `group-data-[align=end]/message`. No part below takes an alignment prop of its own.",
     ],
     examples: [
       {
@@ -2470,7 +2470,7 @@ export const COMPONENTS: ComponentDoc[] = [
       "A transcript viewport that keeps itself pinned to the latest message.",
     intro: [
       "MessageScroller is the viewport a transcript lives in: it holds the view at the newest message, releases that hold the moment the reader scrolls up, and offers a jump-back button while they are away. Reach for it whenever messages arrive after the first paint — a chat, a streaming answer, a live log — and for a static list Scroll Area is the lighter choice.",
-      "All of the state lives in `MessageScrollerProvider`, which renders no DOM of its own: Root, Viewport, Button and the `useMessageScroller` hooks read it through context, and outside it they throw. Root then fills its parent with `size-full min-h-0`, so the height is set by the box you put the scroller in, never by the scroller itself.",
+      "All of the state lives in `MessageScrollerProvider`, which renders no DOM of its own: Root, Viewport, Button and the `useMessageScroller` hooks read it through context, and outside it they throw.",
     ],
     examples: [
       {
@@ -2501,6 +2501,8 @@ export const COMPONENTS: ComponentDoc[] = [
     parts: {
       MessageScrollerProvider:
         "Required, and renders no DOM: it owns the scroll state, so `autoScroll`, `defaultScrollPosition` and the scroll thresholds are all set here rather than on Root.",
+      MessageScroller:
+        "Fills its parent with `size-full min-h-0`, so the height comes from the box you put the scroller in — give that box one, or the transcript has nothing to scroll inside.",
       MessageScrollerViewport:
         'The scrolling box, and the accessible one: `role="region"`, focusable, labelled `Messages` unless you pass your own `aria-label`. `preserveScrollOnPrepend` defaults to true, which is what makes loading older messages painless.',
       MessageScrollerContent:
@@ -2519,7 +2521,7 @@ export const COMPONENTS: ComponentDoc[] = [
       "File metadata display for a message. Not an upload input — see File Upload.",
     intro: [
       "Attachment is the chip a file travels in: media thumbnail or icon, name, one line of metadata, and the actions that belong to that file. It only displays — picking files, progress and retry are File Upload's job — so this is what you render for each entry it hands you, in a message, a comment or a review panel.",
-      "Three data attributes on the root drive the whole chip: `size`, `orientation` and `state` are read by every part through `group-data-*`, so no child takes a state prop of its own. Padding is keyed off which slots are present rather than off a prop (`has-data-[slot=…]`), which is why a media-only chip and a full metadata row size correctly with nothing set.",
+      "Three data attributes on the root drive the whole chip: `size`, `orientation` and `state` are read by every part through `group-data-*`, so no child takes a state prop of its own.",
     ],
     examples: [
       {
@@ -2570,7 +2572,7 @@ export const COMPONENTS: ComponentDoc[] = [
       "A provider that sets text direction (LTR/RTL) for every Base UI component beneath it.",
     intro: [
       "DirectionProvider tells every Base UI component beneath it which way the document reads. Mount it once at the app root — direction is a whole-tree fact rather than a per-component prop — and mount it again only inside a subtree that genuinely reads the other way, such as a quoted Arabic thread inside an LTR shell.",
-      "It is half of the answer and the `dir` attribute is the other half: the provider is what Base UI's JavaScript reads (floating panel placement, arrow-key order, which end of a Slider is the minimum), while `dir` is what the CSS logical properties read. Set both, from the same value. Components are written with logical properties throughout, so nothing here needs a mirrored stylesheet.",
+      "It is half of the answer and the `dir` attribute is the other half: the provider is what Base UI's JavaScript reads (floating panel placement, arrow-key order, which end of a Slider is the minimum), while `dir` is what the CSS logical properties read. Set both, from the same value.",
     ],
     examples: [
       {
