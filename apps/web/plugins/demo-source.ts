@@ -141,6 +141,10 @@ async function buildPlaygrounds() {
  *
  * Adding a line here is a claim that a reader has nothing to look at. Prefer
  * writing the part into a playground or a demo.
+ *
+ * The reasons ship to the client: the index badges these parts `internal` and
+ * the note strip under the preview shows the reason, so the page says why
+ * instead of leaving a row that looks unfinished.
  */
 const ANATOMY_EXCEPTIONS: Record<string, string> = {
   "context-menu/ContextMenuPortal": "ContextMenuContent portals itself",
@@ -254,6 +258,7 @@ export function demoSource(): Plugin {
         `export const variants = ${JSON.stringify(playgrounds.variants)}`,
         `export const templates = ${JSON.stringify(playgrounds.templates)}`,
         `export const anatomy = ${JSON.stringify(anatomy)}`,
+        `export const anatomyExceptions = ${JSON.stringify(ANATOMY_EXCEPTIONS)}`,
       ].join("\n")
     },
 

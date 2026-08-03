@@ -1,5 +1,8 @@
 /* eslint-disable react-refresh/only-export-components */
-import { anatomy as ANATOMY } from "virtual:demo-source"
+import {
+  anatomy as ANATOMY,
+  anatomyExceptions as EXCEPTIONS,
+} from "virtual:demo-source"
 
 import {
   Toc,
@@ -14,6 +17,15 @@ import { exampleTitle, type Example } from "@/registry/registry"
 
 export function anatomyFor(slug: string) {
   return ANATOMY[slug]
+}
+
+/**
+ * Why a part is written nowhere, for the handful of exports whose composition
+ * does not exist — a menu portal beside a Content that portals itself. The build
+ * refuses any other part with no example, so this is the whole set.
+ */
+export function exceptionFor(slug: string, part: string) {
+  return EXCEPTIONS[`${slug}/${part}`]
 }
 
 /**
@@ -159,13 +171,14 @@ export function PartIndex({
       depth: row.depth,
       // Kept short: the index is sized by its content, so a long status would
       // set the width of the whole column.
-      status: row.internal
-        ? "internal"
-        : row.kind === "recurse"
-          ? "recurses"
-          : inTemplate.includes(row.part)
-            ? undefined
-            : (shownIn(data.coverage, row.part, examples) ?? "not shown"),
+      status:
+        row.internal || exceptionFor(slug, row.part)
+          ? "internal"
+          : row.kind === "recurse"
+            ? "recurses"
+            : inTemplate.includes(row.part)
+              ? undefined
+              : (shownIn(data.coverage, row.part, examples) ?? "not shown"),
       muted: !row.internal && !inTemplate.includes(row.part),
     })
   }
@@ -178,7 +191,9 @@ export function PartIndex({
       part,
       label: shortName(part, prefix),
       depth: 1,
-      status: shownIn(data.coverage, part, examples) ?? "no example",
+      status: exceptionFor(slug, part)
+        ? "internal"
+        : (shownIn(data.coverage, part, examples) ?? "no example"),
       muted: true,
     })
   }

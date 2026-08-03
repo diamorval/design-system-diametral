@@ -38,13 +38,23 @@ Conventions (full worked demos are in `references/exemplar.md`, Surface 2):
 - **No comments.** The demo's code is shown verbatim in the Code tab and reads as copy-paste output; a non-obvious why belongs in the registry example `description`, not in the file.
 - Constrain width on the demo root (`w-full max-w-sm`-style), not the preview.
 
+A demo is also where a part the playground cannot show lands (see Step 3). Prefer extending the demo whose use case already implies it — the sidebar's row actions and loading skeleton went into the existing `shell` demo, its rail into `collapsible-icon`, the only demo with a collapsible sidebar for it to position against — over writing a new demo that exists to display one export.
+
 **Choosing the example set**: cover the component's distinct *shapes of use*, not its prop matrix. The exemplar's set — Basic (self-contained summary), Settings rows (a divided list), Form section (fields + acting footer) — each answers "when would I build this?". Variant sweeps (sizes, tones) earn a demo only when the axis is the component's point. Three to five examples is the healthy range.
 
 ## Step 3 — Playground (Workbench)
 
 Two coordinated pieces:
 
-**`playgrounds/<slug>.tsx`** — a typed template that renders the subject with prop pass-through (`{...props}`). Render **every exported component part**: the Workbench's code strip doubles as the anatomy navigator, so an unrendered part is unselectable. Type-only exports (`export type { TimeValue }`) are not parts — they are listed under their own **Types** heading in the index, and selecting one shows its declaration where a part note would go, so there is nothing to render for them. Place a literal `{children}` marker for the main editable text and `{key}` markers for each entry in `texts`.
+**`playgrounds/<slug>.tsx`** — a typed template that renders the subject with prop pass-through (`{...props}`). Render **every exported component part you reasonably can**: the Workbench's code strip doubles as the anatomy navigator, so an unrendered part is unselectable. Groups, labels, separators, shortcuts, submenus, badges, footers and action slots all belong in the template — a select that shows no `SelectGroup` is documenting half its grammar. Type-only exports (`export type { TimeValue }`) are not parts — they are listed under their own **Types** heading in the index, and selecting one shows its declaration where a part note would go, so there is nothing to render for them. Place a literal `{children}` marker for the main editable text and `{key}` markers for each entry in `texts`.
+
+Three kinds of part stay out, and each has somewhere else to be:
+
+- **Parts the component renders itself** — `DialogContent` opens with a `DialogPortal`, `ProgressTrack` is drawn by `Progress`. The index badges these `internal` on its own; writing one into the template double-renders it.
+- **A different composition** — chips mode for combobox, a group for avatar, `CommandDialog` for command. One template cannot be both, and a contrived one stops being copy-pasteable.
+- **Parts that restructure the whole preview** — sidebar's header, footer, trigger, rail and inset are app-shell furniture around a static sidebar. The template caps at a readable size (one screen of code strip); overflow goes to a demo.
+
+For the last two, the index badges the row with the example that shows it (`in Shell`) instead of a dead end, which only works if a demo actually writes the part. Keep the playground the *shape* documentation and let the demos carry the rest.
 
 Give the subject its accessible name with `aria-label` directly rather than an `sr-only` span plus `aria-labelledby` — the span is invisible in the preview but still prints into the generated snippet, which makes the copyable code read as boilerplate the component does not need.
 
@@ -59,4 +69,5 @@ Give the subject its accessible name with `aria-label` directly rather than an `
 
 1. `pnpm exec prettier --check <files you touched>` — **never** `pnpm format` (it rewrites the whole repo).
 2. `pnpm --filter web exec tsc --noEmit`.
-3. Dev server (usually already running on port 5473): open `/docs/<slug>` — intro paragraphs render with code spans, Workbench controls work and every part is selectable, each example previews and its Code tab matches, TOC nests and its anchors scroll.
+3. `pnpm --filter web build` — the demo-source plugin fails the build for a part written in no playground and no demo, naming each one. It is the coverage gate, so a green build is the proof that no index row reads "no example". A part that genuinely has nowhere to appear goes in `ANATOMY_EXCEPTIONS` (`apps/web/plugins/demo-source.ts`) with its reason — five entries today, all exports whose composition does not exist. Reach for a template or demo line first.
+4. Dev server (usually already running on port 5473): open `/docs/<slug>` — intro paragraphs render with code spans, Workbench controls work and every part is selectable, each example previews and its Code tab matches, TOC nests and its anchors scroll. In the index, every row is either live, `internal`, `recurses`, or names an example (`in Shell`); a row reading **"not shown"** means the part is in a demo the page does not list, and one reading **"no example"** should have failed step 3.
