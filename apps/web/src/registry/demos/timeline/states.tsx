@@ -10,14 +10,12 @@ import {
 } from "@diametral/ui/components/timeline"
 
 const STEPS = [
-  { title: "Devis signé", state: "completed" },
-  { title: "Acompte reçu", state: "completed" },
+  { title: "Quote signed", state: "completed" },
+  { title: "Deposit received", state: "completed" },
   { title: "Production", state: "active" },
-  { title: "Facturation", state: undefined },
+  { title: "Invoicing", state: undefined },
 ]
 
-// `data-state` goes on the *item*; the indicator styles itself from it with
-// `group-data-[state=…]`. Putting it on the indicator does nothing.
 export default function TimelineStates() {
   return (
     <Timeline className="max-w-md">
@@ -29,7 +27,7 @@ export default function TimelineStates() {
           <TimelineContent>
             <TimelineTitle>{step.title}</TimelineTitle>
             {step.state === "active" && (
-              <TimelineDescription>En cours</TimelineDescription>
+              <TimelineDescription>In progress</TimelineDescription>
             )}
           </TimelineContent>
         </TimelineItem>

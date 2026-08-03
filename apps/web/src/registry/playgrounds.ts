@@ -367,7 +367,7 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
     ],
   },
   timeline: {
-    children: { default: "Brief reçu", label: "title" },
+    children: { default: "Brief received", label: "title" },
     note: "`data-state` goes on the item, not the indicator — the indicator styles itself from it.",
     extras: [
       {

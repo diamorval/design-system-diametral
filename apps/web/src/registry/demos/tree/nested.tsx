@@ -8,8 +8,6 @@ import {
   TreeLeaf,
 } from "@diametral/ui/components/tree"
 
-// Each level is its own Collapsible, so nesting is literal nesting — there is no
-// depth prop and no flattened id/parentId model to maintain.
 export default function TreeNested() {
   return (
     <Tree className="max-w-xs">

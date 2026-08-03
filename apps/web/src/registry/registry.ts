@@ -1148,6 +1148,10 @@ export const COMPONENTS: ComponentDoc[] = [
     name: "Skeleton",
     category: "Data display",
     description: "A placeholder block for content that has not loaded.",
+    intro: [
+      "Skeleton is one pulsing block; a placeholder is several of them arranged like the content that will replace them. Reach for it when the shape of what is arriving is already known — a row, a card, a table body — so the layout holds its place and nothing jumps when the data lands. When the shape is unknown, or the wait belongs to one action rather than a region, that is `Spinner`.",
+      'It contributes the pulse and the muted fill and nothing else, so `className` is the whole API and a Skeleton with no height renders nothing at all. It carries no ARIA either: the announcement belongs to the region around it, as `aria-busy` or a single `role="status"` line.',
+    ],
     examples: [
       {
         demo: "skeleton/basic",
@@ -1161,6 +1165,18 @@ export const COMPONENTS: ComponentDoc[] = [
         description:
           "Reusing the loaded row's wrapper and swapping only the text is what keeps both states the same height and kills the layout jump.",
       },
+      {
+        demo: "skeleton/table-rows",
+        title: "Table body",
+        description:
+          "The header stays real and only the cells are placeholders, so the columns are already sized when the rows arrive. Bar widths come from the column list rather than being uniform, which is what stops the block reading as a grid of identical dashes.",
+      },
+      {
+        demo: "skeleton/announced",
+        title: "Announcing the wait",
+        description:
+          'Skeleton has no ARIA of its own: `aria-busy` on the region plus one `role="status"` line says what is loading, and the bars go `aria-hidden` so a screen reader never walks a wall of empty divs.',
+      },
     ],
   },
   {
@@ -1169,6 +1185,10 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Data display",
     description:
       "An indeterminate loading indicator, sized to the current text.",
+    intro: [
+      "Spinner is the indeterminate wait: a rotating mark sized to the text beside it, for when there is no honest way to say how long or how far along. Reach for it inside a button that has been pressed, on a row refreshing in place, or in a region with no shape to build a placeholder from. When the shape of the arriving content is known, `Skeleton` holds the layout instead of covering it.",
+      'It is a bare `svg` carrying `role="status"` and `aria-label="Loading"`, so it announces itself with no wrapper, and it paints in `currentColor`, so it takes the colour of the text around it. Both are ordinary props the component spreads over: `className` retunes the `size-4` default, and your own `aria-label` replaces "Loading" once several waits share a screen and one word stops saying which is which.',
+    ],
     examples: [
       {
         demo: "spinner/basic",
@@ -1182,6 +1202,18 @@ export const COMPONENTS: ComponentDoc[] = [
         description:
           "Buttons size any `svg` child to `size-3.5`, so a spinner needs no adjustment inside one.",
       },
+      {
+        demo: "spinner/activity-rows",
+        title: "Per-row activity",
+        description:
+          'One wait per row, so each spinner takes its own `aria-label` — four rows all announcing "Loading" tell a screen-reader user nothing. Settled rows swap to `Status`, whose label carries the outcome without relying on colour.',
+      },
+      {
+        demo: "spinner/deferred",
+        title: "Deferred appearance",
+        description:
+          "A spinner that flashes for 80ms reads as a glitch, so the timer — not the request — decides when it mounts. Only waits long enough to be noticed ever draw one.",
+      },
     ],
   },
   {
@@ -1190,6 +1222,10 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Data display",
     description:
       "A vertical sequence of events with completed, active and inactive states.",
+    intro: [
+      "Timeline is an ordered list of moments: an indicator on a rail, a title, and optionally a timestamp and a line of detail. Reach for it when the sequence itself is the information — a process someone is partway through, an audit trail, a shipment's history. When the steps are a form the reader walks through and can navigate, that is `Stepper`.",
+      "The rail is a `::before` on each item, hidden on the last, so items can be added or removed without touching it. State is `data-state` on the item — `completed`, `active`, or nothing — and the parts style themselves from there, which is why the indicator takes no state prop of its own. It is vertical only.",
+    ],
     examples: [
       {
         demo: "timeline/basic",
@@ -1203,7 +1239,33 @@ export const COMPONENTS: ComponentDoc[] = [
         description:
           "`data-state` goes on the *item*, not the indicator; the indicator styles itself from it with `group-data-[state=…]`.",
       },
+      {
+        demo: "timeline/activity-feed",
+        title: "Activity feed",
+        description:
+          'The audit-trail shape: an icon per kind of event rather than a step number, and every entry already past, so no item takes a state. `TimelineTime` is a real `time` element — pass `dateTime` whenever the visible text is written for people, like "09:12".',
+      },
+      {
+        demo: "timeline/in-panel",
+        title: "Compact, in a panel",
+        description:
+          "Density is a `pb-*` override on the item, whose default is `pb-8`. The rail spans `top-6` to the bottom of the item, so it follows the tighter spacing without being retuned.",
+      },
     ],
+    parts: {
+      Timeline:
+        "An `ol`, so the reading order is the chronology and the count is announced. It draws nothing itself — the rail belongs to the items.",
+      TimelineItem:
+        "Takes `data-state`, and draws the rail: a `::before` from `top-6` to the bottom, hidden on `last:`. Both offsets are keyed to the default `size-6` indicator, so resizing the indicator means retuning `before:top-*` and `before:start-*` with it.",
+      TimelineIndicator:
+        "Reads the item's `data-state` through `group-data-[state=…]`, so it takes no state prop. Fixed `size-6` and `shrink-0` — it is what the rail is aligned to.",
+      TimelineTitle:
+        "Uppercase tracked label type, and a `div` rather than a heading — add your own element when the level matters.",
+      TimelineDescription:
+        "Sets `normal-case` explicitly, so detail text stays sentence case even under chrome that uppercases what it contains.",
+      TimelineTime:
+        "A real `time` element with `tabular-nums`, so a column of timestamps lines up. Give it `dateTime` whenever the visible text is not machine-readable.",
+    },
   },
   {
     slug: "tree",
@@ -1211,6 +1273,10 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Data display",
     description:
       "A collapsible hierarchy with semantic tree ARIA roles and icon swapping per state.",
+    intro: [
+      'Tree is a collapsible hierarchy with the tree roles wired in: `role="tree"` on the root, `treeitem` on every branch and leaf, `group` on each panel. Reach for it for file browsers, nested navigation and any structure whose depth the reader has to see. A single block that hides and shows is `Collapsible`; app navigation is `Sidebar`.',
+      "Depth is literal nesting: each branch is its own Base UI Collapsible, so `defaultOpen`, `open`/`onOpenChange` and `disabled` are the branch's props and there is no flattened id/parentId model to keep in sync. What it does not ship is selection — highlighting a row and setting `aria-selected` stay with the caller.",
+    ],
     examples: [
       {
         demo: "tree/basic",
@@ -1224,7 +1290,30 @@ export const COMPONENTS: ComponentDoc[] = [
         description:
           "Depth is literal nesting — no depth prop, and no flattened id/parentId model to keep in sync.",
       },
+      {
+        demo: "tree/expand-collapse",
+        title: "Expand and collapse all",
+        description:
+          "Driven from outside the tree: because open state belongs to each `TreeItem`, one array of open branch names is enough — `open`/`onOpenChange` per branch, no imperative handle.",
+      },
+      {
+        demo: "tree/folder-icons",
+        title: "Open and closed folders",
+        description:
+          "`TreeItemTrigger` exposes `group/tree-item-trigger`, the same group its own caret swaps on, so a pair of folder icons toggling on `group-data-panel-open` needs no state of its own.",
+      },
     ],
+    parts: {
+      Tree: 'Carries `role="tree"` and the row gap, and nothing else: there is no selection model and no roving tabindex, so each trigger is its own tab stop and `aria-selected` is the caller\'s to set.',
+      TreeItem:
+        "A Base UI Collapsible root rendered as the `li`, which is why `defaultOpen`, `open`/`onOpenChange` and `disabled` sit here rather than on Tree.",
+      TreeItemTrigger:
+        "Renders both carets itself and swaps them on `data-panel-open` instead of rotating one. It exposes `group/tree-item-trigger`, so your own icons can swap on that same state.",
+      TreeItemContent:
+        'The `role="group"` panel, and the indent guide: `ms-4 border-s` is drawn here, so nesting a branch inside it is the entire depth mechanism.',
+      TreeLeaf:
+        "Renders a caret-width spacer before its children so leaf labels line up with branch labels. It is a plain `li`, not a control — rows that respond to clicks are yours to build.",
+    },
   },
   {
     slug: "empty",
@@ -1232,6 +1321,10 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Data display",
     description:
       "The empty-state block: media, title, description and an action.",
+    intro: [
+      "Empty is the centred block a region shows when it has nothing to show: media, a title, a line of explanation, and the way out. One anatomy covers three situations that only differ in wording — a first-run state, a search with no matches, and a request that failed. For a message about the whole page rather than one region, that is `Banner`.",
+      'It sets `border-dashed` but no border width, so it is unframed until you add `border` — which is what lets the same block sit flush inside a card that already has edges. It is `flex-1`, so in a flex column it fills the space it is given rather than sizing to its text, and it carries no role: pass `role="status"` when the block replaces content after a load.',
+    ],
     examples: [
       {
         demo: "empty/basic",
@@ -1245,7 +1338,33 @@ export const COMPONENTS: ComponentDoc[] = [
         description:
           "`EmptyContent` is the slot for the way out — it constrains its own width so buttons stay centred under the text.",
       },
+      {
+        demo: "empty/failed",
+        title: "Failed to load",
+        description:
+          'The same anatomy saying something went wrong rather than nothing is here, so the action is `Retry` and the description says what to expect. Empty ships no role, so `role="status"` is what makes the swap announced.',
+      },
+      {
+        demo: "empty/in-card",
+        title: "Inside a card",
+        description:
+          "The unframed form: no `border`, since the panel already has edges, and `p-8` in place of the default `p-12`. The padding belongs to the block, so the container passes `px-0` rather than stacking the two.",
+      },
     ],
+    parts: {
+      Empty:
+        'Sets `border-dashed` with no border width, so a standalone block needs `border` and one inside a card needs nothing. `flex-1` makes it fill a flex parent, and it carries no role — pass `role="status"` when it replaces loaded content.',
+      EmptyHeader:
+        "`max-w-sm` on the text column, so a long description wraps to a readable measure instead of the container's width.",
+      EmptyMedia:
+        '`variant="icon"` is the muted chip and sizes an `svg` child for you; `default` is a bare slot, so an illustration or a larger glyph carries its own size.',
+      EmptyTitle:
+        "Heading face, uppercase and tracked, but a `div` — add your own heading element when the page needs the level.",
+      EmptyDescription:
+        "Styles its descendant links, underlined and primary on hover, so the way out can live inside the sentence.",
+      EmptyContent:
+        "The slot for the way out, with its own `max-w-sm` so buttons stay centred under the text rather than spreading to the block's width.",
+    },
   },
   {
     slug: "status",
