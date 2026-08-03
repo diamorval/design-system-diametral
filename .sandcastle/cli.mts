@@ -46,10 +46,6 @@ async function run(): Promise<void> {
       return void (await import("./commands/image.mts"))
     case "status":
       return void (await import("./commands/status.mts"))
-    // Cases still carrying a ts-expect-error await their module in a later
-    // issue; until then they fail with a module-not-found error, which is
-    // expected. Each directive goes away with the file that satisfies it —
-    // tsc reports an unused directive the moment the module exists.
     case "logs":
       return void (await import("./commands/logs.mts"))
     case "clean":
