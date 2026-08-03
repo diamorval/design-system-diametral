@@ -624,12 +624,16 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Forms",
     description:
       "A month grid for date selection, built on react-day-picker with Diametral chrome.",
+    intro: [
+      "Calendar is the grid itself, always visible and always inline. Reach for it when the month is the interface — a booking page, an availability panel, a date beside its context. When the grid should stay folded away behind a field, Date Picker puts this same component in a Popover, and Date Range Picker does it for two bounds at once.",
+      "Everything but the chrome is react-day-picker's: `mode`, `selected`/`onSelect`, `disabled` matchers, `modifiers`, `startMonth`/`endMonth` and `locale` are its props, passed straight through, so its docs are the reference for behaviour. The wrapper supplies geometry and parts — `--cell-size` sizes a cell, `--cell-radius: 0` keeps range ends square while the library still reasons in rounded corners, and the background goes transparent inside Card and Popover content, so a Calendar dropped in either needs no restyling.",
+    ],
     examples: [
       {
         demo: "calendar/basic",
         title: "Single date",
         description:
-          "`--cell-radius: 0` on the root is what keeps range ends square while the library still reasons in rounded corners.",
+          "`mode` decides the shape of `selected`: one `Date` here, and `onSelect` hands back `undefined` when the selected day is clicked again.",
       },
       {
         demo: "calendar/range",
@@ -637,19 +641,41 @@ export const COMPONENTS: ComponentDoc[] = [
         description:
           '`captionLayout="dropdown"` swaps the month label for month and year selects — needed with `startMonth`/`endMonth` to bound them.',
       },
+      {
+        demo: "calendar/blocked-days",
+        title: "Blocked days",
+        description:
+          "`disabled` takes an array of matchers — a `before` bound, a `dayOfWeek` list, single dates and `from`/`to` intervals all mix in the same array, and each match is only styled and unclickable, never hidden.",
+      },
+      {
+        demo: "calendar/multiple",
+        title: "Several dates",
+        description:
+          '`mode="multiple"` collects a `Date[]`, and `max` caps how many days are held at once — reaching the cap does not lock the grid, the next pick starts a fresh selection from that day.',
+      },
     ],
+    parts: {
+      Calendar:
+        "Props it does not name itself go to react-day-picker's `DayPicker`. `classNames` is spread over the wrapper's own map, so a key you pass replaces that one element's classes outright while every other slot keeps its chrome.",
+      CalendarDayButton:
+        "Already rendered for every day — it is exported for `components={{ DayButton }}` overrides, not for direct use. It reads the `range_start`/`range_middle`/`range_end` modifiers to draw the selection and focuses itself when react-day-picker marks it focused, so a replacement has to do both.",
+    },
   },
   {
     slug: "date-picker",
     name: "Date Picker",
     category: "Forms",
     description: "A Calendar in a Popover, with a formatted trigger.",
+    intro: [
+      "Date Picker is the field-shaped way to ask for a date: an outline Button that prints the current value, and a Popover holding a Calendar. Reach for it in forms, where a permanently open month grid would outweigh the one answer it collects — Calendar inline when the grid is the point, Date Range Picker when the answer has two ends.",
+      "`DatePicker` is `Popover`, re-exported under another name, so `open`, `onOpenChange` and every other Popover prop are the same ones. It holds no date state: you own the Calendar inside it, its `selected`/`onSelect`, and closing the popover after a pick — nothing here does that for you. The trigger only formats a `value` you hand it, with `dateFormat` as a date-fns pattern.",
+    ],
     examples: [
       {
         demo: "date-picker/basic",
         title: "Basic",
         description:
-          "`DatePicker` *is* `Popover` — it only adds a trigger that formats the date and a content wrapper with the padding stripped. Closing on select is yours to do.",
+          "The wiring in full: state for the date, state for `open`, and an `onSelect` that sets both. Closing on select is a choice, not a default.",
       },
       {
         demo: "date-picker/range",
@@ -657,7 +683,27 @@ export const COMPONENTS: ComponentDoc[] = [
         description:
           "The trigger formats `value` only for a single date; pass children for a range and it stops formatting altogether.",
       },
+      {
+        demo: "date-picker/bounded",
+        title: "Bounded selection",
+        description:
+          "Limits belong to the Calendar, not the trigger: `disabled` matchers grey the days out and `startMonth`/`endMonth` stop the navigation at the same edges. `dateFormat` is a date-fns pattern, so a longer one reads back the choice in full.",
+      },
+      {
+        demo: "date-picker/in-form",
+        title: "In a form",
+        description:
+          "The trigger is a button, so nothing about it submits. Mirror the date into a hidden input and it travels with the rest of the form data.",
+      },
     ],
+    parts: {
+      DatePicker:
+        "An alias for `Popover` — same props, same context, no date state of its own. Controlling `open` is how you close it after a pick.",
+      DatePickerTrigger:
+        "Renders as an outline Button, formats `value` with `dateFormat` and falls back to `placeholder`. Passing children replaces that formatted label entirely; the calendar icon stays either way. Its width is a fixed `w-56` you override with `className`.",
+      DatePickerContent:
+        "PopoverContent with the padding stripped so the Calendar meets the edges — anything else you put in it carries its own.",
+    },
   },
   {
     slug: "multi-select",
@@ -834,20 +880,40 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Forms",
     description:
       "A Calendar in range mode inside a Popover, with a formatted trigger and an optional pair of Time Pickers for the range's bounds.",
+    intro: [
+      "Date Range Picker is the closed one of the two pickers: trigger, range Calendar and — behind `showTime` — a Time Picker per end, all assembled for you. Reach for it for reporting windows, bookings and filters, where the answer is a `from`/`to` pair. Date Picker is the open one, for a single date you wire yourself.",
+      "It owns the range, so `value`/`defaultValue`/`onValueChange` are the whole state API, and the prop list is closed — there is no `...props` passthrough, and `className` lands on the trigger, whose width is `w-72` (or `w-96` once `showTime` widens the label). Times fold into the same `Date` objects with `setHours`, so a range with `showTime` is two instants rather than a date plus a time, and each Time Picker stays disabled until its own end has a date.",
+    ],
     examples: [
       {
         demo: "date-range-picker/basic",
         title: "Basic",
         description:
-          "Owns its own range state via `value`/`defaultValue`, unlike Date Picker which leaves the Calendar to the caller.",
+          "`defaultValue` is enough for the uncontrolled case — unlike Date Picker, there is no Calendar or open state to hold.",
       },
       {
         demo: "date-range-picker/with-time",
         title: "With time",
         description:
-          "`showTime` renders a Time Picker under each end of the range — this is the chain's reason for depending on Time Picker.",
+          "`showTime` renders a Time Picker under each end of the range — this is the chain's reason for depending on Time Picker. A same-day range prints its date once and both times after it.",
+      },
+      {
+        demo: "date-range-picker/presets",
+        title: "Presets",
+        description:
+          "Shortcuts are the caller's to add: hold the range in state, pass `value`/`onValueChange`, and a preset button is just another writer of the same state.",
+      },
+      {
+        demo: "date-range-picker/filter-bar",
+        title: "Filter bar",
+        description:
+          "The empty state is the useful one here — with no dates the trigger shows `placeholder`, so clearing back to `undefined` bounds reads as no filter at all. `dateFormat` shortens the label for a toolbar.",
       },
     ],
+    parts: {
+      DateRangePicker:
+        "A closed component: no `...props` passthrough, so `className` is the only thing reaching the DOM and it lands on the trigger. Clearing means writing a range whose `from` and `to` are `undefined` — there is no clear affordance built in.",
+    },
   },
   {
     slug: "file-upload",
@@ -855,12 +921,16 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Forms",
     description:
       "A drag-and-drop drop zone with keyboard activation and dragging feedback.",
+    intro: [
+      "File Upload is the collecting end of an upload and nothing more: it hands you a `File[]` through `onFiles`, from a click, a keyboard activation or a drop. What happens next — the list, the progress, the request — is yours, and `Attachment` is the part that displays what was picked.",
+      'The zone is a plain div wrapping a visually hidden `<input type="file">`, and the input is deliberately the only interactive element: it already takes focus and answers Enter and Space, so a `role="button"` on the wrapper would nest one control inside another and fail axe. That input is also where `aria-label` lands, which is why the zone can be named even with no visible label. Two consequences worth knowing: the input\'s value is cleared after every pick, so choosing the same file twice still fires, and `accept` only filters the file dialog — a dropped file matches nothing, so any real constraint is yours to enforce in `onFiles`.',
+    ],
     examples: [
       {
         demo: "file-upload/basic",
         title: "Basic",
         description:
-          'A `role="button"` div over a hidden input, so click, Enter, Space and drop all work. It clears the input after each pick so re-selecting the same file still fires.',
+          "`onFiles` is the entire output: an array, already converted from the `FileList`, whether the files were picked or dropped.",
       },
       {
         demo: "file-upload/with-attachments",
@@ -868,7 +938,25 @@ export const COMPONENTS: ComponentDoc[] = [
         description:
           "File Upload collects; `Attachment` displays. Keeping them apart is why the zone needs no opinion about how a selected file looks.",
       },
+      {
+        demo: "file-upload/validation",
+        title: "Rejecting a file",
+        description:
+          "Type and size checks live in `onFiles` — `accept` filters the dialog only, and a drop bypasses it entirely. `FieldError` reports the rejects while the valid files are kept.",
+      },
+      {
+        demo: "file-upload/compact",
+        title: "Compact zone",
+        description:
+          "Nothing about the layout is fixed: `className` turns the stacked block into a row, since the zone is a styled div and the parts inside it are plain text slots.",
+      },
     ],
+    parts: {
+      FileUpload:
+        "The wrapper is a plain div with no role — the hidden input is the control, and `aria-label` (default `Upload files`) is forwarded to it. `data-dragging` is set while a drag hovers the zone, so styling the drop state needs no state of your own.",
+      FileUploadIcon:
+        "Renders the upload glyph itself; children passed to it are ignored, so a different icon means not using this part.",
+    },
   },
   {
     slug: "rating",
@@ -876,18 +964,34 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Forms",
     description:
       "A star rating with hover preview, plus a read-only mode for display.",
+    intro: [
+      "Rating is a radio group wearing stars: `max` of them, one number out, arrow keys between. Reach for it to collect a score in a form, or with `readOnly` to show one back — the same component covers both, so a rating never changes shape between the review form and the review list.",
+      "Each star is labelled with its own number, and the group has no name of its own, so pass `aria-label` or wrap it in a `Field` with a label — props spread onto the underlying Base UI radio group, which also means `name` makes it submit with the form like any other radio. The scale is whole stars only: `max` changes how many there are, never the granularity, and there are no halves. `readOnly` and `disabled` both freeze the stars and drop the hover preview, and neither is dimmed — the difference is intent, so reach for `readOnly` whenever a score is being displayed rather than withheld.",
+    ],
     examples: [
       {
         demo: "rating/basic",
         title: "Basic",
         description:
-          "A radio group underneath, so each star is a real radio: arrow keys move between them and the value is one number.",
+          "A radio group underneath, so each star is a real radio: arrow keys move between them and the value is one number. `max` sets the scale — five by default, ten when the survey asks for it.",
       },
       {
         demo: "rating/read-only",
         title: "Read-only and controlled",
         description:
-          "`readOnly` keeps the stars but drops the hover preview and pointer affordance — for showing a score rather than collecting one.",
+          "`readOnly` keeps the stars but drops the hover preview and pointer affordance — for showing a score rather than collecting one. A displayed rating still needs a name, which is what `aria-label` gives it here.",
+      },
+      {
+        demo: "rating/feedback-form",
+        title: "Feedback form",
+        description:
+          "`name` reaches the Base UI radio group, so the score is submitted with the form's other values and needs no state of its own.",
+      },
+      {
+        demo: "rating/criteria",
+        title: "Several criteria",
+        description:
+          "One controlled Rating per row, each named by `aria-label` since the row's caption is plain text — the average below is derived, not a Rating in a third state.",
       },
     ],
   },
@@ -896,19 +1000,35 @@ export const COMPONENTS: ComponentDoc[] = [
     name: "Form",
     category: "Forms",
     description:
-      "A thin Base UI Form wrapper that consolidates validity and focuses the first invalid field on submit. Prefer `Field` for layout.",
+      "A thin Base UI Form wrapper: the page-level `<form>` and its vertical rhythm. `Field` owns everything inside it.",
+    intro: [
+      "Form is the outermost wrapper of a form page — a `<form>` element laid out as a flex column with a wide gap, so sections separate themselves without margins. Reach for it once per form and let `FieldGroup` space the fields inside it; `Field` owns a single field's label, description and error.",
+      "Base UI's own conveniences here need `Field.Root` to register the controls, and this system's `Field` is a plain div, so none of them see anything: `onFormSubmit` reports an empty object, the `errors` prop keys off names it never learns, and there is no first-invalid field to focus. Read the values with `FormData` in `onSubmit` and hold errors in state instead. The one behaviour that does reach you is that the element is rendered with `noValidate`, so browser constraint bubbles never appear and `required` blocks nothing on its own.",
+    ],
     examples: [
       {
         demo: "form/basic",
         title: "Basic",
         description:
-          "`onFormSubmit` hands over the collected values and calls `preventDefault` for you.",
+          "`FormData` over `event.currentTarget` is the reliable read in this system — every control here is a native input with a `name`, so nothing else is needed.",
       },
       {
         demo: "form/validation",
         title: "Validation",
         description:
-          "Base UI's `errors` prop keys off `Field.Root`'s `name` — but this system's `Field` is a plain div, so wire errors yourself: state in, `FieldError` out, `aria-invalid` on the control.",
+          "Wire errors yourself: state in, `FieldError` out, `aria-invalid` on the control. Nothing validates on submit until you do, since the form carries `noValidate`.",
+      },
+      {
+        demo: "form/sections",
+        title: "Sectioned form",
+        description:
+          "Form's own `gap-10` is what separates the sections — `FieldSet` and `FieldLegend` group them semantically, `FieldGroup` handles the tighter spacing within one.",
+      },
+      {
+        demo: "form/pending",
+        title: "Pending submit",
+        description:
+          "An async `onSubmit`: read the values before the first `await`, since `event.currentTarget` is null once the handler yields. The server's answer lands in the same error state a client check would use.",
       },
     ],
   },

@@ -20,8 +20,6 @@ const FULL = new Intl.DateTimeFormat("fr-FR", {
   year: "numeric",
 })
 
-// The trigger formats `value` for you, but only for a single date — pass children
-// for a range and it stops formatting altogether.
 export default function DatePickerRange() {
   const [range, setRange] = React.useState<Range | undefined>()
 

@@ -8,8 +8,6 @@ const REVIEWS = [
   { author: "Studio Sud", score: 3 },
 ]
 
-// `readOnly` keeps the stars rendered but drops the hover preview and the pointer
-// affordance — for displaying a score rather than collecting one.
 export default function RatingReadOnly() {
   const [score, setScore] = React.useState(4)
 
@@ -18,7 +16,11 @@ export default function RatingReadOnly() {
       <div className="flex flex-col gap-2">
         {REVIEWS.map((review) => (
           <div key={review.author} className="flex items-center gap-3">
-            <Rating value={review.score} readOnly />
+            <Rating
+              value={review.score}
+              readOnly
+              aria-label={`${review.author}: ${review.score} out of 5`}
+            />
             <span className="text-sm text-muted-foreground">
               {review.author}
             </span>
@@ -27,7 +29,11 @@ export default function RatingReadOnly() {
       </div>
 
       <div className="flex items-center gap-3">
-        <Rating value={score} onValueChange={setScore} />
+        <Rating
+          value={score}
+          onValueChange={setScore}
+          aria-label="Your score"
+        />
         <span className="text-sm text-muted-foreground tabular-nums">
           {score} / 5
         </span>

@@ -309,7 +309,7 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
     ],
   },
   form: {
-    note: "`validationMode` decides when fields validate. Errors themselves are wired through FieldError, because this system's Field is a plain div.",
+    note: "`validationMode` only reaches controls registered by Base UI's own Field.Root, and this system's Field is a plain div — so nothing here validates on its own. Errors are wired by hand through FieldError.",
     extras: [
       {
         prop: "validationMode",
