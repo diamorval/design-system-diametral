@@ -3,7 +3,10 @@ import { Input } from "@diametral/ui/components/input"
 
 export default function FieldInvalid() {
   return (
-    <form className="w-full max-w-sm" onSubmit={(event) => event.preventDefault()}>
+    <form
+      className="w-full max-w-sm"
+      onSubmit={(event) => event.preventDefault()}
+    >
       <Field>
         <FieldLabel htmlFor="field-invalid-password">Password</FieldLabel>
         <Input

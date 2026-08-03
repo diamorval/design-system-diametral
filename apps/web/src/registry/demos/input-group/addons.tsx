@@ -7,8 +7,6 @@ import {
   InputGroupText,
 } from "@diametral/ui/components/input-group"
 
-// Clicking anywhere on an addon focuses the input — the addon forwards the click
-// unless you hit a button inside it.
 export default function InputGroupAddons() {
   return (
     <div className="flex w-full max-w-sm flex-col gap-6">
