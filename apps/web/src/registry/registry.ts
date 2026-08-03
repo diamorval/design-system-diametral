@@ -4113,3 +4113,13 @@ export function importPath(slug: string) {
 export function exampleAnchor(example: Example) {
   return example.demo.split("/").slice(1).join("-")
 }
+
+/**
+ * The heading a demo renders under: its curated title, or the file name for a
+ * demo no entry documents. Shared so the anatomy index can name the section a
+ * part is shown in and be naming the same words the reader will scroll to.
+ */
+export function exampleTitle(key: string, examples: Example[] = []) {
+  const documented = examples.find((example) => example.demo === key)
+  return documented?.title ?? key.split("/").slice(1).join(" ")
+}

@@ -89,6 +89,7 @@ export function Workbench({ component }: { component: ComponentDoc }) {
             <PartIndex
               slug={slug}
               inTemplate={inTemplate}
+              examples={component.examples ?? []}
               selected={selected}
               hovered={hovered}
               onSelect={select}

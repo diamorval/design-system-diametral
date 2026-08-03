@@ -10,6 +10,8 @@ import {
 } from "@diametral/ui/components/toc"
 import { cn } from "@diametral/ui/lib/utils"
 
+import { exampleTitle, type Example } from "@/registry/registry"
+
 export function anatomyFor(slug: string) {
   return ANATOMY[slug]
 }
@@ -95,6 +97,28 @@ type PartEntry = {
 }
 
 /**
+ * A playground template is a copyable example, not an exhaustive one, so some
+ * parts are only ever written further down the page. Those rows name the section
+ * that shows them rather than reading as a dead end. Demo order is the page's
+ * own — curated examples first, then the undocumented demos rendered after them
+ * — so the badge names the first section a reader would reach.
+ */
+function shownIn(
+  coverage: Record<string, string[]>,
+  part: string,
+  examples: Example[]
+) {
+  const documented = examples.map((example) => example.demo)
+  const keys = Object.keys(coverage).filter((key) => key !== "playground")
+  const ordered = [
+    ...documented.filter((key) => keys.includes(key)),
+    ...keys.filter((key) => !documented.includes(key)),
+  ]
+  const key = ordered.find((label) => coverage[label].includes(part))
+  return key ? `in ${exampleTitle(key, examples)}` : undefined
+}
+
+/**
  * Every part of a component as a flat index: nesting by indentation, names
  * shortened against the component's own, and a status where one is worth
  * saying. Deliberately not JSX — the code strip beside it is the JSX view, and
@@ -103,6 +127,7 @@ type PartEntry = {
 export function PartIndex({
   slug,
   inTemplate,
+  examples,
   selected,
   hovered,
   onSelect,
@@ -111,6 +136,8 @@ export function PartIndex({
   slug: string
   /** Parts the playground template renders; the rest are marked, not hidden. */
   inTemplate: string[]
+  /** The page's usages, so a part the template omits can name the one showing it. */
+  examples: Example[]
   selected: string | null
   hovered: string | null
   onSelect: (part: string) => void
@@ -130,27 +157,28 @@ export function PartIndex({
       part: row.part,
       label: shortName(row.part, prefix),
       depth: row.depth,
-      // Kept to one word or two: the index is sized by its content, so a long
-      // status would set the width of the whole column.
+      // Kept short: the index is sized by its content, so a long status would
+      // set the width of the whole column.
       status: row.internal
         ? "internal"
         : row.kind === "recurse"
           ? "recurses"
           : inTemplate.includes(row.part)
             ? undefined
-            : "not shown",
+            : (shownIn(data.coverage, row.part, examples) ?? "not shown"),
       muted: !row.internal && !inTemplate.includes(row.part),
     })
   }
 
-  // Orphans are in no demo and no internal render, so they never made the tree.
+  // Orphans never made the tree: nothing nests them, so their only claim to a
+  // row is the export itself. A demo may still show one at top level.
   for (const part of data.orphans) {
     if (placed.has(part)) continue
     entries.push({
       part,
       label: shortName(part, prefix),
       depth: 1,
-      status: "no example",
+      status: shownIn(data.coverage, part, examples) ?? "no example",
       muted: true,
     })
   }

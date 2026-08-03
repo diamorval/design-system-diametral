@@ -25,7 +25,12 @@ import { Prose } from "@/docs/prose"
 import { Workbench } from "@/docs/workbench"
 import { demoKeysFor } from "@/registry/demos"
 import { hasPlayground } from "@/registry/playground-registry"
-import { exampleAnchor, findComponent, importPath } from "@/registry/registry"
+import {
+  exampleAnchor,
+  exampleTitle,
+  findComponent,
+  importPath,
+} from "@/registry/registry"
 
 /** Enough names to recognise the module, before a 23-export line stops reading. */
 const SHOWN_EXPORTS = 4
@@ -146,10 +151,7 @@ export function ComponentPage() {
               {orphans.map((key) => (
                 <ExampleBlock
                   key={key}
-                  example={{
-                    demo: key,
-                    title: key.split("/").slice(1).join(" "),
-                  }}
+                  example={{ demo: key, title: exampleTitle(key) }}
                 />
               ))}
             </div>

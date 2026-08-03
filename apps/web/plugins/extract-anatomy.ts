@@ -237,10 +237,16 @@ export function extractAnatomy(
     rows.push({ part, depth, kind: "close" })
   }
 
-  const roots = [...rootOrder.entries()]
-    .filter(([name]) => !parentsOf(name).length)
+  const ordered = [...rootOrder.entries()]
     .sort((a, b) => a[1] - b[1])
     .map(([name]) => name)
+  const unparented = ordered.filter((name) => !parentsOf(name).length)
+  // A grammar that nests inside itself leaves every part with a parent —
+  // resizable's `nested` demo puts a PanelGroup inside a Panel — and filtering
+  // on that alone would leave no root and collapse the whole tree. Where that
+  // happens the top-level parts are the roots; the trail check above reports
+  // the cycle instead of following it.
+  const roots = unparented.length ? unparented : ordered
 
   for (const root of roots) render(root, 0, [])
 
