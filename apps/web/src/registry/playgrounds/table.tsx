@@ -3,7 +3,9 @@ import type { ComponentProps } from "react"
 import {
   Table,
   TableBody,
+  TableCaption,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -21,6 +23,7 @@ export default function TablePlayground(
 ) {
   return (
     <Table>
+      <TableCaption>Recent invoices.</TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead>Invoice</TableHead>
@@ -40,6 +43,12 @@ export default function TablePlayground(
           <TableCell className="text-end">{ROWS[1]!.total}</TableCell>
         </TableRow>
       </TableBody>
+      <TableFooter>
+        <TableRow>
+          <TableCell colSpan={2}>Total</TableCell>
+          <TableCell className="text-end">6 050 €</TableCell>
+        </TableRow>
+      </TableFooter>
     </Table>
   )
 }

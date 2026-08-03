@@ -6,6 +6,7 @@ import {
   TimelineDescription,
   TimelineIndicator,
   TimelineItem,
+  TimelineTime,
   TimelineTitle,
 } from "@diametral/ui/components/timeline"
 
@@ -21,6 +22,7 @@ export default function TimelinePlayground({
         <TimelineIndicator>1</TimelineIndicator>
         <TimelineContent>
           <TimelineTitle>{children}</TimelineTitle>
+          <TimelineTime dateTime="2026-08-03T09:12">09:12</TimelineTime>
           <TimelineDescription>
             Scope and success criteria signed off.
           </TimelineDescription>

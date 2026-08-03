@@ -3,6 +3,7 @@ import type { ComponentProps } from "react"
 import {
   Stepper,
   StepperContent,
+  StepperDescription,
   StepperIndicator,
   StepperItem,
   StepperSeparator,
@@ -25,6 +26,7 @@ export default function StepperPlayground(
         <StepperIndicator>2</StepperIndicator>
         <StepperContent>
           <StepperTitle>Build</StepperTitle>
+          <StepperDescription>Two sprints, review at each</StepperDescription>
         </StepperContent>
         <StepperSeparator />
       </StepperItem>

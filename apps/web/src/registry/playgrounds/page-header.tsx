@@ -8,8 +8,10 @@ import {
   PageHeaderDescription,
   PageHeaderHeading,
   PageHeaderIcon,
+  PageHeaderTabs,
   PageHeaderTitle,
 } from "@diametral/ui/components/page-header"
+import { Tabs, TabsList, TabsTrigger } from "@diametral/ui/components/tabs"
 
 const ICONS = { UsersIcon, GearIcon }
 
@@ -31,21 +33,28 @@ export default function PageHeaderPlayground({
   const icon = <IconComponent />
 
   return (
-    <PageHeader className="w-full">
-      <PageHeaderHeading>
-        <div className="flex items-start gap-3">
-          <PageHeaderIcon>
-            {icon}
-          </PageHeaderIcon>
-          <div className="flex flex-col gap-1">
-            <PageHeaderTitle>{children}</PageHeaderTitle>
-            <PageHeaderDescription>{description}</PageHeaderDescription>
+    <Tabs defaultValue="members" className="w-full">
+      <PageHeader>
+        <PageHeaderHeading>
+          <div className="flex items-start gap-3">
+            <PageHeaderIcon>{icon}</PageHeaderIcon>
+            <div className="flex flex-col gap-1">
+              <PageHeaderTitle>{children}</PageHeaderTitle>
+              <PageHeaderDescription>{description}</PageHeaderDescription>
+            </div>
           </div>
-        </div>
-        <PageHeaderActions>
-          <Button size="sm">{action}</Button>
-        </PageHeaderActions>
-      </PageHeaderHeading>
-    </PageHeader>
+          <PageHeaderActions>
+            <Button size="sm">{action}</Button>
+          </PageHeaderActions>
+        </PageHeaderHeading>
+        <PageHeaderTabs>
+          <TabsList variant="line">
+            <TabsTrigger value="members">Members</TabsTrigger>
+            <TabsTrigger value="roles">Roles</TabsTrigger>
+            <TabsTrigger value="billing">Billing</TabsTrigger>
+          </TabsList>
+        </PageHeaderTabs>
+      </PageHeader>
+    </Tabs>
   )
 }
