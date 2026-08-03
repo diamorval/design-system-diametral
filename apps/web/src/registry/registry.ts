@@ -384,6 +384,10 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Forms",
     description:
       "A Base UI listbox for choosing one option from a set, with a rendered trigger and portalled popup.",
+    intro: [
+      "Select is the closed-list control: a trigger showing the current choice, and a popup listing every option there is. Reach for it when the set is short, known and needs no typing — an environment, a role, a sort order. Once the list is long enough that scanning stops working, Combobox and Autocomplete filter as you type, and Multi Select is the one that keeps more than one answer.",
+      "The root owns both the value and the labels: pass `items` — a value-to-label map — and `SelectValue` prints the selected item's label instead of the raw value it stores. The popup is portalled, sized to `--anchor-width`, and `alignItemWithTrigger` is on by default, which parks the selected item over the trigger rather than dropping the list underneath it — that is also why an open Select does not animate.",
+    ],
     examples: [
       {
         demo: "select/basic",
@@ -403,7 +407,35 @@ export const COMPONENTS: ComponentDoc[] = [
         description:
           "Give the trigger `w-full` to fill the field width — the trigger is `w-fit` by default.",
       },
+      {
+        demo: "select/status",
+        title: "Status picker",
+        description:
+          "`SelectValue` also takes a function child, which receives the current value — the way to print an icon beside the label, since `items` only carries text. The trigger sizes any icon it holds, so no wrapper classes.",
+      },
+      {
+        demo: "select/long-list",
+        title: "Long lists",
+        description:
+          "Past the popup's `--available-height` the list scrolls and the arrow buttons appear on their own. The selected item still opens over the trigger, so the current answer stays put instead of jumping to the top of a long list.",
+      },
     ],
+    parts: {
+      Select:
+        "Where `items` goes — the map every `SelectValue` reads to turn a stored value into a label. It is also the state owner: `defaultValue`, `value` and `onValueChange` live here, not on the trigger.",
+      SelectTrigger:
+        '`w-fit` by default, so widen it yourself (`w-full`) inside a field. It has `role="combobox"`, which is not named from its content, so it points `aria-labelledby` at the SelectValue it renders — passing your own `aria-label` overrides that.',
+      SelectValue:
+        "Prints the label for the current value by looking it up in the root's `items`; with no `items` it prints the raw value. `placeholder` covers the empty state, and a function child replaces both.",
+      SelectContent:
+        "Portals the popup and sizes it to `--anchor-width`, so a wide trigger gives a wide list. `alignItemWithTrigger` (default) aligns the selected item over the trigger and disables the open animation.",
+      SelectLabel:
+        "A group heading — it must sit inside a `SelectGroup` to be tied to the options it names.",
+      SelectScrollUpButton:
+        "Rendered by SelectContent already; exported for a hand-rolled popup, not to be composed into this one.",
+      SelectScrollDownButton:
+        "The other half of the pair SelectContent renders for you — a long list scrolls without either being written by hand.",
+    },
   },
   {
     slug: "checkbox",
@@ -411,12 +443,28 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Forms",
     description:
       "A single boolean control, with indeterminate support via the `parent` prop inside a group.",
+    intro: [
+      "Checkbox is the single yes-or-no: accept, include, opt in. Reach for it when the answer travels with a form and applies on submit — Switch is the sibling for a setting that takes effect the moment it changes. When several boxes answer one question, put them in a Checkbox Group so the group holds the array instead of one boolean per box.",
+      'Base UI renders the box as a `span` with `role="checkbox"` and a visually hidden `input` beside it. The span is the thing you style — through `data-checked` and `data-indeterminate`, never `:checked` — while the hidden input carries `name` for form submission and takes the `id` you pass, which is what keeps a plain `htmlFor` label working. The box itself is 18px, but an invisible `::after` stretches the hit area well past it: a comfortable target without a bigger visual.',
+    ],
     examples: [
       {
         demo: "checkbox/basic",
         title: "States",
         description:
-          "The box is 18px but an invisible `::after` extends the hit area well past it, so the target is comfortable without the visual growing.",
+          "The four states, `indeterminate` among them — it is a prop you set, not a third value the box arrives at on its own.",
+      },
+      {
+        demo: "checkbox/consent",
+        title: "Consent field",
+        description:
+          'The single-box form row: `FieldContent` holds the label and its fine print, and `orientation="horizontal"` keeps the box beside them rather than above.',
+      },
+      {
+        demo: "checkbox/task-list",
+        title: "Task list",
+        description:
+          "The box carries `peer`, so anything after it in the DOM can react to the check — here `peer-data-checked:line-through` on the label, with no state in the component.",
       },
       {
         demo: "checkbox/as-cards",
@@ -432,6 +480,10 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Forms",
     description:
       "Manages a set of checkbox values, including the parent select-all relationship.",
+    intro: [
+      "Checkbox Group owns the array behind a set of boxes that answer one question — permissions, notification topics, the labels a list is filtered by. Children declare a `value` and nothing else; the group holds which ones are on. Reach for it instead of a boolean per box, and for one answer out of many reach for Radio Group.",
+      "Select-all is built in rather than derived: give the group `allValues` and mark one child `parent`, and that box works out checked, unchecked and indeterminate from the others. `disabled` cascades the same way, through `data-disabled` on the group, so no child needs the prop. Layout is a plain flex column — any other arrangement is a `className` on the group.",
+    ],
     examples: [
       {
         demo: "checkbox-group/basic",
@@ -445,6 +497,18 @@ export const COMPONENTS: ComponentDoc[] = [
         description:
           "`allValues` on the group plus `parent` on one checkbox gives select-all for free — the parent derives checked/indeterminate itself.",
       },
+      {
+        demo: "checkbox-group/filters",
+        title: "Filter bar",
+        description:
+          "Controlled with `value` and `onValueChange` when something outside the group reads the selection — a count, a clear button, a query. `flex-row flex-wrap` on the group is the whole layout change.",
+      },
+      {
+        demo: "checkbox-group/validation",
+        title: "With validation",
+        description:
+          "`FieldError` renders nothing until it has content, so it can sit in the markup unconditionally; `aria-invalid` on the boxes and `data-invalid` on each row carry the error styling.",
+      },
     ],
   },
   {
@@ -453,12 +517,28 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Forms",
     description:
       "One choice from many. Base UI renders items as spans, so labels must be associated explicitly.",
+    intro: [
+      "Radio Group is one answer out of a short, visible set — the shape to reach for when the options are worth reading side by side instead of hidden behind a Select trigger. Past a handful of them Select stays shorter, and when more than one answer is allowed it is Checkbox Group.",
+      'Items are Base UI radios: what you see is a `span` with `role="radio"`, styled through `data-checked` rather than `:checked`, with the real `input` hidden beside it. The `id` you pass lands on that hidden input, so a `FieldLabel` with `htmlFor` still associates — a wrapping label does not. The group itself is a `grid`, so the arrangement — one column, two, a single row — is a grid utility on the group and never a prop.',
+    ],
     examples: [
       {
         demo: "radio-group/basic",
         title: "Basic",
         description:
-          'Each item is a `span` with `role="radio"`, not an `input` — so style hooks are `data-checked`, not `:checked`.',
+          "The stacked form shape: a `FieldSet` and its `FieldLegend` name the question, and each item is a horizontal `Field` so the label sits beside its radio.",
+      },
+      {
+        demo: "radio-group/inline",
+        title: "Inline options",
+        description:
+          "The group is a `grid`: `grid-flow-col` lays the same markup out in one row, and `w-auto` stops it stretching to the container it sits in.",
+      },
+      {
+        demo: "radio-group/dependent-field",
+        title: "Revealing a field",
+        description:
+          "Controlled with `value` and `onValueChange` when the choice changes the form around it — the extra field belongs to the group's fieldset, so the legend still names it.",
       },
       {
         demo: "radio-group/as-cards",
@@ -466,6 +546,12 @@ export const COMPONENTS: ComponentDoc[] = [
         description: "The same wrapping trick as Checkbox, for a tier picker.",
       },
     ],
+    parts: {
+      RadioGroup:
+        "A `grid` and the state owner: `value` / `defaultValue` and `onValueChange` live here, and the layout comes from grid utilities on this element rather than from the items.",
+      RadioGroupItem:
+        'A `span` with `role="radio"` and no label of its own. The `id` you give it goes to the hidden input Base UI renders alongside, so `htmlFor` on a sibling label works; `aria-labelledby` is the other way in.',
+    },
   },
   {
     slug: "switch",
@@ -473,6 +559,10 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Forms",
     description:
       "An immediate on/off toggle for settings that apply on change.",
+    intro: [
+      "Switch is the setting that applies as it changes: no save button, no submit, the state is live the moment the thumb moves. Reach for it in preference panels and settings rows, and keep Checkbox for an answer that travels with a form — or for anything that needs an indeterminate state, which a switch has no way to show.",
+      "It is square like the rest of the system: the thumb translates rather than sliding along a pill, so there is no radius to keep in sync, and `size` is a plain prop writing `data-size` rather than a cva axis — `sm` for dense rows. The control carries no label of its own; pair it with a `Label` through `htmlFor`, or give it `aria-label` when the text beside it lives in a `FieldContent`.",
+    ],
     examples: [
       {
         demo: "switch/basic",
@@ -486,6 +576,18 @@ export const COMPONENTS: ComponentDoc[] = [
         description:
           '`FieldContent` first with `orientation="horizontal"` is the settings row — text takes the space, control pinned to the far edge.',
       },
+      {
+        demo: "switch/master-toggle",
+        title: "Master toggle",
+        description:
+          "Controlled with `checked` and `onCheckedChange` when one switch governs the others. The children stay mounted and go `disabled` rather than disappearing, so the row heights do not jump.",
+      },
+      {
+        demo: "switch/in-toolbar",
+        title: "Toolbar filter",
+        description:
+          '`size="sm"` is the dense pairing — a switch reading as one word of chrome in a bar, where a checkbox would read as part of a form.',
+      },
     ],
   },
   {
@@ -493,6 +595,10 @@ export const COMPONENTS: ComponentDoc[] = [
     name: "Slider",
     category: "Forms",
     description: "Selects a number, or a range, by dragging along a track.",
+    intro: [
+      "Slider picks a number, or a pair of them, by dragging along a track. Reach for it when the position matters more than the figure — opacity, a volume, a price band — and where someone would rather type the exact number, reach for Number Field instead.",
+      'The thumb count is read from the value\'s shape, so a number renders one thumb and an array renders one per entry, and the callback hands back the shape it was given. `thumbAlignment="edge"` is fixed by the wrapper, so a thumb stops flush with the end of the track instead of overhanging it — which is what lets a scale printed under the track line up. There is no built-in readout and no label: render the value yourself and point `aria-labelledby` at whatever names it.',
+    ],
     examples: [
       {
         demo: "slider/basic",
@@ -502,9 +608,21 @@ export const COMPONENTS: ComponentDoc[] = [
       },
       {
         demo: "slider/range",
-        title: "Range and vertical",
+        title: "Range",
         description:
-          '`thumbAlignment="edge"` is set for you, so the thumb stops flush with the track end instead of overhanging it.',
+          "An array value gives two thumbs and an indicator between them. The callback hands back the whole array, so the readout reads both ends from state rather than tracking a thumb.",
+      },
+      {
+        demo: "slider/stepped",
+        title: "Stepped scale",
+        description:
+          "`min`, `max` and `step` turn the track into named notches — the value is an index into the labels, and the flush thumb keeps the first and last notch over the first and last label.",
+      },
+      {
+        demo: "slider/vertical",
+        title: "Vertical faders",
+        description:
+          '`orientation="vertical"` needs no height of its own — the control carries `min-h-40`. `flex-1` inside a fixed-height column is what makes a bank of faders agree on one height and still leave room for their labels.',
       },
     ],
   },

@@ -1,8 +1,6 @@
 import { Label } from "@diametral/ui/components/label"
 import { Switch } from "@diametral/ui/components/switch"
 
-// Two sizes, and square like everything else — the thumb translates rather than
-// sliding along a pill, so there is no border-radius to keep in sync.
 export default function SwitchBasic() {
   return (
     <div className="flex flex-col gap-4">

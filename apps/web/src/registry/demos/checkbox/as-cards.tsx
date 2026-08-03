@@ -20,8 +20,6 @@ const PLANS = [
   },
 ]
 
-// A `FieldLabel` that *contains* a `Field` becomes the card: it grows to full
-// width, gains a border, and tints itself on `has-data-checked`.
 export default function CheckboxAsCards() {
   return (
     <div className="flex w-full max-w-sm flex-col gap-3">

@@ -15,8 +15,6 @@ const SPEEDS = [
   { value: "same-day", label: "Same day" },
 ]
 
-// Base UI renders each radio as a `span` with `role="radio"`, not an `input`, so
-// style hooks are `data-checked` rather than `:checked`.
 export default function RadioGroupBasic() {
   return (
     <FieldSet className="max-w-sm">
