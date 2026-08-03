@@ -27,7 +27,9 @@ export default function TextareaCounter() {
         />
         <FieldDescription className="flex justify-between gap-4">
           Shown beside the version in the changelog.
-          <span>{`${summary.length}/${LIMIT}`}</span>
+          <span>
+            {summary.length}/{LIMIT}
+          </span>
         </FieldDescription>
       </Field>
     </div>
