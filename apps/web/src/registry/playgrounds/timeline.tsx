@@ -22,14 +22,14 @@ export default function TimelinePlayground({
         <TimelineContent>
           <TimelineTitle>{children}</TimelineTitle>
           <TimelineDescription>
-            Périmètre et critères de succès validés.
+            Scope and success criteria signed off.
           </TimelineDescription>
         </TimelineContent>
       </TimelineItem>
       <TimelineItem>
         <TimelineIndicator>2</TimelineIndicator>
         <TimelineContent>
-          <TimelineTitle>Maquettes</TimelineTitle>
+          <TimelineTitle>Concepts</TimelineTitle>
         </TimelineContent>
       </TimelineItem>
     </Timeline>
