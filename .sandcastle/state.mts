@@ -12,12 +12,17 @@ import { fileURLToPath } from "node:url"
 const here = path.dirname(fileURLToPath(import.meta.url))
 const repoRoot = path.join(here, "..")
 
+export interface LiveRun {
+  readonly live: boolean
+  readonly lanes: number
+}
+
 /**
  * The single definition of "a run is happening" — `sc status` prints it and
  * `sc clean --all` refuses on it. Nothing else may re-derive the
  * `sandcastle-*` container filter.
  */
-export function isRunLive(): { live: boolean; lanes: number } {
+export function isRunLive(): LiveRun {
   try {
     const out = execFileSync(
       "docker",
@@ -32,13 +37,15 @@ export function isRunLive(): { live: boolean; lanes: number } {
   }
 }
 
+export interface LogFile {
+  readonly name: string
+  readonly path: string
+  readonly size: number
+  readonly mtime: Date
+}
+
 /** Every log file, newest mtime first. `[]` when the directory is absent. */
-export function logInventory(): {
-  name: string
-  path: string
-  size: number
-  mtime: Date
-}[] {
+export function logInventory(): LogFile[] {
   const dir = path.join(here, "logs")
   let entries: Dirent[]
   try {
