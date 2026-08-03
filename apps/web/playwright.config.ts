@@ -9,25 +9,9 @@
 // what is measured is what consumers get: minified output, no HMR runtime, and
 // the same Tailwind pass that ships.
 
-import { existsSync, readFileSync } from "node:fs"
-import path from "node:path"
-import { fileURLToPath } from "node:url"
 import { defineConfig } from "@playwright/test"
 
-// `__dirname` doesn't exist under native ESM (this file's package.json sets
-// "type": "module") — the same pattern scripts/guard-worktree.mjs already uses.
-const dirname = path.dirname(fileURLToPath(import.meta.url))
-
-// Offset comes from apps/web/.env, written by `make worktree-init` — keeps a
-// lane's preview server off the main checkout's port (and other lanes').
-function portOffset() {
-  const envPath = path.resolve(dirname, ".env")
-  if (!existsSync(envPath)) return 0
-  const match = readFileSync(envPath, "utf8").match(/^PORT_OFFSET=(\d+)/m)
-  return match ? Number(match[1]) : 0
-}
-
-const PORT = 4173 + portOffset()
+const PORT = 4173
 
 export default defineConfig({
   testDir: "tests",

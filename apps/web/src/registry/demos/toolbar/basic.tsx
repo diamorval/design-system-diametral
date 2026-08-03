@@ -13,8 +13,6 @@ import {
   ToolbarSeparator,
 } from "@diametral/ui/components/toolbar"
 
-// ToolbarSeparator reads the root's orientation and draws across it, so a
-// horizontal toolbar gets vertical rules without being told.
 export default function ToolbarBasic() {
   return (
     <Toolbar>

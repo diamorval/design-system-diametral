@@ -8,8 +8,6 @@ import {
 } from "@diametral/ui/components/input-group"
 import { Kbd, KbdGroup } from "@diametral/ui/components/kbd"
 
-// Kbd restyles itself from its container — `in-data-[slot=input-group]` swaps
-// the muted background for the input fill so it reads as inset, not stacked.
 export default function KbdInContext() {
   return (
     <div className="flex w-full max-w-sm flex-col gap-4">
