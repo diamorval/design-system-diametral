@@ -59,17 +59,83 @@ SC_CONCURRENCY=1 pnpm sandcastle --issue 9,12,15
 
 ---
 
+## Inspect & maintain
+
+Runs leave state behind — `sandcastle/*` branches, and logs that nothing rotates.
+Five commands read and prune it. Bare `pnpm sc` lists all eight.
+
+**What did the runs leave behind?**
+
+```fish
+pnpm sc status
+```
+
+Run live or idle · `sandcastle/*` branches · lane worktrees, scoped to
+`.sandcastle/worktrees/` · log count, size, and how many are older than 24 h.
+Local reads only, always exits 0. `pnpm sc status --prs` adds the PR state of
+each branch — the one network call, so it's opt-in.
+
+**Read a lane log**
+
+```fish
+pnpm sc logs                     # pick from a list, then follow it
+pnpm sc logs 9                   # issue 9's newest phase, no prompt
+pnpm sc logs merger --no-follow  # dump the last run instead of following
+```
+
+The argument is a filename substring; logs are named `planner`, `merger`, and
+`issue-<id>-{implementer,reviewer}`. Following starts at the last
+`--- Run started:` delimiter or the last 20 lines, whichever is later, so you
+never replay a previous run. Ctrl-C stops it, like `tail -f`.
+
+**Prune the logs**
+
+```fish
+pnpm sc clean         # truncate each log to its last run
+pnpm sc clean --all   # delete them all (confirms; --yes skips)
+```
+
+~2 MB per run, append-only, nothing rotates. The default never loses the run
+you're debugging. Logs are all this touches — never branches, worktrees,
+containers, or the image. `--all` refuses while a run is live.
+
+**Before a big run**
+
+```fish
+pnpm sc doctor
+```
+
+Docker running · image current · `gh` logged in · `.sandcastle/.env` filled. It
+prints the fix under each failure and exits 1, so `pnpm sc doctor && pnpm sandcastle`
+gates. It reports and never repairs — each fix already has an owner.
+
+**Which settings are actually in effect?**
+
+```fish
+pnpm sc config
+```
+
+Every value with its origin: `default`, or the `SC_*` var or flag that overrode
+it. Prints only; nothing is saved.
+
+---
+
 ## Watch it
 
 ```fish
-tail -f .sandcastle/logs/*implementer.log
+pnpm sc logs
 ```
 
-Sanity check in another terminal — should be **5**, never 15:
+Pick a lane, then follow it from the start of the current run.
+
+Sanity check in another terminal — is a run live, and how many lanes?
 
 ```fish
-docker ps | grep -c sandcastle-
+pnpm sc status
 ```
+
+Should read **5 lanes**, never 15. The raw equivalents still work:
+`tail -f .sandcastle/logs/*implementer.log` and `docker ps | grep -c sandcastle-`.
 
 ---
 
@@ -82,17 +148,18 @@ docker ps -q --filter name=sandcastle- | xargs docker rm -f
 
 Safe. Lanes that already committed keep their branches. Nothing merged is lost.
 
-Clean up leftover worktrees (slow, they hold `node_modules`):
-
-```fish
-git worktree list | grep sandcastle | awk '{print $1}' | xargs -n1 git worktree remove --force
-```
+No worktree cleanup to do: the library removes each lane's worktree itself, so
+`.sandcastle/worktrees/` stays empty. If a crash ever leaves one behind,
+`pnpm sc status` reports it — scoped to that directory, so it can never
+implicate the `.claude/worktrees/` lanes or your own checkout.
 
 ---
 
 ## Change settings
 
 Open **`.sandcastle/config.mts`**. Everything is there, commented. Nothing else to touch.
+
+`pnpm sc config` shows the resolved values and where each one came from.
 
 | Knob              | Default     | What it does                                                                     |
 | ----------------- | ----------- | -------------------------------------------------------------------------------- |
@@ -140,6 +207,8 @@ ENV SC_TOOLS="Bash,Read,Edit,Write,Glob,Grep,TodoWrite,Skill"
 ```
 
 Worth **$0.54 per lane, ~10%**. Change it in `.sandcastle/Dockerfile` and rebuild.
+Remembering to is no longer on you: `pnpm sc doctor` hashes the Dockerfile as a
+build input, so a roster change shows up as a stale image.
 
 ⚠️ **A typo does not fail the run.** `--tools Bash,Nonexistent` yields `['Bash']`
 and exits 0 — the lane just quietly runs one tool short. After changing the
@@ -161,28 +230,32 @@ tight one is 3% of a lane. Not worth it.
 ## Rebuild the image
 
 ```fish
-pnpm sandcastle:image
+pnpm sc image        # `pnpm sandcastle:image` still works — same command
 ```
 
 **When `pnpm-lock.yaml` changes** (you added/removed/bumped a dependency), or
 when you change `SC_TOOLS`. ~1 min.
 
-Forget to? Nothing breaks — installs just get slower.
+Forget to? `pnpm sc doctor` tells you — `sc image` bakes a hash of the Dockerfile
+plus `pnpm-lock.yaml` into the image as a label, and `doctor` recomputes it.
+Don't skip the rebuild: the image bakes the pnpm store from `pnpm-lock.yaml`, so
+a stale image means lanes resolve the **wrong dependency set**, not merely
+slower installs.
 
 ---
 
 ## When it breaks
 
-1. Stop it (above)
-2. Read the newest log: `ls -t .sandcastle/logs/ | head -1`
-3. Look at the last 50 lines
+1. `pnpm sc doctor` — rule out the machine first
+2. Stop it (above)
+3. `pnpm sc logs` — pick the lane, read the tail of its last run
 
-| Symptom                               | Cause                                                    |
-| ------------------------------------- | -------------------------------------------------------- |
-| Dies instantly on `pnpm install`      | Image is stale → `pnpm sandcastle:image`                 |
-| Mac crawls, fans max                  | Lower `concurrency` in config.mts                        |
-| Nothing merged, no errors             | Agents ran but made no commits — read an implementer log |
-| `SC_LOOPS must be a positive integer` | Typo in your env var. Working as designed.               |
+| Symptom                               | Cause                                                       |
+| ------------------------------------- | ----------------------------------------------------------- |
+| Dies instantly on `pnpm install`      | Image is stale → `pnpm sc doctor`, then `pnpm sc image`     |
+| Mac crawls, fans max                  | Lower `concurrency` in config.mts                           |
+| Nothing merged, no errors             | Agents ran but made no commits — `pnpm sc logs implementer` |
+| `SC_LOOPS must be a positive integer` | Typo in your env var. Working as designed.                  |
 
 ---
 
@@ -213,4 +286,4 @@ repeat up to 10 rounds, or stop when nothing is left
 
 Each lane is an isolated git worktree in its own container. They can't see each other. That's why the merger exists — and why it gets a strong model.
 
-**Config lives in `config.mts`. Orchestration lives in `main.mts`. Prompts live in `*-prompt.md`.**
+**Config lives in `config.mts`. Orchestration lives in `main.mts`. Prompts live in `*-prompt.md`. The CLI lives in `cli.mts` + `commands/`, with the shared helpers in `prompts.mts` + `state.mts`.**
