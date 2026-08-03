@@ -18,8 +18,6 @@ const STEPS = [
   { title: "Livraison", description: "Sur site, avec recette." },
 ]
 
-// The separator flips axis off the root's `data-orientation`, so switching the
-// stepper to vertical needs no change to the items.
 export default function StepperVertical() {
   const [current, setCurrent] = React.useState(1)
 
