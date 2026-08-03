@@ -11,6 +11,12 @@ import {
   StepperTitle,
 } from "@diametral/ui/components/stepper"
 
+function stepState(index: number, current: number) {
+  if (index < current) return "completed"
+  if (index === current) return "active"
+  return "inactive"
+}
+
 const STEPS = [
   { title: "Devis", description: "Envoyé le 12 juin." },
   { title: "Acompte", description: "30 % à la commande." },
@@ -25,16 +31,7 @@ export default function StepperVertical() {
     <div className="flex w-full max-w-md flex-col gap-5">
       <Stepper orientation="vertical">
         {STEPS.map((step, index) => (
-          <StepperItem
-            key={step.title}
-            state={
-              index < current
-                ? "completed"
-                : index === current
-                  ? "active"
-                  : "inactive"
-            }
-          >
+          <StepperItem key={step.title} state={stepState(index, current)}>
             <StepperIndicator>{index + 1}</StepperIndicator>
             <StepperContent>
               <StepperTitle>{step.title}</StepperTitle>
