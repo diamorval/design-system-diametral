@@ -1,18 +1,27 @@
 // Interactive custom run — pick issues, tweak one-off overrides on a settings
 // board, confirm, run. Writes nothing to disk; persistent defaults live in
-// config.mts. UI primitives live in ./prompts.mts.
+// config.mts. UI primitives live in ../prompts.mts.
 //
-// Usage: pnpm sandcastle:custom
+// Usage: pnpm sc custom
 
-import { execFileSync, spawnSync } from "node:child_process"
-import { config } from "./config.mts"
-import { board, bold, confirm, cyan, dim, multiselect } from "./prompts.mts"
+import { execFileSync } from "node:child_process"
+import { board, bold, confirm, cyan, dim, multiselect } from "../prompts.mts"
+
+// The board shows config.mts's defaults, but config.mts is a module-load
+// singleton and the run is launched in this same process (bottom of the file),
+// so importing it plainly would freeze the pre-override argv/env into the
+// instance main.mts later receives — `--issue` and every SC_* override would be
+// silently dropped. The ?picker query gives this read its own instance and
+// leaves the canonical "../config.mts" URL unloaded until main.mts asks for it.
+// Specifier held in a const because a literal would make tsc resolve the query.
+const pickerSpecifier = "../config.mts?picker"
+const { config }: typeof import("../config.mts") = await import(pickerSpecifier)
 
 // --- Main --------------------------------------------------------------------
 
 if (!process.stdin.isTTY || !process.stdout.isTTY) {
   console.error(
-    "sandcastle:custom is interactive. In scripts, call `pnpm sandcastle` " +
+    "sc custom is interactive. In scripts, call `pnpm sandcastle` " +
       "with SC_* env vars and --issue directly."
   )
   process.exit(1)
@@ -118,15 +127,17 @@ if (settings.model) env.SC_MODEL = String(settings.model)
 if (settings.loops) env.SC_LOOPS = String(settings.loops)
 
 const args = [
-  "sandcastle",
   ...(auto ? [] : ["--issue", picked.join(",")]),
   ...(settings.delivery !== config.delivery
     ? ["--delivery", String(settings.delivery)]
     : []),
 ]
+// The equivalent shell invocation, not what runs below — still literally
+// correct, and copy-pasteable into another terminal.
 const shown = [
   ...Object.entries(env).map(([k, v]) => `${k}=${v}`),
   "pnpm",
+  "sandcastle",
   ...args,
 ].join(" ")
 
@@ -134,8 +145,10 @@ console.log(`\n  ${bold(shown)}\n`)
 
 if (!(await confirm("Launch?"))) process.exit(0)
 
-const { status } = spawnSync("pnpm", args, {
-  stdio: "inherit",
-  env: { ...process.env, ...env },
-})
-process.exit(status ?? 1)
+// Run the loop in this process: spawning `pnpm sandcastle` would chain
+// node → pnpm → node → tsx → main for nothing. Both assignments must precede
+// the import() — config.mts reads SC_* and process.argv at module load, and a
+// static import would hoist above them.
+Object.assign(process.env, env)
+process.argv = [process.argv[0]!, process.argv[1]!, ...args]
+await import("../main.mts")

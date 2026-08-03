@@ -8,9 +8,10 @@
     "lint": "turbo lint",
     "format": "turbo format",
     "typecheck": "turbo typecheck",
-    "sandcastle": "npx tsx .sandcastle/main.mts",
-    "sandcastle:custom": "npx tsx .sandcastle/custom.mts",
-    "sandcastle:image": "docker build -f .sandcastle/Dockerfile --build-arg AGENT_UID=$(id -u) --build-arg AGENT_GID=$(id -g) -t sandcastle:design-system-diametral ."
+    "sc": "npx tsx .sandcastle/cli.mts",
+    "sandcastle": "npx tsx .sandcastle/cli.mts run",
+    "sandcastle:custom": "npx tsx .sandcastle/cli.mts custom",
+    "sandcastle:image": "npx tsx .sandcastle/cli.mts image"
   },
   "devDependencies": {
     "@ai-hero/sandcastle": "^0.12.0",
