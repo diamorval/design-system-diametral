@@ -51,7 +51,6 @@ async function run(): Promise<void> {
     // expected. Each directive goes away with the file that satisfies it —
     // tsc reports an unused directive the moment the module exists.
     case "logs":
-      // @ts-expect-error commands/logs.mts lands in a later issue
       return void (await import("./commands/logs.mts"))
     case "clean":
       // @ts-expect-error commands/clean.mts lands in a later issue

@@ -122,6 +122,48 @@ export function multiselect(
   )
 }
 
+/**
+ * Single-choice list: ↑/↓ move, enter open, `q` quit. Resolves the chosen
+ * `name`, or `""` on quit — every caller has to handle "picked nothing"
+ * anyway, so an empty string keeps the return type flat.
+ */
+export function select(
+  message: string,
+  choices: readonly Choice[]
+): Promise<string> {
+  let cursor = 0
+  const help = dim("(↑/↓ move · enter open · q quit)")
+
+  return keyLoop<string>(
+    (key, done) => {
+      const n = choices.length
+      switch (true) {
+        case key.name === "up" || key.name === "k":
+          cursor = (cursor - 1 + n) % n
+          break
+        case key.name === "down" || key.name === "j":
+          cursor = (cursor + 1) % n
+          break
+        case key.name === "q" || key.name === "escape":
+          done("")
+          break
+        case key.name === "return" || key.name === "enter":
+          done(choices[cursor]!.name)
+      }
+    },
+    () => [
+      `${cyan("?")} ${bold(message)} ${help}`,
+      "",
+      ...choices.map((ch, i) => {
+        const here = i === cursor
+        const pointer = here ? cyan("❯") : " "
+        const title = here ? bold(ch.title) : ch.title
+        return `${pointer} ${title}${ch.hint ? dim(`  ${ch.hint}`) : ""}`
+      }),
+    ]
+  )
+}
+
 export interface Field {
   readonly key: string
   readonly label: string
