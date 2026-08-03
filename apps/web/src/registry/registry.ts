@@ -507,11 +507,7 @@ export const COMPONENTS: ComponentDoc[] = [
       SelectContent:
         "Portals the popup and sizes it to `--anchor-width`, so a wide trigger gives a wide list. `alignItemWithTrigger` (default) aligns the selected item over the trigger and disables the open animation.",
       SelectLabel:
-        "A group heading — it must sit inside a `SelectGroup` to be tied to the options it names.",
-      SelectScrollUpButton:
-        "Rendered by SelectContent already; exported for a hand-rolled popup, not to be composed into this one.",
-      SelectScrollDownButton:
-        "The other half of the pair SelectContent renders for you — a long list scrolls without either being written by hand.",
+        "A group heading — it must sit inside a `SelectGroup` to be tied to the options it names."
     },
   },
   {
