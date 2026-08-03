@@ -76,7 +76,7 @@ docker ps | grep -c sandcastle-
 ## Stop it
 
 ```fish
-pkill -f sandcastle/main.mts
+pkill -f sandcastle/cli.mts
 docker ps -q --filter name=sandcastle- | xargs docker rm -f
 ```
 
