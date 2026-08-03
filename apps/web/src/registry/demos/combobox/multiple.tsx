@@ -24,9 +24,6 @@ const SCOPES = [
   "publish",
 ]
 
-// `ComboboxValue` is the render prop for the current selection — `ComboboxChip`
-// takes plain children, so the mapping happens one level up. The anchor ref points
-// the popup at the chips container so it stays aligned as that container grows.
 export default function ComboboxMultiple() {
   const anchor = useComboboxAnchor()
 
