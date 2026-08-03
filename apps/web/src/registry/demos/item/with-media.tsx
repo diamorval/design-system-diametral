@@ -16,8 +16,6 @@ const FILES = [
   { name: "Audit technique.pdf", size: "812 Ko" },
 ]
 
-// `ItemMedia` top-aligns itself when the item has a description, so icon and
-// title stay on the same line whatever the description's length.
 export default function ItemWithMedia() {
   return (
     <ItemGroup className="max-w-md">
