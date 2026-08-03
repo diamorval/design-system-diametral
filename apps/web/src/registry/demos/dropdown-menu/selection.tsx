@@ -14,8 +14,6 @@ import {
   DropdownMenuTrigger,
 } from "@diametral/ui/components/dropdown-menu"
 
-// Checkbox and radio items reserve their indicator space with `pe-8`, so mixing
-// them with plain items in one menu keeps the labels aligned.
 export default function DropdownMenuSelection() {
   const [columns, setColumns] = React.useState(["name", "status"])
   const [density, setDensity] = React.useState("comfortable")
@@ -26,8 +24,6 @@ export default function DropdownMenuSelection() {
         View <CaretDownIcon />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        {/* A label is a group part: it needs either a `DropdownMenuGroup` or —
-            as below — the `DropdownMenuRadioGroup` it labels around it. */}
         <DropdownMenuGroup>
           <DropdownMenuLabel>Columns</DropdownMenuLabel>
           {["name", "status", "owner"].map((column) => (

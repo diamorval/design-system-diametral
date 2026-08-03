@@ -12,8 +12,6 @@ import {
 } from "@diametral/ui/components/popover"
 import { Switch } from "@diametral/ui/components/switch"
 
-// Popover traps focus and is dismissible, so interactive content belongs here
-// rather than in a Tooltip — a tooltip is never reachable by keyboard users.
 export default function PopoverWithForm() {
   return (
     <Popover>

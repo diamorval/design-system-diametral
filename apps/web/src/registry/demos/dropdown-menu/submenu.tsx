@@ -12,8 +12,6 @@ import {
   DropdownMenuTrigger,
 } from "@diametral/ui/components/dropdown-menu"
 
-// Submenus open to `inline-end` by default, which flips with direction — an RTL
-// locale gets them on the correct side with no extra prop.
 export default function DropdownMenuSubmenu() {
   return (
     <DropdownMenu>
