@@ -29,9 +29,10 @@ export default function SidebarCollapsibleIcon() {
               <SidebarMenu>
                 {ITEMS.map((item) => (
                   <SidebarMenuItem key={item.title}>
-                    {/* `tooltip` is what keeps the label reachable once the
-                        sidebar collapses to a rail of icons. */}
-                    <SidebarMenuButton isActive={item.active} tooltip={item.title}>
+                    <SidebarMenuButton
+                      isActive={item.active}
+                      tooltip={item.title}
+                    >
                       <item.icon /> {item.title}
                     </SidebarMenuButton>
                   </SidebarMenuItem>

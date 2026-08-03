@@ -14,8 +14,6 @@ const SECTIONS = [
   { title: "Overlays", description: "Dialogs, sheets and menus." },
 ]
 
-// `NavigationMenu` mounts its own portal, positioner and viewport, so the tree
-// here is only Root → List → Item. The shared popup animates between items.
 export default function NavigationMenuBasic() {
   return (
     <NavigationMenu>

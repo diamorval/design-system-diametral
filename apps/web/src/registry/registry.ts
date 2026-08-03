@@ -1553,16 +1553,45 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Navigation",
     description:
       "Switches between panels in place. Supports horizontal and vertical orientation from one prop.",
+    intro: [
+      "Tabs swaps between panels of one subject without leaving the page — a record's overview, activity and history, or the sections of a settings screen. Reach for it when every panel describes the same thing and only one is worth reading at a time; when the choices are separate destinations, that is navigation, and `Sidebar` or `NavigationMenu` is the component.",
+      "`orientation` on the root is the whole layout axis: it writes `data-orientation`, and the list and triggers restyle themselves through `group-data-vertical/tabs:`, so a vertical rail is one prop rather than a second composition. The one cva axis, `variant`, belongs to `TabsList` instead of the root.",
+    ],
     examples: [
-      { demo: "tabs/basic", title: "Basic" },
+      {
+        demo: "tabs/basic",
+        title: "Basic",
+        description:
+          "The default filled track. Panels are paired to triggers by `value`, not by source order, so `defaultValue` names the tab that opens rather than counting to it.",
+      },
       {
         demo: "tabs/vertical",
         title: "Vertical",
         description:
           '`orientation="vertical"` sets `data-orientation`, which the list and triggers style against via `group-data-vertical/tabs:`.',
       },
-      { demo: "tabs/in-card", title: "Inside a card" },
+      {
+        demo: "tabs/line",
+        title: "Page chrome",
+        description:
+          '`variant="line"` drops the filled track and marks the active tab with a rule instead — the form for tabs that sit on a page header rather than inside a box. The rule is drawn just outside the list, so it lands on the container\'s own border.',
+      },
+      {
+        demo: "tabs/in-card",
+        title: "Inside a card",
+        description:
+          "Tabs nested in a `Card`, switching between views of the one thing the card is about. The list sizes to its content, so it reads as a control in the card rather than a second header spanning it.",
+      },
     ],
+    parts: {
+      Tabs: "Writes `data-orientation` and flips its own flex direction from it — the list and triggers read it back through `group-data-vertical/tabs:`, so orientation is never set twice.",
+      TabsList:
+        "Carries the only cva axis (`variant`) and sizes to its content (`w-fit`) — give it a width class of your own when the list has to span the container.",
+      TabsTrigger:
+        'Uppercase and tracked, so it reads as a control rather than as the panel\'s prose. The active rule is an `after` pseudo-element drawn outside the trigger, and only `variant="line"` reveals it.',
+      TabsContent:
+        "Takes `flex-1` — under a vertical orientation it fills the space beside the list — and carries no padding of its own, which is why the examples add `pt-4`.",
+    },
   },
   {
     slug: "sidebar",
@@ -1570,6 +1599,10 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Navigation",
     description:
       "The application shell navigation — collapsible, keyboard-toggleable, with groups, menus and an inset content area.",
+    intro: [
+      "Sidebar is the shell an application lives in, not a component you drop into a page: `SidebarProvider` wraps both the rail and `SidebarInset`, and the two are siblings under it. Reach for it when navigation persists across every screen — a workspace, a console, a documentation app. For navigation that belongs to one page, `Tabs` or `Toc` is the smaller answer.",
+      "The provider owns the open state, writes it to a cookie so it survives a reload, and binds Cmd/Ctrl+B. `collapsible` decides what collapsing means — `offcanvas` slides the rail away, `icon` leaves a rail of icons, `none` pins it open — and only `none` renders below the `md` breakpoint, where the other two hand over to a `Sheet`.",
+    ],
     examples: [
       {
         demo: "sidebar/basic",
@@ -1581,9 +1614,35 @@ export const COMPONENTS: ComponentDoc[] = [
         demo: "sidebar/collapsible-icon",
         title: "Collapsible to icons",
         description:
-          '`collapsible="icon"` collapses to a rail of icons. `SidebarTrigger` toggles it; tooltips carry the labels once collapsed.',
+          '`collapsible="icon"` collapses to a rail of icons. `SidebarTrigger` toggles it; `tooltip` on each button is what keeps the labels reachable once only the icons are left.',
+      },
+      {
+        demo: "sidebar/nested",
+        title: "Sub-navigation",
+        description:
+          "A section with its own children: `SidebarMenuSub` goes inside the parent `SidebarMenuItem`, beside its button rather than under it, and hides itself once the rail collapses to icons. `SidebarMenuBadge` is a sibling of the button for the same reason — it is positioned against the item.",
+      },
+      {
+        demo: "sidebar/shell",
+        title: "Full shell",
+        description:
+          "Header, groups and footer in one rail — the shape a real console ships. `SidebarContent` is the only part that scrolls, so the search box and the account button stay put however long the menu grows.",
       },
     ],
+    parts: {
+      SidebarProvider:
+        "Owns the open state for everything under it: the cookie that survives a reload, the Cmd/Ctrl+B shortcut and the mobile `Sheet` swap all live here, so a Sidebar rendered outside one throws.",
+      Sidebar:
+        "Below `md` every value of `collapsible` except `none` renders as a `Sheet` instead of a rail — which is also why `none` is the value a bounded demo wants.",
+      SidebarInset:
+        "The content area, and a sibling of Sidebar rather than a child — the rail is fixed, so the inset is what actually holds the page.",
+      SidebarContent:
+        "The one scrolling region. Anything that must stay visible belongs in SidebarHeader or SidebarFooter, which sit outside it.",
+      SidebarMenuButton:
+        "Pass `tooltip` and it wraps itself in a Tooltip that only shows while collapsed — the label is otherwise lost with the text.",
+      SidebarMenuSub:
+        'Hidden outright under `collapsible="icon"` (`group-data-[collapsible=icon]:hidden`): there is no room for a second level in a rail of icons, so keep the parent reachable on its own.',
+    },
   },
   {
     slug: "breadcrumb",
@@ -1591,6 +1650,10 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Navigation",
     description:
       "The trail to the current page, with the last item as plain text.",
+    intro: [
+      "Breadcrumb states where the current page sits in a hierarchy and offers the way back up it. Reach for it when a page has ancestors a reader can meaningfully return to — a file inside folders, a record inside a project. A flat app with three top-level screens has no trail to show, and history is what the back button is for.",
+      "The trail is an ordered list of links with one exception at the end: `BreadcrumbPage` is the current page, so it renders as plain text carrying `aria-current`, not as a link to where you already are. Links go through Base UI's `render` prop rather than `asChild`, which is how a router's own link component takes over the anchor.",
+    ],
     examples: [
       {
         demo: "breadcrumb/basic",
@@ -1602,9 +1665,25 @@ export const COMPONENTS: ComponentDoc[] = [
         demo: "breadcrumb/collapsed",
         title: "Collapsed",
         description:
-          "`BreadcrumbSeparator` renders a caret unless given children — pass a character or another icon to change the punctuation.",
+          "A deep path shortened to its ends. `BreadcrumbEllipsis` stands in for the levels between, and `BreadcrumbSeparator` renders a caret unless given children — pass a character or another icon to change the punctuation.",
+      },
+      {
+        demo: "breadcrumb/overflow-menu",
+        title: "Overflow menu",
+        description:
+          "The same truncation, but the hidden levels stay reachable: the ellipsis becomes a `DropdownMenu` trigger. `BreadcrumbEllipsis` is `aria-hidden`, so the accessible name has to come from the trigger around it.",
       },
     ],
+    parts: {
+      BreadcrumbLink:
+        "Takes Base UI's `render` prop, not `asChild` — pass a router link (`render={<Link to=\"/docs\" />}`) and it renders as that element with the breadcrumb's classes merged in.",
+      BreadcrumbPage:
+        'Plain text with `aria-current="page"` and `aria-disabled`, since the current page is not somewhere to navigate to. It is the last item, and only ever one.',
+      BreadcrumbSeparator:
+        "A presentational list item, hidden from the accessibility tree so the trail reads as words rather than punctuation. Give it children to replace the default caret.",
+      BreadcrumbEllipsis:
+        "Also `aria-hidden`. Wrapping it in a control — a menu trigger — means the label has to be on that control, or the button reads as unnamed.",
+    },
   },
   {
     slug: "toc",
@@ -1612,6 +1691,10 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Navigation",
     description:
       "The in-page anchor rail — a sticky list of the sections on the current page.",
+    intro: [
+      "Toc is the rail that lists the headings of the page you are already on, so a long document can be skimmed and re-entered anywhere. Reach for it for documentation, articles and reference pages — content read in pieces. It navigates within one page, which is what separates it from `Breadcrumb` (where the page sits) and `Sidebar` (where else you can go).",
+      "It is presentation only: no scroll-spy, no heading collection, no state. You pass the sections, and you mark the current one with `aria-current` — which means the rail works the same whether the headings come from MDX frontmatter, an intersection observer or a hand-written array. The root is `sticky top-8` by default, so it holds its place while the article scrolls beside it.",
+    ],
     examples: [
       {
         demo: "toc/basic",
@@ -1631,19 +1714,38 @@ export const COMPONENTS: ComponentDoc[] = [
         description:
           "`level` is depth in the list, not heading rank — 1 is a section, 2 a subsection. It indents the link's text while leaving its border on the rail, so depth reads as one line with steps rather than a second, indented rail.",
       },
+      {
+        demo: "toc/page-rail",
+        title: "Beside the article",
+        description:
+          "The placement the component is shaped for: a fixed-width rail next to the prose. This is the one example that keeps the root's default `sticky top-8` — the others pass `static`, since a preview that does not scroll has nothing to stick to.",
+      },
     ],
+    parts: {
+      Toc: "A `<nav>` labelled “On this page”, so it reaches the landmark list without any markup of yours; `TocLabel` is the visible echo of that name, not its source. Sticky by default, which needs a scrolling ancestor to mean anything.",
+      TocList:
+        "Draws the rail itself (`border-s`) — the continuous line belongs to the list, and each link only borrows the segment beside it.",
+      TocItem:
+        "`level` writes `data-level`, and the indent is applied by TocLink through `group-data-[level=2]/toc-item:`. Styling depth on the item instead would move the border off the rail.",
+      TocLink:
+        "Pulls its own border back over the list's with `-ms-px`, so hovering or marking a link lights that segment of the rail rather than drawing a second line beside it.",
+    },
   },
   {
     slug: "navigation-menu",
     name: "Navigation Menu",
     category: "Navigation",
     description: "A horizontal site menu with optional rich dropdown panels.",
+    intro: [
+      "Navigation Menu is the top-level menu of a site header: a row of destinations, some of which open a panel with room for descriptions, groups or a featured link. Reach for it for marketing and documentation chrome. `Menubar` is the desktop-application counterpart with commands rather than destinations, and `DropdownMenu` is the right answer for actions on the page you are on.",
+      "The root mounts its own portal, positioner, popup and viewport, so the tree you write is only Root → List → Item — and `align` on the root is forwarded to that positioner rather than set on a part of your own. All the items share the single popup: moving between triggers resizes and slides it, and the content reads `data-activation-direction` to animate away from where the pointer came from.",
+    ],
     examples: [
       {
         demo: "navigation-menu/basic",
         title: "Basic",
         description:
-          "The root mounts its own portal, positioner, popup and viewport, so your tree is only Root → List → Item. Use `navigationMenuTriggerStyle()` for links that need no panel.",
+          "One panel and one plain link. `navigationMenuTriggerStyle()` is what makes a link with no panel sit level with the triggers beside it.",
       },
       {
         demo: "navigation-menu/multiple",
@@ -1651,7 +1753,29 @@ export const COMPONENTS: ComponentDoc[] = [
         description:
           "Moving between triggers reuses one popup and slides it; the content reads `data-activation-direction` to animate away from where you came from.",
       },
+      {
+        demo: "navigation-menu/featured",
+        title: "Featured panel",
+        description:
+          "A two-column panel with a promoted destination beside the list. The panel is your own markup — the component supplies the popup and the link styling, so the grid is yours to shape.",
+      },
+      {
+        demo: "navigation-menu/in-header",
+        title: "In a site header",
+        description:
+          "The placement it exists for, between a wordmark and an account action. The root is `max-w-max`, so it takes only the width of its list and the header's own flex layout keeps working around it.",
+      },
     ],
+    parts: {
+      NavigationMenu:
+        "Renders the portal, positioner, popup and viewport itself — `align` is a positioner prop passed through here, and NavigationMenuPositioner is not something you mount yourself.",
+      NavigationMenuContent:
+        "The panel's contents, not the panel: sizing, columns and grids are your markup inside it, and the popup animates to whatever size that comes out.",
+      NavigationMenuLink:
+        "Styled for inside a panel. For a top-level link with no panel, add `navigationMenuTriggerStyle()` so it matches the triggers on the row.",
+      NavigationMenuTrigger:
+        "Appends its own caret after the children and rotates it while the panel is open, so a trigger needs no icon of its own.",
+    },
   },
   {
     slug: "menubar",
