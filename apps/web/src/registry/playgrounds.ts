@@ -173,7 +173,12 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
         type: "select",
         options: ["text", "email", "password", "number", "date", "file"],
       },
-      { prop: "placeholder", type: "text", placeholder: "you@diametral.com" },
+      {
+        prop: "placeholder",
+        type: "text",
+        placeholder: "you@diametral.com",
+        default: "you@diametral.com",
+      },
       { prop: "disabled", type: "boolean" },
       { prop: "readOnly", type: "boolean" },
       { prop: "aria-invalid", type: "boolean", label: "invalid" },
@@ -181,8 +186,13 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
   },
   textarea: {
     extras: [
-      { prop: "placeholder", type: "text", placeholder: "Say something…" },
-      { prop: "rows", type: "select", options: ["2", "3", "5", "8"] },
+      {
+        prop: "placeholder",
+        type: "text",
+        placeholder: "Say something…",
+        default: "Say something…",
+      },
+      { prop: "rows", type: "select", options: ["1", "2", "3", "5", "8"] },
       { prop: "disabled", type: "boolean" },
       { prop: "aria-invalid", type: "boolean", label: "invalid" },
     ],
