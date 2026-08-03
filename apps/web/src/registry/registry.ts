@@ -2079,20 +2079,44 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Disclosure",
     description:
       "Stacked sections that expand one at a time, or several at once.",
+    intro: [
+      "Accordion turns a long page into a list of headings the reader opens on demand — FAQs, release notes, settings that are edited once a quarter. Reach for it when every section deserves a title of its own; a single show-and-hide region is `Collapsible`, and a set of views the reader switches between rather than stacks is `Tabs`.",
+      "One panel at a time is the default: `multiple` is the opt-in for several open at once, and `value`/`defaultValue` are arrays either way. Panels animate on `--accordion-panel-height`, which Base UI measures for you, so content of any height opens smoothly — and closed panels are unmounted unless you pass `keepMounted`, or `hiddenUntilFound` to let the browser's find-in-page open them.",
+    ],
     examples: [
       {
         demo: "accordion/basic",
         title: "Basic",
         description:
-          "Panels animate on `--accordion-panel-height`, so content of any height opens smoothly without a measured max-height.",
+          "The FAQ shape: opening one question closes the last, which is what the component does out of the box. `defaultValue` is still an array — the open set is a list even when only one entry can be in it.",
       },
       {
-        demo: "accordion/single",
-        title: "One at a time",
+        demo: "accordion/multiple",
+        title: "Several at once",
         description:
-          "Base UI opens several panels at once by default — `multiple={false}` is what makes it exclusive.",
+          "`multiple` lets panels stay open together, for content the reader compares rather than browses. The trigger is a flex row, so a date can sit beside the title without a wrapper — the caret keeps its own `ms-auto`.",
+      },
+      {
+        demo: "accordion/settings",
+        title: "Settings sections",
+        description:
+          "Progressive disclosure inside a `Panel`: each panel holds real controls, not prose. `AccordionItem` draws its own `not-last:border-b`, so the group needs no dividers and the last section stays flush against the container.",
+      },
+      {
+        demo: "accordion/controlled",
+        title: "Expand all",
+        description:
+          "Holding the open set in state is what an expand-all control needs: `value` is the array of open items, so setting it to every id — or to `[]` — moves the whole accordion in one update.",
       },
     ],
+    parts: {
+      Accordion:
+        "The open set is an array in both modes, so `value={['a']}` is correct even one-at-a-time; `multiple` is what allows a second entry.",
+      AccordionTrigger:
+        "Renders its own header wrapper and both carets, so neither is yours to add — they swap on `aria-expanded`, which lands on the trigger rather than the item.",
+      AccordionContent:
+        "Wraps children in the height-animated div that reads `--accordion-panel-height`, and your `className` lands on that inner div — which is why its `pb-4` is the panel's bottom gap and not the item's.",
+    },
   },
   {
     slug: "collapsible",
@@ -2100,6 +2124,10 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Disclosure",
     description:
       "A single show/hide region. Emits `data-open` / `data-closed`, not `data-state`.",
+    intro: [
+      "Collapsible is one region and one toggle: the show-more, the request detail, the advanced half of a form. Reach for it whenever there is a single thing to hide — several titled sections that stack is `Accordion`, and a region that floats over the page instead of pushing it down is `Popover`.",
+      "The wrapper is deliberately bare — no chrome, no caret, no padding — because the trigger is usually your own control: `CollapsibleTrigger` takes Base UI's `render` prop, so the trigger *is* a Button rather than wrapping one. State lands on the trigger as `aria-expanded` and `data-panel-open`, which is what a caret rotates off; the panel is the part carrying `data-open`/`data-closed` and publishing `--collapsible-panel-height`.",
+    ],
     examples: [
       {
         demo: "collapsible/basic",
@@ -2108,12 +2136,32 @@ export const COMPONENTS: ComponentDoc[] = [
           "The trigger renders as a Button via `render`. The caret rotates off `aria-expanded`, which sits on the trigger rather than the root.",
       },
       {
+        demo: "collapsible/filter-group",
+        title: "Filter group",
+        description:
+          "The sidebar facet: the trigger is the section header itself — a plain full-width row, not a Button — so the whole strip is the hit target and the count sits inside the panel it belongs to.",
+      },
+      {
+        demo: "collapsible/optional-fields",
+        title: "Optional fields",
+        description:
+          "A form's advanced half. `keepMounted` leaves the panel in the DOM when it closes, so half-typed values survive a collapse and native submission still sees the inputs.",
+      },
+      {
         demo: "collapsible/controlled",
         title: "Controlled",
         description:
           "Driving `open` yourself lets the toggle live outside the collapsible — here a show-more button beneath the list.",
       },
     ],
+    parts: {
+      Collapsible:
+        "A grouping div with no styles of its own, so the gap between trigger and panel is yours to set — usually a margin on the panel.",
+      CollapsibleTrigger:
+        "The state lives here, not on the root: `aria-expanded` and `data-panel-open` are the trigger's, so caret rotation keys off the trigger's own group.",
+      CollapsibleContent:
+        "Unmounted while closed unless you pass `keepMounted` or `hiddenUntilFound`, and it publishes `--collapsible-panel-height` for height transitions.",
+    },
   },
 
   /* -- Overlays ---------------------------------------------------------- */
@@ -2327,6 +2375,10 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Feedback",
     description:
       "Transient notifications from a singleton manager — call `toast.add()` from anywhere, no local state.",
+    intro: [
+      "Toast is the confirmation that does not need answering: saved, copied, deleted, failed to send. It is fired rather than rendered — `toast.add()` is a plain function call, so the code that finished the work announces it without a piece of state or a portal of its own. When the message must survive until it is dealt with, that is `Alert` inline, or `Banner` across the page.",
+      "`Toaster` is the only part you mount: it provides the manager context and the portal and viewport together, so one instance at the app root covers the whole tree — a second means a second stack. It defaults to the exported `toast` singleton, and `createToastManager()` gives a subtree its own queue when it genuinely needs one.",
+    ],
     examples: [
       {
         demo: "toast/basic",
@@ -2346,13 +2398,35 @@ export const COMPONENTS: ComponentDoc[] = [
         description:
           "`actionProps` is forwarded to the rendered `ToastAction` button — the toast list needs no per-call markup.",
       },
+      {
+        demo: "toast/promise",
+        title: "Around a promise",
+        description:
+          "`toast.promise` binds one toast to one pending call: the loading toast becomes the success or error toast in place, so there is no second notification and no id to carry. It also re-throws, hence the `catch` — the toast reports the failure, it does not swallow it.",
+      },
     ],
+    parts: {
+      Toaster:
+        "Provider, portal, viewport and the toast list in one part — mount it once at the root, above the router, and nothing below needs a toast component at all.",
+      Toast:
+        "One per queue entry, rendered for you. Stacking, swipe and height transitions are driven by `--toast-index` and `--toast-height`, so a hand-rolled list has to keep those variables intact.",
+      ToastTitle:
+        "Reads the queued toast's `title` from context, which is why the list mounts it with no children — passing text here would override what `toast.add()` sent.",
+      ToastAction:
+        'Defaults to `render={<Button variant="outline" size="sm" />}` and picks up the call\'s `actionProps`, so a per-toast action needs no markup in the list.',
+      ToastClose:
+        "Ships its own `aria-label` and grows its hit target with an `after:-inset-2` pseudo-element rather than padding, which would stretch the row it sits in.",
+    },
   },
   {
     slug: "alert",
     name: "Alert",
     category: "Feedback",
     description: "A persistent inline message, with an optional action slot.",
+    intro: [
+      "Alert is the message that stays: it sits in the flow at the width of its container and never times out, so the reader can come back to it. Reach for it when the text has to remain available — a validation summary above a form, the reason a control is disabled, a caveat attached to one section. A confirmation that may vanish is `Toast`; a notice about the whole screen is `Banner`.",
+      "Two variants are the whole ladder — `default` and `destructive`, with no tone axis — and the accent is a 2px `::after` rule on the leading edge rather than a border, so it stays put whatever border the alert itself carries. Layout follows the content instead of props: a leading `svg` switches the root to two columns, and an `AlertAction` reserves the trailing padding.",
+    ],
     examples: [
       {
         demo: "alert/basic",
@@ -2361,12 +2435,32 @@ export const COMPONENTS: ComponentDoc[] = [
           "A leading `svg` switches the grid to two columns on its own, so the icon is optional with no layout prop to set.",
       },
       {
+        demo: "alert/validation-summary",
+        title: "Validation summary",
+        description:
+          'The failed-submit shape: one alert names every problem, and the fields carry `aria-invalid` only. The root\'s `role="alert"` means the summary is announced once, rather than each field competing to speak.',
+      },
+      {
+        demo: "alert/with-link",
+        title: "With a link",
+        description:
+          "A notice that hands off rather than acts. `AlertTitle` and `AlertDescription` underline any anchor inside them, so an inline link needs no classes — and unlike `AlertAction`, it stays in the reading order of the sentence.",
+      },
+      {
         demo: "alert/with-action",
         title: "With an action",
         description:
-          "`AlertAction` pins to the top-right and the alert reserves the inline-end padding for it, so long titles never slide underneath.",
+          "`AlertAction` pins to the top-right and the alert reserves the inline-end padding for it, so long titles never slide underneath. The second alert is title-only: with no description, the grid simply collapses to one row.",
       },
     ],
+    parts: {
+      Alert:
+        'Carries `role="alert"`, so it is announced assertively the moment it mounts — for a message that should wait its turn, Banner\'s `role="status"` is the politer surface.',
+      AlertTitle:
+        "Moves itself to the second column when the alert has a leading `svg`, so the icon never needs a wrapper to sit beside the text.",
+      AlertAction:
+        "Absolutely positioned in the top-right, with the root reserving `pe-18` for it — room for one control. Several actions want Banner's flex-sibling action instead.",
+    },
   },
 
   /* -- Conversation ------------------------------------------------------ */
