@@ -42,16 +42,16 @@ function human(bytes: number): string {
   return kb < 1024 ? `${kb.toFixed(1)} KB` : `${(kb / 1024).toFixed(1)} MB`
 }
 
-const summary = (before: number, after: number, n: number, verb: string) =>
+const summary = (before: number, after: number, n: number, deleted: boolean) =>
   console.log(
     `logs: ${human(before)} → ${human(after)} ` +
-      `(${human(before - after)} reclaimed, ${n} files${verb})`
+      `(${human(before - after)} reclaimed, ${n} files${deleted ? " deleted" : ""})`
   )
 
 // One inventory, two consumers: `sc status` reports what this acts on. Do not
 // re-derive "which files are logs" here.
 const logs = logInventory()
-const before = logs.reduce((sum, l) => sum + l.size, 0)
+const before = logs.reduce((sum, log) => sum + log.size, 0)
 
 if (logs.length === 0) {
   console.log("logs: none")
@@ -61,8 +61,8 @@ if (logs.length === 0) {
 if (all) {
   // Whole-file destruction refuses while a run is live; truncation below does
   // not. That split is the standing rule for the CLI, not a quirk of logs.
-  const { lanes } = isRunLive()
-  if (lanes > 0) {
+  const { live } = isRunLive()
+  if (live) {
     console.error(
       "run in progress — sc clean trims prior runs, or wait for it to finish"
     )
@@ -84,7 +84,7 @@ if (all) {
   }
 
   for (const log of logs) rmSync(log.path)
-  summary(before, 0, logs.length, " deleted")
+  summary(before, 0, logs.length, true)
   process.exit(0)
 }
 
@@ -109,4 +109,4 @@ for (const log of logs) {
   touched++
 }
 
-summary(before, before - reclaimed, touched, "")
+summary(before, before - reclaimed, touched, false)
