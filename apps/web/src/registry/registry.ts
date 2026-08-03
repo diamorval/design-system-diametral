@@ -1659,6 +1659,10 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Navigation",
     description:
       "A desktop-style application menu bar with keyboard traversal.",
+    intro: [
+      "Menubar is application chrome: a persistent row of named menus — File, Edit, View — that keeps a dense tool's whole command surface in reach and grouped by noun. Reach for it in editor-shaped views people live inside. One button that reveals a few actions is `Dropdown Menu`, a right-click surface is `Context Menu`, and a searchable flat list of commands is `Command`.",
+      "`MenubarMenu` is Dropdown Menu under a different `data-slot`, so the item vocabulary — items, checkbox and radio items, labels, separators, submenus — is that component's, and `MenubarContent` mounts its own portal and positioner. Only the root is new: it is Base UI's menubar, which is what gives the row a single tab stop and hands focus between menus with the arrow keys.",
+    ],
     examples: [
       {
         demo: "menubar/basic",
@@ -1667,18 +1671,48 @@ export const COMPONENTS: ComponentDoc[] = [
           "One tab stop for the bar; arrow keys move between menus and an open menu stays open as you travel — the desktop convention.",
       },
       {
+        demo: "menubar/sectioned",
+        title: "A long menu, sectioned",
+        description:
+          "Once a menu passes half a dozen entries it needs headings. `MenubarLabel` is a group part — Base UI reads the group context above it, so it goes inside the `MenubarGroup` it names rather than beside it.",
+      },
+      {
         demo: "menubar/with-state",
         title: "Checkboxes, radios and submenus",
         description:
-          "The item vocabulary matches Dropdown Menu, because `MenubarMenu` is that component underneath.",
+          "The item vocabulary matches Dropdown Menu, because `MenubarMenu` is that component underneath. Checkable items indent for their indicator, so a plain `MenubarItem` sharing the menu needs `inset` to line up.",
+      },
+      {
+        demo: "menubar/app-frame",
+        title: "In an app frame",
+        description:
+          "Where a menubar belongs: the top edge of a window, not a floating control. The root carries a full border, so a bar seated in a frame trades it for `border-0 border-b`.",
       },
     ],
+    parts: {
+      Menubar:
+        "Base UI's menubar root: it owns the bar's one tab stop and the arrow-key traversal between menus. A `MenubarMenu` outside it still opens, but as an isolated dropdown with a tab stop of its own.",
+      MenubarMenu:
+        "`DropdownMenu` renamed, so its props are that component's — `open`, `onOpenChange`, `modal`.",
+      MenubarContent:
+        "Mounts its own portal and positioner, so the tree stops at Menu → Trigger → Content. It takes the trigger's width with a `min-w-48` floor, which is what a short trigger like File actually reads from.",
+      MenubarItem:
+        "`inset` adds the indicator gutter (`ps-9.5`). Pass it when a plain item shares a menu with checkbox or radio items, or its label sits left of theirs.",
+      MenubarLabel:
+        "A group part: it registers with the group above it, so a label outside a `MenubarGroup` or `MenubarRadioGroup` throws rather than rendering.",
+      MenubarPortal:
+        "Only for putting a popup somewhere other than the body — `MenubarContent` already portals, so most trees never name this.",
+    },
   },
   {
     slug: "command",
     name: "Command",
     category: "Navigation",
     description: "A searchable command palette, standalone or in a dialog.",
+    intro: [
+      "Command is the palette: a search field over a list of actions, narrowed as you type and driven entirely from the keyboard. Reach for it for an application's ⌘K surface, or inline wherever a list is long enough that typing beats scrolling. It is not a form control — a searchable field that writes a value is `Combobox` or `Autocomplete`.",
+      "It wraps cmdk, so the filtering, the arrow-key selection and the empty state are cmdk's. Each `CommandItem` is scored on its own text plus any `keywords` you give it, matches are reordered by that score, and `CommandEmpty` appears only when nothing survives. `shouldFilter={false}` hands the whole job to your own code, which is how a server-backed search is wired.",
+    ],
     examples: [
       {
         demo: "command/basic",
@@ -1687,18 +1721,50 @@ export const COMPONENTS: ComponentDoc[] = [
           "Built on cmdk, so filtering and keyboard selection come free. An item hides its trailing check when it carries a shortcut, so the two never collide.",
       },
       {
+        demo: "command/synonyms",
+        title: "Matching on synonyms",
+        description:
+          "`keywords` widens what an item matches without putting the words on screen — typing `invoice` finds Open billing. It is the alternative to smuggling search terms into the label.",
+      },
+      {
+        demo: "command/filter-picker",
+        title: "As a filter picker",
+        description:
+          "Command as a multi-select rather than a launcher: `data-checked` on the item is what reveals the trailing check, and `onSelect` toggles instead of dismissing anything. Note the separator vanishing while you type — cmdk drops it as soon as there is a search term.",
+      },
+      {
         demo: "command/dialog",
         title: "As a palette",
         description:
           "`CommandDialog` takes Dialog's props but supplies its own content wrapper, sitting a third down the viewport rather than dead centre.",
       },
     ],
+    parts: {
+      Command:
+        "cmdk's root, and the owner of the search state. It only sizes itself — give it the border and width the surface needs, as the dialog's own wrapper does.",
+      CommandInput:
+        "Wrapped in an `InputGroup` whose only rule is its bottom border, so the list below it needs no separator of its own.",
+      CommandList:
+        "The scroll container, capped at `max-h-72` with its scrollbar hidden, which is what keeps the input pinned above a long list. Raise the cap here rather than on the root.",
+      CommandEmpty:
+        "cmdk renders it only when the match count reaches zero, so it needs no state of yours — keep it inside `CommandList` so the message lands where the items were.",
+      CommandItem:
+        'The trailing check is always in the markup but only opaque at `data-checked="true"`, and it is suppressed outright when the item contains a `CommandShortcut` — both want the same inline-end edge.',
+      CommandSeparator:
+        "cmdk hides it as soon as there is a search term: groups collapse while filtering, so the rule would divide nothing. `alwaysRender` overrides that.",
+      CommandDialog:
+        "Brings its own `DialogContent` at `top-1/3` plus an sr-only title and description, so nest a `Command` straight inside it and no Dialog parts of your own. `title` and `description` are what a screen reader hears.",
+    },
   },
   {
     slug: "pagination",
     name: "Pagination",
     category: "Navigation",
     description: "Page links with previous, next and ellipsis.",
+    intro: [
+      "Pagination is the rail under a long list: numbered pages, previous and next, and an ellipsis standing in for the numbers there is no room to show. Reach for it when the results are ordered and someone has to be able to come back to page 7 — invoices, search results, an archive. An endless feed is better with no rail at all than with one nobody can address.",
+      'Every entry is a real anchor: `PaginationLink` renders through Button\'s `render` with `nativeButton={false}`, and `isActive` sets both the `outline` variant and `aria-current="page"`. In an SPA, intercept the click and keep the `href` — dropping it costs middle-click, open-in-new-tab and the shareable URL.',
+    ],
     examples: [
       {
         demo: "pagination/basic",
@@ -1712,7 +1778,33 @@ export const COMPONENTS: ComponentDoc[] = [
         description:
           "In an SPA, intercept the click rather than dropping the `href` — the pages stay shareable that way.",
       },
+      {
+        demo: "pagination/long-range",
+        title: "Long ranges",
+        description:
+          "Past a dozen pages the rail has to be computed: a window around the current page, with a `PaginationEllipsis` wherever the numbers skip. The gap test is the numbers themselves, so there is no second flag to keep in step.",
+      },
+      {
+        demo: "pagination/under-a-table",
+        title: "Under a table",
+        description:
+          "Where a rail usually sits: a footer beside the result count. The root is `mx-auto flex w-full justify-center`, so seating it at one end means overriding the centring and the width it takes.",
+      },
     ],
+    parts: {
+      Pagination:
+        "Already a `<nav>` labelled `pagination`, so it needs no wrapper of its own — but two rails on one page need distinct `aria-label`s. It is centred and `mx-auto`; both have to go to seat it in a table footer.",
+      PaginationContent:
+        "A real `<ul>`, so every child belongs in a `PaginationItem` — a link dropped straight in here breaks the list semantics screen readers count from.",
+      PaginationLink:
+        'Only `size` reaches Button; `variant` is decided by `isActive`, which also sets `aria-current="page"`. Styling the current page by hand instead leaves that announcement out.',
+      PaginationPrevious:
+        "Its word is hidden below the `sm` breakpoint, leaving the caret alone. The label is the `text` prop rather than children, which is what makes it translatable.",
+      PaginationNext:
+        "Mirrors Previous, `text` prop included; the caret flips itself under `rtl`.",
+      PaginationEllipsis:
+        "Decorative — `aria-hidden`, so it announces nothing and is never a target. It stands for skipped pages, not a menu: nothing opens.",
+    },
   },
   {
     slug: "stepper",
@@ -1720,6 +1812,10 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Navigation",
     description:
       "Progress through a multi-step flow, with per-step state and orientation support.",
+    intro: [
+      "Stepper is the rail across the top of a flow that has been split into screens: the steps, the one you are on, and how much is left. Reach for it when the count is part of the task — checkout, onboarding, a long form worth breaking up. A dated record of what has already happened is `Timeline`; a bare fraction with no names is `Progress`.",
+      "It holds no state and knows nothing about your flow: `state` is a prop on each `StepperItem` (`inactive`, `active`, `completed`) and every part below styles itself off it through `group-data-*`. Orientation is the root's alone — the parts read `data-orientation` from it, so horizontal to vertical is one prop and no change to the items.",
+    ],
     examples: [
       {
         demo: "stepper/basic",
@@ -1728,12 +1824,38 @@ export const COMPONENTS: ComponentDoc[] = [
           "`state` is a prop on `StepperItem`, and the indicator swaps its number for a check on `completed` by itself.",
       },
       {
+        demo: "stepper/wizard",
+        title: "In a form wizard",
+        description:
+          "The shape most steppers ship in: the rail heads the panel, and one index drives both the item states and which fields render. Nothing inside the component tracks that index — `Continue` moves it.",
+      },
+      {
         demo: "stepper/vertical",
         title: "Vertical",
         description:
           "`StepperSeparator` flips axis off the root's `data-orientation`, so going vertical needs no change to the items.",
       },
+      {
+        demo: "stepper/icon-indicators",
+        title: "Icon indicators",
+        description:
+          "A glyph instead of a number, for a flow whose steps have identities. `StepperIndicator` hides its children on `completed` and swaps in a check, so the icon reads only while the step is still ahead — design for that rather than around it.",
+      },
     ],
+    parts: {
+      Stepper:
+        "Owns `data-orientation` and is `w-full`. Every other part reads the orientation through `group-data-*`, so a separator rendered outside a Stepper is given no axis at all and collapses.",
+      StepperItem:
+        "Where `state` lives; the indicator and title style off it through `group/stepper-item`, so a part outside an item stays in the inactive look.",
+      StepperIndicator:
+        "Its children are hidden on `completed` and replaced by a check, so a number or glyph shows only while the step is incomplete.",
+      StepperTitle:
+        "Uppercased with `tracking-wider`, and a `div` — wrap or render it as a heading when the level matters to the page outline.",
+      StepperDescription:
+        "Resets `normal-case` against the uppercased title, so sentence-case text under a step reads as prose.",
+      StepperSeparator:
+        "Belongs inside the item it follows rather than between items, and takes its axis from the root — so drop it on the last item instead of styling it away.",
+    },
   },
 
   /* -- Layout ------------------------------------------------------------ */
