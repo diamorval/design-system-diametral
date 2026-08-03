@@ -3737,7 +3737,7 @@ export const COMPONENTS: ComponentDoc[] = [
         demo: "context-menu/rows",
         title: "Per-row menus",
         description:
-          "One `ContextMenu` per row rather than one for the list: each scopes its own trigger, which is what lets the label name the file the pointer is actually over.",
+          "One `ContextMenu` per row rather than one for the list: each scopes its own trigger, which is what lets the label name the file the pointer is actually over. `render` promotes the `li` itself, so no wrapper sits between the row and its menu — the root renders no element of its own, which is what keeps the list markup legal.",
       },
       {
         demo: "context-menu/view-options",
