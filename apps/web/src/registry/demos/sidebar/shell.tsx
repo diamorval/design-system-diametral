@@ -1,7 +1,9 @@
 import {
+  DotsThreeIcon,
   FileTextIcon,
   HouseIcon,
   LifebuoyIcon,
+  PlusIcon,
   UsersIcon,
 } from "@phosphor-icons/react"
 
@@ -11,14 +13,17 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
+  SidebarGroupAction,
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarHeader,
   SidebarInput,
   SidebarInset,
   SidebarMenu,
+  SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSkeleton,
   SidebarProvider,
   SidebarSeparator,
 } from "@diametral/ui/components/sidebar"
@@ -42,6 +47,9 @@ export default function SidebarShell() {
         <SidebarContent>
           <SidebarGroup>
             <SidebarGroupLabel>Workspace</SidebarGroupLabel>
+            <SidebarGroupAction aria-label="New document">
+              <PlusIcon />
+            </SidebarGroupAction>
             <SidebarGroupContent>
               <SidebarMenu>
                 {WORKSPACE.map((item) => (
@@ -49,8 +57,15 @@ export default function SidebarShell() {
                     <SidebarMenuButton isActive={item.active}>
                       <item.icon /> {item.title}
                     </SidebarMenuButton>
+                    <SidebarMenuAction aria-label={`Options for ${item.title}`}>
+                      <DotsThreeIcon />
+                    </SidebarMenuAction>
                   </SidebarMenuItem>
                 ))}
+                {/* What a menu row looks like before its data arrives. */}
+                <SidebarMenuItem>
+                  <SidebarMenuSkeleton showIcon />
+                </SidebarMenuItem>
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>

@@ -10,6 +10,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarProvider,
+  SidebarRail,
   SidebarTrigger,
 } from "@diametral/ui/components/sidebar"
 
@@ -41,11 +42,15 @@ export default function SidebarCollapsibleIcon() {
             </SidebarGroupContent>
           </SidebarGroup>
         </SidebarContent>
+        {/* The rail is the sidebar's own edge: it needs a collapsible sidebar to
+            position against, which is why it lives here rather than in the shell. */}
+        <SidebarRail />
       </Sidebar>
       <SidebarInset className="p-4">
         <SidebarTrigger />
         <p className="mt-3 text-sm text-muted-foreground">
-          Toggle the trigger to collapse the sidebar to icons.
+          Toggle the trigger, or the rail down the sidebar’s edge, to collapse
+          it to icons.
         </p>
       </SidebarInset>
     </SidebarProvider>
