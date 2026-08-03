@@ -2123,6 +2123,10 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Overlays",
     description:
       "A modal window for focused tasks. Triggers use Base UI's `render` prop rather than `asChild`.",
+    intro: [
+      "Dialog is for a task that needs someone's whole attention but not a whole page — renaming a record, sharing a link, a two-field form. It traps focus, locks page scroll and dims everything behind it, so reach for it only when the work cannot happen inline: Popover is the non-blocking sibling, and Alert Dialog is the one for an irreversible answer.",
+      "`DialogContent` mounts its own portal and overlay, so a dialog is a trigger plus a content and `DialogPortal` / `DialogOverlay` exist for custom shells only. Composition goes through Base UI's `render` prop rather than `asChild`: `render={<Button />}` makes the trigger or the close render as that button instead of nesting one inside another.",
+    ],
     examples: [
       {
         demo: "dialog/basic",
@@ -2137,12 +2141,28 @@ export const COMPONENTS: ComponentDoc[] = [
           "`DialogClose` also takes `render`, so a footer button both submits intent and closes.",
       },
       {
+        demo: "dialog/long-content",
+        title: "Long content",
+        description:
+          "A body that scrolls while the header and footer stay put. `DialogContent` sets no max-height of its own, so cap it and give the middle row `minmax(0,1fr)` — a plain `auto` row would push the footer past the viewport instead of scrolling.",
+      },
+      {
         demo: "dialog/controlled",
         title: "Controlled",
         description:
           "Drive `open` / `onOpenChange` yourself when the dialog must close only after work succeeds.",
       },
     ],
+    parts: {
+      Dialog:
+        "Where dismissal is configured: `disablePointerDismissal` stops a stray click on the overlay throwing away a half-filled form. Escape closes regardless, so an unsaved-work guard belongs in `onOpenChange`.",
+      DialogContent:
+        "Mounts its own portal and overlay — compose those two parts only when the shell has to change. It sets no max-height, so a body that can outgrow the viewport needs one plus a `minmax(0,1fr)` grid row to scroll inside.",
+      DialogTitle:
+        "The popup's accessible name points here, so a dialog without this part is announced unnamed. Hide it visually rather than dropping it when the design has no room for a heading.",
+      DialogFooter:
+        "Reverses to a column below `sm`, so the primary action goes last in source order to land on top. `showCloseButton` appends a plain Close button for footers that need nothing else.",
+    },
   },
   {
     slug: "alert-dialog",
@@ -2150,6 +2170,10 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Overlays",
     description:
       "A blocking confirmation for destructive actions — no dismiss on outside click.",
+    intro: [
+      'Alert Dialog is the one-question interruption: a confirmation the user has to answer before anything else happens, for work that destroys data or cannot be undone. It carries `role="alertdialog"` and holds a title, a description and two answers — anything with several choices or a form to fill belongs in a Dialog instead.',
+      'The root forces `modal` on and pointer dismissal off, so there is nothing to configure and no clicking it away. Escape still closes it, and that is the rule the parts are shaped around: dismissal has to read as "no", so `AlertDialogCancel` wraps Close while `AlertDialogAction` is a plain Button that closes only when you tell it to.',
+    ],
     examples: [
       {
         demo: "alert-dialog/basic",
@@ -2158,18 +2182,47 @@ export const COMPONENTS: ComponentDoc[] = [
           "`AlertDialogAction` is a plain Button and does *not* wrap Close, unlike `AlertDialogCancel` — so confirming has to close the dialog itself. That is deliberate: a confirm usually awaits something first.",
       },
       {
+        demo: "alert-dialog/pending",
+        title: "While the action runs",
+        description:
+          "The dialog holds still with the request in flight: `open` is owned here, the label becomes a Spinner, and the close happens once the work resolves. This is what Action not wrapping Close buys — the user never sees a dialog vanish before the thing it promised has happened.",
+      },
+      {
+        demo: "alert-dialog/type-to-confirm",
+        title: "Type to confirm",
+        description:
+          "A gate for the truly irreversible. Because Action is a plain Button, `disabled` is the entire mechanism — there is no Close to intercept — and Escape still cancels, which is the safe answer.",
+      },
+      {
         demo: "alert-dialog/with-media",
         title: "With media, small",
         description:
           '`size="sm"` stays centred at every breakpoint and makes the footer a two-column grid; `default` goes start-aligned from `sm` up.',
       },
     ],
+    parts: {
+      AlertDialog:
+        "Forces `modal` on and pointer dismissal off, so `modal` and `disablePointerDismissal` are not yours to set. Escape still closes the dialog, which is why cancel must be the safe answer.",
+      AlertDialogAction:
+        "A plain Button rather than a Close — confirming dismisses nothing until you say so, which is what lets the dialog stay open while the action runs.",
+      AlertDialogCancel:
+        "The one part that wraps Close, and it takes `variant` and `size`. A destructive answer that needs no await is often a second Cancel rather than an Action.",
+      AlertDialogMedia:
+        'The only part that changes the header\'s grid: with media present, `size="default"` moves the icon into its own column from `sm` up while `sm` keeps it stacked and centred.',
+      AlertDialogFooter:
+        'Two answers, equal width: `size="sm"` makes it a two-column grid. At `default` it reverses to a column below `sm`, so the confirm goes last in source order.',
+    },
   },
   {
     slug: "sheet",
     name: "Sheet",
     category: "Overlays",
-    description: "A panel that slides in from an edge.",
+    description:
+      "A panel that slides in from an edge — Dialog's modal contract, sized to a column instead of a centred box.",
+    intro: [
+      "Sheet is the edge-anchored form of Dialog: the same trigger, close and modal behaviour, but the panel fills one side of the viewport rather than floating in the middle. Reach for it when the content is a column — a record's details, a filter set, a navigation menu on a narrow screen — or when a centred box would be too cramped to read in. Drawer is the touch-first alternative, with drag-to-dismiss and snap points.",
+      "`side` is the only geometry prop: the edge, the border and the enter and exit transforms all derive from the `data-side` it sets. Inside, the content is a flex column whose header and footer carry their own padding and whose body carries none — so a body long enough to scroll needs `min-h-0 flex-1 overflow-y-auto` plus the matching `px-8`.",
+    ],
     examples: [
       {
         demo: "sheet/sides",
@@ -2178,18 +2231,45 @@ export const COMPONENTS: ComponentDoc[] = [
           "`side` drives position, border edge and enter/exit transform from one `data-side` attribute.",
       },
       {
+        demo: "sheet/detail",
+        title: "Detail panel",
+        description:
+          "The inspector shape: a header that stays, a body that scrolls, a footer that acts. `SheetContent` never scrolls itself, so the scroll region is the body — `min-h-0 flex-1 overflow-y-auto`, with its own `px-8` since only the header and footer are padded.",
+      },
+      {
         demo: "sheet/with-form",
         title: "With a form",
         description:
           "`SheetFooter` carries `mt-auto`, so it pins to the bottom however short the body is. Note the header and footer pad themselves — the body does not.",
       },
+      {
+        demo: "sheet/navigation",
+        title: "Navigation menu",
+        description:
+          "The narrow-screen menu, opened from the left. Each link is a `SheetClose` rendered as an `a`, so following it dismisses the sheet in the same click and there is no open state to reset by hand. `nativeButton={false}` is what keeps it a real link — the same escape hatch `PaginationLink` uses.",
+      },
     ],
+    parts: {
+      SheetContent:
+        "Mounts its own portal and overlay, and reads `side` for position, border edge and transform. It is a flex column that never scrolls itself — a long body needs `min-h-0 flex-1 overflow-y-auto`.",
+      SheetHeader:
+        "Carries its own `p-8`. Whatever sits between header and footer has no padding at all, so repeat `px-8` on the body to keep the column aligned.",
+      SheetFooter:
+        "`mt-auto` pins it to the bottom however short the body is, and it stacks as a column — the primary action goes first in source order.",
+      SheetTitle:
+        "Supplies the panel's accessible name, so keep the part even when the design shows no visible heading.",
+    },
   },
   {
     slug: "drawer",
     name: "Drawer",
     category: "Overlays",
-    description: "A bottom sheet with drag-to-dismiss, tuned for touch.",
+    description:
+      "A bottom sheet with drag-to-dismiss and snap points — Sheet's gesture-driven sibling, tuned for touch.",
+    intro: [
+      "Drawer slides in from an edge like Sheet, but it follows the finger: it tracks the drag, dismisses on a flick and can rest at snap points on the way. Reach for it on touch-first surfaces, and for content someone wants to peek at before committing — a filter set, an upload queue, the list under a map. On a pointer-only screen Sheet is the plainer choice.",
+      "There is no `side` prop. `swipeDirection` on the root is the single source of truth, and the axis, the edge, the border and the closed transform all derive from it: `down` and `up` size their height to the content, `left` and `right` take three-quarters width up to 24rem. Geometry lives on the root — `DrawerContent` reads it from context rather than taking props of its own.",
+    ],
     examples: [
       {
         demo: "drawer/basic",
@@ -2209,7 +2289,23 @@ export const COMPONENTS: ComponentDoc[] = [
         description:
           "With snap points the popup takes full viewport height and the snap offset moves it — which is why the sizing rules switch on `data-snap-points`.",
       },
+      {
+        demo: "drawer/non-modal",
+        title: "Non-modal",
+        description:
+          "`modal={false}` skips the overlay and the scroll lock and leaves the viewport pointer-transparent, so the page behind stays scrollable and clickable. The shape for a tray that reports on background work rather than interrupting it.",
+      },
     ],
+    parts: {
+      Drawer:
+        "Owns the geometry: `swipeDirection`, `snapPoints`, `modal` and `showSwipeHandle` all sit here and reach the content through context — a content part rendered outside a Drawer throws rather than falling back.",
+      DrawerContent:
+        "Renders the viewport and, only when `modal` is true, the overlay. With snap points the popup takes the full viewport height and the snap offset moves it, which is why the sizing rules switch on `data-snap-points`.",
+      DrawerSwipeHandle:
+        "`DrawerContent` renders it for you when the root has `showSwipeHandle`, so compose it directly only inside a custom content. It is `aria-hidden`: dragging is a pointer affordance, and Escape is the keyboard equivalent.",
+      DrawerHeader:
+        "Centres its text on vertical drawers and goes start-aligned from `md` up — a bottom sheet's title reads as a centred label on a phone and as a heading on a desktop.",
+    },
   },
   {
     slug: "popover",

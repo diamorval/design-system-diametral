@@ -12,30 +12,42 @@ import {
   AlertDialogTrigger,
 } from "@diametral/ui/components/alert-dialog"
 import { Button } from "@diametral/ui/components/button"
+import { Spinner } from "@diametral/ui/components/spinner"
 
-export default function AlertDialogBasic() {
+export default function AlertDialogPending() {
   const [open, setOpen] = React.useState(false)
+  const [signingOut, setSigningOut] = React.useState(false)
+
+  function signOutEverywhere() {
+    setSigningOut(true)
+    window.setTimeout(() => {
+      setSigningOut(false)
+      setOpen(false)
+    }, 1200)
+  }
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger render={<Button variant="outline" />}>
-        Delete project
+        Sign out everywhere
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Delete this project?</AlertDialogTitle>
+          <AlertDialogTitle>Sign out of all devices?</AlertDialogTitle>
           <AlertDialogDescription>
-            The project and its 14 documents are removed for everyone. This
-            cannot be undone.
+            Six active sessions end, including this one. You will be asked to
+            sign in again.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel disabled={signingOut}>Stay</AlertDialogCancel>
           <AlertDialogAction
             variant="destructive"
-            onClick={() => setOpen(false)}
+            onClick={signOutEverywhere}
+            disabled={signingOut}
           >
-            Delete
+            {signingOut ? <Spinner /> : null}
+            {signingOut ? "Signing out…" : "Sign out"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
