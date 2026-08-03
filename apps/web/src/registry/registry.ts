@@ -920,21 +920,54 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Data display",
     description:
       "The static table primitives. For sorting, filtering and pagination use Data Table.",
+    intro: [
+      "Table is the styled HTML table and nothing more: one thin wrapper per element, no data layer, no state. Reach for it when the rows are already in the order you want them — a summary, a fixed list, markup rendered on the server. Sorting, filtering and pagination are `Data Table`, which composes these same parts around TanStack Table.",
+      "The root renders a wrapping div that owns the horizontal scroll, so a wide table scrolls inside its column rather than stretching the page — but `className` lands on the `table` element, not on that wrapper. Cells carry no opinion about their content, so a numeric column needs `text-right tabular-nums` on both its head and its cells.",
+    ],
     examples: [
-      { demo: "table/basic", title: "Basic" },
+      {
+        demo: "table/basic",
+        title: "Basic",
+        description:
+          "The whole skeleton in one pass. Rules come from the sections rather than the rows — `TableHeader` draws the line under the head and `TableBody` drops it on the last row, so a row never has to know where it sits.",
+      },
       {
         demo: "table/with-badges",
         title: "With status badges",
         description:
-          "Numeric columns take `text-right`; ids take `font-mono` so digits align down the column.",
+          "Numeric columns take `text-right`; ids take `font-mono` so digits align down the column. `TableCaption` renders below the table whatever its position in the JSX — the root is `caption-bottom`.",
       },
       {
         demo: "table/with-footer",
         title: "With footer total",
         description:
-          "`TableFooter` is styled as a summary row, not a repeat of the header.",
+          "`TableFooter` is styled as a summary row, not a repeat of the header — fill it with `TableCell`, not `TableHead`, and compute the total from the same array the body maps.",
+      },
+      {
+        demo: "table/selectable",
+        title: "Selectable rows",
+        description:
+          'Selection is the one state the primitives track: `data-state="selected"` tints the row and outranks the hover tint, so a selected row holds still under the pointer. A cell containing a `role="checkbox"` element drops its trailing padding, which is what keeps the control column narrow without a width.',
       },
     ],
+    parts: {
+      Table:
+        "Renders a scrolling div around the `table`, and `className` goes on the table inside it — a max-width or a border meant for the scroll container has to wrap this part instead.",
+      TableHeader:
+        "`[&_tr]:border-b`, so the head rule belongs to the section. A header of two stacked rows draws a line under each.",
+      TableBody:
+        "Drops the border on its last row, so the body never doubles up with the footer's own top rule.",
+      TableFooter:
+        "A summary row: muted fill, `font-medium`, top border. It is not a second header — put `TableCell` in it, so screen readers do not read the totals as column names.",
+      TableHead:
+        "Uppercase tracked caption text, start-aligned and `whitespace-nowrap`. It sets nothing for the column below it — a right-aligned column needs `text-right` here and on every cell.",
+      TableRow:
+        'Hover and `data-state="selected"` both tint the row, and selection wins the cascade, so a selected row does not change under the pointer. `has-aria-expanded` tints it too, for a row that owns an open disclosure.',
+      TableCell:
+        '`whitespace-nowrap` by default, so prose in a cell needs `whitespace-normal` and a width to wrap. Trailing padding drops to zero when the cell holds a `role="checkbox"` element.',
+      TableCaption:
+        "Always renders below the table — the root is `caption-bottom` — so it reads as a footnote, not a title. A real heading belongs above the component.",
+    },
   },
   {
     slug: "data-table",
@@ -942,20 +975,42 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Data display",
     description:
       "TanStack Table wired into the Table primitives — sorting, column filtering and pagination from a `columns` definition.",
+    intro: [
+      "Data Table is TanStack Table already wired into the Table primitives: hand it `columns` and `data` and you get sortable headers, an optional filter box and optional pagination, with no `useReactTable` call of your own. Reach for `Table` when the rows are already final — this one owns state, so it is a client component and it re-renders on every sort and keystroke.",
+      "Features switch on by a prop being present rather than by a flag: `searchColumn` renders the filter input, and `pageSize` renders the pager and installs the pagination row model. Sorting is the exception — every column with an accessor is sortable unless you set `enableSorting: false`, and sorting and filtering both see the accessor value, never what `cell` rendered.",
+    ],
     examples: [
       {
         demo: "data-table/basic",
         title: "Basic",
         description:
-          "Pass `columns` and `data`. Column headers become sort toggles wherever the column is sortable.",
+          "Pass `columns` and `data`. Each `accessorKey` column header becomes a sort toggle — a real button inside the `th`, so it is reachable by keyboard and its caret shows the current direction.",
       },
       {
         demo: "data-table/searchable",
         title: "Search and pagination",
         description:
-          "`searchColumn` filters on one column; `pageSize` turns on pagination controls.",
+          "`searchColumn` names the one column the filter box applies to; `pageSize` turns on the pager. `amount` sorts as a number even though its `cell` renders a formatted string, because sorting reads the accessor value rather than the output.",
+      },
+      {
+        demo: "data-table/row-actions",
+        title: "Row actions",
+        description:
+          "The column that is not data: give it an `id` instead of an `accessorKey` and it has no accessor, so it can never become a sort toggle and the filter never sees it. `cell` receives the row, so `row.original` is the record the menu acts on — which is also why each trigger can carry its own `aria-label`.",
+      },
+      {
+        demo: "data-table/empty",
+        title: "Empty state",
+        description:
+          "`emptyMessage` fills one cell spanning every column, so the header still reads and the layout holds its shape. Filtering a table down to nothing lands here too — it is the row model that is empty, not the data.",
       },
     ],
+    parts: {
+      DataTable:
+        "One component, not a composition: sorting and filter state live inside it, so there is no controlled mode. Lift the `data` instead, and remount with a `key` when you need the sort reset.",
+      DataTableColumnHeader:
+        "What turns a header into a sort toggle, exported for columns that render their own `header`. It checks `getCanSort()` itself, so on a column without an accessor it renders the plain content and no button.",
+    },
   },
   {
     slug: "chart",
@@ -963,22 +1018,50 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Data display",
     description:
       "Recharts wrapped so series colours come from a `ChartConfig` and resolve to brand chart tokens.",
+    intro: [
+      "Chart is a thin frame around Recharts: `ChartContainer` gives you the responsive box, themed axis and grid colours, and one place to declare the series. The chart itself is still Recharts, so its children are `BarChart`, `Line`, `XAxis` — this component adds no chart types of its own. Reach for it when the values have to be read; a single figure with a trend hint is `Stat Card`.",
+      "`config` is the whole naming and colour system: an entry that carries a colour becomes a `--color-<key>` custom property scoped to that one chart, which the series reference by name, and the tooltip and legend read their labels from the same object — so a series is named and coloured once. An entry may carry only a label, naming a key without colouring it. The six `--ds-chart-*` tokens hold in both themes, so `theme` on an entry is the escape hatch for the colour that does not.",
+    ],
     examples: [
       {
         demo: "chart/bar",
         title: "Bar chart",
         description:
-          "`ChartContainer` injects a `--color-<key>` variable per config entry, which the series then references.",
+          "`ChartContainer` injects a `--color-<key>` variable per config entry, which the series then references. Two `Bar` children with the same axis group side by side; add a shared `stackId` to stack them instead.",
       },
-      { demo: "chart/line", title: "Line chart" },
-      { demo: "chart/area", title: "Area chart" },
+      {
+        demo: "chart/line",
+        title: "Line chart",
+        description:
+          "For a rate over time, where the shape of the trend carries more than any one value. `dot={false}` drops the per-point markers — the tooltip tracks the nearest x rather than the dots, so nothing becomes unreachable.",
+      },
+      {
+        demo: "chart/area",
+        title: "Area chart",
+        description:
+          "The same series read as a volume. One config entry still owns the colour: the fill is that variable at a low `fillOpacity` while the stroke stays at full strength, so the boundary of the series survives on both themes.",
+      },
       {
         demo: "chart/pie",
         title: "Pie chart with legend",
         description:
-          "`ChartLegendContent` reads its labels from the same config.",
+          "`ChartLegendContent` reads its labels from the same config. A pie is coloured per slice rather than per series, so each `Cell` names its own `--color-<channel>` and `nameKey` tells the tooltip and legend which field to look the label up by.",
       },
     ],
+    parts: {
+      ChartContainer:
+        "Holds the config, the responsive box and the `--color-<key>` variables, so every other part has to be inside one — the tooltip and legend content read it from context and throw outside it. Its default size is `aspect-video`; a fixed height needs a `className`.",
+      ChartTooltip:
+        "Recharts' own `Tooltip`, re-exported unchanged. It positions and toggles; what it renders is whatever you pass as `content`.",
+      ChartTooltipContent:
+        "Resolves each entry against `config`, so a series whose data key is not a config key needs `nameKey` or `labelKey` to redirect the lookup — the usual fix for a pie. Values print in tabular figures so the column of numbers stays aligned as the pointer moves.",
+      ChartLegend:
+        "Recharts' `Legend`, re-exported. Its `verticalAlign` is what the content part reads to decide which side its padding goes on.",
+      ChartLegendContent:
+        "Labels come from `config` alone, so a series with no config entry renders a swatch and no text.",
+      ChartStyle:
+        "The `style` element `ChartContainer` already renders for you — exported only for the case where you own the container. A config with no colours renders nothing at all.",
+    },
   },
   {
     slug: "card",
@@ -986,22 +1069,57 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Data display",
     description:
       "A bordered surface with header, content and footer slots — the default container for grouped content.",
+    intro: [
+      "Card is the default container for something that reads as its own object: a record on an index, a tile on a dashboard, a summary you could drag elsewhere and still understand. When the region belongs to the page rather than sitting on it, `Panel` is the flat sibling with the same header, content and footer skeleton.",
+      'The root owns `--card-spacing` and every part reads it for padding, so `size="sm"` retunes the whole card from one place. Rules are opt-in the same way Panel\'s are: the header and footer only take their inner padding once you add `.border-b` or `.border-t`. The root is also `overflow-hidden`, which is what lets a first-child image sit flush against the edges.',
+    ],
     examples: [
-      { demo: "card/basic", title: "Basic" },
+      {
+        demo: "card/basic",
+        title: "Basic",
+        description:
+          "Title, description, content — the minimum useful card. No rules are drawn: the header only takes its bottom padding when you add `.border-b`, so an undivided card is spaced by the root's gap alone.",
+      },
       {
         demo: "card/with-action",
         title: "With header action",
         description:
-          "`CardAction` is positioned by the header grid, so it stays top-right without absolute positioning.",
+          "`CardAction` is positioned by the header grid, so it stays top-right without absolute positioning. The header grows that second column only when an action is present, which is why a card without one needs no change.",
       },
       {
         demo: "card/stat",
         title: "Stat card",
         description:
-          "Titles use the Ufficio heading face; figures use tabular digits.",
+          "The dashboard tile built from Card's own slots: description as the label, title as the figure. Titles use the Ufficio heading face; figures use tabular digits. Reach for `Stat Card` once the tile also wants a delta or a sparkline.",
       },
-      { demo: "card/with-chart", title: "With a chart" },
+      {
+        demo: "card/media",
+        title: "With cover media",
+        description:
+          "An `img` as the Card's direct first child bleeds to the edges: the root drops its own top padding for exactly that case and clips the image to the border. Wrap the image in a div and it becomes ordinary content again, padding and all.",
+      },
+      {
+        demo: "card/with-chart",
+        title: "With a chart",
+        description:
+          "`CardContent` is horizontal padding and nothing else — no height, no gap — so the `ChartContainer` brings its own `h-40 w-full`. Left to itself the chart's `aspect-video` would decide how tall the card is.",
+      },
     ],
+    parts: {
+      Card: "Owns `--card-spacing`, which every part reads for its padding, and `size` is the one knob that rewrites it. `overflow-hidden` is deliberate: it lets a first-child image reach the edges and keeps anything else from escaping them.",
+      CardHeader:
+        "A grid rather than a stack — it grows a second column when a `CardAction` is present and a second row when a `CardDescription` is, so neither needs a wrapper. Bottom padding is keyed off `.border-b`.",
+      CardTitle:
+        "Type styles only: heading face, uppercase, tracked out, with no padding and no heading element of its own. Add an `h2` or `h3` when the level matters to the page outline.",
+      CardDescription:
+        "Its presence is what grows the header's second row — the rule is a `:has()` on its `data-slot`, so the description can sit inside a wrapper and the row still appears.",
+      CardAction:
+        "Placed by the header grid at row 1, column 2 — top-right with no absolute positioning, and nothing outside a `CardHeader`.",
+      CardContent:
+        "Horizontal padding and nothing else. It sets no height and no gap, so a chart, a list or a form brings its own.",
+      CardFooter:
+        "A flex row mirroring the header: top padding is keyed off `.border-t`. Items are start-aligned, so a pair of buttons that belong at the end needs `justify-end`.",
+    },
   },
   {
     slug: "badge",
