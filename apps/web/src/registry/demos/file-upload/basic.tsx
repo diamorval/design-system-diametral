@@ -7,8 +7,6 @@ import {
   FileUploadTitle,
 } from "@diametral/ui/components/file-upload"
 
-// The drop zone is a plain div wrapping a real (visually hidden) file input,
-// so click, keyboard and drag-and-drop all open or receive files.
 export default function FileUploadBasic() {
   const [names, setNames] = React.useState<string[]>([])
 

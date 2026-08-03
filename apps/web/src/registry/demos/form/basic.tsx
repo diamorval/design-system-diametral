@@ -11,15 +11,17 @@ import { Form } from "@diametral/ui/components/form"
 import { Input } from "@diametral/ui/components/input"
 import { Textarea } from "@diametral/ui/components/textarea"
 
-// `Form` is the layout and submit wrapper: a flex column with a generous gap, plus
-// Base UI's `onFormSubmit`, which collects the values and calls preventDefault.
 export default function FormBasic() {
   const [submitted, setSubmitted] = React.useState<string>()
 
   return (
     <Form
       className="max-w-sm"
-      onFormSubmit={(values) => setSubmitted(JSON.stringify(values))}
+      onSubmit={(event) => {
+        event.preventDefault()
+        const values = Object.fromEntries(new FormData(event.currentTarget))
+        setSubmitted(JSON.stringify(values))
+      }}
     >
       <FieldGroup>
         <Field>

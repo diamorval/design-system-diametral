@@ -24,8 +24,6 @@ function formatSize(bytes: number) {
     : `${(kilobytes / 1000).toFixed(1)} Mo`
 }
 
-// FileUpload collects the files; Attachment displays them. Keeping the two apart
-// is why the zone needs no knowledge of how a selected file should look.
 export default function FileUploadWithAttachments() {
   const [files, setFiles] = React.useState<File[]>([])
 
