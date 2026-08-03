@@ -31,10 +31,7 @@ export default function ChartPie() {
         <ChartTooltip content={<ChartTooltipContent nameKey="channel" />} />
         <Pie data={DATA} dataKey="visitors" nameKey="channel" innerRadius={45}>
           {DATA.map((entry) => (
-            <Cell
-              key={entry.channel}
-              fill={`var(--color-${entry.channel})`}
-            />
+            <Cell key={entry.channel} fill={`var(--color-${entry.channel})`} />
           ))}
         </Pie>
         <ChartLegend content={<ChartLegendContent nameKey="channel" />} />
