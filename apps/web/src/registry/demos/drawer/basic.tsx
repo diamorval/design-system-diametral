@@ -10,8 +10,6 @@ import {
   DrawerTrigger,
 } from "@diametral/ui/components/drawer"
 
-// `swipeDirection` is the single source of truth: the content derives its axis,
-// edge, border and close transform from it, so there is no separate `side`.
 export default function DrawerBasic() {
   return (
     <Drawer showSwipeHandle>

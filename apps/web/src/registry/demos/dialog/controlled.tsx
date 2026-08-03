@@ -15,8 +15,6 @@ export default function DialogControlled() {
   const [open, setOpen] = React.useState(false)
   const [saving, setSaving] = React.useState(false)
 
-  // The dialog stays open while the work runs, then closes itself on success —
-  // which is only possible when `open` is owned here rather than by the trigger.
   function save() {
     setSaving(true)
     window.setTimeout(() => {

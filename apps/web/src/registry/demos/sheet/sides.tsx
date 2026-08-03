@@ -23,7 +23,7 @@ export default function SheetSides() {
               <SheetTitle>Opens from {side}</SheetTitle>
               <SheetDescription>
                 Left and right sheets take three-quarters width, capped at
-                `sm:max-w-sm`; top and bottom size to their content.
+                24rem; top and bottom size to their content.
               </SheetDescription>
             </SheetHeader>
           </SheetContent>

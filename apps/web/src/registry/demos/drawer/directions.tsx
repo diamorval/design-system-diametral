@@ -22,8 +22,8 @@ export default function DrawerDirections() {
             <DrawerHeader>
               <DrawerTitle>Swipes {direction}</DrawerTitle>
               <DrawerDescription>
-                Horizontal drawers take 75% width, capped at 24rem from `sm` up;
-                vertical ones cap their height at the viewport less 6rem.
+                Horizontal drawers take 75% width, capped at 24rem on wider
+                screens; vertical ones stop 6rem short of the viewport height.
               </DrawerDescription>
             </DrawerHeader>
           </DrawerContent>

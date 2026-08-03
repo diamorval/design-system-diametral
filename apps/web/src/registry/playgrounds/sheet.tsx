@@ -23,8 +23,8 @@ export default function SheetPlayground({
         <SheetHeader>
           <SheetTitle>{children}</SheetTitle>
           <SheetDescription>
-            Left and right sheets cap at `sm:max-w-sm`; top and bottom size to
-            their content.
+            Left and right sheets cap at 24rem; top and bottom size to their
+            content.
           </SheetDescription>
         </SheetHeader>
       </SheetContent>

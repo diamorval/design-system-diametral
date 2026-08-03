@@ -14,8 +14,6 @@ import {
   ItemTitle,
 } from "@diametral/ui/components/item"
 
-// With snap points the popup takes the full viewport height and the snap offset
-// moves it, which is why the sizing rules switch on `data-snap-points`.
 export default function DrawerSnapPoints() {
   return (
     <Drawer snapPoints={["30%", "60%", 1]} showSwipeHandle>
