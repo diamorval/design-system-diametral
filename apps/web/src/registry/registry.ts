@@ -507,7 +507,7 @@ export const COMPONENTS: ComponentDoc[] = [
         demo: "checkbox-group/validation",
         title: "With validation",
         description:
-          "`FieldError` renders nothing until it has content, so it can sit in the markup unconditionally; `aria-invalid` on the boxes and `data-invalid` on each row carry the error styling.",
+          "`FieldError` renders nothing until it has content, so it can sit in the markup unconditionally, and `aria-invalid` on each box is what carries the destructive border and ring — the group has no invalid state of its own.",
       },
     ],
   },

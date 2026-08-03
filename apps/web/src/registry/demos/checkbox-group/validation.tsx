@@ -42,11 +42,7 @@ export default function CheckboxGroupValidation() {
           }}
         >
           {ENVIRONMENTS.map((environment) => (
-            <Field
-              key={environment.value}
-              orientation="horizontal"
-              data-invalid={invalid}
-            >
+            <Field key={environment.value} orientation="horizontal">
               <Checkbox
                 id={`checkbox-validation-${environment.value}`}
                 value={environment.value}
