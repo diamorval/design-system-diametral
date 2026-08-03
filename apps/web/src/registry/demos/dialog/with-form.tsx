@@ -9,11 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@diametral/ui/components/dialog"
-import {
-  Field,
-  FieldGroup,
-  FieldLabel,
-} from "@diametral/ui/components/field"
+import { Field, FieldGroup, FieldLabel } from "@diametral/ui/components/field"
 import { Input } from "@diametral/ui/components/input"
 
 export default function DialogWithForm() {
@@ -40,7 +36,9 @@ export default function DialogWithForm() {
           </Field>
         </FieldGroup>
         <DialogFooter>
-          <DialogClose render={<Button variant="outline" />}>Cancel</DialogClose>
+          <DialogClose render={<Button variant="outline" />}>
+            Cancel
+          </DialogClose>
           <DialogClose render={<Button />}>Save</DialogClose>
         </DialogFooter>
       </DialogContent>
