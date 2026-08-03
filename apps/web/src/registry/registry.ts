@@ -2217,6 +2217,10 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Overlays",
     description:
       "Anchored, non-modal content with title and description slots.",
+    intro: [
+      "Popover is the anchored surface you can work inside: it hangs off a trigger, takes focus when it opens, and closes on Escape or an outside click. Reach for it when the panel holds controls — a filter form, a column picker, an in-place confirmation. Of the three hover-adjacent overlays it is the only one a keyboard can enter: Tooltip is a label, Hover Card is a read-only preview.",
+      "There is no positioner to mount. `PopoverContent` accepts `side`, `align`, `sideOffset` and `alignOffset` and forwards them to the Base UI positioner it already renders inside a portal. It also exports no Close part, so a control that has to dismiss the popup — a save, a confirm — needs the `open`/`onOpenChange` pair owned by your own component.",
+    ],
     examples: [
       {
         demo: "popover/basic",
@@ -2228,28 +2232,59 @@ export const COMPONENTS: ComponentDoc[] = [
         demo: "popover/with-form",
         title: "With controls",
         description:
-          "Popover is focusable and dismissible, so interactive content belongs here rather than in a tooltip — a tooltip is unreachable by keyboard.",
+          "Popover is focusable and dismissible, so interactive content belongs here rather than in a tooltip — a tooltip is unreachable by keyboard. The popup is `w-72` by default; this one widens to `w-80` through `className` because number fields read badly when cramped.",
+      },
+      {
+        demo: "popover/confirm",
+        title: "Inline confirmation",
+        description:
+          "A reversible confirm anchored to the control it affects, where an Alert Dialog would be too heavy a stop. There is no Close part to render, so both buttons drive the `open` state the demo owns — which is also what lets the destructive one report a result on the way out.",
       },
     ],
+    parts: {
+      PopoverContent:
+        "Renders the portal and positioner itself, which is why the positioning props live here and not on a separate part. Width is a fixed `w-72` — widen it through `className` rather than wrapping the children.",
+      PopoverTitle:
+        "Base UI points the popup's `aria-labelledby` at this part, so a hand-rolled heading `div` leaves the popover with no accessible name.",
+      PopoverDescription:
+        "The `aria-describedby` half of the same wiring. Keep it for the sentence that explains the popup, not for body copy.",
+    },
   },
   {
     slug: "hover-card",
     name: "Hover Card",
     category: "Overlays",
     description: "A preview surface shown on hover, for links and mentions.",
+    intro: [
+      "Hover Card is the preview that saves a click: hovering a mention, a link or an entity name expands it into just enough context to decide whether to follow it. Everything inside is supplementary by definition — a touch user never hovers, so anything a reader actually needs belongs on the page, and anything they need to act on belongs in a Popover.",
+      "It wraps Base UI's `PreviewCard`, which puts the timings on the trigger rather than the root: `delay` (600ms) and `closeDelay` (300ms) are `HoverCardTrigger` props. That trigger renders an `a` element by default, so pass `render` whenever the real trigger is a button — the element has to match what a click would do.",
+    ],
     examples: [
       {
         demo: "hover-card/basic",
         title: "On a link",
         description:
-          "Built on Base UI's `PreviewCard`. It opens on hover *and* focus, but is still supplementary — never put anything essential only in here.",
+          "Built on Base UI's `PreviewCard`. It opens on hover and on keyboard focus, but is still supplementary — never put anything essential only in here.",
       },
       {
         demo: "hover-card/with-avatar",
         title: "Person preview",
-        description: "The usual case: a mention that expands into a profile.",
+        description:
+          "The usual case: a mention that expands into a profile. The trigger is a Button through `render`, since the default element is an anchor and this one navigates nowhere.",
+      },
+      {
+        demo: "hover-card/definition",
+        title: "Metric definition",
+        description:
+          "A glossary card for a dashboard: the label explains how its number is computed, instead of a legend nobody reads. `delay` is set on the trigger — 600ms is too long a wait when the reader is scanning a row of figures.",
       },
     ],
+    parts: {
+      HoverCardTrigger:
+        "Owns the timing: `delay` and `closeDelay` are trigger props, not root props, so two triggers can behave differently in one view. It renders an `a` by default — pass `render` when the trigger is really a button.",
+      HoverCardContent:
+        "Renders its own portal and positioner, so positioning props are accepted here. Opening does not move focus into the card, so anything interactive inside it is pointer-only — keep actions out.",
+    },
   },
   {
     slug: "tooltip",
@@ -2257,6 +2292,10 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Overlays",
     description:
       "A short label on hover or focus. Never put interactive content in one.",
+    intro: [
+      "Tooltip names something the interface has left unlabelled: an icon button, a clipped table cell, the shortcut behind an action. It is a label and not a container — the popup never takes focus and a touch user never hovers it, so a link or a button in here is a control nobody can reach. It also cannot rescue a `disabled` element, which emits no pointer events at all.",
+      "Timing lives on `TooltipProvider`, and this wrapper defaults its `delay` to 0 where the Base UI default is 600ms per trigger: a bare provider makes its whole subtree instant, and a considered pause means passing `delay` yourself. Individual triggers override both `delay` and `closeDelay`, so one slow control does not need its own provider.",
+    ],
     examples: [
       {
         demo: "tooltip/basic",
@@ -2270,7 +2309,21 @@ export const COMPONENTS: ComponentDoc[] = [
         description:
           "Prefer the logical sides `inline-start` / `inline-end`, which follow direction, over the physical `left` / `right`. A nested `Kbd` restyles to invert against the dark surface.",
       },
+      {
+        demo: "tooltip/truncated",
+        title: "Clipped labels",
+        description:
+          "The overflow escape hatch: narrow rows clip with `truncate` and the tooltip carries the full string. `render` puts the trigger on the row's own button, which is what keeps the label reachable by keyboard rather than by pointer alone.",
+      },
     ],
+    parts: {
+      TooltipProvider:
+        "Optional, and it changes the timing: it defaults `delay` to 0, where a provider-less trigger waits Base UI's 600ms. Wrap the group of tooltips that should share one delay, not the whole app.",
+      TooltipTrigger:
+        "`delay` and `closeDelay` are trigger props, so one control can be slower than the rest of its group. A tooltip on a `disabled` element never opens — the element emits no pointer events.",
+      TooltipContent:
+        "Renders the portal, positioner and arrow together, so positioning props belong here. A nested `Kbd` is re-styled and the trailing padding tightened by the popup's own `data-[slot=kbd]` rules — nothing to pass.",
+    },
   },
   {
     slug: "dropdown-menu",
@@ -2278,6 +2331,10 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Overlays",
     description:
       "An action menu from a trigger, with labels, separators, shortcuts and destructive items.",
+    intro: [
+      "Dropdown Menu is the list of commands behind a control: row actions, an overflow button, a view menu. Items are things that happen — plus the checkbox and radio parts for a setting the menu itself owns. To pick a value a form will submit, reach for Select; to act on a right-clicked region, Context Menu, which shares this vocabulary part for part.",
+      "Two structural facts. `DropdownMenuLabel` is a Base UI group part, so it has to sit inside a `DropdownMenuGroup` or the `DropdownMenuRadioGroup` it labels — placed straight into the content it throws when the menu opens. And the popup is width-linked to its trigger through `w-(--anchor-width)` over a `min-w-48` floor, so a wide trigger yields a wide menu, not a narrow one beside it.",
+    ],
     examples: [
       {
         demo: "dropdown-menu/basic",
@@ -2297,13 +2354,45 @@ export const COMPONENTS: ComponentDoc[] = [
         description:
           "Submenus open to `inline-end` by default, so an RTL locale gets them on the correct side with no extra prop.",
       },
+      {
+        demo: "dropdown-menu/mixed-rows",
+        title: "Mixed and disabled rows",
+        description:
+          "Only some commands earn an icon, and the ones that don't would otherwise start further out. `inset` pads them by the icon column (`data-inset:ps-9.5`) so the menu keeps one text edge. The `disabled` item is still highlightable by keyboard — Base UI keeps disabled items focusable on purpose — while `data-disabled` dims it and drops its pointer events.",
+      },
     ],
+    parts: {
+      DropdownMenuContent:
+        "Renders its own portal and positioner, so positioning props belong here. `w-(--anchor-width)` ties its width to the trigger with `min-w-48` as the floor — a wide trigger widens the menu.",
+      DropdownMenuGroup:
+        "Exists for the label: Base UI treats a group label as a child of a group, so this part is what makes `DropdownMenuLabel` legal.",
+      DropdownMenuLabel:
+        "Throws on open when it sits directly in the content — keep a `DropdownMenuGroup` or `DropdownMenuRadioGroup` around it. `inset` lines it up with items that carry icons.",
+      DropdownMenuItem:
+        'Item type styles uppercase the label, so write it in sentence case. `variant="destructive"` recolours the text and any icon together; `inset` pads an icon-less item by the icon column.',
+      DropdownMenuCheckboxItem:
+        "Reserves the indicator column with `pe-8` and pins the check to `end-2`, so a menu mixing selection items with plain ones keeps every label on one line.",
+      DropdownMenuRadioItem:
+        "Same geometry as the checkbox item; the surrounding `DropdownMenuRadioGroup` owns `value`, so the item only names its own.",
+      DropdownMenuShortcut:
+        "A plain span pushed out by `ms-auto` that follows the item's focus colour. Use `Kbd` instead when you want key caps rather than a hint.",
+      DropdownMenuSubTrigger:
+        "Renders its own trailing caret, so pass only the label and any leading icon.",
+      DropdownMenuSubContent:
+        'Defaults to `side="inline-end"` with a small negative `alignOffset`, which flips with direction — an RTL locale needs no extra prop.',
+      DropdownMenuPortal:
+        "Rarely composed: `DropdownMenuContent` already mounts its own portal. Reach for this part only to take that mounting over.",
+    },
   },
   {
     slug: "context-menu",
     name: "Context Menu",
     category: "Overlays",
     description: "The same menu surface, opened by right-click on a region.",
+    intro: [
+      "Context Menu is Dropdown Menu's surface opened by right-click or long-press on a region rather than by a button. Treat it as an accelerator: every command in it should also be reachable somewhere visible, because a right-click is a habit rather than an affordance and nothing announces that the region has a menu at all.",
+      'The trigger is the region. `ContextMenuTrigger` renders a `div` and marks it `select-none`, so the right-click drag never selects the text underneath, and the popup anchors to the pointer rather than to an element — which is why the content defaults to `side="inline-end"` with `align="start"` and has no trigger width to inherit. Item parts mirror Dropdown Menu name for name, so one menu body can serve both surfaces.',
+    ],
     examples: [
       {
         demo: "context-menu/basic",
@@ -2317,7 +2406,33 @@ export const COMPONENTS: ComponentDoc[] = [
         description:
           "The item vocabulary matches Dropdown Menu exactly, so the two surfaces can share one menu definition.",
       },
+      {
+        demo: "context-menu/rows",
+        title: "Per-row menus",
+        description:
+          "One `ContextMenu` per row rather than one for the list: each scopes its own trigger, which is what lets the label name the file the pointer is actually over.",
+      },
+      {
+        demo: "context-menu/view-options",
+        title: "View options",
+        description:
+          "The background menu of a view, where the items report state instead of firing commands: `ContextMenuRadioGroup` owns `value`, so the menu opens already showing the current layout.",
+      },
     ],
+    parts: {
+      ContextMenuTrigger:
+        "Renders a `div` and carries `select-none`, so a right-click drag never selects the region's own text. Pass `render` to promote an element you already have — a row, a canvas, a card — to the target.",
+      ContextMenuContent:
+        "Anchored to the pointer, not to an element: hence the `inline-end`/`start` defaults, and no trigger width to inherit the way the dropdown's popup does.",
+      ContextMenuLabel:
+        "A Base UI group part — keep a `ContextMenuGroup`, or the `ContextMenuRadioGroup` it labels, around it. In the content directly it throws when the menu opens.",
+      ContextMenuItem:
+        'Item type styles uppercase the label, so write it in sentence case. `variant="destructive"` recolours the text and its icon together.',
+      ContextMenuSubContent:
+        "Opens to `inline-end` by default, so an RTL locale flips it with no extra prop.",
+      ContextMenuPortal:
+        "`ContextMenuContent` already mounts its own portal — this part is only for taking that over.",
+    },
   },
 
   /* -- Feedback ---------------------------------------------------------- */

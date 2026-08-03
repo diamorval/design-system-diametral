@@ -28,8 +28,6 @@ export default function DropdownMenuBasic() {
         <DotsThreeIcon />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        {/* `DropdownMenuLabel` is a group part in Base UI, so it belongs inside a
-            `DropdownMenuGroup` — directly in the content it throws on open. */}
         <DropdownMenuGroup>
           <DropdownMenuLabel>Document</DropdownMenuLabel>
           <DropdownMenuItem>

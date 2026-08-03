@@ -7,8 +7,6 @@ import {
   TooltipTrigger,
 } from "@diametral/ui/components/tooltip"
 
-// `inline-start` / `inline-end` are the logical sides — they follow direction,
-// where `left` / `right` stay physical. Prefer the logical pair.
 const SIDES = ["top", "inline-end", "bottom", "inline-start"] as const
 
 export default function TooltipSides() {
