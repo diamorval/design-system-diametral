@@ -52,7 +52,6 @@ async function run(): Promise<void> {
       // @ts-expect-error commands/status.mts lands in a later issue
       return void (await import("./commands/status.mts"))
     case "logs":
-      // @ts-expect-error commands/logs.mts lands in a later issue
       return void (await import("./commands/logs.mts"))
     case "clean":
       // @ts-expect-error commands/clean.mts lands in a later issue

@@ -215,7 +215,7 @@ for (let iteration = 1; iteration <= config.maxIterations; iteration++) {
           maxIterations: config.phases.implementer.maxIterations,
           agent: agentFor(config.phases.implementer),
           promptFile: "./.sandcastle/implement-prompt.md",
-          logging: logging(`${issue.branch}-implementer`),
+          logging: logging(`issue-${issue.id}-implementer`),
           promptArgs: {
             TASK_ID: issue.id,
             ISSUE_TITLE: issue.title,
@@ -230,7 +230,7 @@ for (let iteration = 1; iteration <= config.maxIterations; iteration++) {
             maxIterations: config.phases.reviewer.maxIterations,
             agent: agentFor(config.phases.reviewer),
             promptFile: "./.sandcastle/review-prompt.md",
-            logging: logging(`${issue.branch}-reviewer`),
+            logging: logging(`issue-${issue.id}-reviewer`),
             promptArgs: {
               BRANCH: issue.branch,
             },
