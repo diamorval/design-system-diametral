@@ -22,13 +22,13 @@ export default function DialogWithForm() {
         <DialogHeader>
           <DialogTitle>Rename project</DialogTitle>
           <DialogDescription>
-            This changes the display name only.
+            The name is what collaborators see; the slug appears in URLs.
           </DialogDescription>
         </DialogHeader>
         <FieldGroup>
           <Field>
             <FieldLabel htmlFor="dialog-form-name">Name</FieldLabel>
-            <Input id="dialog-form-name" defaultValue="design-system2" />
+            <Input id="dialog-form-name" defaultValue="Design System 2" />
           </Field>
           <Field>
             <FieldLabel htmlFor="dialog-form-slug">Slug</FieldLabel>
