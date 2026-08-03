@@ -133,6 +133,64 @@ async function buildPlaygrounds() {
 }
 
 /**
+ * Parts no demo and no playground can honestly show, with the reason. Keyed
+ * `<slug>/<Part>`. Every entry is an export whose composition does not exist:
+ * the three menu portals because their own Content portals itself, the
+ * navigation menu's indicator because the trigger draws its own caret, and the
+ * toaster because it mounts once in the app root rather than in a page.
+ *
+ * Adding a line here is a claim that a reader has nothing to look at. Prefer
+ * writing the part into a playground or a demo.
+ */
+const ANATOMY_EXCEPTIONS: Record<string, string> = {
+  "context-menu/ContextMenuPortal": "ContextMenuContent portals itself",
+  "dropdown-menu/DropdownMenuPortal": "DropdownMenuContent portals itself",
+  "menubar/MenubarPortal": "MenubarContent portals itself",
+  "navigation-menu/NavigationMenuIndicator":
+    "NavigationMenuTrigger renders its own caret",
+  "toast/Toaster": "mounted once in the app root, not inside a page",
+}
+
+/**
+ * Every part is written somewhere a reader can reach: its own playground, one of
+ * its demos, or the component's own source. A part in none of those has no
+ * example at all, which the anatomy index can only report as a dead row — so it
+ * fails the build instead, here, where the fix is a few lines of JSX away.
+ */
+function checkCoverage(anatomy: Record<string, Anatomy>) {
+  const missing: string[] = []
+
+  for (const [slug, data] of Object.entries(anatomy)) {
+    // Mirrors the index: a lone export with no types never renders a row.
+    if (data.parts.length < 2 && !data.types.length) continue
+    // Nothing documents this component yet — the page says so itself, and
+    // per-part rows would be noise on top of that.
+    if (!Object.keys(data.coverage).length) continue
+
+    const written = new Set(Object.values(data.coverage).flat())
+    const internal = new Set(
+      data.rows.filter((row) => row.internal).map((row) => row.part)
+    )
+
+    for (const part of data.parts) {
+      if (written.has(part) || internal.has(part)) continue
+      if (ANATOMY_EXCEPTIONS[`${slug}/${part}`]) continue
+      missing.push(`${slug}/${part}`)
+    }
+  }
+
+  if (missing.length) {
+    throw new Error(
+      `[diametral:demo-source] ${missing.length} exported part(s) appear in no ` +
+        `playground and no demo, so the anatomy index can only mark them as ` +
+        `having no example:\n  ${missing.join("\n  ")}\n` +
+        `Write each one into playgrounds/<slug>.tsx or demos/<slug>/, or add it ` +
+        `to ANATOMY_EXCEPTIONS in plugins/demo-source.ts with the reason.`
+    )
+  }
+}
+
+/**
  * The composition grammar of every component, merged from its demos, its
  * playground and its own source. Derived rather than declared: 432 parts across
  * 80 components is more than anyone will keep true by hand, and the demos
@@ -171,6 +229,7 @@ async function buildAnatomy() {
     )
   }
 
+  checkCoverage(anatomy)
   return anatomy
 }
 
