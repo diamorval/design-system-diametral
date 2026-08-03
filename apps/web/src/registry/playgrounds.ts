@@ -218,7 +218,7 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
       {
         prop: "defaultValue",
         type: "select",
-        options: ["vite", "next", "astro"],
+        options: ["vite", "rolldown", "next", "astro"],
       },
     ],
   },

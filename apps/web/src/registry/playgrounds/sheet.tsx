@@ -3,8 +3,10 @@ import type { ComponentProps } from "react"
 import { Button } from "@diametral/ui/components/button"
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetDescription,
+  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -27,6 +29,10 @@ export default function SheetPlayground({
             content.
           </SheetDescription>
         </SheetHeader>
+        <SheetFooter>
+          <SheetClose render={<Button />}>Save changes</SheetClose>
+          <SheetClose render={<Button variant="ghost" />}>Cancel</SheetClose>
+        </SheetFooter>
       </SheetContent>
     </Sheet>
   )

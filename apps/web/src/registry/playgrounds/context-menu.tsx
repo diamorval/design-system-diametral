@@ -1,11 +1,20 @@
 import type { ComponentProps } from "react"
-import { CopyIcon, TrashIcon } from "@phosphor-icons/react"
+import { CopyIcon, ExportIcon, TrashIcon } from "@phosphor-icons/react"
 
 import {
   ContextMenu,
+  ContextMenuCheckboxItem,
   ContextMenuContent,
+  ContextMenuGroup,
   ContextMenuItem,
+  ContextMenuLabel,
+  ContextMenuRadioGroup,
+  ContextMenuRadioItem,
   ContextMenuSeparator,
+  ContextMenuShortcut,
+  ContextMenuSub,
+  ContextMenuSubContent,
+  ContextMenuSubTrigger,
   ContextMenuTrigger,
 } from "@diametral/ui/components/context-menu"
 
@@ -22,10 +31,32 @@ export default function ContextMenuPlayground(
         Right-click here
       </ContextMenuTrigger>
       <ContextMenuContent {...props}>
-        <ContextMenuItem>
-          <CopyIcon /> Duplicate
-        </ContextMenuItem>
+        <ContextMenuGroup>
+          <ContextMenuLabel>Sheet</ContextMenuLabel>
+          <ContextMenuItem>
+            <CopyIcon /> Duplicate
+            <ContextMenuShortcut>⌘D</ContextMenuShortcut>
+          </ContextMenuItem>
+          <ContextMenuCheckboxItem defaultChecked>
+            Snap to grid
+          </ContextMenuCheckboxItem>
+        </ContextMenuGroup>
         <ContextMenuSeparator />
+        <ContextMenuRadioGroup defaultValue="mm">
+          <ContextMenuLabel>Units</ContextMenuLabel>
+          <ContextMenuRadioItem value="mm">Millimetres</ContextMenuRadioItem>
+          <ContextMenuRadioItem value="in">Inches</ContextMenuRadioItem>
+        </ContextMenuRadioGroup>
+        <ContextMenuSeparator />
+        <ContextMenuSub>
+          <ContextMenuSubTrigger>
+            <ExportIcon /> Export as
+          </ContextMenuSubTrigger>
+          <ContextMenuSubContent>
+            <ContextMenuItem>DXF</ContextMenuItem>
+            <ContextMenuItem>PDF</ContextMenuItem>
+          </ContextMenuSubContent>
+        </ContextMenuSub>
         <ContextMenuItem variant="destructive">
           <TrashIcon /> Delete
         </ContextMenuItem>
