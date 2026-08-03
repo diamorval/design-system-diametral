@@ -13,7 +13,7 @@ import { Textarea } from "@diametral/ui/components/textarea"
 
 export default function FormSections() {
   return (
-    <Form className="max-w-sm">
+    <Form className="max-w-sm" onSubmit={(event) => event.preventDefault()}>
       <FieldSet>
         <FieldLegend>Company</FieldLegend>
         <FieldGroup>
