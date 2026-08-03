@@ -129,13 +129,43 @@ These last for that one command. Nothing is saved.
 
 ---
 
+## Tool roster (token cost)
+
+Lane agents run with a trimmed tool list. The CLI ships a definition for every
+built-in tool and the lane was loading 29 to use four — that overhead rides
+every request. A shim in the image adds `--tools` for you.
+
+```dockerfile
+ENV SC_TOOLS="Bash,Read,Edit,Write,Glob,Grep,TodoWrite,Skill"
+```
+
+Worth **$0.54 per lane, ~10%**. Change it in `.sandcastle/Dockerfile` and rebuild.
+
+⚠️ **A typo does not fail the run.** `--tools Bash,Nonexistent` yields `['Bash']`
+and exits 0 — the lane just quietly runs one tool short. After changing the
+roster, check what the agent actually got:
+
+```fish
+jq -r 'select(.type=="system" and .subtype=="init") | .tools | sort | join(",")' \
+  .sandcastle/logs/*implementer.log | tail -1
+```
+
+Don't narrow the list from what a past run happened to use. The reviewer only
+used `Bash` and `Read` on issue 9, but its prompt tells it to edit and commit —
+and a merger without `Read` resolves conflicts blind, deletes another lane's
+work, and opens the PR anyway. The whole spread between a wide roster and a
+tight one is 3% of a lane. Not worth it.
+
+---
+
 ## Rebuild the image
 
 ```fish
 pnpm sandcastle:image
 ```
 
-**Only when `pnpm-lock.yaml` changes** (you added/removed/bumped a dependency). ~1 min.
+**When `pnpm-lock.yaml` changes** (you added/removed/bumped a dependency), or
+when you change `SC_TOOLS`. ~1 min.
 
 Forget to? Nothing breaks — installs just get slower.
 

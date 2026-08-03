@@ -32,9 +32,6 @@ USER ${AGENT_UID}:${AGENT_GID}
 # Install Claude Code CLI
 RUN curl -fsSL https://claude.ai/install.sh | bash
 
-# Add Claude to PATH
-ENV PATH="/home/agent/.local/bin:$PATH"
-
 # Bake the pnpm store from the lockfile so lanes install offline instead of
 # each downloading the full dependency set. One ENV covers both `pnpm fetch`
 # (build) and `pnpm install` (runtime) so their store paths can never diverge —
@@ -45,6 +42,40 @@ ENV npm_config_store_dir=/home/agent/pnpm-store
 COPY --chown=${AGENT_UID}:${AGENT_GID} package.json pnpm-lock.yaml pnpm-workspace.yaml /home/agent/fetch/
 # pnpm fetch leaves a stray node_modules behind (pnpm/pnpm#8623).
 RUN cd /home/agent/fetch && pnpm fetch && rm -rf /home/agent/fetch/node_modules
+
+# Tool roster (wayfinder map #30, decided by #35/#46). The CLI ships a definition
+# for every built-in tool and the lane was loading 29 to use four; tool definitions
+# are 86-88% of the prefix floor, which rides every request. Sandcastle 0.12.0
+# exposes no way to pass CLI flags, so a PATH shim prepends --tools before exec'ing
+# the real binary. Both escape hatches fail OPEN — an unset SC_TOOLS or a CLI
+# without the flag runs unmodified rather than failing the lane, because the worst
+# case of failing open is paying full price.
+#
+# The roster is the union of what all four phase prompts ask for, plus Skill (to
+# invoke .claude/skills/components-page). Do NOT narrow it from an observed
+# transcript: the reviewer only used Bash+Read on issue-9 but its prompt tells it
+# to edit and commit, and a merger without Read resolves conflicts blind, deletes
+# another lane's work and opens the PR anyway. An unknown tool name is silently
+# dropped (exit 0), so assert the effective roster from the init event in
+# .sandcastle/logs/ after changing it — see .sandcastle/README.md.
+#
+# Deliberately placed AFTER `pnpm fetch` so editing the roster does not invalidate
+# that ~90s layer.
+ENV SC_TOOLS="Bash,Read,Edit,Write,Glob,Grep,TodoWrite,Skill"
+RUN mkdir -p /home/agent/bin && printf '%s\n' \
+  '#!/bin/sh' \
+  'REAL=/home/agent/.local/bin/claude' \
+  '[ -z "$SC_TOOLS" ] && exec "$REAL" "$@"' \
+  '"$REAL" --help 2>/dev/null | grep -q -- --tools || exec "$REAL" "$@"' \
+  'exec "$REAL" --tools "$SC_TOOLS" "$@"' \
+  > /home/agent/bin/claude && chmod +x /home/agent/bin/claude
+
+# Anthropic's bundled skills ride every request; this repo's lanes only use the
+# project skill at .claude/skills/, which is bind-mounted and unaffected.
+ENV CLAUDE_CODE_DISABLE_BUNDLED_SKILLS=1
+
+# The shim dir must precede the real binary's dir.
+ENV PATH="/home/agent/bin:/home/agent/.local/bin:$PATH"
 
 WORKDIR /home/agent
 
