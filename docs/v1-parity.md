@@ -12,7 +12,7 @@ but not itemised.
   `packages/ui/src/components/`.
 - **Method:** name mapping by hand, then prop surfaces from v1's `.d.ts` files
   against v2's TypeScript prop types. Capability-level, not prop-name-level —
-  see "Why prop-name diffing misleads" below.
+  see "Config-driven vs compositional" below for why.
 - **Date:** 2026-08-03, v1 at 0.11.0, v2 at 0.1.0.
 
 ---
@@ -27,7 +27,7 @@ components are **Base UI / shadcn part trees**: `<Accordion><AccordionItem>
 <AccordionTrigger>…`.
 
 This means a mechanical prop diff reports hundreds of "missing props" that are
-not gaps — v1's `items` has no v2 equivalent *by design*, because you compose
+not gaps — v1's `items` has no v2 equivalent _by design_, because you compose
 children instead. v2's `autocomplete` exposes 10+ parts where v1's `Combobox`
 exposed one `options` prop; that is v2 ahead, not behind.
 
@@ -55,32 +55,32 @@ writing wrappers, not charts.
 A raw inventory diff reports 34 v1 exports with no same-named v2 file. Most are
 v2 renaming toward shadcn/Base UI vocabulary. These are **covered**:
 
-| v1 | v2 | Note |
-| --- | --- | --- |
-| `Modal` | `dialog` | |
-| `Dropdown` | `dropdown-menu` | |
-| `NumberInput` | `number-field` | |
-| `Range` | `slider` | |
-| `EmptyState` | `empty` | |
-| `FormField` | `field` | |
-| `FieldHint` | `field` | `FieldDescription` / `FieldError` parts |
-| `Radio` | `radio-group` | |
-| `Segmented` | `toggle-group` | |
-| `TagInput` | `tags-input` | |
-| `CommandPalette` | `command` | |
-| `DataGrid` | `data-table` | **large capability delta — see below** |
-| `ToastProvider` | `toast` | `ToastProvider` exists as a part |
-| `Callout` | `alert` | |
-| `Chip` | `tag` | documented port |
-| `Metric` | `stat-card` | |
-| `SectionHeading` | `page-header` | |
-| `VerticalNav` | `sidebar` | |
-| `ButtonGroup` | `button-group` | `IconButton`/`SplitButton` still absent |
-| `Combobox` | `combobox` + `autocomplete` | v2 ahead: two components, part-based |
-| `MultiSelect` | `multi-select` | |
-| `Tree` | `tree` | compositional in v2 |
-| `Stepper` | `stepper` | presentational only — `Wizard` state absent |
-| `AppShell` / `ConsoleLayout` | `sidebar` | partial — see scope section |
+| v1                           | v2                          | Note                                        |
+| ---------------------------- | --------------------------- | ------------------------------------------- |
+| `Modal`                      | `dialog`                    |                                             |
+| `Dropdown`                   | `dropdown-menu`             |                                             |
+| `NumberInput`                | `number-field`              |                                             |
+| `Range`                      | `slider`                    |                                             |
+| `EmptyState`                 | `empty`                     |                                             |
+| `FormField`                  | `field`                     |                                             |
+| `FieldHint`                  | `field`                     | `FieldDescription` / `FieldError` parts     |
+| `Radio`                      | `radio-group`               |                                             |
+| `Segmented`                  | `toggle-group`              |                                             |
+| `TagInput`                   | `tags-input`                |                                             |
+| `CommandPalette`             | `command`                   |                                             |
+| `DataGrid`                   | `data-table`                | **large capability delta — see below**      |
+| `ToastProvider`              | `toast`                     | `ToastProvider` exists as a part            |
+| `Callout`                    | `alert`                     |                                             |
+| `Chip`                       | `tag`                       | documented port                             |
+| `Metric`                     | `stat-card`                 |                                             |
+| `SectionHeading`             | `page-header`               |                                             |
+| `VerticalNav`                | `sidebar`                   |                                             |
+| `ButtonGroup`                | `button-group`              | `IconButton`/`SplitButton` still absent     |
+| `Combobox`                   | `combobox` + `autocomplete` | v2 ahead: two components, part-based        |
+| `MultiSelect`                | `multi-select`              |                                             |
+| `Tree`                       | `tree`                      | compositional in v2                         |
+| `Stepper`                    | `stepper`                   | presentational only — `Wizard` state absent |
+| `AppShell` / `ConsoleLayout` | `sidebar`                   | partial — see scope section                 |
 
 ### Already ported, with the receipt in the code
 
@@ -130,16 +130,16 @@ v1 `DataGrid` has ~30 props. v2 `DataTable` has 7: `columns`, `data`, `pageSize`
 v2 wires only client-side TanStack row models (`getSortedRowModel`,
 `getFilteredRowModel`, `getPaginationRowModel`). Absent:
 
-| Capability | v1 API | Notes |
-| --- | --- | --- |
-| Row selection | `selectable`, `selectedKeys`, `defaultSelectedKeys`, `onSelectionChange` | TanStack `getRowSelection`; v2 has `checkbox` already |
-| Expandable detail rows | `expandable`, `renderDetail` | TanStack `getExpandedRowModel` |
-| Server-side loading | `loadPage`, `lazyMode: "pagination" \| "infinite"` | needs `manualPagination`/`manualSorting`; v1 also ships `restLoadPage` as a ready adapter |
-| Column visibility | `columnToggle` | TanStack `columnVisibility` state |
-| Column reordering | `reorderable` | TanStack `columnOrder`; `@dnd-kit` already a dep |
-| Inline cell editing | `editable`, `onCellEdit` | double-click to edit in v1 |
-| Header slots | `title`, `toolbar` | v2 has neither |
-| Controlled sort | `defaultSort`, `onSortChange` | v2 keeps sort in internal state only |
+| Capability             | v1 API                                                                   | Notes                                                                                     |
+| ---------------------- | ------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------- |
+| Row selection          | `selectable`, `selectedKeys`, `defaultSelectedKeys`, `onSelectionChange` | TanStack `getRowSelection`; v2 has `checkbox` already                                     |
+| Expandable detail rows | `expandable`, `renderDetail`                                             | TanStack `getExpandedRowModel`                                                            |
+| Server-side loading    | `loadPage`, `lazyMode: "pagination" \| "infinite"`                       | needs `manualPagination`/`manualSorting`; v1 also ships `restLoadPage` as a ready adapter |
+| Column visibility      | `columnToggle`                                                           | TanStack `columnVisibility` state                                                         |
+| Column reordering      | `reorderable`                                                            | TanStack `columnOrder`; `@dnd-kit` already a dep                                          |
+| Inline cell editing    | `editable`, `onCellEdit`                                                 | double-click to edit in v1                                                                |
+| Header slots           | `title`, `toolbar`                                                       | v2 has neither                                                                            |
+| Controlled sort        | `defaultSort`, `onSortChange`                                            | v2 keeps sort in internal state only                                                      |
 
 TanStack Table supports every one of these. None is wired up. This is
 configuration work, not new machinery.
@@ -152,40 +152,40 @@ primitives — one chart stack, tooltips/legends/theming inherited for free.
 single `<polyline>`, and a sparkline has to stay cheap enough to drop into every
 row of a table.
 
-| Item | v1 usage | v1 props to preserve |
-| --- | --- | --- |
-| `Sparkline` (port SVG as-is) | 9 | `data`, `width`, `height`, `stroke`, `fill`, `showDot`, `animate` |
-| `LineChart` (establishes the wrapper pattern) | 5 | `data`, `series`, `labels`, `name`, `color`, `dots`, `grid`, `width`, `height` |
-| `BarChart` | 5 | `data`, `value`, `label`, `max`, `status`, `horizontal` |
-| `AreaChart` | 4 | same shape as `LineChart` |
-| `DonutChart` | 4 | `data`, `value`, `label`, `centerLabel`, `color`, `size`, `thickness` |
-| `PieChart` | 2 | `data`, `value`, `label`, `legend`, `color`, `size` |
-| `StackedBar` | 2 | `data`, `value`, `label`, `segments`, `color`, `showLegend` |
+| Item                                          | v1 usage | v1 props to preserve                                                           |
+| --------------------------------------------- | -------- | ------------------------------------------------------------------------------ |
+| `Sparkline` (port SVG as-is)                  | 9        | `data`, `width`, `height`, `stroke`, `fill`, `showDot`, `animate`              |
+| `LineChart` (establishes the wrapper pattern) | 5        | `data`, `series`, `labels`, `name`, `color`, `dots`, `grid`, `width`, `height` |
+| `BarChart`                                    | 5        | `data`, `value`, `label`, `max`, `status`, `horizontal`                        |
+| `AreaChart`                                   | 4        | same shape as `LineChart`                                                      |
+| `DonutChart`                                  | 4        | `data`, `value`, `label`, `centerLabel`, `color`, `size`, `thickness`          |
+| `PieChart`                                    | 2        | `data`, `value`, `label`, `legend`, `color`, `size`                            |
+| `StackedBar`                                  | 2        | `data`, `value`, `label`, `segments`, `color`, `showLegend`                    |
 
 `GaugeChart` is **already done** — it is v2's `gauge`.
 
 ## 3. Component absences
 
-| Item | v1 usage | Note |
-| --- | --- | --- |
-| `ColorPicker` | 3 | `value`, `defaultValue`, `onChange`, `swatches`, `name`, `disabled`. No v2 equivalent. |
-| `Agenda` | 3 | Day/event list: `date`, `events`, `time`, `title`, `meta`, `status`, `emptyMessage`. Related: v1's `Calendar` is an **event calendar** (`events`, `status`, `maxPerDay`, `showToday`) while v2's is `react-day-picker` date selection. Same gap, two entry points. |
-| `IconButton` + `SplitButton` | 3 / 2 | v1 ships both in `ButtonExtras.js`. `ButtonGroup` is already covered by v2's `button-group`. `IconButton` requires `label` — it is the accessible-name-enforcing variant, which v2 currently has no equivalent of. |
-| `Wizard` | 5 | v2's `stepper` is presentational parts only. `Wizard` adds the state machine: `active`, `defaultActive`, `onStepChange`, `onFinish`, `disableNext`, `steps`, `content`. |
-| `DateTimePicker` | — | v2 has `date-picker` and `time-picker` as separate components but nothing combining them. v1: `value`, `defaultValue`, `onChange`, `min`, `max`, `step`. |
-| `Kanban` | 5 | `columns`, `items`, `itemKey`, `onMove`, `renderCard`. Would be the **first consumer of `@dnd-kit`** — see side findings. Needs triage before building. |
+| Item                         | v1 usage | Note                                                                                                                                                                                                                                                               |
+| ---------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `ColorPicker`                | 3        | `value`, `defaultValue`, `onChange`, `swatches`, `name`, `disabled`. No v2 equivalent.                                                                                                                                                                             |
+| `Agenda`                     | 3        | Day/event list: `date`, `events`, `time`, `title`, `meta`, `status`, `emptyMessage`. Related: v1's `Calendar` is an **event calendar** (`events`, `status`, `maxPerDay`, `showToday`) while v2's is `react-day-picker` date selection. Same gap, two entry points. |
+| `IconButton` + `SplitButton` | 3 / 2    | v1 ships both in `ButtonExtras.js`. `ButtonGroup` is already covered by v2's `button-group`. `IconButton` requires `label` — it is the accessible-name-enforcing variant, which v2 currently has no equivalent of.                                                 |
+| `Wizard`                     | 5        | v2's `stepper` is presentational parts only. `Wizard` adds the state machine: `active`, `defaultActive`, `onStepChange`, `onFinish`, `disableNext`, `steps`, `content`.                                                                                            |
+| `DateTimePicker`             | —        | v2 has `date-picker` and `time-picker` as separate components but nothing combining them. v1: `value`, `defaultValue`, `onChange`, `min`, `max`, `step`.                                                                                                           |
+| `Kanban`                     | 5        | `columns`, `items`, `itemKey`, `onMove`, `renderCard`. Would be the **first consumer of `@dnd-kit`** — see side findings. Needs triage before building.                                                                                                            |
 
 ## 4. Small capability deltas on overlapping pairs
 
 Filtered to gaps that are not composition artifacts:
 
-| Pair | Missing in v2 |
-| --- | --- |
+| Pair                        | Missing in v2                                                                                                                                                                                                                    |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `Pagination` → `pagination` | v2 is parts only (`PaginationItem`, `PaginationLink`, `PaginationEllipsis`) with **no page-window logic**. v1's `pageCount` + `siblingCount` computes which pages and ellipses to show. Every v2 consumer hand-rolls that today. |
-| `Alert` → `alert` | No `dismissible` / `onDismiss`. v2 has `AlertAction` but no close affordance. |
-| `Spinner` → `spinner` | No `label`. v1's spinner carried an accessible name; v2's is a bare `<svg>`, so a spinner is announced as nothing. **This is an a11y gap, not a convenience one.** |
-| `Skeleton` → `skeleton` | No `count` / `variant` / `width` / `height`. Genuinely covered by Tailwind classes — listed for completeness, recommend no action. |
-| `Progress` → `progress` | v1's `indeterminate` maps to Base UI's `value={null}`. Believed covered by the primitive; worth one confirming check. |
+| `Alert` → `alert`           | No `dismissible` / `onDismiss`. v2 has `AlertAction` but no close affordance.                                                                                                                                                    |
+| `Spinner` → `spinner`       | No `label`. v1's spinner carried an accessible name; v2's is a bare `<svg>`, so a spinner is announced as nothing. **This is an a11y gap, not a convenience one.**                                                               |
+| `Skeleton` → `skeleton`     | No `count` / `variant` / `width` / `height`. Genuinely covered by Tailwind classes — listed for completeness, recommend no action.                                                                                               |
+| `Progress` → `progress`     | v1's `indeterminate` maps to Base UI's `value={null}`. Believed covered by the primitive; worth one confirming check.                                                                                                            |
 
 ---
 
@@ -234,14 +234,18 @@ a starter-template concern? v1 answers yes; v2 has no position.
   components"; there are 95 files in `packages/ui/src/components/`.
 - **`cva` is the minority convention.** 20 of 95 components use it. New ported
   components should follow the surrounding file, not assume variants.
-- **Every port touches four places.** The registry is the sidebar, the playground
-  source *and* the Playwright test manifest. A component added without a
-  `ComponentDoc` entry is invisible and untested. Definition of done for any
-  port issue:
-  1. `packages/ui/src/components/<slug>.tsx` — relative imports with explicit
-     `.js` extensions
-  2. `apps/web/src/registry/registry.ts` — `ComponentDoc` entry
-  3. `apps/web/src/registry/demos/<slug>/*.tsx` — 3–4 demos
-  4. `apps/web/src/registry/playgrounds.ts` — knob set
+- **Docs pages are built with the `components-page` skill**, never hand-rolled —
+  `.claude/skills/components-page/SKILL.md`, whose `references/exemplar.md` is
+  the house standard. A page is three data-driven surfaces (there is no
+  per-component page file): the `ComponentDoc` registry entry, the demo files,
+  and the playground — which is **two** pieces, the
+  `apps/web/src/registry/playgrounds/<slug>.tsx` template plus a
+  `PLAYGROUNDS[slug]` entry in `playgrounds.ts`.
+
+  The registry is the sidebar, the playground source _and_ the Playwright test
+  manifest, so a component added without a `ComponentDoc` entry is invisible and
+  untested. `pnpm --filter web build` is the coverage gate: it fails, naming each
+  one, for any exported part written into neither the playground nor a demo.
+  Never run `pnpm format` — use `pnpm exec prettier --check <files you touched>`.
 
   Exports are wildcarded (`./components/*`), so no barrel edit is needed.
