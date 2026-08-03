@@ -13,8 +13,6 @@ const TOPICS = [
   { value: "incidents", label: "Incidents" },
 ]
 
-// Each child `Checkbox` takes a `value`; the group owns the array. Disabling the
-// group disables every box through `data-disabled`, with no per-box prop.
 export default function CheckboxGroupBasic() {
   return (
     <FieldSet className="max-w-sm">

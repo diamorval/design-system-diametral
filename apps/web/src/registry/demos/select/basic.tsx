@@ -6,8 +6,6 @@ import {
   SelectValue,
 } from "@diametral/ui/components/select"
 
-// Passing this same record as `items` is what lets the trigger show "Next.js"
-// rather than the raw value "next".
 const FRAMEWORKS = {
   vite: "Vite",
   next: "Next.js",

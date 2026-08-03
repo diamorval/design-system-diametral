@@ -4,8 +4,6 @@ import { Field, FieldLabel } from "@diametral/ui/components/field"
 
 const SCOPES = ["read:tokens", "write:tokens", "publish"]
 
-// `allValues` on the group plus `parent` on one checkbox gives select-all for
-// free: the parent computes checked / indeterminate itself, with no derived state.
 export default function CheckboxGroupWithParent() {
   return (
     <CheckboxGroup
