@@ -14,11 +14,14 @@ import { cyan, dim } from "../prompts.mts"
 
 const DEFAULT = "default"
 
+// Kept as one list so envOrigin and the overrides summary below can't drift.
+const ENV_VARS = ["SC_LOOPS", "SC_CONCURRENCY", "SC_MODEL"] as const
+
 /**
  * An override's origin is its mere presence, exactly as withEnvOverrides
  * decides: unset and empty both fall through to the default.
  */
-function envOrigin(name: "SC_LOOPS" | "SC_CONCURRENCY" | "SC_MODEL"): string {
+function envOrigin(name: (typeof ENV_VARS)[number]): string {
   return process.env[name] ? name : DEFAULT
 }
 
@@ -64,9 +67,9 @@ const rows: Row[] = [
 ]
 
 const overrides = [
-  ...(["SC_LOOPS", "SC_CONCURRENCY", "SC_MODEL"] as const)
-    .filter((name) => process.env[name])
-    .map((name) => `${name}=${process.env[name]}`),
+  ...ENV_VARS.filter((name) => process.env[name]).map(
+    (name) => `${name}=${process.env[name]}`
+  ),
   ...(config.issues ? [`--issue ${config.issues.join(",")}`] : []),
   ...(flagValue("delivery") === undefined
     ? []
