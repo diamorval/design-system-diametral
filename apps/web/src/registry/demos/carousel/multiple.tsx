@@ -6,8 +6,6 @@ import {
   CarouselPrevious,
 } from "@diametral/ui/components/carousel"
 
-// Items are `basis-full` by default; overriding the basis is what shows several
-// slides at once, and `align: "start"` stops Embla centring the short last page.
 export default function CarouselMultiple() {
   return (
     <div className="w-full max-w-md px-12">

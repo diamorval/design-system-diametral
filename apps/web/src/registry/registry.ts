@@ -1742,18 +1742,34 @@ export const COMPONENTS: ComponentDoc[] = [
     name: "Aspect Ratio",
     category: "Layout",
     description: "Constrains content to a fixed width-to-height ratio.",
+    intro: [
+      "Aspect Ratio holds a box at a fixed shape while its width comes from the layout around it — thumbnails, card covers, video frames, map tiles. Reach for it whenever the height should be derived from the width instead of guessed, so nothing reflows as an image or an embed loads.",
+      "`ratio` is written to a `--ratio` custom property that a plain `aspect-(--ratio)` utility consumes, so any number works and there is no list of supported ratios to extend. The box owns the height and is `relative`, which is why children can be `size-full` and why an overlay only needs `absolute` — no extra positioning wrapper.",
+    ],
     examples: [
       {
         demo: "aspect-ratio/basic",
         title: "Basic",
         description:
-          "`ratio` is written to a `--ratio` custom property, so any number works — there is no list of supported ratios.",
+          "`ratio` takes the expression, not a string — `16 / 9` reaches the custom property as `1.7778`, so any number works.",
       },
       {
         demo: "aspect-ratio/ratios",
         title: "Common ratios",
         description:
-          "The box owns the height, so children can be `size-full` and stop caring about it.",
+          "The box owns the height, so children can be `size-full` and stop caring about it. Each tile takes its width from the grid, and the ratio does the rest.",
+      },
+      {
+        demo: "aspect-ratio/card-cover",
+        title: "Card cover",
+        description:
+          "The media shape at the top of a card: `object-cover` on a `size-full` image fills the box whatever the file's own dimensions are, and the text below never shifts while it loads. The card takes `pt-0` because the cover is wrapped rather than a direct `img` child.",
+      },
+      {
+        demo: "aspect-ratio/overlay",
+        title: "Overlaid caption",
+        description:
+          "The root is already `relative`, so a caption band is `absolute inset-x-0 bottom-0` and nothing else. The band is a solid surface rather than a faded one — text over media needs its own background to stay readable.",
       },
     ],
   },
@@ -1763,18 +1779,34 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Layout",
     description:
       "A rule between content. Base UI inverts the orientation semantics — a horizontal group takes vertical separators.",
+    intro: [
+      "Separator is the rule between things that are already grouped: a heading from its body, one card section from the next, items in a meta row. Reach for it when whitespace alone stops reading as a boundary — when the boundary belongs to a container instead, that container's own `border` is cheaper and cannot fall out of step with it.",
+      "`orientation` names the rule's own axis, not the group's, so a row of items is divided by `orientation=\"vertical\"` — the opposite of the container you are thinking about. It ships no margins at all: spacing is the caller's job, which is what lets the same component sit flush inside a card and spaced out between paragraphs.",
+    ],
     examples: [
       {
         demo: "separator/basic",
         title: "Basic",
         description:
-          "Horizontal is the default: full width, one pixel tall. Spacing is the caller's job, not the separator's.",
+          "Horizontal is the default: full width, one pixel tall. The `my-4` is on the separator here because nothing else in this block owns the gap.",
       },
       {
         demo: "separator/vertical",
-        title: "Vertical",
+        title: "Between inline items",
         description:
-          "A vertical rule stretches with `self-stretch`, so the flex parent must have a height — otherwise it renders zero-tall and looks missing.",
+          "A vertical rule sizes itself with `self-stretch`, so the flex parent needs a height — `items-center` alone collapses it to zero and it reads as missing.",
+      },
+      {
+        demo: "separator/labelled",
+        title: "Labelled divider",
+        description:
+          "The `or` divider, without a second component: the rule is positioned `absolute top-1/2` inside a `relative` row and the label sits over it on a solid `bg-background`, which is what breaks the line rather than two half-width rules that never quite meet.",
+      },
+      {
+        demo: "separator/in-a-card",
+        title: "Card sections",
+        description:
+          "Edge-to-edge inside a padded container: the padding lives on CardHeader and CardContent, so a separator dropped between them as a direct Card child spans the full width with no negative margins.",
       },
     ],
   },
@@ -1783,47 +1815,85 @@ export const COMPONENTS: ComponentDoc[] = [
     name: "Scroll Area",
     category: "Layout",
     description: "A scrollable region with styled, overlay scrollbars.",
+    intro: [
+      "Scroll Area is the bounded scrolling region: a commit list, a group of options, a long block of terms that has to live inside a fixed height instead of stretching the page. Reach for it when the content is unbounded but the layout is not — a dialog body, a sidebar tree, a command palette.",
+      "The root needs a height to scroll inside, from a class or from a flex parent, and with no cap it simply grows and the component looks absent. Children render into a viewport, so padding belongs on a wrapper inside the root; the scrollbar overlays instead of taking layout width, and Base UI gives that viewport a `tabIndex` of its own once it overflows, so keyboard users reach it without help.",
+    ],
     examples: [
       {
         demo: "scroll-area/basic",
         title: "Basic",
         description:
-          "The root needs a bounded height; children go into the viewport, and the scrollbar overlays rather than taking layout width.",
+          "The everyday shape: a height on the root, a padded wrapper inside it. The bar overlays the content rather than reserving a gutter, so the rows keep their full width.",
       },
       {
         demo: "scroll-area/with-headings",
         title: "Grouped content",
         description:
-          "Note that `ScrollArea` renders only a vertical scrollbar today — horizontal overflow still scrolls, but without a styled bar.",
+          "Sticky-free grouping for a long list of options. `ScrollArea` renders only a vertical scrollbar today — horizontal overflow still scrolls, but without a styled bar, so keep the content in one column.",
+      },
+      {
+        demo: "scroll-area/in-a-dialog",
+        title: "Dialog body",
+        description:
+          "Where the height comes from the surface around it: capping the body keeps the dialog's header and footer on screen while the terms scroll between them.",
       },
     ],
+    parts: {
+      ScrollArea:
+        "Takes the height cap and the border. Its children land in an internal viewport, so padding goes on a wrapper inside rather than here — padding on the root would sit outside the scrolling box.",
+      ScrollBar:
+        "Rendered by ScrollArea itself, vertical only. It is exported for a custom bar, but the root does not accept one in its place today, so a second orientation means composing Base UI's primitive directly.",
+    },
   },
   {
     slug: "resizable",
     name: "Resizable",
     category: "Layout",
     description:
-      "Panel groups with draggable handles that persist their sizes.",
+      "Panel groups split by draggable handles, sized as percentages of the group.",
+    intro: [
+      "Resizable splits a region into panes the reader can drag: an editor beside its preview, a file tree beside a document, a console under both. Reach for it when the split is the user's call — when it is the layout's, a grid is simpler and has no drag state to keep.",
+      'Two facts decide how the code reads. The group takes `orientation`, not the `direction` older shadcn snippets pass, and it fills its parent, so it needs a height. Panel sizes are strings in this version: `"35%"` is a third of the group, while a bare `35` means 35 pixels — the unit is not optional. Nothing is persisted for you; `onLayoutChanged` hands you the layout to store and `defaultLayout` takes it back on the next mount.',
+    ],
     examples: [
       {
         demo: "resizable/basic",
         title: "Basic",
         description:
-          "The group prop is `orientation` in this version of react-resizable-panels, not the `direction` older shadcn snippets pass.",
+          "The two-pane split. `minSize` is what keeps a pane usable rather than draggable to nothing, and both sizes are percentage strings — a bare number would be read as pixels. The `tabIndex={0}` on each pane's content is deliberate: the library owns the scrolling div around it, so without a focusable descendant a keyboard user cannot reach whatever a drag clipped.",
       },
       {
         demo: "resizable/nested",
         title: "Nested groups",
         description:
-          "A panel can hold another group on the opposite axis, which is how an IDE-style three-pane layout is built.",
+          "A panel can hold another group on the opposite axis, which is how an IDE-style three-pane layout is built. Each group tracks its own sizes, so the inner split survives a drag of the outer one.",
+      },
+      {
+        demo: "resizable/collapsible",
+        title: "Collapsible tree",
+        description:
+          "`collapsible` snaps a pane to its `collapsedSize` once it is dragged under `minSize`, which leaves a rail you can drag back open. `onResize` reports the new size, so the pane's own content can drop to icons at the rail width.",
       },
     ],
+    parts: {
+      ResizablePanelGroup:
+        "Owns the axis (`orientation`) and fills its parent, so give it a height — with none, the whole group collapses. `defaultLayout` plus `onLayoutChanged` is how a layout is persisted; there is no auto-save.",
+      ResizablePanel:
+        'Sizes are percentage strings (`"35%"`); bare numbers are pixels. `className` lands on an inner div the library owns, and that div does the scrolling — so content that can clip needs a focusable descendant (`tabIndex={0}`) to stay keyboard-reachable.',
+      ResizableHandle:
+        "Must be a direct child of the group, between two panels. `withHandle` draws the grip; without it the hit area is still there, and it is a one-pixel rule the pointer has to find.",
+    },
   },
   {
     slug: "carousel",
     name: "Carousel",
     category: "Layout",
     description: "A horizontal slide viewport with previous and next controls.",
+    intro: [
+      "Carousel is the paged strip: screenshots, release cards, testimonials the reader steps through instead of scrolling past. Reach for it when horizontal room is the constraint and the items are peers — never for content the reader must not miss, since everything but the current page is off screen.",
+      "Embla drives it, so the knobs are Embla's: `opts` goes straight through (`loop`, `align`, `slidesToScroll`) and `setApi` hands the instance back for your own indicators. Layout is a two-part contract — the previous and next buttons are positioned outside the viewport, so the wrapper needs horizontal room (`px-12`) or they clip, and the gap between slides comes from CarouselContent's negative margin paired with CarouselItem's padding rather than a `gap` utility.",
+    ],
     examples: [
       {
         demo: "carousel/basic",
@@ -1841,9 +1911,21 @@ export const COMPONENTS: ComponentDoc[] = [
         demo: "carousel/with-api",
         title: "Custom controls",
         description:
-          "`setApi` hands back the Embla instance, which is how you build your own indicators or drive it from elsewhere.",
+          "`setApi` hands back the Embla instance, which is how you build your own indicators or drive it from elsewhere. Subscribe to `select` for the current index — the api holds it, and nothing re-renders without that listener.",
       },
     ],
+    parts: {
+      Carousel:
+        'The Embla context and the `role="region"` wrapper, and where left/right arrow keys are handled. `opts` and `plugins` pass straight to `useEmblaCarousel`; `orientation` sets Embla\'s axis, not just the styling.',
+      CarouselContent:
+        "Two boxes in one: an `overflow-hidden` clip carrying Embla's ref, and the flex track inside it that `className` reaches. Its negative margin makes the gap with CarouselItem's padding, so a `gap` utility here doubles the spacing.",
+      CarouselItem:
+        '`basis-full` by default, which is what makes one item a page. Override the basis to show several, and pair that with `align: "start"` so the short last page is not centred.',
+      CarouselPrevious:
+        "Absolutely positioned outside the viewport and disabled at the first page, so the wrapper needs matching horizontal room or it clips. Its label is an `sr-only` span, so an icon-only button still announces.",
+      CarouselNext:
+        "Mirrors CarouselPrevious on the end side; in vertical orientation both rotate and move to the top and bottom edges instead.",
+    },
   },
   {
     slug: "page-header",
@@ -1851,6 +1933,10 @@ export const COMPONENTS: ComponentDoc[] = [
     category: "Layout",
     description:
       "Breadcrumb, title, description and actions for the top of a page, with an optional flush tab strip.",
+    intro: [
+      "Page Header is the block every routed page opens with: an optional breadcrumb, the title and its description, the page's primary actions, and a rule closing it off. Reach for it so heading level, spacing and that rule are decided once here rather than re-guessed per screen.",
+      "It is slots rather than props — the parts compose in the order the page needs and take no configuration bag. `PageHeaderTitle` renders an `h1`, so a page renders one. `PageHeaderTabs` is the one part that changes the root: its presence drops the header's bottom padding, so the rule lands flush under the tab strip instead of above it.",
+    ],
     examples: [
       {
         demo: "page-header/basic",
@@ -1870,6 +1956,18 @@ export const COMPONENTS: ComponentDoc[] = [
           "`PageHeaderTabs` flips the header's bottom rule flush against the tab strip; `Tabs` wraps the header so the panels render below it. `PageHeaderIcon` sizes and mutes whatever Phosphor icon you hand it.",
       },
     ],
+    parts: {
+      PageHeader:
+        "Owns the bottom rule and the padding above it, and drops that padding when a PageHeaderTabs is present so the rule sits under the tabs.",
+      PageHeaderHeading:
+        "A wrapping `justify-between` row, which means it wants exactly two children: the title stack in one, PageHeaderActions in the other. Wrap the title and description together yourself — they are not a slot.",
+      PageHeaderTitle:
+        "An `h1`, so one per page. It carries the heading face and no spacing, and there is no level prop — a nested heading is a plain element, not this part.",
+      PageHeaderIcon:
+        "Fixes any icon inside it to `size-6` and mutes it, and its `h-8` is what aligns it with the title's cap height, so it belongs beside the title stack rather than inside it.",
+      PageHeaderTabs:
+        "A marker with no styles of its own: its `data-slot` is what flips the root's padding. Put TabsList inside it and Tabs around the whole header, so the panels render below the rule.",
+    },
   },
   {
     slug: "panel",
