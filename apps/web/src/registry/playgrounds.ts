@@ -154,6 +154,45 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
   "button-group": {
     variantsFrom: "buttonGroupVariants",
   },
+  "icon-button": {
+    note: "The axes belong to `Button` and are forwarded, so they are listed here rather than parsed — icon-button.tsx declares no cva of its own. `label` is deliberately not drivable: a control whose whole point is having an accessible name should not be steerable into having none.",
+    extras: [
+      {
+        prop: "variant",
+        type: "select",
+        options: ["default", "outline", "secondary", "ghost", "destructive"],
+      },
+      {
+        prop: "size",
+        type: "select",
+        options: ["icon", "icon-xs", "icon-sm", "icon-lg"],
+      },
+      {
+        prop: "tone",
+        type: "select",
+        options: ["noir", "rouge", "vert", "bleu", "jaune"],
+      },
+      { prop: "disabled", type: "boolean" },
+    ],
+  },
+  "split-button": {
+    children: { default: "Save", label: "main action" },
+    note: "The menu items are fixed here — `menu` takes nodes, not a value a panel can produce. `variant`, `size` and `tone` reach both halves, which is what keeps the seam invisible.",
+    extras: [
+      { prop: "disabled", type: "boolean" },
+      {
+        prop: "variant",
+        type: "select",
+        options: ["default", "outline", "secondary", "ghost"],
+      },
+      { prop: "size", type: "select", options: ["default", "sm", "lg"] },
+      {
+        prop: "tone",
+        type: "select",
+        options: ["noir", "rouge", "vert", "bleu"],
+      },
+    ],
+  },
   field: {
     children: { default: "Email me each release", label: "label" },
     texts: {

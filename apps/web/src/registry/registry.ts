@@ -274,6 +274,68 @@ export const COMPONENTS: ComponentDoc[] = [
     },
   },
 
+  {
+    slug: "icon-button",
+    name: "Icon Button",
+    category: "Actions",
+    description:
+      "`Button` for an icon alone, with an accessible name it cannot ship without.",
+    intro: [
+      "Icon Button is the square, label-required `Button`: a toolbar control, a row action, anything whose meaning is carried by a glyph. It takes the same `variant`, `tone` and `disabled` as `Button` and forwards everything else, so it is the same control with one rule added.",
+      "That rule is the whole component. `label` is required in the type and lands on both `aria-label` and `title`, which is the difference between this and an icon-only `Button` — the latter can render with no accessible name at all and nothing catches it until the a11y suite does. Write the label as the action, not the glyph: `Archive invoice`, not `Archive icon`.",
+    ],
+    examples: [
+      {
+        demo: "icon-button/toolbar",
+        title: "Toolbar",
+        description:
+          "Inside a `ButtonGroup` the borders collapse into one seam, which is what makes a row of icons read as one control rather than four.",
+      },
+      {
+        demo: "icon-button/row-actions",
+        title: "Row actions",
+        description:
+          "`ghost` keeps the actions quiet until hovered. Each label names its row — four identical `Delete` buttons are useless to anyone tabbing through a table.",
+      },
+      {
+        demo: "icon-button/sizes",
+        title: "Sizes",
+        description:
+          "`size` narrows to `Button`'s four square sizes; the text sizes would leave an icon floating in horizontal padding. `icon-xs` and `icon-sm` shrink the glyph with the box.",
+      },
+    ],
+  },
+  {
+    slug: "split-button",
+    name: "Split Button",
+    category: "Actions",
+    description:
+      "One default action with its variants a caret away — a `Button` and a `DropdownMenu` welded into one control.",
+    intro: [
+      "Split Button is for when there is a clear default and a short list of near-misses: Save, and also save-and-duplicate; Publish, and also publish-to-the-team. The main half does the obvious thing in one click, and the caret holds the rest. When there is no default worth privileging, a plain `DropdownMenu` is the honest shape.",
+      "`variant`, `size` and `tone` are forwarded to both halves so the pair always reads as one control, and the menu is a real `DropdownMenu` — focus management, typeahead and Escape come with it rather than being hand-rolled.",
+    ],
+    examples: [
+      {
+        demo: "split-button/basic",
+        title: "Basic",
+        description:
+          "`menu` takes `DropdownMenuItem`s. The caret half has no visible text, so it carries a default `aria-label` of `More actions` — override it with `menuLabel` when the page has several.",
+      },
+      {
+        demo: "split-button/publish",
+        title: "Grouped options",
+        description:
+          "The menu is a full `DropdownMenu` content slot, so labels, separators and icons all work. `tone` reaches both halves, which is what keeps the seam invisible.",
+      },
+      {
+        demo: "split-button/outline",
+        title: "Outline and disabled",
+        description:
+          "`disabled` reaches both halves — a live caret on a dead action is a trap. `size=\"sm\"` shrinks the pair together.",
+      },
+    ],
+  },
   /* -- Forms ------------------------------------------------------------- */
   {
     slug: "input",
