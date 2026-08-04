@@ -4,7 +4,7 @@ import * as React from "react"
 import { Menu as MenuPrimitive } from "@base-ui/react/menu"
 import { XIcon } from "@phosphor-icons/react"
 
-import { Button } from "./button.js"
+import { Button, buttonVariants } from "./button.js"
 import { cn } from "../lib/utils.js"
 
 // A floating action button whose actions fan out on open, ported from daisyUI's
@@ -23,7 +23,6 @@ function SpeedDial({
   tone,
   children,
   side = "top",
-  align = "end",
   sideOffset = 8,
   className,
   ...props
@@ -35,8 +34,9 @@ function SpeedDial({
   /** The closed-state glyph. Swapped for an X while open. */
   icon?: React.ReactNode
   tone?: React.ComponentProps<typeof Button>["tone"]
-  side?: MenuPrimitive.Positioner.Props["side"]
-  align?: MenuPrimitive.Positioner.Props["align"]
+  /** Which way the column fans out. `align` is fixed to the trigger's end
+   *  edge — that edge is what the action boxes line up against. */
+  side?: "top" | "bottom"
   sideOffset?: number
   className?: string
 }) {
@@ -64,12 +64,12 @@ function SpeedDial({
         <MenuPrimitive.Positioner
           className="isolate z-50 outline-none"
           side={side}
-          align={align}
+          align="end"
           sideOffset={sideOffset}
         >
           <MenuPrimitive.Popup
             data-slot="speed-dial-actions"
-            className="flex flex-col items-end gap-2 rounded-none bg-transparent outline-none data-open:animate-in data-open:fade-in-0 data-open:slide-in-from-bottom-2 data-closed:animate-out data-closed:fade-out-0 data-closed:slide-out-to-bottom-2"
+            className="flex flex-col items-end gap-2 rounded-none bg-transparent outline-none data-[side=bottom]:slide-in-from-top-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0"
           >
             {children}
           </MenuPrimitive.Popup>
@@ -79,7 +79,7 @@ function SpeedDial({
   )
 }
 
-// One action: its label as a chip and its glyph in a box the size of the
+// One action: its label as a plate and its glyph in a box the size of the
 // trigger, so the column lines up under the dial. The whole row is the
 // menuitem — the visible label is the accessible name, which is why the glyph
 // needs none of its own.
@@ -100,10 +100,22 @@ function SpeedDialAction({
       )}
       {...props}
     >
-      <span className="bg-foreground px-3 py-1.5 text-xs font-semibold tracking-widest text-background uppercase">
+      {/* The plate is the quiet half and the box the loud one, so the column
+          reads as buttons under the trigger rather than as a stack of chips. */}
+      <span className="border border-border bg-background px-3 py-1.5 text-xs font-semibold tracking-widest text-foreground uppercase">
         {children}
       </span>
-      <span className="flex size-11 shrink-0 items-center justify-center border border-border bg-background text-foreground transition-colors group-focus/speed-dial-action:border-foreground group-focus/speed-dial-action:bg-foreground group-focus/speed-dial-action:text-background [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0">
+      {/* Styled by `buttonVariants` rather than hand-picked tokens, so the box
+          sits on the same fill scale as the trigger — a raw `bg-foreground`
+          reads louder than any button in the system once dark mode inverts it.
+          It is a span, not a Button: the whole row is already the menu item. */}
+      <span
+        className={buttonVariants({
+          size: "icon-lg",
+          className:
+            "group-focus/speed-dial-action:border-ring group-focus/speed-dial-action:bg-[color-mix(in_oklch,var(--btn),var(--btn-fg)_14%)] group-focus/speed-dial-action:ring-2 group-focus/speed-dial-action:ring-ring/30",
+        })}
+      >
         {icon}
       </span>
     </MenuPrimitive.Item>
