@@ -106,6 +106,22 @@
     --ds-chart-5: #7b5ea7;
     --ds-chart-6: #e0a32e;
 
+    /* Sequential ramp, for magnitude encoded as colour — Heatmap's five steps.
+       Ordered data needs one hue getting darker, not six unrelated hues; the
+       --ds-chart-* ramp is categorical and reading it as a scale is the classic
+       dataviz error. Derived from --ds-chart-2 (Bleu) because a rouge ramp reads
+       as severity on data that is only dense.
+
+       Step 1 is deliberately a real tint rather than a hairline wash: an empty
+       cell renders as an unfilled ring, and the two have to be separable at a
+       glance. Five quantised steps rather than a continuous gradient, because a
+       gradient cannot be put in a legend. */
+    --ds-heat-1: #9fd3e2;
+    --ds-heat-2: #6fbcd0;
+    --ds-heat-3: #3f9db6;
+    --ds-heat-4: #1f7d97;
+    --ds-heat-5: #0b5a70;
+
     /* Tier 2 — semantics (the retheming surface) */
     --ds-bg: var(--ds-blanc);
     --ds-bg-alt: var(--ds-grey-light);
@@ -256,6 +272,13 @@
     --ds-info-ink: #3fb8d6;
     --ds-critical-ink: #ff5535;
     --ds-critical-bg: rgba(255, 42, 0, .18);
+    /* The heat ramp inverts on dark: "more" has to mean brighter, or the top of
+       the scale sinks into the page instead of lifting off it. */
+    --ds-heat-1: #1d4250;
+    --ds-heat-2: #275f73;
+    --ds-heat-3: #327f99;
+    --ds-heat-4: #47a3bd;
+    --ds-heat-5: #6ec6dd;
 }
 
 /* Sparkline draw-in, referenced by the arbitrary animation utility on

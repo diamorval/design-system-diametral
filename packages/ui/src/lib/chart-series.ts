@@ -15,13 +15,26 @@ export const SERIES_COLORS = [
 ]
 
 /**
+ * `key` reaches here as a series name or, for the per-slice charts, as arbitrary
+ * row text — "Signed up", "eu-west", "Closed won". A CSS custom property cannot
+ * hold a space, and an invalid `var()` name does not fall back, it fails
+ * outright: `var(--color-Signed up, …)` paints black rather than the ramp slot.
+ * Folding anything that is not ident-safe to a dash is what keeps the fallback
+ * reachable. `ChartStyle` emits its declarations through the same function, so
+ * the two always agree on the name.
+ */
+export function colorVarName(key: string) {
+  return `--color-${key.replace(/[^a-zA-Z0-9_-]/g, "-")}`
+}
+
+/**
  * The colour to paint series `key` with. `ChartContainer` only emits
  * `--color-<key>` for a config entry that carries a colour, so the var's own
  * fallback is what gives an uncoloured series its ramp slot — no config
  * rewriting, and a `theme` entry still wins.
  */
 export function seriesColor(key: string, index: number) {
-  return `var(--color-${key}, ${SERIES_COLORS[index % SERIES_COLORS.length]})`
+  return `var(${colorVarName(key)}, ${SERIES_COLORS[index % SERIES_COLORS.length]})`
 }
 
 /**

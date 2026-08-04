@@ -930,6 +930,127 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
       },
     ],
   },
+  "radar-chart": {
+    note: "Two entities are declared here, so the legend is already on. `domain` is pinned to 0–100 with the data, because a radar that auto-scales is not comparable with the one beside it. `grid` is on by default and a panel can only add props — the Dense dimensions example below is where it is off.",
+    extras: [
+      { prop: "radiusAxis", type: "boolean" },
+      {
+        prop: "fillOpacity",
+        type: "select",
+        options: ["0.2", "0", "0.45", "0.7"],
+      },
+      {
+        prop: "className",
+        type: "select",
+        options: [
+          "mx-auto aspect-square h-64",
+          "mx-auto aspect-square h-48",
+          "mx-auto aspect-square h-80",
+        ],
+        label: "size",
+      },
+    ],
+  },
+  "combo-chart": {
+    note: "`series` and `rightAxis` are objects, so they are fixed here with the data — a bar on the left scale and a line on the right. Everything this component does lives in those two, and the panel can only add flat props: the examples below are the documentation. `legend` is already on past one series, and `grid` is on by default.",
+    extras: [
+      {
+        prop: "className",
+        type: "select",
+        options: ["h-56 w-full", "h-40 w-full", "h-80 w-full"],
+        label: "size",
+      },
+    ],
+  },
+  "funnel-chart": {
+    note: "`conversion` is the reason this component exists: the rows carry raw counts and the percentage beside each stage is derived. `previous` is stage-over-stage drop, `first` is cumulative from the top, `none` prints counts only.",
+    extras: [
+      {
+        prop: "conversion",
+        type: "select",
+        options: ["previous", "first", "none"],
+      },
+      { prop: "legend", type: "boolean" },
+      {
+        prop: "className",
+        type: "select",
+        options: ["h-64 w-full", "h-48 w-full", "h-80 w-full"],
+        label: "size",
+      },
+    ],
+  },
+  "scatter-chart": {
+    note: "Both axes are pinned to a numeric scale by the component — recharts would otherwise default the x axis to categories and space the points evenly, which turns a scatter into columns. `yKey` swaps which quantity is plotted against price; `sizeKey` turns the marks into bubbles and is shown in the Bubble example below, since a select cannot return to having no third variable.",
+    extras: [
+      {
+        prop: "yKey",
+        type: "select",
+        options: ["rating", "installs"],
+        label: "y",
+      },
+      {
+        prop: "className",
+        type: "select",
+        options: ["h-64 w-full", "h-48 w-full", "h-80 w-full"],
+        label: "size",
+      },
+    ],
+  },
+  treemap: {
+    note: "The data here is one level deep, so every tile is a leaf; nesting a second level groups the tiles and tints each group off its parent's hue. `showLabels` is on by default and suppresses itself on tiles with no room for text, which the Small tiles example below shows.",
+    extras: [
+      {
+        prop: "aspectRatio",
+        type: "select",
+        options: ["1.333", "1", "2.5"],
+        label: "aspect",
+      },
+      {
+        prop: "className",
+        type: "select",
+        options: ["h-64 w-full", "h-48 w-full", "h-80 w-full"],
+        label: "size",
+      },
+    ],
+  },
+  "waterfall-chart": {
+    note: "`totalKeys` names the two rows that restate the total rather than move it; without it the closing bar would stack on the running figure and float at roughly twice its height. `connectors` is on by default — the Accumulation example below is where it is off.",
+    extras: [
+      {
+        prop: "className",
+        type: "select",
+        options: ["h-56 w-full", "h-40 w-full", "h-80 w-full"],
+        label: "size",
+      },
+    ],
+  },
+  heatmap: {
+    note: "This component carries two forms and `layout` chooses between them, but each reads a different row shape — the data here is a `{ x, y, value }` grid, so `layout` is not drivable from a panel that cannot also swap the data. The `{ date, value }` calendar is the second example below. `legend` is on by default, and without it the colours mean nothing.",
+    extras: [
+      { prop: "cellSize", type: "select", options: ["28", "12", "16", "40"] },
+      { prop: "gap", type: "select", options: ["3", "0", "6"] },
+      { prop: "emptyLabel", type: "text", placeholder: "no data" },
+    ],
+  },
+  "bullet-chart": {
+    texts: {
+      label: { default: "New ARR" },
+      caption: { default: "Q3 quota attainment" },
+    },
+    note: "`value`, `target`, `max` and `bands` are fixed here with the data. The label and figure columns are driven by `--bullet-label` and `--bullet-value` rather than sized to their content, so a stack of these lines up when the labels differ in length.",
+    extras: [
+      {
+        prop: "className",
+        type: "select",
+        options: [
+          "w-full max-w-md",
+          "w-full max-w-md [--bullet-label:10rem]",
+          "w-full max-w-xs [--bullet-label:5rem]",
+        ],
+        label: "columns",
+      },
+    ],
+  },
 
   /* -- Layout & chrome (lane 3) -------------------------------------------- */
   "page-header": {
