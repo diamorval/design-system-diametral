@@ -2,9 +2,9 @@
 
 import * as React from "react"
 import {
+  Area,
+  AreaChart as RechartsAreaChart,
   CartesianGrid,
-  Line,
-  LineChart as RechartsLineChart,
   XAxis,
 } from "recharts"
 
@@ -19,29 +19,20 @@ import {
   type ChartConfig,
 } from "./chart.js"
 
-// The finished line chart over v2's recharts primitives, standing in for v1's
-// hand-rolled SVG LineChart (react/components/LineChart.js).
-//
-// v1's props map onto `ChartConfig` rather than surviving verbatim, because
-// that object is already how v2 names and colours a series and how the tooltip
-// and legend look their labels up:
-//
-//   v1 `series` / `name` / `color`  ->  one `config` entry per series, keyed by
-//                                       the field name in each `data` row
-//   v1 `data` (number[])            ->  `data`, row objects as recharts wants
-//   v1 `labels` (string[])          ->  `xAxisKey`, the row field holding them
-//   v1 `width` / `height`           ->  `className`; the container is responsive
-//
-// `dots` and `grid` survive as they were. Series with no colour of their own
-// fall back to the `--ds-chart-*` ramp, so a config of bare labels still draws.
-function LineChart({
+// `LineChart` read as a volume, standing in for v1's hand-rolled SVG AreaChart
+// (react/components/AreaChart.js). Same props, same `config`-driven colouring,
+// same v1 mapping — see the header of `line-chart.tsx` for that table — with
+// one addition: `stacked`, because two areas drawn over each other are usually
+// meant to sum rather than to overlap.
+function AreaChart({
   className,
   config,
   data,
   xAxisKey,
   grid = true,
-  dots = true,
+  dots = false,
   legend,
+  stacked = false,
   margin = { top: 8, right: 20, bottom: 0, left: 20 },
   children,
   ...props
@@ -51,10 +42,13 @@ function LineChart({
   /** Row field the x axis reads its categories from. Omitted, there is no axis. */
   xAxisKey?: string
   grid?: boolean
+  /** Off by default: an area already carries its own outline. */
   dots?: boolean
-  margin?: React.ComponentProps<typeof RechartsLineChart>["margin"]
   /** Defaults on once `config` names more than one series. */
   legend?: boolean
+  /** Sum the series into one band instead of overlaying them. */
+  stacked?: boolean
+  margin?: React.ComponentProps<typeof RechartsAreaChart>["margin"]
   /** Extra recharts children — a `ReferenceLine`, a second axis. */
   children?: React.ReactNode
 }) {
@@ -66,11 +60,7 @@ function LineChart({
       className={cn("h-56 w-full", className)}
       {...props}
     >
-      {/* The default side margins are what stop the first and last x tick from
-          being clipped: recharts centres every tick on its point, including the
-          two on the edges, and its surface is overflow:hidden. 20px clears a
-          label of about five characters; a longer one wants a wider `margin`. */}
-      <RechartsLineChart accessibilityLayer data={data} margin={margin}>
+      <RechartsAreaChart accessibilityLayer data={data} margin={margin}>
         {grid ? <CartesianGrid vertical={false} /> : null}
         {xAxisKey ? (
           <XAxis
@@ -78,9 +68,6 @@ function LineChart({
             tickLine={false}
             axisLine={false}
             tickMargin={8}
-            // Recharts will happily print all 24 hours of a day on top of each
-            // other. Thinning the run while pinning both ends keeps a dense
-            // series readable without the caller having to count its points.
             interval="preserveStartEnd"
             minTickGap={16}
           />
@@ -90,19 +77,24 @@ function LineChart({
           <ChartLegend content={<ChartLegendContent />} />
         ) : null}
         {series.map((key, i) => (
-          <Line
+          <Area
             key={key}
             dataKey={key}
+            stackId={stacked ? "stack" : undefined}
             stroke={seriesColor(key, i)}
+            fill={seriesColor(key, i)}
+            // The stroke stays at full strength while the band goes faint, so
+            // the boundary of a series survives being overlaid by the next.
+            fillOpacity={0.18}
             strokeWidth={2}
             dot={dots}
             activeDot={{ r: 4 }}
           />
         ))}
         {children}
-      </RechartsLineChart>
+      </RechartsAreaChart>
     </ChartContainer>
   )
 }
 
-export { LineChart }
+export { AreaChart }

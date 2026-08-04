@@ -1558,6 +1558,167 @@ export const COMPONENTS: ComponentDoc[] = [
     ],
   },
   {
+    slug: "area-chart",
+    name: "Area Chart",
+    category: "Data display",
+    description:
+      "`Line Chart` read as a volume — the same props, with a filled band under each series.",
+    intro: [
+      "Area Chart is the volume reading of a trend: reach for it when the size of the quantity matters as much as its direction, or when several series are meant to sum. For a rate where only the shape of the line carries meaning, `Line Chart` says the same thing with less ink.",
+      "It shares `Line Chart`'s API exactly — the same `config`, `xAxisKey`, `grid` and `legend` — plus `stacked`. Overlaid is the default because it is the safe reading: two bands drawn over each other still compare, whereas stacking silently changes what the upper series means.",
+    ],
+    examples: [
+      {
+        demo: "area-chart/basic",
+        title: "Single series",
+        description:
+          "One series, read as a volume. The band is the series colour at a low `fillOpacity` while the stroke stays at full strength, so the boundary survives on both themes.",
+      },
+      {
+        demo: "area-chart/stacked",
+        title: "Stacked composition",
+        description:
+          "`stacked` sums the series into one band, so the top edge is the total and each layer is its contribution. Only reach for it when the parts genuinely add up — stacked series are read against a moving baseline, which makes the upper ones hard to compare.",
+      },
+      {
+        demo: "area-chart/overlaid",
+        title: "Forecast against actual",
+        description:
+          "Two series overlaid rather than stacked, which is what you want when they measure the same thing twice. `dots` is off by default here and switched back on, because at seven points the markers say where the readings actually are.",
+      },
+    ],
+  },
+  {
+    slug: "bar-chart",
+    name: "Bar Chart",
+    category: "Data display",
+    description:
+      "Categorical bars with a pinned value axis, a row layout, and per-bar semantic tinting.",
+    intro: [
+      "Bar Chart compares discrete categories rather than a run over time: revenue by quarter, sessions by channel, uptime by service. When the x axis is time and the shape of the trend is the point, `Line Chart` is the better read; when the question is what share of a whole, `Stacked Bar`.",
+      "Two props have no `Line Chart` equivalent. `max` pins the value axis so a chart does not silently rescale when its tallest bar changes, and `statusKey` names a row field carrying `success`, `warning`, `danger` or `info`, which tints that one bar from the semantic tokens rather than the chart ramp.",
+    ],
+    examples: [
+      {
+        demo: "bar-chart/basic",
+        title: "Single series",
+        description:
+          "`max` fixes the ceiling at 300, so the bars read against a constant scale instead of against each other — the difference between \"Q4 was big\" and \"Q4 was 263 of a possible 300\".",
+      },
+      {
+        demo: "bar-chart/status",
+        title: "Tinted by status",
+        description:
+          "`statusKey` names the row field holding the tone. It rides along as recharts' own `fill`, so it colours the whole row — pair it with a single-series `config`, as v1's data rows did.",
+      },
+      {
+        demo: "bar-chart/horizontal",
+        title: "Rows for long labels",
+        description:
+          "`horizontal` lays the bars out as rows, which is the fix for category names that would otherwise be rotated or truncated. Recharts calls the same thing `layout=\"vertical\"`; the prop keeps v1's name.",
+      },
+      {
+        demo: "bar-chart/grouped",
+        title: "Grouped series",
+        description:
+          "A second `config` key puts two bars side by side per category and turns the legend on. Pass `stacked` instead when the two are parts of one total rather than rivals.",
+      },
+    ],
+  },
+  {
+    slug: "stacked-bar",
+    name: "Stacked Bar",
+    category: "Data display",
+    description:
+      "Proportional bars — every row normalised to its own total, so only the split differs.",
+    intro: [
+      "Stacked Bar answers what share, not how much. Each row is normalised to its own total, so every bar is the same length and the eye compares splits rather than sizes: storage by kind, a test run by outcome, throughput by state across teams. When the absolute size of each row is the point, `Bar Chart` with `stacked` keeps the raw values.",
+      "That normalisation is the whole component, and it is why the tooltip reads percentages — the magnitudes are deliberately gone. `config` is the stacking dimension, one entry per segment, and `showLegend` is on by default because a proportional bar is unreadable without one.",
+    ],
+    examples: [
+      {
+        demo: "stacked-bar/basic",
+        title: "One row",
+        description:
+          "The single-bar case: no `labelKey`, so no row label and the whole width is the split. A row that sums to zero stays at zero rather than dividing by it.",
+      },
+      {
+        demo: "stacked-bar/by-team",
+        title: "Comparing rows",
+        description:
+          "`labelKey` names each row down the left. Because every row is normalised separately, a team shipping 22 items and one shipping 11 produce the same bar length — the comparison is of mix, not of volume.",
+      },
+      {
+        demo: "stacked-bar/inline",
+        title: "Inline in a summary",
+        description:
+          "`showLegend={false}` and a short `className` height turn it into a one-line proportion strip, with the figures carried by the prose beside it instead of a legend.",
+      },
+    ],
+  },
+  {
+    slug: "pie-chart",
+    name: "Pie Chart",
+    category: "Data display",
+    description:
+      "A whole split into slices, coloured per slice from a `config` keyed by slice name.",
+    intro: [
+      "Pie Chart is for a small number of parts that make up one whole and are meant to be read as fractions: four traffic channels, three plan tiers. Past five or six slices the wedges stop being comparable — `Bar Chart` with `horizontal` stays readable where a pie does not, and `Stacked Bar` is the better shape when several wholes must be compared to each other.",
+      "A pie is coloured per slice rather than per series, so `nameKey` names the row field holding the slice name, and that name is the key into `config` — it is what the tooltip and legend look their labels up by too. A slice whose name is not a `config` key renders a swatch and no text.",
+    ],
+    examples: [
+      {
+        demo: "pie-chart/basic",
+        title: "Share of traffic",
+        description:
+          "`valueKey` and `nameKey` are the two row fields the chart needs. The `config` entries carry only labels, so the slices take the `--ds-chart-*` ramp in row order.",
+      },
+      {
+        demo: "pie-chart/branded",
+        title: "Named colours",
+        description:
+          "A `config` entry that carries a colour wins over the ramp, and the legend swatch follows it — the colour is declared once and reaches the slice, the tooltip and the legend together.",
+      },
+      {
+        demo: "pie-chart/compact",
+        title: "With a figure list",
+        description:
+          "`legend={false}` when the numbers are already spelled out beside the chart. A pie is poor at conveying exact values, so pairing it with the list is usually better than making the pie carry both jobs.",
+      },
+    ],
+  },
+  {
+    slug: "donut-chart",
+    name: "Donut Chart",
+    category: "Data display",
+    description:
+      "`Pie Chart` with the middle cut out, and a figure in the hole.",
+    intro: [
+      "Donut Chart is a pie whose hole earns its keep: the total, or the one number the split is about, sits in the middle where a pie wastes space. Reach for it over `Pie Chart` whenever there is a headline figure to show. For a single bounded value with no split at all, `Gauge` is the dial that does only that.",
+      "`thickness` is a percentage of the chart radius rather than v1's pixels, because the container is responsive and a fixed ring would not scale with it. The centre text follows `Gauge`: a title-voiced figure with an uppercase faint caption below it.",
+    ],
+    examples: [
+      {
+        demo: "donut-chart/basic",
+        title: "Total in the middle",
+        description:
+          "`centerLabel` and `centerCaption` are the reason to pick a donut over a pie. Neither is computed — the total is yours to pass, because the interesting figure is not always the sum.",
+      },
+      {
+        demo: "donut-chart/thin",
+        title: "Two-part ring",
+        description:
+          "A thin ring reads as a progress dial rather than a breakdown, which is what a used-against-free split wants. `legend={false}` because the centre already names both halves.",
+      },
+      {
+        demo: "donut-chart/breakdown",
+        title: "Cost breakdown",
+        description:
+          "Five segments is about the ceiling before the small slices stop being distinguishable. The ramp repeats past six entries, so a longer breakdown wants explicit colours or a different chart.",
+      },
+    ],
+  },
+  {
     slug: "card",
     name: "Card",
     category: "Data display",

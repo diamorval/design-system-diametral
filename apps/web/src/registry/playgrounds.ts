@@ -767,6 +767,69 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
       },
     ],
   },
+  "area-chart": {
+    note: "Two series are declared here so `stacked` has something to stack. The panel can only add props, so anything already on by default — `grid`, and `legend` past one series — is shown switched off in an example instead.",
+    extras: [
+      { prop: "stacked", type: "boolean" },
+      { prop: "dots", type: "boolean" },
+      {
+        prop: "className",
+        type: "select",
+        options: ["h-56 w-full", "h-40 w-full", "h-80 w-full"],
+        label: "size",
+      },
+    ],
+  },
+  "bar-chart": {
+    note: "Two series are declared here, so the legend is already on and `stacked` has something to stack. `max` pins the value axis; left off, the tallest bar sets it.",
+    extras: [
+      { prop: "horizontal", type: "boolean" },
+      { prop: "stacked", type: "boolean" },
+      { prop: "max", type: "select", options: ["300", "400", "1000"] },
+      {
+        prop: "className",
+        type: "select",
+        options: ["h-56 w-full", "h-40 w-full", "h-80 w-full"],
+        label: "size",
+      },
+    ],
+  },
+  "stacked-bar": {
+    note: "Every row is normalised to its own total, so the bars stay the same length whatever the figures — only the split moves. `showLegend` is on by default and a panel can only add props, so the Inline example below is where it is off.",
+    extras: [
+      {
+        prop: "className",
+        type: "select",
+        options: ["h-40 w-full", "h-24 w-full", "h-64 w-full"],
+        label: "size",
+      },
+    ],
+  },
+  "pie-chart": {
+    note: "`valueKey` and `nameKey` name the two row fields the chart reads, so they are fixed here with the data. `legend` is on by default; the With a figure list example below is where it is off.",
+    extras: [
+      {
+        prop: "className",
+        type: "select",
+        options: [
+          "mx-auto aspect-square h-64",
+          "mx-auto aspect-square h-40",
+          "mx-auto aspect-square h-80",
+        ],
+        label: "size",
+      },
+    ],
+  },
+  "donut-chart": {
+    note: "`thickness` is a percentage of the chart radius, not pixels — the container is responsive, so a fixed ring would not scale with it. At 90 the hole closes and the donut becomes a pie.",
+    extras: [
+      {
+        prop: "thickness",
+        type: "select",
+        options: ["30", "12", "50", "90"],
+      },
+    ],
+  },
 
   /* -- Layout & chrome (lane 3) -------------------------------------------- */
   "page-header": {
