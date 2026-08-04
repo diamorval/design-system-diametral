@@ -1,7 +1,9 @@
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
+import { XIcon } from "@phosphor-icons/react"
 
 import { cn } from "../lib/utils.js"
+import { IconButton } from "./icon-button.js"
 
 const alertVariants = cva(
   "group/alert relative grid w-full gap-1 border bg-background px-4 py-3 text-start text-sm after:absolute after:-inset-y-px after:-start-px after:w-0.5 has-data-[slot=alert-action]:relative has-data-[slot=alert-action]:pe-18 has-[>svg]:grid-cols-[auto_1fr] has-[>svg]:gap-x-2.5 *:[svg]:row-span-2 *:[svg]:translate-y-0.5 *:[svg]:text-current *:[svg:not([class*='size-'])]:size-4",
@@ -67,10 +69,34 @@ function AlertAction({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="alert-action"
-      className={cn("absolute top-2.5 end-3", className)}
+      className={cn("absolute end-3 top-2.5", className)}
       {...props}
     />
   )
 }
 
-export { Alert, AlertTitle, AlertDescription, AlertAction }
+// The close affordance v2 was missing. Deliberately stateless: Alert does not
+// hide itself, because a dismissed alert usually has to stay dismissed, and
+// only the caller knows where that fact lives. Pass `onClick`.
+function AlertDismiss({
+  className,
+  label = "Dismiss",
+  ...props
+}: Omit<React.ComponentProps<typeof IconButton>, "label" | "children"> & {
+  label?: string
+}) {
+  return (
+    <IconButton
+      data-slot="alert-dismiss"
+      label={label}
+      variant="ghost"
+      size="icon-xs"
+      className={cn("absolute end-3 top-2.5", className)}
+      {...props}
+    >
+      <XIcon />
+    </IconButton>
+  )
+}
+
+export { Alert, AlertTitle, AlertDescription, AlertAction, AlertDismiss }

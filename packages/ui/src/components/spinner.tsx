@@ -1,9 +1,23 @@
 import { cn } from "../lib/utils.js"
 import { SpinnerIcon } from "@phosphor-icons/react"
 
-function Spinner({ className, ...props }: React.ComponentProps<"svg">) {
+// `label` is the accessible name, not decoration: a spinner is the only thing
+// on screen saying anything is happening, so it says what. v1 carried the same
+// prop; v2 previously hardcoded "Loading", which is right for a page and wrong
+// for the third spinner in a settings list.
+function Spinner({
+  className,
+  label = "Loading",
+  ...props
+}: React.ComponentProps<"svg"> & { label?: string }) {
   return (
-    <SpinnerIcon data-slot="spinner" role="status" aria-label="Loading" className={cn("size-4 animate-spin", className)} {...props} />
+    <SpinnerIcon
+      data-slot="spinner"
+      role="status"
+      aria-label={label}
+      className={cn("size-4 animate-spin", className)}
+      {...props}
+    />
   )
 }
 

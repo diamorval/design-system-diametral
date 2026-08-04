@@ -2266,14 +2266,20 @@ export const COMPONENTS: ComponentDoc[] = [
       "An indeterminate loading indicator, sized to the current text.",
     intro: [
       "Spinner is the indeterminate wait: a rotating mark sized to the text beside it, for when there is no honest way to say how long or how far along. Reach for it inside a button that has been pressed, on a row refreshing in place, or in a region with no shape to build a placeholder from. When the shape of the arriving content is known, `Skeleton` holds the layout instead of covering it.",
-      'It is a bare `svg` carrying `role="status"` and `aria-label="Loading"`, so it announces itself with no wrapper, and it paints in `currentColor`, so it takes the colour of the text around it. Both are ordinary props the component spreads over: `className` retunes the `size-4` default, and your own `aria-label` replaces "Loading" once several waits share a screen and one word stops saying which is which.',
+      'It is a bare `svg` carrying `role="status"`, so it announces itself with no wrapper, and it paints in `currentColor`, so it takes the colour of the text around it. `label` is the accessible name and defaults to "Loading" — right for a page, wrong for the third spinner in a list, which is why it is a prop rather than a constant. `className` retunes the `size-4` default.',
     ],
     examples: [
       {
         demo: "spinner/basic",
         title: "Sizes",
         description:
-          'It ships with `role="status"` and `aria-label="Loading"`, so it is announced without a wrapper.',
+          'It ships with `role="status"` and a default `label` of "Loading", so it is announced without a wrapper.',
+      },
+      {
+        demo: "spinner/labelled",
+        title: "Naming each wait",
+        description:
+          'Three spinners all announcing "Loading" tell a screen reader nothing. `label` names the one job each is waiting on, which is the whole reason it is a prop.',
       },
       {
         demo: "spinner/in-context",
@@ -3144,6 +3150,7 @@ export const COMPONENTS: ComponentDoc[] = [
     intro: [
       "Pagination is the rail under a long list: numbered pages, previous and next, and an ellipsis standing in for the numbers there is no room to show. Reach for it when the results are ordered and someone has to be able to come back to page 7 — invoices, search results, an archive. An endless feed is better with no rail at all than with one nobody can address.",
       'Every entry is a real anchor: `PaginationLink` renders through Button\'s `render` with `nativeButton={false}`, and `isActive` sets both the `outline` variant and `aria-current="page"`. In an SPA, intercept the click and keep the `href` — dropping it costs middle-click, open-in-new-tab and the shareable URL.',
+      "The parts draw the rail; they do not decide what is on it. `paginationRange({ page, pageCount, siblingCount })` is the window calculation as a plain function — it returns page numbers and `ellipsis` markers for you to map over, so which pages show is answered in one place instead of in every consumer.",
     ],
     examples: [
       {
@@ -3162,7 +3169,7 @@ export const COMPONENTS: ComponentDoc[] = [
         demo: "pagination/long-range",
         title: "Long ranges",
         description:
-          "Past a dozen pages the rail has to be computed: a window around the current page, with a `PaginationEllipsis` wherever the numbers skip. The gap test is the numbers themselves, so there is no second flag to keep in step.",
+          "Past a dozen pages the rail has to be computed, so `paginationRange` does it: `page` and `pageCount` in, page numbers and `ellipsis` markers out. It keeps a constant width — near an edge the run widens rather than the rail shrinking — and never puts an ellipsis in front of a single hidden page.",
       },
       {
         demo: "pagination/under-a-table",
@@ -4250,6 +4257,12 @@ export const COMPONENTS: ComponentDoc[] = [
         title: "Validation summary",
         description:
           'The failed-submit shape: one alert names every problem, and the fields carry `aria-invalid` only. The root\'s `role="alert"` means the summary is announced once, rather than each field competing to speak.',
+      },
+      {
+        demo: "alert/dismissible",
+        title: "Dismissible",
+        description:
+          "`AlertDismiss` is the close affordance, and it is deliberately stateless — Alert does not hide itself, because a dismissed alert usually has to stay dismissed and only the caller knows where that fact lives.",
       },
       {
         demo: "alert/with-link",
