@@ -20,7 +20,7 @@ const DATA = [
 
 const CONFIG = {
   signups: { label: "Signups", color: "var(--ds-chart-1)" },
-  average: { label: "4-week average", color: "var(--ds-chart-4)" },
+  average: { label: "4-week average", color: "var(--ds-chart-2)" },
 } satisfies ChartConfig
 
 export default function ChartComposed() {
