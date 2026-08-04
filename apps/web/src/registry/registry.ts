@@ -1589,7 +1589,8 @@ export const COMPONENTS: ComponentDoc[] = [
       "TanStack Table wired into the Table primitives — sorting, column filtering and pagination from a `columns` definition.",
     intro: [
       "Data Table is TanStack Table already wired into the Table primitives: hand it `columns` and `data` and you get sortable headers, an optional filter box and optional pagination, with no `useReactTable` call of your own. Reach for `Table` when the rows are already final — this one owns state, so it is a client component and it re-renders on every sort and keystroke.",
-      "Features switch on by a prop being present rather than by a flag: `searchColumn` renders the filter input, and `pageSize` renders the pager and installs the pagination row model. Sorting is the exception — every column with an accessor is sortable unless you set `enableSorting: false`, and sorting and filtering both see the accessor value, never what `cell` rendered.",
+      "Features switch on by a prop being present rather than by a flag: `searchColumn` renders the filter input, `pageSize` renders the pager and installs the pagination row model, and `selectable` prepends the checkbox column. Sorting is the exception — every column with an accessor is sortable unless you set `enableSorting: false`, and sorting and filtering both see the accessor value, never what `cell` rendered.",
+      "Selection is keyed rather than indexed: `rowKey` derives a stable identity per row, and `selectedKeys` / `onSelectionChange` speak in those keys. That is what survives sorting, filtering and paging — a row index does not.",
     ],
     examples: [
       {
@@ -1603,6 +1604,12 @@ export const COMPONENTS: ComponentDoc[] = [
         title: "Search and pagination",
         description:
           "`searchColumn` names the one column the filter box applies to; `pageSize` turns on the pager. `amount` sorts as a number even though its `cell` renders a formatted string, because sorting reads the accessor value rather than the output.",
+      },
+      {
+        demo: "data-table/selectable",
+        title: "Row selection",
+        description:
+          "`selectable` prepends the checkbox column, including a select-all whose three states — none, some, all — are handled for you. Give `rowKey` a stable identity or the keys are row indices, which stop meaning anything the moment the table is sorted.",
       },
       {
         demo: "data-table/row-actions",

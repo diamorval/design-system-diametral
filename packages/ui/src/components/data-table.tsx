@@ -11,11 +11,15 @@ import {
   type ColumnDef,
   type ColumnFiltersState,
   type Header,
+  type OnChangeFn,
+  type RowSelectionState,
   type SortingState,
 } from "@tanstack/react-table"
 
+import { useControllableValue } from "../hooks/use-controllable-value.js"
 import { cn } from "../lib/utils.js"
 import { Button } from "./button.js"
+import { Checkbox } from "./checkbox.js"
 import { Input } from "./input.js"
 import {
   Table,
@@ -33,7 +37,11 @@ import {
   CaretRightIcon,
 } from "@phosphor-icons/react"
 
-function DataTableSortIcon({ direction }: { direction: false | "asc" | "desc" }) {
+function DataTableSortIcon({
+  direction,
+}: {
+  direction: false | "asc" | "desc"
+}) {
   if (direction === "asc") {
     return <CaretUpIcon className="size-3" />
   }
@@ -72,6 +80,44 @@ function DataTableColumnHeader<TData, TValue>({
   )
 }
 
+/**
+ * The checkbox column, prepended when `selectable`. It is built here rather
+ * than asked of the caller because a select-all whose state has to be right in
+ * three ways — none, some, all — is exactly the thing every consumer would get
+ * subtly wrong.
+ */
+function selectionColumn<TData, TValue>(
+  label: (row: TData) => string
+): ColumnDef<TData, TValue> {
+  return {
+    id: "select",
+    enableSorting: false,
+    enableHiding: false,
+    header: ({ table }) => (
+      <Checkbox
+        // Base UI takes `indeterminate` as its own prop rather than as a third
+        // `checked` value, so the partial state is passed separately.
+        checked={table.getIsAllPageRowsSelected()}
+        indeterminate={
+          table.getIsSomePageRowsSelected() && !table.getIsAllPageRowsSelected()
+        }
+        onCheckedChange={(checked) =>
+          table.toggleAllPageRowsSelected(checked === true)
+        }
+        aria-label="Select all rows on this page"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        disabled={!row.getCanSelect()}
+        onCheckedChange={(checked) => row.toggleSelected(checked === true)}
+        aria-label={label(row.original)}
+      />
+    ),
+  }
+}
+
 function DataTable<TData, TValue>({
   columns,
   data,
@@ -80,6 +126,12 @@ function DataTable<TData, TValue>({
   searchPlaceholder = "Filter results",
   emptyMessage = "No results.",
   className,
+  selectable = false,
+  rowKey,
+  selectedKeys,
+  defaultSelectedKeys,
+  onSelectionChange,
+  rowLabel,
 }: {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
@@ -88,16 +140,78 @@ function DataTable<TData, TValue>({
   searchPlaceholder?: string
   emptyMessage?: string
   className?: string
+  /** Prepend a checkbox column. */
+  selectable?: boolean
+  /** Stable identity per row. Without it, keys are row indices. */
+  rowKey?: (row: TData) => string
+  selectedKeys?: string[]
+  defaultSelectedKeys?: string[]
+  onSelectionChange?: (keys: string[]) => void
+  /** Accessible name for a row's checkbox. Defaults to `Select row <key>`. */
+  rowLabel?: (row: TData) => string
 }) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   )
 
+  const [keys, setKeys] = useControllableValue<string[]>({
+    value: selectedKeys,
+    defaultValue: defaultSelectedKeys ?? [],
+    onChange: onSelectionChange,
+  })
+
+  // TanStack holds selection as a truthy map; the prop is a key list, which is
+  // what a caller actually wants to store and compare.
+  const rowSelection = React.useMemo<RowSelectionState>(
+    () => Object.fromEntries(keys.map((key) => [key, true])),
+    [keys]
+  )
+
+  const onRowSelectionChange: OnChangeFn<RowSelectionState> = (updater) => {
+    const next = typeof updater === "function" ? updater(rowSelection) : updater
+    setKeys(Object.keys(next).filter((key) => next[key]))
+  }
+
+  // `rowKey` and `rowLabel` are usually written inline at the call site, so a
+  // new identity arrives on every render. Reading them through a ref keeps the
+  // column list and `getRowId` stable — rebuilding either on each render makes
+  // TanStack re-create its column instances, and the select-all header then
+  // renders against a stale table and jams.
+  const rowKeyRef = React.useRef(rowKey)
+  const rowLabelRef = React.useRef(rowLabel)
+  rowKeyRef.current = rowKey
+  rowLabelRef.current = rowLabel
+
+  const resolvedColumns = React.useMemo(
+    () =>
+      selectable
+        ? [
+            selectionColumn<TData, TValue>(
+              (row) =>
+                rowLabelRef.current?.(row) ??
+                `Select row ${rowKeyRef.current ? rowKeyRef.current(row) : ""}`
+            ),
+            ...columns,
+          ]
+        : columns,
+    [selectable, columns]
+  )
+
+  const getRowId = React.useMemo(
+    () => (rowKey ? (row: TData) => rowKeyRef.current!(row) : undefined),
+    // Only whether a key function exists matters; its identity is behind a ref.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [Boolean(rowKey)]
+  )
+
   const table = useReactTable({
     data,
-    columns,
-    state: { sorting, columnFilters },
+    columns: resolvedColumns,
+    state: { sorting, columnFilters, rowSelection },
+    getRowId,
+    enableRowSelection: selectable,
+    onRowSelectionChange,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -107,9 +221,7 @@ function DataTable<TData, TValue>({
     initialState: pageSize ? { pagination: { pageSize } } : undefined,
   })
 
-  const filterColumn = searchColumn
-    ? table.getColumn(searchColumn)
-    : undefined
+  const filterColumn = searchColumn ? table.getColumn(searchColumn) : undefined
 
   return (
     <div
@@ -150,7 +262,10 @@ function DataTable<TData, TValue>({
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
                     </TableCell>
                   ))}
                 </TableRow>
@@ -158,7 +273,7 @@ function DataTable<TData, TValue>({
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={columns.length}
+                  colSpan={resolvedColumns.length}
                   className="h-24 text-center text-muted-foreground"
                 >
                   {emptyMessage}
