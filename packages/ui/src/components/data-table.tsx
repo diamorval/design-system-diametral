@@ -20,10 +20,36 @@ import {
   type SortingState,
 } from "@tanstack/react-table"
 
+import {
+  closestCenter,
+  DndContext,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from "@dnd-kit/core"
+import {
+  arrayMove,
+  horizontalListSortingStrategy,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+} from "@dnd-kit/sortable"
+import { CSS } from "@dnd-kit/utilities"
+
 import { useControllableValue } from "../hooks/use-controllable-value.js"
 import { cn } from "../lib/utils.js"
 import { Button } from "./button.js"
 import { Checkbox } from "./checkbox.js"
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from "./dropdown-menu.js"
 import { Editable } from "./editable.js"
 import { Input } from "./input.js"
 
@@ -34,7 +60,18 @@ declare module "@tanstack/react-table" {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface ColumnMeta<TData extends RowData, TValue> {
     editable?: boolean
+    /** Start hidden. v1's DataGridColumn carried the same flag. */
+    hidden?: boolean
   }
+}
+
+/** A column's id, however it was declared. Mirrors TanStack's own resolution. */
+function columnId<TData, TValue>(column: ColumnDef<TData, TValue>) {
+  return (
+    column.id ??
+    ("accessorKey" in column ? String(column.accessorKey) : undefined) ??
+    ""
+  )
 }
 import {
   Table,
@@ -50,6 +87,8 @@ import {
   CaretUpDownIcon,
   CaretLeftIcon,
   CaretRightIcon,
+  ColumnsIcon,
+  DotsSixVerticalIcon,
 } from "@phosphor-icons/react"
 
 function DataTableSortIcon({
@@ -167,6 +206,51 @@ function expanderColumn<TData, TValue>(
   }
 }
 
+/**
+ * A draggable `th`. `@dnd-kit` earns its place here rather than a hand-rolled
+ * pointer handler because it ships a keyboard sensor: the grip is a real
+ * button, so a column can be moved with the arrow keys and not only by drag —
+ * which is the difference between this shipping and failing the a11y gate.
+ */
+function SortableHeadCell({
+  id,
+  children,
+  colSpan,
+}: {
+  id: string
+  children: React.ReactNode
+  colSpan?: number
+}) {
+  const { attributes, listeners, setNodeRef, transform, isDragging } =
+    useSortable({ id })
+
+  return (
+    <TableHead
+      ref={setNodeRef}
+      colSpan={colSpan}
+      style={{
+        transform: CSS.Translate.toString(transform),
+        opacity: isDragging ? 0.6 : undefined,
+      }}
+      className="relative"
+    >
+      <span className="inline-flex items-center gap-1">
+        <button
+          type="button"
+          data-slot="data-table-grip"
+          className="cursor-grab text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/30"
+          aria-label={`Reorder ${id} column`}
+          {...attributes}
+          {...listeners}
+        >
+          <DotsSixVerticalIcon className="size-3.5" />
+        </button>
+        {children}
+      </span>
+    </TableHead>
+  )
+}
+
 function DataTable<TData, TValue>({
   columns,
   data,
@@ -189,6 +273,10 @@ function DataTable<TData, TValue>({
   sort,
   defaultSort,
   onSortChange,
+  columnToggle = false,
+  reorderable = false,
+  title,
+  toolbar,
 }: {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
@@ -218,6 +306,13 @@ function DataTable<TData, TValue>({
   sort?: SortingState
   defaultSort?: SortingState
   onSortChange?: (sort: SortingState) => void
+  /** Render the column-visibility menu in the header strip. */
+  columnToggle?: boolean
+  /** Let column headers be dragged — or arrow-keyed — into a new order. */
+  reorderable?: boolean
+  /** Header strip content. The column menu needs somewhere to live. */
+  title?: React.ReactNode
+  toolbar?: React.ReactNode
 }) {
   const [sorting, setSortingState] = useControllableValue<SortingState>({
     value: sort,
@@ -233,6 +328,23 @@ function DataTable<TData, TValue>({
   )
 
   const [expanded, setExpanded] = React.useState<ExpandedState>({})
+
+  // Seeded from each column's `hidden` flag, which is v1's initial-state knob.
+  const [columnVisibility, setColumnVisibility] = React.useState(() =>
+    Object.fromEntries(
+      columns
+        .filter((column) => column.meta?.hidden)
+        .map((column) => [columnId(column), false])
+    )
+  )
+  const [columnOrder, setColumnOrder] = React.useState<string[]>([])
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  )
 
   const [keys, setKeys] = useControllableValue<string[]>({
     value: selectedKeys,
@@ -335,11 +447,20 @@ function DataTable<TData, TValue>({
   const table = useReactTable({
     data,
     columns: resolvedColumns,
-    state: { sorting, columnFilters, rowSelection, expanded },
+    state: {
+      sorting,
+      columnFilters,
+      rowSelection,
+      expanded,
+      columnVisibility,
+      ...(reorderable && columnOrder.length ? { columnOrder } : {}),
+    },
     getRowId,
     enableRowSelection: selectable,
     onRowSelectionChange,
     onExpandedChange: setExpanded,
+    onColumnVisibilityChange: setColumnVisibility,
+    onColumnOrderChange: setColumnOrder,
     // Expansion here is a detail panel, not a row tree, so "can expand" is the
     // caller's predicate rather than a child-row count.
     getRowCanExpand: canExpand
@@ -360,77 +481,170 @@ function DataTable<TData, TValue>({
 
   const filterColumn = searchColumn ? table.getColumn(searchColumn) : undefined
 
+  // Only the reorderable columns take part: the checkbox and disclosure columns
+  // are structural, so dragging one behind the data would be nonsense.
+  const orderedIds = table
+    .getAllLeafColumns()
+    .filter((column) => column.getCanHide())
+    .map((column) => column.id)
+
+  const onDragEnd = ({ active, over }: DragEndEvent) => {
+    if (!over || active.id === over.id) return
+    const current = columnOrder.length
+      ? columnOrder
+      : table.getAllLeafColumns().map((column) => column.id)
+    const from = current.indexOf(String(active.id))
+    const to = current.indexOf(String(over.id))
+    if (from < 0 || to < 0) return
+    setColumnOrder(arrayMove(current, from, to))
+  }
+
   return (
     <div
       data-slot="data-table"
       className={cn("flex w-full flex-col gap-4", className)}
     >
-      {filterColumn && (
-        <Input
-          data-slot="data-table-search"
-          value={(filterColumn.getFilterValue() as string) ?? ""}
-          onChange={(event) => filterColumn.setFilterValue(event.target.value)}
-          placeholder={searchPlaceholder}
-          className="max-w-64"
-        />
+      {(title || toolbar || columnToggle || filterColumn) && (
+        <div
+          data-slot="data-table-header"
+          className="flex flex-wrap items-center justify-between gap-3"
+        >
+          <div className="flex flex-wrap items-center gap-3">
+            {title ? (
+              <div className="text-sm font-semibold tracking-wider uppercase">
+                {title}
+              </div>
+            ) : null}
+            {filterColumn && (
+              <Input
+                data-slot="data-table-search"
+                value={(filterColumn.getFilterValue() as string) ?? ""}
+                onChange={(event) =>
+                  filterColumn.setFilterValue(event.target.value)
+                }
+                placeholder={searchPlaceholder}
+                className="max-w-64"
+              />
+            )}
+          </div>
+          <div className="flex items-center gap-2">
+            {toolbar}
+            {columnToggle && (
+              <DropdownMenu>
+                <DropdownMenuTrigger
+                  render={<Button variant="outline" size="sm" />}
+                >
+                  <ColumnsIcon data-icon="inline-start" />
+                  Columns
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  {/* Base UI requires checkbox items to sit inside a group —
+                      without one the menu throws on open. */}
+                  <DropdownMenuGroup>
+                    <DropdownMenuLabel>Visible columns</DropdownMenuLabel>
+                    {table
+                      .getAllLeafColumns()
+                      .filter((column) => column.getCanHide())
+                      .map((column) => (
+                        <DropdownMenuCheckboxItem
+                          key={column.id}
+                          checked={column.getIsVisible()}
+                          onCheckedChange={(checked) =>
+                            column.toggleVisibility(checked === true)
+                          }
+                        >
+                          {column.id}
+                        </DropdownMenuCheckboxItem>
+                      ))}
+                  </DropdownMenuGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
+          </div>
+        </div>
       )}
 
-      <div className="border-t border-border">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id} colSpan={header.colSpan}>
-                    {header.isPlaceholder ? null : (
-                      <DataTableColumnHeader header={header} />
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={onDragEnd}
+      >
+        <div className="border-t border-border">
+          <SortableContext
+            items={orderedIds}
+            strategy={horizontalListSortingStrategy}
+          >
+            <Table>
+              <TableHeader>
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id}>
+                    {headerGroup.headers.map((header) =>
+                      reorderable && header.column.getCanHide() ? (
+                        <SortableHeadCell
+                          key={header.id}
+                          id={header.column.id}
+                          colSpan={header.colSpan}
+                        >
+                          {header.isPlaceholder ? null : (
+                            <DataTableColumnHeader header={header} />
+                          )}
+                        </SortableHeadCell>
+                      ) : (
+                        <TableHead key={header.id} colSpan={header.colSpan}>
+                          {header.isPlaceholder ? null : (
+                            <DataTableColumnHeader header={header} />
+                          )}
+                        </TableHead>
+                      )
                     )}
-                  </TableHead>
-                ))}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows.length ? (
-              table.getRowModel().rows.map((row) => (
-                <React.Fragment key={row.id}>
-                  <TableRow
-                    data-state={row.getIsSelected() ? "selected" : undefined}
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </TableCell>
-                    ))}
                   </TableRow>
-                  {canExpand && row.getIsExpanded() ? (
-                    <TableRow data-slot="data-table-detail">
-                      <TableCell
-                        colSpan={row.getVisibleCells().length}
-                        className="bg-muted/40 p-4"
+                ))}
+              </TableHeader>
+              <TableBody>
+                {table.getRowModel().rows.length ? (
+                  table.getRowModel().rows.map((row) => (
+                    <React.Fragment key={row.id}>
+                      <TableRow
+                        data-state={
+                          row.getIsSelected() ? "selected" : undefined
+                        }
                       >
-                        {renderDetail?.(row.original)}
-                      </TableCell>
-                    </TableRow>
-                  ) : null}
-                </React.Fragment>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={resolvedColumns.length}
-                  className="h-24 text-center text-muted-foreground"
-                >
-                  {emptyMessage}
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
+                        {row.getVisibleCells().map((cell) => (
+                          <TableCell key={cell.id}>
+                            {flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext()
+                            )}
+                          </TableCell>
+                        ))}
+                      </TableRow>
+                      {canExpand && row.getIsExpanded() ? (
+                        <TableRow data-slot="data-table-detail">
+                          <TableCell
+                            colSpan={row.getVisibleCells().length}
+                            className="bg-muted/40 p-4"
+                          >
+                            {renderDetail?.(row.original)}
+                          </TableCell>
+                        </TableRow>
+                      ) : null}
+                    </React.Fragment>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell
+                      colSpan={resolvedColumns.length}
+                      className="h-24 text-center text-muted-foreground"
+                    >
+                      {emptyMessage}
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </SortableContext>
+        </div>
+      </DndContext>
 
       {pageSize && (
         <div

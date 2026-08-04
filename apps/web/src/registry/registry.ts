@@ -1630,6 +1630,12 @@ export const COMPONENTS: ComponentDoc[] = [
           "`sort` and `onSortChange` hand the sorting state to the caller, which is what lets it be persisted, shared or set from outside — the header toggles still drive it.",
       },
       {
+        demo: "data-table/columns",
+        title: "Columns and toolbar",
+        description:
+          "`title` and `toolbar` open the header strip, which is where `columnToggle` puts its menu. `reorderable` adds a grip to each data column — a real button with a keyboard sensor behind it, so a column moves with the arrow keys and not only by drag. `meta: { hidden: true }` starts Region off.",
+      },
+      {
         demo: "data-table/row-actions",
         title: "Row actions",
         description:
