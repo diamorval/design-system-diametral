@@ -1521,6 +1521,43 @@ export const COMPONENTS: ComponentDoc[] = [
     },
   },
   {
+    slug: "line-chart",
+    name: "Line Chart",
+    category: "Data display",
+    description:
+      "A finished line chart over the Chart primitives — grid, axis, tooltip and legend already wired to one `config`.",
+    intro: [
+      "Line Chart is the assembled version of what `Chart` leaves you to compose: pass `data` and a `config` and you get the grid, the x axis, the tooltip and the legend without naming a single recharts child. Reach for it for a value over time where the shape of the trend is the point. When the chart needs a shape this does not have — a brush, a second y axis, mixed marks — drop back to `Chart` and compose it yourself.",
+      "`config` is the whole naming and colouring system, one entry per series keyed by the field name in each `data` row. A series that names no colour takes the next slot of the `--ds-chart-*` ramp, so a config of bare labels still draws in brand colours. Sizing goes through `className` rather than `width`/`height` — the container underneath is responsive.",
+    ],
+    examples: [
+      {
+        demo: "line-chart/basic",
+        title: "Single series",
+        description:
+          "The minimum: rows, one `config` entry, and `xAxisKey` naming the field the ticks read. The series takes `--ds-chart-1` because the config entry carries only a label.",
+      },
+      {
+        demo: "line-chart/comparison",
+        title: "Comparing series",
+        description:
+          "Every extra `config` key draws another line and the legend turns itself on past one series. All series share one y scale, so the lines are comparable rather than each filling the box.",
+      },
+      {
+        demo: "line-chart/dense",
+        title: "Dense sampling",
+        description:
+          "`dots={false}` at high point counts — the tooltip tracks the nearest x rather than a marker, so nothing becomes unreachable. `grid={false}` drops the rules when the trend matters more than the reading.",
+      },
+      {
+        demo: "line-chart/target",
+        title: "Annotated against a target",
+        description:
+          "Children are appended inside the recharts chart, which is the escape hatch for anything the props do not cover — here a `ReferenceLine` for the SLA the series is read against.",
+      },
+    ],
+  },
+  {
     slug: "card",
     name: "Card",
     category: "Data display",
@@ -2278,6 +2315,43 @@ export const COMPONENTS: ComponentDoc[] = [
         title: "Units and density",
         description:
           "`format` decides the centre text only — the `aria-label` still reads the raw value against `max`. The figure scales with `size`, so keep the formatted string short; `thickness` retunes the ring without touching the geometry.",
+      },
+    ],
+  },
+  {
+    slug: "sparkline",
+    name: "Sparkline",
+    category: "Data display",
+    description:
+      "An inline mini line chart, small and cheap enough to sit in every row of a table.",
+    intro: [
+      "Sparkline is the trend you read at a glance next to the number it belongs to: a table's per-row history, a stat tile's last eight weeks, a figure with its own shape beside it. It has no axes, no ticks and no tooltip, because at this size none of them would be legible — for a chart meant to be read off, `Line Chart` is the full-size sibling.",
+      "It is hand-rolled SVG rather than a `Line Chart` shrunk down, and that is the whole point: one `polyline` per instance, no responsive observer, so a hundred of them in a table cost nothing. The line is `currentColor` until `stroke` names a colour, so a bare sparkline takes the colour of whatever it sits in.",
+    ],
+    examples: [
+      {
+        demo: "sparkline/basic",
+        title: "Beside a figure",
+        description:
+          "The default shape: line only, no fill, no dot. Give it an `aria-label` — the fallback reads `Sparkline of 8 values`, which says nothing about what the values are.",
+      },
+      {
+        demo: "sparkline/area",
+        title: "Area and end dot",
+        description:
+          "`fill` adds the area under the line at a low opacity and `showDot` marks the last point, which is the one a reader looks for. `fill` takes `true` to reuse the line colour, or a colour of its own.",
+      },
+      {
+        demo: "sparkline/table",
+        title: "Trend column",
+        description:
+          "The use the component is sized for. Drop `width` and `height` to fit the row rather than scaling with CSS — `preserveAspectRatio` is `none`, so a stretched sparkline distorts its stroke.",
+      },
+      {
+        demo: "sparkline/stat-card",
+        title: "Inside a stat card",
+        description:
+          "`StatCardSpark` is the slot this was built for, and the one place to pass `aria-hidden` instead of a label — the figure above already carries the number, so a second reading of it is noise. `animate` draws the line in once on mount, and stops itself under `prefers-reduced-motion` with the line fully drawn rather than blank.",
       },
     ],
   },

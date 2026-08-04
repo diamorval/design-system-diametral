@@ -258,6 +258,18 @@
     --ds-critical-bg: rgba(255, 42, 0, .18);
 }
 
+/* Sparkline draw-in, referenced by the arbitrary animation utility on
+   <Sparkline animate>. Only the keyframes live here — Tailwind cannot generate
+   them for an arbitrary animation name. */
+@keyframes ds-sparkline-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

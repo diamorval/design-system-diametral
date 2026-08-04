@@ -755,6 +755,18 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
   chart: {
     note: "Chart is configured through its `config` object and recharts children, not through enumerable props — so this panel is empty on purpose. The examples below are the documentation.",
   },
+  "line-chart": {
+    note: "`config` and `data` are objects, so the series are fixed here and only the flat props are drivable. `grid` and `dots` are on by default and so cannot be switched off from a panel that can only add props — the Dense sampling example below is where both are off.",
+    extras: [
+      { prop: "legend", type: "boolean" },
+      {
+        prop: "className",
+        type: "select",
+        options: ["h-56 w-full", "h-40 w-full", "h-80 w-full"],
+        label: "size",
+      },
+    ],
+  },
 
   /* -- Layout & chrome (lane 3) -------------------------------------------- */
   "page-header": {
@@ -872,6 +884,24 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
       },
       { prop: "max", type: "select", options: ["100", "10", "256", "500"] },
       { prop: "label", type: "text", placeholder: "CPU" },
+    ],
+  },
+  sparkline: {
+    note: "`data` is a `number[]`, which a text control could only hand over as a quoted string — so the series is a literal in the template and the four flat props are what this panel drives. Leaving `stroke` on the em dash keeps the line on `currentColor`, so it inherits from whatever the sparkline sits in.",
+    extras: [
+      {
+        prop: "stroke",
+        type: "select",
+        options: [
+          "—",
+          { value: "var(--ds-chart-1)", label: "chart 1" },
+          { value: "var(--ds-chart-2)", label: "chart 2" },
+          { value: "var(--ds-chart-3)", label: "chart 3" },
+        ],
+      },
+      { prop: "fill", type: "boolean" },
+      { prop: "showDot", type: "boolean", label: "end dot" },
+      { prop: "animate", type: "boolean" },
     ],
   },
   "code-block": {
