@@ -52,6 +52,7 @@ import {
 } from "./dropdown-menu.js"
 import { Editable } from "./editable.js"
 import { Input } from "./input.js"
+import { Spinner } from "./spinner.js"
 
 declare module "@tanstack/react-table" {
   // Per-column opt-in for inline editing, mirroring v1's DataGridColumn flag.
@@ -277,9 +278,13 @@ function DataTable<TData, TValue>({
   reorderable = false,
   title,
   toolbar,
+  loadPage,
+  lazyMode = "pagination",
+  loadMoreLabel = "Load more",
 }: {
   columns: ColumnDef<TData, TValue>[]
-  data: TData[]
+  /** Ignored when `loadPage` is given — the rows come from the server then. */
+  data?: TData[]
   pageSize?: number
   searchColumn?: string
   searchPlaceholder?: string
@@ -313,6 +318,19 @@ function DataTable<TData, TValue>({
   /** Header strip content. The column menu needs somewhere to live. */
   title?: React.ReactNode
   toolbar?: React.ReactNode
+  /**
+   * Fetch one page. Given this, sorting, filtering and paging all become the
+   * server's job and are sent along on every call. `page` is 1-based.
+   */
+  loadPage?: (args: {
+    page: number
+    pageSize: number
+    sort: SortingState
+    filters: ColumnFiltersState
+  }) => Promise<{ rows: TData[]; total: number }>
+  /** Discrete pages, or append-on-demand. */
+  lazyMode?: "pagination" | "infinite"
+  loadMoreLabel?: React.ReactNode
 }) {
   const [sorting, setSortingState] = useControllableValue<SortingState>({
     value: sort,
@@ -338,6 +356,68 @@ function DataTable<TData, TValue>({
     )
   )
   const [columnOrder, setColumnOrder] = React.useState<string[]>([])
+
+  const lazy = Boolean(loadPage)
+  const loadPageRef = React.useRef(loadPage)
+  loadPageRef.current = loadPage
+
+  const [pagination, setPagination] = React.useState({
+    pageIndex: 0,
+    pageSize: pageSize ?? 10,
+  })
+  const [lazyRows, setLazyRows] = React.useState<TData[]>([])
+  const [total, setTotal] = React.useState(0)
+  const [loading, setLoading] = React.useState(false)
+
+  // Anything that invalidates the whole result set, as one comparable value.
+  // Sorting and filtering are the server's job now, so changing either means
+  // the rows already fetched are answers to a different question.
+  const requestKey = JSON.stringify([
+    sorting,
+    columnFilters,
+    pagination.pageSize,
+  ])
+  const lastRequestKey = React.useRef(requestKey)
+  if (lazy && lastRequestKey.current !== requestKey) {
+    lastRequestKey.current = requestKey
+    if (pagination.pageIndex !== 0) {
+      setPagination((current) => ({ ...current, pageIndex: 0 }))
+    }
+    setLazyRows([])
+  }
+
+  React.useEffect(() => {
+    if (!lazy) return
+    let cancelled = false
+    setLoading(true)
+    Promise.resolve(
+      loadPageRef.current!({
+        page: pagination.pageIndex + 1,
+        pageSize: pagination.pageSize,
+        sort: sorting,
+        filters: columnFilters,
+      })
+    )
+      .then((result) => {
+        if (cancelled) return
+        setLazyRows((previous) =>
+          // Only infinite mode past the first page keeps what it already has.
+          lazyMode === "infinite" && pagination.pageIndex > 0
+            ? [...previous, ...result.rows]
+            : result.rows
+        )
+        setTotal(result.total)
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false)
+      })
+    return () => {
+      cancelled = true
+    }
+    // `requestKey` stands in for sorting/filters/pageSize by value, so a new
+    // array identity with the same contents does not refetch.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lazy, lazyMode, pagination.pageIndex, requestKey])
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -445,7 +525,7 @@ function DataTable<TData, TValue>({
   )
 
   const table = useReactTable({
-    data,
+    data: lazy ? lazyRows : (data ?? []),
     columns: resolvedColumns,
     state: {
       sorting,
@@ -454,6 +534,7 @@ function DataTable<TData, TValue>({
       expanded,
       columnVisibility,
       ...(reorderable && columnOrder.length ? { columnOrder } : {}),
+      ...(lazy || pageSize ? { pagination } : {}),
     },
     getRowId,
     enableRowSelection: selectable,
@@ -475,8 +556,15 @@ function DataTable<TData, TValue>({
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getExpandedRowModel: canExpand ? getExpandedRowModel() : undefined,
-    getPaginationRowModel: pageSize ? getPaginationRowModel() : undefined,
-    initialState: pageSize ? { pagination: { pageSize } } : undefined,
+    // The server already sliced, sorted and filtered, so the client row models
+    // must not do it again — that would page a page.
+    manualPagination: lazy,
+    manualSorting: lazy,
+    manualFiltering: lazy,
+    rowCount: lazy ? total : undefined,
+    onPaginationChange: setPagination,
+    getPaginationRowModel:
+      pageSize && !lazy ? getPaginationRowModel() : undefined,
   })
 
   const filterColumn = searchColumn ? table.getColumn(searchColumn) : undefined
@@ -646,7 +734,32 @@ function DataTable<TData, TValue>({
         </div>
       </DndContext>
 
-      {pageSize && (
+      {lazy && lazyMode === "infinite" ? (
+        <div
+          data-slot="data-table-more"
+          className="flex items-center justify-between gap-4"
+        >
+          <span className="text-xs tracking-wide text-muted-foreground tabular-nums">
+            {lazyRows.length} of {total}
+          </span>
+          <Button
+            variant="outline"
+            size="sm"
+            disabled={loading || lazyRows.length >= total}
+            onClick={() =>
+              setPagination((current) => ({
+                ...current,
+                pageIndex: current.pageIndex + 1,
+              }))
+            }
+          >
+            {loading ? <Spinner label="Loading more rows" /> : null}
+            {loadMoreLabel}
+          </Button>
+        </div>
+      ) : null}
+
+      {(pageSize || lazy) && lazyMode !== "infinite" && (
         <div
           data-slot="data-table-pagination"
           className="flex items-center justify-between gap-4"

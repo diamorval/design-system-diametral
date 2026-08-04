@@ -1591,6 +1591,7 @@ export const COMPONENTS: ComponentDoc[] = [
       "Data Table is TanStack Table already wired into the Table primitives: hand it `columns` and `data` and you get sortable headers, an optional filter box and optional pagination, with no `useReactTable` call of your own. Reach for `Table` when the rows are already final — this one owns state, so it is a client component and it re-renders on every sort and keystroke.",
       "Features switch on by a prop being present rather than by a flag: `searchColumn` renders the filter input, `pageSize` renders the pager and installs the pagination row model, and `selectable` prepends the checkbox column. Sorting is the exception — every column with an accessor is sortable unless you set `enableSorting: false`, and sorting and filtering both see the accessor value, never what `cell` rendered.",
       "Selection is keyed rather than indexed: `rowKey` derives a stable identity per row, and `selectedKeys` / `onSelectionChange` speak in those keys. That is what survives sorting, filtering and paging — a row index does not.",
+      "Everything above runs over the `data` array in the browser. `loadPage` moves the whole lot to the server instead: it receives the page, the sort and the filters, returns the rows and a total, and the client row models stand down so nothing is sorted or sliced twice.",
     ],
     examples: [
       {
@@ -1636,6 +1637,18 @@ export const COMPONENTS: ComponentDoc[] = [
           "`title` and `toolbar` open the header strip, which is where `columnToggle` puts its menu. `reorderable` adds a grip to each data column — a real button with a keyboard sensor behind it, so a column moves with the arrow keys and not only by drag. `meta: { hidden: true }` starts Region off.",
       },
       {
+        demo: "data-table/lazy",
+        title: "Server-side pages",
+        description:
+          "`loadPage` moves sorting, filtering and paging to the server: it is called with all four on every change, and the client row models stand down so the page is not paged twice. `total` from the response is what the pager counts against.",
+      },
+      {
+        demo: "data-table/infinite",
+        title: "Infinite loading",
+        description:
+          "`lazyMode=\"infinite\"` appends instead of replacing, and swaps the pager for a Load more button. Changing the sort or filter resets it — the rows already fetched are answers to a different question.",
+      },
+      {
         demo: "data-table/row-actions",
         title: "Row actions",
         description:
@@ -1662,33 +1675,22 @@ export const COMPONENTS: ComponentDoc[] = [
     description:
       "Recharts wrapped so series colours come from a `ChartConfig` and resolve to brand chart tokens.",
     intro: [
-      "Chart is a thin frame around Recharts: `ChartContainer` gives you the responsive box, themed axis and grid colours, and one place to declare the series. The chart itself is still Recharts, so its children are `BarChart`, `Line`, `XAxis` — this component adds no chart types of its own. Reach for it when the values have to be read; a single figure with a trend hint is `Stat Card`.",
+      "Chart is a thin frame around Recharts: `ChartContainer` gives you the responsive box, themed axis and grid colours, and one place to declare the series. The chart itself is still Recharts, so its children are `BarChart`, `Line`, `XAxis` — this component adds no chart types of its own.",
+      "It is the layer the finished charts are built on, not a substitute for them: for the common forms reach for `Line Chart`, `Area Chart`, `Bar Chart`, `Stacked Bar`, `Pie Chart` or `Donut Chart`, which each take `config` and `data` and compose these parts for you. This page is for the chart none of them draw — a figure that mixes mark types, or a colour outside the ramp. A single figure with a trend hint is `Stat Card`.",
       "`config` is the whole naming and colour system: an entry that carries a colour becomes a `--color-<key>` custom property scoped to that one chart, which the series reference by name, and the tooltip and legend read their labels from the same object — so a series is named and coloured once. An entry may carry only a label, naming a key without colouring it. The six `--ds-chart-*` tokens hold in both themes, so `theme` on an entry is the escape hatch for the colour that does not.",
     ],
     examples: [
       {
-        demo: "chart/bar",
-        title: "Bar chart",
+        demo: "chart/composed",
+        title: "Two mark types",
         description:
-          "`ChartContainer` injects a `--color-<key>` variable per config entry, which the series then references. Two `Bar` children with the same axis group side by side; add a shared `stackId` to stack them instead.",
+          "What no single-form component draws: a `ComposedChart` whose children are a `Bar` and a `Line`. Both series read the same `YAxis`, which is what keeps the comparison honest — a bar and a line on separate scales say whatever their domains happen to make them say.",
       },
       {
-        demo: "chart/line",
-        title: "Line chart",
+        demo: "chart/theme",
+        title: "A colour outside the ramp",
         description:
-          "For a rate over time, where the shape of the trend carries more than any one value. `dot={false}` drops the per-point markers — the tooltip tracks the nearest x rather than the dots, so nothing becomes unreachable.",
-      },
-      {
-        demo: "chart/area",
-        title: "Area chart",
-        description:
-          "The same series read as a volume. One config entry still owns the colour: the fill is that variable at a low `fillOpacity` while the stroke stays at full strength, so the boundary of the series survives on both themes.",
-      },
-      {
-        demo: "chart/pie",
-        title: "Pie chart with legend",
-        description:
-          "`ChartLegendContent` reads its labels from the same config. A pie is coloured per slice rather than per series, so each `Cell` names its own `--color-<channel>` and `nameKey` tells the tooltip and legend which field to look the label up by.",
+          "`theme` replaces `color` when one value cannot serve both themes — a partner's navy here, legible on white and lost on the dark page. The two are mutually exclusive in the type, and the emitted rule is per-chart, so this override reaches nothing else.",
       },
     ],
     parts: {
