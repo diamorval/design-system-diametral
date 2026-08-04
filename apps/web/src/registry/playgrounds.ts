@@ -175,6 +175,19 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
       { prop: "disabled", type: "boolean" },
     ],
   },
+  "date-time-picker": {
+    note: "Pick a day first: the clock stays inert until the calendar has answered, rather than inventing today. `step` snaps the minutes down on commit. `min`/`max` take Dates, so they are shown in the Bounded example rather than driven here.",
+    extras: [
+      { prop: "step", type: "select", options: ["5", "1", "15", "30"] },
+      {
+        prop: "datePlaceholder",
+        type: "text",
+        placeholder: "Pick a date",
+        label: "placeholder",
+      },
+      { prop: "disabled", type: "boolean" },
+    ],
+  },
   "color-picker": {
     note: "Drive it in the preview: the swatches, the hex field and the native picker all converge on one value. `defaultValue` is absent from the panel because it seeds the uncontrolled state once — changing it after mount would move nothing. The hex field holds a partial value while you type and commits only once it parses, which is why the selected ring does not follow every keystroke.",
     extras: [

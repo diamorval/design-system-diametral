@@ -1336,6 +1336,37 @@ export const COMPONENTS: ComponentDoc[] = [
     },
   },
   {
+    slug: "date-time-picker",
+    name: "Date Time Picker",
+    category: "Forms",
+    description:
+      "`Date Picker` and `Time Picker` composed into a single `Date` — the bound holds across both halves.",
+    intro: [
+      "Date Time Picker is for a moment rather than a day: a publish time, an appointment, a delivery slot. Both halves already exist as their own components; what this adds is one `Date` in and out, so the caller never reassembles a day and a clock into a value.",
+      "The bounds are the reason it is a component and not two controls side by side. `min` and `max` disable whole days in the calendar and clamp the clock on commit, so a `min` of 09:00 makes 08:00 unreachable on the first allowed day — v1 forwarded only the date half of a bound and let that through.",
+    ],
+    examples: [
+      {
+        demo: "date-time-picker/basic",
+        title: "Basic",
+        description:
+          "The time half is disabled until the calendar has answered. A clock with no day would have to invent today, which is a value nobody asked for.",
+      },
+      {
+        demo: "date-time-picker/bounded",
+        title: "Bounded window",
+        description:
+          "`min` and `max` reach both halves. Days outside the window are struck out by the calendar, and a time outside it is pulled back to the bound rather than rejected silently.",
+      },
+      {
+        demo: "date-time-picker/step",
+        title: "Minute increments",
+        description:
+          "`step` snaps the minutes down to the nearest increment on commit, so a slot picker cannot produce 10:37. It defaults to 5, the same increment v1's Time Picker used.",
+      },
+    ],
+  },
+  {
     slug: "date-range-picker",
     name: "Date Range Picker",
     category: "Forms",
