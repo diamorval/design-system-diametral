@@ -6,6 +6,7 @@ import { Bar, BarChart, XAxis, YAxis } from "recharts"
 import { seriesColor } from "../lib/chart-series.js"
 import { cn } from "../lib/utils.js"
 import {
+  CHART_ANIMATION_ACTIVE,
   ChartContainer,
   ChartLegend,
   ChartLegendContent,
@@ -115,6 +116,7 @@ function StackedBar({
             dataKey={key}
             stackId="stack"
             fill={seriesColor(key, i)}
+            isAnimationActive={CHART_ANIMATION_ACTIVE}
           />
         ))}
         {children}

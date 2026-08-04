@@ -13,6 +13,7 @@ import {
 import { seriesColor } from "../lib/chart-series.js"
 import { cn } from "../lib/utils.js"
 import {
+  CHART_ANIMATION_ACTIVE,
   ChartContainer,
   ChartLegend,
   ChartLegendContent,
@@ -169,11 +170,7 @@ function ScatterChart({
             }
             fill={seriesColor(key, i)}
             fillOpacity={0.75}
-            // Animation off: under recharts 3.8.0 here, an animated graphical
-            // item never leaves its first frame, and frame 0 of a scatter is
-            // `d="M0,0"` on every symbol — points present in the DOM, and an
-            // empty plot area on screen.
-            isAnimationActive={false}
+            isAnimationActive={CHART_ANIMATION_ACTIVE}
           />
         ))}
         {children}

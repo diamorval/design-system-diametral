@@ -6,6 +6,7 @@ import { Treemap as RechartsTreemap, type TreemapNode } from "recharts"
 import { seriesColor } from "../lib/chart-series.js"
 import { cn } from "../lib/utils.js"
 import {
+  CHART_ANIMATION_ACTIVE,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
@@ -168,10 +169,7 @@ function Treemap({
         dataKey={valueKey}
         nameKey={nameKey}
         aspectRatio={aspectRatio}
-        // Animation off: under recharts 3.8.0 here, an animated graphical item
-        // never leaves its first frame, so the tile geometry handed to the
-        // content renderer stays at its zero-size starting values.
-        isAnimationActive={false}
+        isAnimationActive={CHART_ANIMATION_ACTIVE}
         content={(node) => (
           <TreemapTile
             node={node}

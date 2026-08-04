@@ -16,6 +16,7 @@ import {
 } from "../lib/chart-series.js"
 import { cn } from "../lib/utils.js"
 import {
+  CHART_ANIMATION_ACTIVE,
   ChartContainer,
   ChartLegend,
   ChartLegendContent,
@@ -144,6 +145,7 @@ function BarChart({
             dataKey={key}
             stackId={stacked ? "stack" : undefined}
             fill={seriesColor(key, i)}
+            isAnimationActive={CHART_ANIMATION_ACTIVE}
           />
         ))}
         {children}

@@ -14,6 +14,7 @@ import {
 import { seriesColor } from "../lib/chart-series.js"
 import { cn } from "../lib/utils.js"
 import {
+  CHART_ANIMATION_ACTIVE,
   ChartContainer,
   ChartLegend,
   ChartLegendContent,
@@ -143,13 +144,10 @@ function ComboChart({
             mark.key,
             series.findIndex((entry) => entry.key === mark.key)
           )
-          // Animation off: under recharts 3.8.0 here, an animated graphical item
-          // never leaves its first frame, which for a bar is zero height and for
-          // a line is a flat path — marks present in the DOM and nothing drawn.
           const shared = {
             dataKey: mark.key,
             yAxisId: axisOf(mark),
-            isAnimationActive: false,
+            isAnimationActive: CHART_ANIMATION_ACTIVE,
           }
 
           if (mark.type === "bar") {

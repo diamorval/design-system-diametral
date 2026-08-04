@@ -12,6 +12,7 @@ import {
 import { seriesColor } from "../lib/chart-series.js"
 import { cn } from "../lib/utils.js"
 import {
+  CHART_ANIMATION_ACTIVE,
   ChartContainer,
   ChartLegend,
   ChartLegendContent,
@@ -102,10 +103,6 @@ function RadarChart({
           <ChartLegend content={<ChartLegendContent />} />
         ) : null}
         {series.map((key, i) => (
-          // Animation off: under recharts 3.8.0 here, an animated graphical
-          // item never leaves its first frame, and frame 0 of a radar is every
-          // vertex collapsed onto the centre — `d="M128,128L128,128…"`, a chart
-          // whose polygons are in the DOM and invisible on screen.
           <Radar
             key={key}
             dataKey={key}
@@ -113,7 +110,7 @@ function RadarChart({
             fill={seriesColor(key, i)}
             fillOpacity={fillOpacity}
             strokeWidth={2}
-            isAnimationActive={false}
+            isAnimationActive={CHART_ANIMATION_ACTIVE}
           />
         ))}
         {children}

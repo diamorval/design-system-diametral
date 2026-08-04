@@ -6,6 +6,7 @@ import { Pie, PieChart as RechartsPieChart } from "recharts"
 import { withSliceColors } from "../lib/chart-series.js"
 import { cn } from "../lib/utils.js"
 import {
+  CHART_ANIMATION_ACTIVE,
   ChartContainer,
   ChartLegend,
   ChartLegendContent,
@@ -63,6 +64,7 @@ function PieChart({
           dataKey={valueKey}
           nameKey={nameKey}
           outerRadius="90%"
+          isAnimationActive={CHART_ANIMATION_ACTIVE}
         />
         {legend ? (
           <ChartLegend content={<ChartLegendContent nameKey={nameKey} />} />
