@@ -10,10 +10,12 @@ import {
   getSortedRowModel,
   useReactTable,
   type ColumnDef,
+  type CellContext,
   type ColumnFiltersState,
   type ExpandedState,
   type Header,
   type OnChangeFn,
+  type RowData,
   type RowSelectionState,
   type SortingState,
 } from "@tanstack/react-table"
@@ -22,7 +24,18 @@ import { useControllableValue } from "../hooks/use-controllable-value.js"
 import { cn } from "../lib/utils.js"
 import { Button } from "./button.js"
 import { Checkbox } from "./checkbox.js"
+import { Editable } from "./editable.js"
 import { Input } from "./input.js"
+
+declare module "@tanstack/react-table" {
+  // Per-column opt-in for inline editing, mirroring v1's DataGridColumn flag.
+  // Only read when the table itself is `editable`, so one prop still turns the
+  // whole behaviour off.
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  interface ColumnMeta<TData extends RowData, TValue> {
+    editable?: boolean
+  }
+}
 import {
   Table,
   TableBody,
@@ -171,6 +184,11 @@ function DataTable<TData, TValue>({
   expandable = false,
   renderDetail,
   detailLabel,
+  editable = false,
+  onCellEdit,
+  sort,
+  defaultSort,
+  onSortChange,
 }: {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
@@ -194,8 +212,22 @@ function DataTable<TData, TValue>({
   renderDetail?: (row: TData) => React.ReactNode
   /** Accessible name for a row's disclosure. Defaults to `Show detail`. */
   detailLabel?: (row: TData) => string
+  /** Turn on inline editing for columns whose `meta.editable` is set. */
+  editable?: boolean
+  onCellEdit?: (row: TData, columnKey: string, value: string) => void
+  sort?: SortingState
+  defaultSort?: SortingState
+  onSortChange?: (sort: SortingState) => void
 }) {
-  const [sorting, setSorting] = React.useState<SortingState>([])
+  const [sorting, setSortingState] = useControllableValue<SortingState>({
+    value: sort,
+    defaultValue: defaultSort ?? [],
+    onChange: onSortChange,
+  })
+
+  const setSorting: OnChangeFn<SortingState> = (updater) => {
+    setSortingState(typeof updater === "function" ? updater(sorting) : updater)
+  }
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   )
@@ -234,7 +266,41 @@ function DataTable<TData, TValue>({
   detailLabelRef.current = detailLabel
   expandableRef.current = expandable
 
+  const onCellEditRef = React.useRef(onCellEdit)
+  onCellEditRef.current = onCellEdit
+
   const canExpand = Boolean(expandable) && Boolean(renderDetail)
+
+  // An editable column keeps its accessor — so sorting and filtering still read
+  // the value — and only its `cell` is swapped for the existing `Editable`,
+  // rather than a second inline-edit implementation living here. Editable's own
+  // pencil is a focusable button, which is the keyboard path v1's double-click
+  // never had.
+  const editableColumns = React.useMemo(
+    () =>
+      editable
+        ? columns.map((column) =>
+            column.meta?.editable
+              ? {
+                  ...column,
+                  cell: (context: CellContext<TData, unknown>) => (
+                    <Editable
+                      value={String(context.getValue() ?? "")}
+                      onSubmit={(next) =>
+                        onCellEditRef.current?.(
+                          context.row.original,
+                          context.column.id,
+                          next
+                        )
+                      }
+                    />
+                  ),
+                }
+              : column
+          )
+        : columns,
+    [editable, columns]
+  )
 
   const resolvedColumns = React.useMemo(
     () => [
@@ -254,9 +320,9 @@ function DataTable<TData, TValue>({
             ),
           ]
         : []),
-      ...columns,
+      ...editableColumns,
     ],
-    [selectable, canExpand, columns]
+    [selectable, canExpand, editableColumns]
   )
 
   const getRowId = React.useMemo(

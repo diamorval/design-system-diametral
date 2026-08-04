@@ -1618,6 +1618,18 @@ export const COMPONENTS: ComponentDoc[] = [
           "`expandable` prepends the disclosure and `renderDetail` fills a full-width row beneath. The trigger is a real button carrying `aria-expanded` and a per-row name, because a caret on a cell click handler is reachable by neither keyboard nor screen reader.",
       },
       {
+        demo: "data-table/editable",
+        title: "Inline editing",
+        description:
+          "`editable` on the table plus `meta: { editable: true }` on a column swaps that cell for the `Editable` component. The accessor stays, so sorting and filtering still read the value — and Editable's own pencil is a focusable button, which is the keyboard path v1's double-click never had.",
+      },
+      {
+        demo: "data-table/controlled-sort",
+        title: "Controlled sort",
+        description:
+          "`sort` and `onSortChange` hand the sorting state to the caller, which is what lets it be persisted, shared or set from outside — the header toggles still drive it.",
+      },
+      {
         demo: "data-table/row-actions",
         title: "Row actions",
         description:
