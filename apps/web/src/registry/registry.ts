@@ -1758,7 +1758,7 @@ export const COMPONENTS: ComponentDoc[] = [
     intro: [
       "Kanban is the board shape: columns you declare, cards that move between them. Reach for it when the state of a record *is* the column it sits in — a triage queue, a sprint board, a review pipeline. The card order is state it owns, so it is a client component and every drop re-renders it.",
       "Column membership lives on the item rather than in a nested per-column array: each item carries a `column` id and the board filters a flat list. That is what makes a move a one-field rewrite instead of a splice out of one array and into another, and why `onMove` can report the whole thing as `(itemKey, toColumnId)`.",
-      "Cards are dragged by a grip that is a real button, so there is a keyboard route through the entire interaction: tab to a grip, arrow across to another column, drop. The column body is its own drop target as well as its cards, which is what lets a card land in a column that is currently empty. v1's board used native HTML5 drag-and-drop and had no keyboard path at all — that is the one behaviour that did not port.",
+      "Cards are dragged by a grip that is a real button, so there is a keyboard route through the entire interaction: tab to a grip, arrow across to another column, drop. The column body is its own drop target as well as its cards, which is what lets a card land in a column that is currently empty. Native HTML5 drag-and-drop offers no keyboard path at all, which is the whole reason the board carries a drag library rather than a pair of pointer handlers.",
     ],
     examples: [
       {
@@ -1777,7 +1777,7 @@ export const COMPONENTS: ComponentDoc[] = [
         demo: "kanban/controlled",
         title: "Controlled board",
         description:
-          "`items` with `onItemsChange` hands the order to the caller; `onMove` fires alongside it, but only when the card actually changed column. v1's single `items` prop did both jobs by re-seeding from the prop on every change — a v1 call site that never updated `items` ports to `defaultItems`, not to this.",
+          "`items` with `onItemsChange` hands the order to the caller; `onMove` fires alongside it, but only when the card actually changed column — a reorder inside one lane updates the array without reporting a move, which is what keeps `onMove` mapping one-to-one onto a persisted status change. Reach for `defaultItems` when the board can own its own order.",
       },
     ],
     parts: {
