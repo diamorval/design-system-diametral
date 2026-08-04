@@ -175,6 +175,19 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
       { prop: "disabled", type: "boolean" },
     ],
   },
+  wizard: {
+    note: "`steps` carries nodes, so the three-step flow is fixed here — drive it with Back and Next in the preview. `defaultActive` is deliberately absent: it seeds the uncontrolled state once, so a panel changing it after mount would move nothing.",
+    extras: [
+      { prop: "backLabel", type: "text", default: "Back", label: "back" },
+      { prop: "nextLabel", type: "text", default: "Next", label: "next" },
+      {
+        prop: "finishLabel",
+        type: "text",
+        default: "Finish",
+        label: "finish",
+      },
+    ],
+  },
   "split-button": {
     children: { default: "Save", label: "main action" },
     note: "The menu items are fixed here — `menu` takes nodes, not a value a panel can produce. `variant`, `size` and `tone` reach both halves, which is what keeps the seam invisible.",

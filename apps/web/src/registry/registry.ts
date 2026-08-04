@@ -336,6 +336,37 @@ export const COMPONENTS: ComponentDoc[] = [
       },
     ],
   },
+  {
+    slug: "wizard",
+    name: "Wizard",
+    category: "Actions",
+    description:
+      "The step state machine `Stepper` deliberately lacks — trail, panel and Back/Next/Finish in one component.",
+    intro: [
+      "Wizard drives a multi-step flow: it owns the current index, renders the active step's content, and gives you Back, Next and Finish. `Stepper` is the other half of this pair and is presentational parts only — it draws a trail but does not move through one. Reach for `Stepper` when the progress is reported by something else, and for Wizard when the component is the flow.",
+      "`steps` is an array of `{ label, content, disableNext }`, so the trail and the panel stay in sync by construction. It is controlled with `active` + `onStepChange` and uncontrolled with `defaultActive`, the same split every other stateful component here uses.",
+    ],
+    examples: [
+      {
+        demo: "wizard/basic",
+        title: "Basic",
+        description:
+          "Three steps, uncontrolled. Back is disabled on the first step and Next becomes Finish on the last, which is what makes the footer readable without a legend.",
+      },
+      {
+        demo: "wizard/gated",
+        title: "Gating a step",
+        description:
+          "`disableNext` holds the flow until the step is satisfied. It never disables Finish — a last step that cannot be completed should say why rather than trap the reader.",
+      },
+      {
+        demo: "wizard/controlled",
+        title: "Controlled",
+        description:
+          "`active` and `onStepChange` hand the index to the caller, which is what lets something outside the component report on it. `onFinish` fires on the last step instead of advancing.",
+      },
+    ],
+  },
   /* -- Forms ------------------------------------------------------------- */
   {
     slug: "input",
