@@ -4,12 +4,14 @@ import * as React from "react"
 import {
   flexRender,
   getCoreRowModel,
+  getExpandedRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
   type ColumnDef,
   type ColumnFiltersState,
+  type ExpandedState,
   type Header,
   type OnChangeFn,
   type RowSelectionState,
@@ -118,6 +120,40 @@ function selectionColumn<TData, TValue>(
   }
 }
 
+/**
+ * The disclosure column, prepended when `expandable`. The trigger is a real
+ * button carrying `aria-expanded` and a per-row name, so the detail is
+ * reachable by keyboard and announced — a caret on a `td` click handler is
+ * neither.
+ */
+function expanderColumn<TData, TValue>(
+  label: (row: TData) => string
+): ColumnDef<TData, TValue> {
+  return {
+    id: "expander",
+    enableSorting: false,
+    enableHiding: false,
+    header: () => <span className="sr-only">Detail</span>,
+    cell: ({ row }) =>
+      row.getCanExpand() ? (
+        <Button
+          variant="ghost"
+          size="icon-xs"
+          aria-expanded={row.getIsExpanded()}
+          aria-label={label(row.original)}
+          onClick={row.getToggleExpandedHandler()}
+        >
+          <CaretRightIcon
+            className={cn(
+              "transition-[rotate] duration-200",
+              row.getIsExpanded() && "rotate-90"
+            )}
+          />
+        </Button>
+      ) : null,
+  }
+}
+
 function DataTable<TData, TValue>({
   columns,
   data,
@@ -132,6 +168,9 @@ function DataTable<TData, TValue>({
   defaultSelectedKeys,
   onSelectionChange,
   rowLabel,
+  expandable = false,
+  renderDetail,
+  detailLabel,
 }: {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
@@ -149,11 +188,19 @@ function DataTable<TData, TValue>({
   onSelectionChange?: (keys: string[]) => void
   /** Accessible name for a row's checkbox. Defaults to `Select row <key>`. */
   rowLabel?: (row: TData) => string
+  /** Prepend a disclosure column. A function decides per row. */
+  expandable?: boolean | ((row: TData) => boolean)
+  /** The detail node, rendered in a full-width row under its parent. */
+  renderDetail?: (row: TData) => React.ReactNode
+  /** Accessible name for a row's disclosure. Defaults to `Show detail`. */
+  detailLabel?: (row: TData) => string
 }) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   )
+
+  const [expanded, setExpanded] = React.useState<ExpandedState>({})
 
   const [keys, setKeys] = useControllableValue<string[]>({
     value: selectedKeys,
@@ -180,22 +227,36 @@ function DataTable<TData, TValue>({
   // renders against a stale table and jams.
   const rowKeyRef = React.useRef(rowKey)
   const rowLabelRef = React.useRef(rowLabel)
+  const detailLabelRef = React.useRef(detailLabel)
+  const expandableRef = React.useRef(expandable)
   rowKeyRef.current = rowKey
   rowLabelRef.current = rowLabel
+  detailLabelRef.current = detailLabel
+  expandableRef.current = expandable
+
+  const canExpand = Boolean(expandable) && Boolean(renderDetail)
 
   const resolvedColumns = React.useMemo(
-    () =>
-      selectable
+    () => [
+      ...(canExpand
+        ? [
+            expanderColumn<TData, TValue>(
+              (row) => detailLabelRef.current?.(row) ?? "Show detail"
+            ),
+          ]
+        : []),
+      ...(selectable
         ? [
             selectionColumn<TData, TValue>(
               (row) =>
                 rowLabelRef.current?.(row) ??
                 `Select row ${rowKeyRef.current ? rowKeyRef.current(row) : ""}`
             ),
-            ...columns,
           ]
-        : columns,
-    [selectable, columns]
+        : []),
+      ...columns,
+    ],
+    [selectable, canExpand, columns]
   )
 
   const getRowId = React.useMemo(
@@ -208,15 +269,25 @@ function DataTable<TData, TValue>({
   const table = useReactTable({
     data,
     columns: resolvedColumns,
-    state: { sorting, columnFilters, rowSelection },
+    state: { sorting, columnFilters, rowSelection, expanded },
     getRowId,
     enableRowSelection: selectable,
     onRowSelectionChange,
+    onExpandedChange: setExpanded,
+    // Expansion here is a detail panel, not a row tree, so "can expand" is the
+    // caller's predicate rather than a child-row count.
+    getRowCanExpand: canExpand
+      ? (row) => {
+          const rule = expandableRef.current
+          return typeof rule === "function" ? rule(row.original) : true
+        }
+      : undefined,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    getExpandedRowModel: canExpand ? getExpandedRowModel() : undefined,
     getPaginationRowModel: pageSize ? getPaginationRowModel() : undefined,
     initialState: pageSize ? { pagination: { pageSize } } : undefined,
   })
@@ -256,19 +327,30 @@ function DataTable<TData, TValue>({
           <TableBody>
             {table.getRowModel().rows.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() ? "selected" : undefined}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
+                <React.Fragment key={row.id}>
+                  <TableRow
+                    data-state={row.getIsSelected() ? "selected" : undefined}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                  {canExpand && row.getIsExpanded() ? (
+                    <TableRow data-slot="data-table-detail">
+                      <TableCell
+                        colSpan={row.getVisibleCells().length}
+                        className="bg-muted/40 p-4"
+                      >
+                        {renderDetail?.(row.original)}
+                      </TableCell>
+                    </TableRow>
+                  ) : null}
+                </React.Fragment>
               ))
             ) : (
               <TableRow>

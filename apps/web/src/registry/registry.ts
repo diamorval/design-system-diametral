@@ -1612,6 +1612,12 @@ export const COMPONENTS: ComponentDoc[] = [
           "`selectable` prepends the checkbox column, including a select-all whose three states — none, some, all — are handled for you. Give `rowKey` a stable identity or the keys are row indices, which stop meaning anything the moment the table is sorted.",
       },
       {
+        demo: "data-table/expandable",
+        title: "Detail rows",
+        description:
+          "`expandable` prepends the disclosure and `renderDetail` fills a full-width row beneath. The trigger is a real button carrying `aria-expanded` and a per-row name, because a caret on a cell click handler is reachable by neither keyboard nor screen reader.",
+      },
+      {
         demo: "data-table/row-actions",
         title: "Row actions",
         description:
