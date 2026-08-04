@@ -1676,6 +1676,37 @@ export const COMPONENTS: ComponentDoc[] = [
     },
   },
   {
+    slug: "agenda",
+    name: "Agenda",
+    category: "Data display",
+    description:
+      "A chronological list of events grouped by day — the list half of a calendar, and where v2 keeps event display.",
+    intro: [
+      "Agenda sorts events by day and time, groups them under a day heading, and renders each as a time, a status dot and a title. Reach for it for what is coming up: a day view, a week's schedule, a room's bookings. `Timeline` is the neighbour that looks similar and answers a different question — it narrates a sequence of things that already happened.",
+      "Event display lives here and not on `calendar`. v2's calendar is `react-day-picker`, a date-selection control, and a month cell can honestly show about two events before it starts hiding the rest; a list has no such ceiling. The two compose instead — select a day in `calendar`, list it here — which is what the third example does.",
+    ],
+    examples: [
+      {
+        demo: "agenda/basic",
+        title: "Basic",
+        description:
+          "Events arrive unsorted and are grouped by day for you. `time` is free text sorted as a string, so write it zero-padded — `09:00` sorts before `14:00`, `9am` does not.",
+      },
+      {
+        demo: "agenda/with-calendar",
+        title: "With a calendar",
+        description:
+          "The intended pairing: `calendar` owns selection, Agenda owns the events. Filtering is the caller's, which is what keeps both components ignorant of each other.",
+      },
+      {
+        demo: "agenda/empty",
+        title: "Empty state",
+        description:
+          "No events renders `Empty` rather than a bespoke placeholder, so the voice matches every other empty surface in the system. `emptyMessage` is the one line you write.",
+      },
+    ],
+  },
+  {
     slug: "line-chart",
     name: "Line Chart",
     category: "Data display",

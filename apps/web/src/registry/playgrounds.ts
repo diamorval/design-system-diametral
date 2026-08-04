@@ -175,6 +175,16 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
       { prop: "disabled", type: "boolean" },
     ],
   },
+  agenda: {
+    note: "`events` carries nodes and Dates, so the two-day list is fixed here. `locale` drives the day headings only — the time column is your own string, printed as given. Leaving it on the em dash follows the browser.",
+    extras: [
+      {
+        prop: "locale",
+        type: "select",
+        options: ["—", "en-GB", "en-US", "fr", "de", "ja"],
+      },
+    ],
+  },
   "date-time-picker": {
     note: "Pick a day first: the clock stays inert until the calendar has answered, rather than inventing today. `step` snaps the minutes down on commit. `min`/`max` take Dates, so they are shown in the Bounded example rather than driven here.",
     extras: [
