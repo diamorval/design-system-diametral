@@ -332,9 +332,46 @@ export const COMPONENTS: ComponentDoc[] = [
         demo: "split-button/outline",
         title: "Outline and disabled",
         description:
-          "`disabled` reaches both halves — a live caret on a dead action is a trap. `size=\"sm\"` shrinks the pair together.",
+          '`disabled` reaches both halves — a live caret on a dead action is a trap. `size="sm"` shrinks the pair together.',
       },
     ],
+  },
+  {
+    slug: "speed-dial",
+    name: "Speed Dial",
+    category: "Actions",
+    description:
+      "A floating action button whose two-to-four actions fan out on open — the create button a whole view is about.",
+    intro: [
+      "Speed Dial is the one action a view exists to start, parked in a corner and reachable from anywhere in it: compose, create, upload. Reach for it when the action outranks everything else on the page and the reader may be scrolled far from a toolbar. Two to four actions is the honest range — a fifth belongs in a `DropdownMenu`, and a single action needs no dial at all, just an `IconButton` positioned the same way.",
+      "It is a `Menu` underneath, not the CSS `:focus-within` trick daisyUI's `fab` uses, so Escape closes it, arrow keys walk the actions and focus returns to the trigger. The trigger is also the root: `className` positions the dial and defaults to `fixed end-6 bottom-6`, which an `absolute` override swaps out when the dial belongs to a region rather than the viewport.",
+    ],
+    examples: [
+      {
+        demo: "speed-dial/basic",
+        title: "Create actions",
+        description:
+          "Each action's visible label is its accessible name, so the glyph carries no `aria-label` of its own. The trigger's `icon` swaps for an X while open — that swap is CSS off `aria-expanded`, not a second state.",
+      },
+      {
+        demo: "speed-dial/docked",
+        title: "Docked to the top",
+        description:
+          '`side="bottom"` fans the column downwards for a dial that lives above its content. Alignment stays pinned to the trigger\'s end edge, which is what keeps the action boxes in a line under it.',
+      },
+      {
+        demo: "speed-dial/tone",
+        title: "Brand tone",
+        description:
+          "`tone` reaches the trigger only — the actions stay neutral so the dial reads as one accent rather than a stack of them. A `disabled` action greys out and refuses activation but stays arrow-reachable and `aria-disabled`, so a reader learns it exists instead of finding a gap.",
+      },
+    ],
+    parts: {
+      SpeedDial:
+        "The trigger is the root, so `className` positions the dial. Its default is `fixed end-6 bottom-6 z-40`; pass `absolute` and tailwind-merge drops the `fixed`.",
+      SpeedDialAction:
+        "The whole row is the menu item — label chip and glyph box together — so the label is the accessible name and the box needs none.",
+    },
   },
   {
     slug: "wizard",
@@ -600,7 +637,7 @@ export const COMPONENTS: ComponentDoc[] = [
       SelectContent:
         "Portals the popup and sizes it to `--anchor-width`, so a wide trigger gives a wide list. `alignItemWithTrigger` (default) aligns the selected item over the trigger and disables the open animation.",
       SelectLabel:
-        "A group heading — it must sit inside a `SelectGroup` to be tied to the options it names."
+        "A group heading — it must sit inside a `SelectGroup` to be tied to the options it names.",
     },
   },
   {
@@ -1646,7 +1683,7 @@ export const COMPONENTS: ComponentDoc[] = [
         demo: "data-table/infinite",
         title: "Infinite loading",
         description:
-          "`lazyMode=\"infinite\"` appends instead of replacing, and swaps the pager for a Load more button. Changing the sort or filter resets it — the rows already fetched are answers to a different question.",
+          '`lazyMode="infinite"` appends instead of replacing, and swaps the pager for a Load more button. Changing the sort or filter resets it — the rows already fetched are answers to a different question.',
       },
       {
         demo: "data-table/row-actions",
@@ -1822,7 +1859,7 @@ export const COMPONENTS: ComponentDoc[] = [
         demo: "bar-chart/basic",
         title: "Single series",
         description:
-          "`max` fixes the ceiling at 300, so the bars read against a constant scale instead of against each other — the difference between \"Q4 was big\" and \"Q4 was 263 of a possible 300\".",
+          '`max` fixes the ceiling at 300, so the bars read against a constant scale instead of against each other — the difference between "Q4 was big" and "Q4 was 263 of a possible 300".',
       },
       {
         demo: "bar-chart/status",
@@ -1834,7 +1871,7 @@ export const COMPONENTS: ComponentDoc[] = [
         demo: "bar-chart/horizontal",
         title: "Rows for long labels",
         description:
-          "`horizontal` lays the bars out as rows, which is the fix for category names that would otherwise be rotated or truncated. Recharts calls the same thing `layout=\"vertical\"`; the prop keeps v1's name.",
+          '`horizontal` lays the bars out as rows, which is the fix for category names that would otherwise be rotated or truncated. Recharts calls the same thing `layout="vertical"`; the prop keeps v1\'s name.',
       },
       {
         demo: "bar-chart/grouped",

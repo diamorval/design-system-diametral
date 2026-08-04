@@ -236,6 +236,24 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
       },
     ],
   },
+  "speed-dial": {
+    children: { default: "New invoice", label: "first action" },
+    texts: {
+      second: { default: "New client", label: "second action" },
+      third: { default: "Import CSV", label: "third action" },
+    },
+    note: "`label` names the trigger, which carries no visible text — it is required, so the panel always prints it. The dial is scoped to the bordered region here: its own default is `fixed end-6 bottom-6`, which a `relative` ancestor plus an `absolute` override replaces. Pin `defaultOpen` to keep the actions on screen while you drive the rest.",
+    extras: [
+      { prop: "label", type: "text", default: "Create", always: true },
+      { prop: "defaultOpen", type: "boolean", label: "open" },
+      { prop: "side", type: "select", options: ["top", "bottom"] },
+      {
+        prop: "tone",
+        type: "select",
+        options: ["noir", "rouge", "vert", "bleu"],
+      },
+    ],
+  },
   field: {
     children: { default: "Email me each release", label: "label" },
     texts: {
