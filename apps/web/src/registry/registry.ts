@@ -586,6 +586,50 @@ export const COMPONENTS: ComponentDoc[] = [
     },
   },
   {
+    slug: "field-array",
+    name: "Field Array",
+    category: "Forms",
+    description:
+      "Repeated entries for an array of objects — one bordered block per entry, each removable, with one add button under the stack.",
+    intro: [
+      "Field Array is the repeat chrome for a section that collects several of the same object: a list of diplomas, of recipients, of quote lines. Each entry is a bordered block, `FieldArrayItemContent` lays out whatever controls that object needs, `FieldArrayRemove` drops the entry, and `FieldArrayAdd` closes the stack as a full-width outline button. Wrap the lot in a `FieldSet` when the section wants a name — the legend then announces with every control inside it.",
+      "Every part is a plain styled box holding no state and asserting nothing about its contents, so an entry takes any control in any arrangement: pass a grid to the content part, or put the remove button in a header row above it rather than beside it. The array itself stays with you — this package owns no form state — which leaves add, remove, limits and the entry ids in your hands.",
+      "Submission needs no value state at all. Index each control's own `name` per entry (`lines[0].unit`) and a plain form submit carries the array; only the row list lives in React. Key each item off a stable entry id, never the index — keyed by index, removing a row makes React reuse the wrong DOM node and every uncontrolled value below it shifts up by one.",
+    ],
+    examples: [
+      {
+        demo: "field-array/basic",
+        title: "Basic",
+        description:
+          "One entry per diploma: an Input and a Select in the default content column, remove button beside them. Both carry an indexed `name`, so the section submits without any value state. Every control needs a name of its own — the entries are identical, so `Diploma 2 school` beats `School` for anyone hearing the form rather than seeing the block it sits in.",
+      },
+      {
+        demo: "field-array/submit",
+        title: "Any controls, one submit",
+        description:
+          "The part list is layout only, so an entry can hold anything: here a two-column grid of Input, Select and Checkbox, with the remove button moved into a header row. The output is the raw `FormData` the browser would post — an unchecked Checkbox contributes no entry, which is native behaviour rather than something the component decides.",
+      },
+      {
+        demo: "field-array/limits",
+        title: "Limits",
+        description:
+          "Neither bound is built in: `disabled` on `FieldArrayAdd` caps the stack, and rendering no `FieldArrayRemove` on a lone entry is what keeps one row mandatory.",
+      },
+    ],
+    parts: {
+      FieldArray:
+        'A `role="group"` column on `gap-3` — the add button is just its last child, not a separate slot.',
+      FieldArrayItem:
+        "The bordered block, a centred flex row. Add `flex-col items-stretch` when the entry wants stacked sections instead of content-beside-button.",
+      FieldArrayItemContent:
+        "The column the controls go in. `min-w-0` is load-bearing: without it a long value refuses to shrink below its content width and pushes the remove button out of the block. Override `className` for any other arrangement — `grid grid-cols-2` is the common one.",
+      FieldArrayRemove:
+        "A ghost icon `Button` carrying the trash glyph; `label` is its accessible name and should identify the entry, since a stack of them all reading `Remove` tells a screen reader user nothing. Pass children to swap the glyph.",
+      FieldArrayAdd:
+        "A full-width outline `Button` with the plus already in it — pass only the label as children.",
+    },
+  },
+  {
     slug: "select",
     name: "Select",
     category: "Forms",
@@ -1703,6 +1747,44 @@ export const COMPONENTS: ComponentDoc[] = [
         "One component, not a composition: sorting and filter state live inside it, so there is no controlled mode. Lift the `data` instead, and remount with a `key` when you need the sort reset.",
       DataTableColumnHeader:
         "What turns a header into a sort toggle, exported for columns that render their own `header`. It checks `getCanSort()` itself, so on a column without an accessor it renders the plain content and no button.",
+    },
+  },
+  {
+    slug: "kanban",
+    name: "Kanban",
+    category: "Data display",
+    description:
+      "A board of columns holding cards that move between them by drag or by arrow key.",
+    intro: [
+      "Kanban is the board shape: columns you declare, cards that move between them. Reach for it when the state of a record *is* the column it sits in — a triage queue, a sprint board, a review pipeline. The card order is state it owns, so it is a client component and every drop re-renders it.",
+      "Column membership lives on the item rather than in a nested per-column array: each item carries a `column` id and the board filters a flat list. That is what makes a move a one-field rewrite instead of a splice out of one array and into another, and why `onMove` can report the whole thing as `(itemKey, toColumnId)`.",
+      "Cards are dragged by a grip that is a real button, so there is a keyboard route through the entire interaction: tab to a grip, arrow across to another column, drop. The column body is its own drop target as well as its cards, which is what lets a card land in a column that is currently empty. v1's board used native HTML5 drag-and-drop and had no keyboard path at all — that is the one behaviour that did not port.",
+    ],
+    examples: [
+      {
+        demo: "kanban/basic",
+        title: "Basic",
+        description:
+          "`columns` names the lanes, `defaultItems` seeds the cards, and each card's `column` says where it starts. With no `renderCard` the card falls back to the item's `title`. Shipped starts empty and still accepts a drop, because the column body is a drop target in its own right.",
+      },
+      {
+        demo: "kanban/card-content",
+        title: "Card content",
+        description:
+          "`renderCard` fills the card body and nothing else — the board keeps the surface and the grip, so a card carrying its own badges or buttons never competes with the drag. Compose `KanbanCardTitle` back in to keep the heading matching the default.",
+      },
+      {
+        demo: "kanban/controlled",
+        title: "Controlled board",
+        description:
+          "`items` with `onItemsChange` hands the order to the caller; `onMove` fires alongside it, but only when the card actually changed column. v1's single `items` prop did both jobs by re-seeding from the prop on every change — a v1 call site that never updated `items` ports to `defaultItems`, not to this.",
+      },
+    ],
+    parts: {
+      Kanban:
+        "Owns the card order. Seed it with `defaultItems` and it manages itself; pass `items` and it defers to you completely — which means passing `items` without also handling `onItemsChange` freezes the board.",
+      KanbanCardTitle:
+        "Type styles only, and what the card falls back to when no `renderCard` is given. `renderCard` replaces the whole body, so compose this back in when the heading should still match.",
     },
   },
   {

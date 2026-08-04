@@ -266,6 +266,13 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
   },
 
   /* -- Declared-only (no cva axis) --------------------------------------- */
+  "field-array": {
+    texts: {
+      label: { default: "Session", label: "entry label" },
+      add: { default: "Add a session", label: "add button" },
+    },
+    note: "Every part is layout only, so there is no variant axis and no prop to drive — what the parts leave you is the arrangement: pass a grid to FieldArrayItemContent, or lift FieldArrayRemove into a header row of its own, as the second example does.",
+  },
   input: {
     extras: [
       {
@@ -851,6 +858,9 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
       },
       { prop: "emptyMessage", type: "text", placeholder: "No results." },
     ],
+  },
+  kanban: {
+    note: "The columns are an array and the cards are a render prop, and the card list is state the board owns — so this panel is empty on purpose. Drag a card between columns, or tab to a grip and use the arrow keys.",
   },
   chart: {
     note: "Chart is configured through its `config` object and recharts children, not through enumerable props — so this panel is empty on purpose. The examples below are the documentation.",
