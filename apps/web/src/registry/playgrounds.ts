@@ -175,6 +175,13 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
       { prop: "disabled", type: "boolean" },
     ],
   },
+  "color-picker": {
+    note: "Drive it in the preview: the swatches, the hex field and the native picker all converge on one value. `defaultValue` is absent from the panel because it seeds the uncontrolled state once — changing it after mount would move nothing. The hex field holds a partial value while you type and commits only once it parses, which is why the selected ring does not follow every keystroke.",
+    extras: [
+      { prop: "name", type: "text", placeholder: "tagColour" },
+      { prop: "disabled", type: "boolean" },
+    ],
+  },
   wizard: {
     note: "`steps` carries nodes, so the three-step flow is fixed here — drive it with Back and Next in the preview. `defaultActive` is deliberately absent: it seeds the uncontrolled state once, so a panel changing it after mount would move nothing.",
     extras: [

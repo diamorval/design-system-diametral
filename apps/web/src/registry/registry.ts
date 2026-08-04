@@ -641,6 +641,37 @@ export const COMPONENTS: ComponentDoc[] = [
     ],
   },
   {
+    slug: "color-picker",
+    name: "Color Picker",
+    category: "Forms",
+    description:
+      "A brand swatch grid, a hex field and the native picker, all converging on one value.",
+    intro: [
+      "Color Picker is for choosing a colour that will be stored: a tag's colour, a chart series, a workspace accent. The three ways in are deliberate — the swatches make the house palette the path of least resistance, the hex field is for a value someone already has, and the native input is the escape hatch to the full space.",
+      "It is controlled with `value` and uncontrolled with `defaultValue`. The hex field keeps its own draft text so you can type `#16` without the value lurching, and commits only once the text parses as `#rgb` or `#rrggbb` — which is also why the selected swatch ring does not follow every keystroke.",
+    ],
+    examples: [
+      {
+        demo: "color-picker/basic",
+        title: "Basic",
+        description:
+          "The default `swatches` are the tier-1 brand primaries and secondaries plus white. Selection is marked with a ring rather than a border colour, which would vanish on a swatch close to the border's own.",
+      },
+      {
+        demo: "color-picker/in-a-form",
+        title: "In a form",
+        description:
+          "`name` renders a hidden input carrying the committed value, so a plain form post never receives a half-typed hex. v1 put `name` on the visible field and could post `#16`.",
+      },
+      {
+        demo: "color-picker/controlled",
+        title: "Controlled with custom swatches",
+        description:
+          "`value` and `onChange` hand the colour to the caller. `swatches` replaces the brand list outright — pass the four a chart actually offers rather than eleven the design never uses.",
+      },
+    ],
+  },
+  {
     slug: "checkbox-group",
     name: "Checkbox Group",
     category: "Forms",
