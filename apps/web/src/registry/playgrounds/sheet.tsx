@@ -3,8 +3,10 @@ import type { ComponentProps } from "react"
 import { Button } from "@diametral/ui/components/button"
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetDescription,
+  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -23,10 +25,14 @@ export default function SheetPlayground({
         <SheetHeader>
           <SheetTitle>{children}</SheetTitle>
           <SheetDescription>
-            Left and right sheets cap at `sm:max-w-sm`; top and bottom size to
-            their content.
+            Left and right sheets cap at 24rem; top and bottom size to their
+            content.
           </SheetDescription>
         </SheetHeader>
+        <SheetFooter>
+          <SheetClose render={<Button />}>Save changes</SheetClose>
+          <SheetClose render={<Button variant="ghost" />}>Cancel</SheetClose>
+        </SheetFooter>
       </SheetContent>
     </Sheet>
   )

@@ -2,6 +2,7 @@ import type { ComponentProps } from "react"
 
 import {
   Breadcrumb,
+  BreadcrumbEllipsis,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
@@ -20,6 +21,10 @@ export default function BreadcrumbPlayground({
       <BreadcrumbList>
         <BreadcrumbItem>
           <BreadcrumbLink href="#playground">Docs</BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbEllipsis />
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>

@@ -6,8 +6,6 @@ import {
   AlertTitle,
 } from "@diametral/ui/components/alert"
 
-// The accent is an `::after` rule on the leading edge, not a border, so it
-// stays put whatever the alert's own border does.
 export default function AlertBasic() {
   return (
     <div className="flex w-full max-w-xl flex-col gap-4">

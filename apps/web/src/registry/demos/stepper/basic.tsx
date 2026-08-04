@@ -13,8 +13,6 @@ const STEPS = [
   { title: "Hand over", state: "inactive" as const },
 ]
 
-// The indicator swaps its number for a check on `completed` by itself, so the
-// caller passes the step number and nothing else.
 export default function StepperBasic() {
   return (
     <Stepper className="max-w-xl">

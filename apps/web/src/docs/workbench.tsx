@@ -6,6 +6,7 @@ import { cn } from "@diametral/ui/lib/utils"
 
 import {
   anatomyFor,
+  exceptionFor,
   hasAnatomy,
   PartHighlight,
   PartIndex,
@@ -44,7 +45,11 @@ export function Workbench({ component }: { component: ComponentDoc }) {
     part ? (data?.slots[part] ?? []) : []
 
   const inTemplate = data?.coverage.playground ?? []
-  const note = selected ? component.parts?.[selected] : undefined
+  // A part with no composition anywhere carries the reason as its note, unless
+  // the registry already says something more specific about it.
+  const note = selected
+    ? (component.parts?.[selected] ?? exceptionFor(slug, selected))
+    : undefined
   // A selected type has no part note — its declaration is the description.
   const typeDecl = selected
     ? data?.types.find((t) => t.name === selected)?.decl
@@ -89,6 +94,7 @@ export function Workbench({ component }: { component: ComponentDoc }) {
             <PartIndex
               slug={slug}
               inTemplate={inTemplate}
+              examples={component.examples ?? []}
               selected={selected}
               hovered={hovered}
               onSelect={select}

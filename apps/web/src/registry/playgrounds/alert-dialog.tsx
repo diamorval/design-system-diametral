@@ -3,6 +3,7 @@ import { WarningIcon } from "@phosphor-icons/react"
 
 import {
   AlertDialog,
+  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -35,7 +36,7 @@ export default function AlertDialogPlayground({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Keep</AlertDialogCancel>
-          <AlertDialogCancel variant="destructive">Revoke</AlertDialogCancel>
+          <AlertDialogAction variant="destructive">Revoke</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

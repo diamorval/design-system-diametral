@@ -4,8 +4,6 @@ import {
   HoverCardTrigger,
 } from "@diametral/ui/components/hover-card"
 
-// Built on Base UI's PreviewCard: hover- and focus-triggered, and explicitly
-// supplementary — never put anything essential only in here.
 export default function HoverCardBasic() {
   return (
     <p className="max-w-md text-sm leading-relaxed">

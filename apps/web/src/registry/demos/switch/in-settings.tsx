@@ -23,8 +23,6 @@ const SETTINGS = [
   },
 ]
 
-// `FieldContent` before the control and `orientation="horizontal"` is the settings
-// row: the text takes the space and the switch stays pinned to the far edge.
 export default function SwitchInSettings() {
   return (
     <FieldGroup className="max-w-md">

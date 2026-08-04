@@ -12,18 +12,17 @@ import { Input } from "@diametral/ui/components/input"
 
 type Errors = { email?: string; siret?: string }
 
-// Base UI's `errors` prop keys off `Field.Root`'s `name` — but this system's
-// `Field` is a plain div, so wire errors yourself: hold them in state, pass them
-// to `FieldError`, and set `aria-invalid` on the control.
 export default function FormValidation() {
   const [errors, setErrors] = React.useState<Errors>({})
 
   return (
     <Form
       className="max-w-sm"
-      onFormSubmit={(values) => {
-        const email = String(values.email ?? "")
-        const siret = String(values.siret ?? "")
+      onSubmit={(event) => {
+        event.preventDefault()
+        const values = new FormData(event.currentTarget)
+        const email = String(values.get("email") ?? "")
+        const siret = String(values.get("siret") ?? "")
         setErrors({
           email: email.includes("@")
             ? undefined

@@ -4,8 +4,6 @@ import {
   ProgressValue,
 } from "@diametral/ui/components/progress"
 
-// `Progress` renders its own Track and Indicator, so children are the label and
-// value only — adding a `ProgressTrack` here would draw a second bar.
 export default function ProgressBasic() {
   return (
     <div className="flex w-full max-w-sm flex-col gap-8">

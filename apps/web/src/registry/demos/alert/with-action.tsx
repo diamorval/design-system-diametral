@@ -8,8 +8,6 @@ import {
 } from "@diametral/ui/components/alert"
 import { Button } from "@diametral/ui/components/button"
 
-// `AlertAction` is absolutely positioned; the alert reserves the space for it
-// with `has-data-[slot=alert-action]:pe-18`, so the text never runs underneath.
 export default function AlertWithAction() {
   return (
     <div className="flex w-full max-w-xl flex-col gap-4">

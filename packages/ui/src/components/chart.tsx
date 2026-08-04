@@ -4,6 +4,7 @@ import * as React from "react"
 import * as RechartsPrimitive from "recharts"
 import type { TooltipValueType } from "recharts"
 
+import { colorVarName } from "../lib/chart-series.js"
 import { cn } from "../lib/utils.js"
 
 // Format: { THEME_NAME: CSS_SELECTOR }
@@ -102,7 +103,10 @@ ${colorConfig
     const color =
       itemConfig.theme?.[theme as keyof typeof itemConfig.theme] ??
       itemConfig.color
-    return color ? `  --color-${key}: ${color};` : null
+    // Through `colorVarName` so a config key carrying a space — a slice name
+    // like "Closed won" — emits a property that is actually valid CSS, and the
+    // same one `seriesColor` reads back.
+    return color ? `  ${colorVarName(key)}: ${color};` : null
   })
   .join("\n")}
 }

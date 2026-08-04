@@ -4,9 +4,6 @@ import {
   ResizablePanelGroup,
 } from "@diametral/ui/components/resizable"
 
-// react-resizable-panels wraps each panel's children in its own `overflow:
-// auto` div; `tabIndex` here gives that scrollable region a focusable
-// descendant (see resizable/basic.tsx).
 function Pane({ label }: { label: string }) {
   return (
     <div
@@ -24,17 +21,17 @@ export default function ResizableNested() {
       orientation="horizontal"
       className="h-64 max-w-xl border border-border"
     >
-      <ResizablePanel defaultSize={30} minSize={20}>
+      <ResizablePanel defaultSize="30%" minSize="20%">
         <Pane label="Files" />
       </ResizablePanel>
       <ResizableHandle withHandle />
       <ResizablePanel>
         <ResizablePanelGroup orientation="vertical">
-          <ResizablePanel defaultSize={65}>
+          <ResizablePanel defaultSize="65%">
             <Pane label="Preview" />
           </ResizablePanel>
           <ResizableHandle withHandle />
-          <ResizablePanel minSize={15}>
+          <ResizablePanel minSize="15%">
             <Pane label="Console" />
           </ResizablePanel>
         </ResizablePanelGroup>

@@ -1,6 +1,7 @@
 import { Checkbox } from "@diametral/ui/components/checkbox"
 import {
   Field,
+  FieldContent,
   FieldDescription,
   FieldGroup,
   FieldLabel,
@@ -19,12 +20,12 @@ export default function FieldChoices() {
         </Field>
         <Field orientation="horizontal">
           <Switch id="field-choices-notify" />
-          <div className="flex flex-col gap-1">
+          <FieldContent>
             <FieldLabel htmlFor="field-choices-notify">
               Email notifications
             </FieldLabel>
             <FieldDescription>Sent once per deploy.</FieldDescription>
-          </div>
+          </FieldContent>
         </Field>
       </FieldGroup>
     </div>

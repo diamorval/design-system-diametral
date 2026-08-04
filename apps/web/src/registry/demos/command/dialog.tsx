@@ -14,8 +14,6 @@ import { Kbd, KbdGroup } from "@diametral/ui/components/kbd"
 
 const COMPONENTS = ["Button", "Badge", "Dialog", "Popover", "Tooltip"]
 
-// `CommandDialog` takes Dialog's props but supplies its own content wrapper, so
-// the palette sits at a third of the viewport height rather than dead centre.
 export default function CommandDialogDemo() {
   const [open, setOpen] = React.useState(false)
 

@@ -13,8 +13,6 @@ import {
 } from "@diametral/ui/components/sheet"
 import { Textarea } from "@diametral/ui/components/textarea"
 
-// `SheetFooter` carries `mt-auto`, so it pins to the bottom of the panel however
-// short the body is — no explicit flex-1 on the content.
 export default function SheetWithForm() {
   return (
     <Sheet>

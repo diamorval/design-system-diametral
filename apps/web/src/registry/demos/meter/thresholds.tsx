@@ -6,8 +6,6 @@ const USAGE = [
   { label: "Support", value: 96 },
 ]
 
-// The track and indicator are rendered by `Meter` itself, so per-row colour is a
-// descendant selector on the root rather than a prop.
 function tone(value: number) {
   if (value >= 90) return "[&_[data-slot=meter-indicator]]:bg-destructive"
   if (value >= 70)

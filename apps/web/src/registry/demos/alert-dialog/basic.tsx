@@ -13,9 +13,6 @@ import {
 } from "@diametral/ui/components/alert-dialog"
 import { Button } from "@diametral/ui/components/button"
 
-// `AlertDialogAction` is a plain Button — unlike `AlertDialogCancel` it does not
-// wrap Close, so confirming has to close the dialog itself. That is deliberate:
-// a confirm usually needs to await something before dismissing.
 export default function AlertDialogBasic() {
   const [open, setOpen] = React.useState(false)
 

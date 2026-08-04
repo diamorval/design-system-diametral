@@ -3,6 +3,8 @@ import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
 import {
   ChartContainer,
   type ChartConfig,
+  ChartLegend,
+  ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
 } from "@diametral/ui/components/chart"
@@ -34,6 +36,7 @@ export default function ChartPlayground(
         <CartesianGrid vertical={false} />
         <XAxis dataKey="month" tickLine={false} axisLine={false} />
         <ChartTooltip content={<ChartTooltipContent />} />
+        <ChartLegend content={<ChartLegendContent />} />
         <Bar dataKey="desktop" fill="var(--color-desktop)" />
         <Bar dataKey="mobile" fill="var(--color-mobile)" />
       </BarChart>

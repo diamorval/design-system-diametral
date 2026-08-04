@@ -10,24 +10,22 @@ import {
 
 const EVENTS = [
   {
-    title: "Brief reçu",
-    time: "12 juin",
-    description: "Périmètre et critères de succès validés avec le client.",
+    title: "Brief received",
+    time: "12 June",
+    description: "Scope and success criteria signed off with the client.",
   },
   {
-    title: "Maquettes",
-    time: "28 juin",
-    description: "Trois pistes présentées, la seconde retenue.",
+    title: "Concepts",
+    time: "28 June",
+    description: "Three directions presented, the second one kept.",
   },
   {
-    title: "Livraison",
-    time: "15 juillet",
-    description: "Design system livré avec sa documentation.",
+    title: "Handover",
+    time: "15 July",
+    description: "Design system shipped with its documentation.",
   },
 ]
 
-// The connecting line is a `::before` on each item, hidden on the last one — so
-// items can be added or removed without touching the rail.
 export default function TimelineBasic() {
   return (
     <Timeline className="max-w-md">

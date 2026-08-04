@@ -12,12 +12,10 @@ import {
 import { Skeleton } from "@diametral/ui/components/skeleton"
 
 const ROWS = [
-  { name: "Régie Ouest", note: "4 missions en cours" },
-  { name: "Atelier Nord", note: "1 mission en cours" },
+  { name: "Atlas rebrand", note: "4 open tasks" },
+  { name: "Northern studio", note: "1 open task" },
 ]
 
-// The skeleton reuses the real row's Item wrapper and swaps only the text for
-// bars — that is what keeps the two states the same height and stops the jump.
 export default function SkeletonMatchingLayout() {
   const [loading, setLoading] = React.useState(true)
 

@@ -1,8 +1,6 @@
 import { Checkbox } from "@diametral/ui/components/checkbox"
 import { Label } from "@diametral/ui/components/label"
 
-// The box is 18px but carries an invisible `::after` that extends the hit area
-// well past it, so the target is comfortable without the visual growing.
 export default function CheckboxBasic() {
   return (
     <div className="flex flex-col gap-4">

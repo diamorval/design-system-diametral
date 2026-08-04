@@ -9,6 +9,8 @@ import {
   Toolbar,
   ToolbarButton,
   ToolbarGroup,
+  ToolbarInput,
+  ToolbarLink,
   ToolbarSeparator,
 } from "@diametral/ui/components/toolbar"
 
@@ -29,6 +31,9 @@ export default function ToolbarPlayground(
       <ToolbarButton aria-label="Align left">
         <TextAlignLeftIcon />
       </ToolbarButton>
+      <ToolbarSeparator />
+      <ToolbarInput placeholder="Filter…" aria-label="Filter rows" />
+      <ToolbarLink href="#workbench">Reset</ToolbarLink>
     </Toolbar>
   )
 }

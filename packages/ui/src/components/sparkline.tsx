@@ -1,0 +1,110 @@
+import * as React from "react"
+
+import { cn } from "../lib/utils.js"
+
+const r2 = (n: number) => Math.round(n * 100) / 100
+
+// An inline SVG mini line chart, ported from v1's Sparkline
+// (react/components/Sparkline.js, css/components/sparkline.css). Deliberately
+// hand-rolled rather than built on `Chart`: a sparkline has to be cheap enough
+// to sit in every row of a table, and one recharts ResponsiveContainer per cell
+// is not. One polyline, no axes, no library.
+function Sparkline({
+  className,
+  data = [],
+  width = 120,
+  height = 32,
+  stroke,
+  fill,
+  showDot = false,
+  animate = false,
+  style,
+  "aria-label": ariaLabel,
+  ...props
+}: Omit<React.ComponentProps<"span">, "children"> & {
+  data?: number[]
+  width?: number
+  height?: number
+  /** Line colour. Left off, the line is `currentColor` and inherits. */
+  stroke?: string
+  /** Faint area under the line — `true` for currentColor, or its own colour. */
+  fill?: boolean | string
+  /** Mark the last point. */
+  showDot?: boolean
+  animate?: boolean
+}) {
+  const pad = 2 // keeps the stroke and the end dot from clipping at the edges
+  const n = data.length
+  const min = n ? Math.min(...data) : 0
+  const max = n ? Math.max(...data) : 0
+  const span = max - min
+  const innerW = width - pad * 2
+  const innerH = height - pad * 2
+
+  // A flat series — or a single point — pins to the vertical middle rather than
+  // dividing by zero. v1 divided by a `|| 1` span, which quietly drew a flat
+  // series along the floor and read as a minimum it was not.
+  const points = data.map((v, i): [number, number] => [
+    r2(n === 1 ? width / 2 : pad + (i / (n - 1)) * innerW),
+    r2(span === 0 ? height / 2 : pad + (1 - (v - min) / span) * innerH),
+  ])
+
+  const line = points.map((p) => p.join(",")).join(" ")
+  const last = points[points.length - 1]
+  const baseline = height - pad
+  const area = points.length
+    ? `M${points[0][0]},${baseline} L${line} L${last[0]},${baseline} Z`
+    : null
+
+  return (
+    <span
+      data-slot="sparkline"
+      role="img"
+      aria-label={ariaLabel ?? `Sparkline of ${n} value${n === 1 ? "" : "s"}`}
+      className={cn("inline-block align-middle leading-none", className)}
+      style={stroke ? { color: stroke, ...style } : style}
+      {...props}
+    >
+      <svg
+        width={width}
+        height={height}
+        viewBox={`0 0 ${width} ${height}`}
+        preserveAspectRatio="none"
+        aria-hidden="true"
+        focusable="false"
+        className="block overflow-visible"
+      >
+        {fill && area ? (
+          <path
+            d={area}
+            className="fill-current stroke-none opacity-[0.12]"
+            style={typeof fill === "string" ? { fill } : undefined}
+          />
+        ) : null}
+        {points.length ? (
+          <polyline
+            points={line}
+            pathLength={animate ? 1 : undefined}
+            className={cn(
+              "fill-none stroke-current stroke-[1.5] [stroke-linecap:round] [stroke-linejoin:round]",
+              // pathLength=1 makes the dash maths resolution-free, so one
+              // keyframe draws any width.
+              animate &&
+                "animate-[ds-sparkline-draw_0.9s_ease_forwards] [stroke-dasharray:1] [stroke-dashoffset:1] motion-reduce:animate-none motion-reduce:[stroke-dashoffset:0]"
+            )}
+          />
+        ) : null}
+        {showDot && last ? (
+          <circle
+            cx={last[0]}
+            cy={last[1]}
+            r={2}
+            className="fill-current stroke-none"
+          />
+        ) : null}
+      </svg>
+    </span>
+  )
+}
+
+export { Sparkline }

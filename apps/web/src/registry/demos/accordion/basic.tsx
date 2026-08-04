@@ -16,7 +16,7 @@ const SECTIONS = [
     value: "fonts",
     question: "Which typefaces ship with the system?",
     answer:
-      "Two, and only two: Ufficio for headings and Geist for body and mono. Both are self-hosted.",
+      "Two, and only two: Ufficio for headings and Geist for body and mono. Geist ships with the system; Ufficio is licensed per project and never bundled.",
   },
   {
     value: "radius",

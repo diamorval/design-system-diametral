@@ -8,8 +8,6 @@ import {
   MessageGroup,
 } from "@diametral/ui/components/message"
 
-// When a footer is present the avatar lifts by 2rem to stay level with the
-// bubble instead of the timestamp — `group-has-data-[slot=message-footer]`.
 export default function MessageWithFooter() {
   return (
     <MessageGroup className="max-w-md">
@@ -34,7 +32,7 @@ export default function MessageWithFooter() {
           </Avatar>
         </MessageAvatar>
         <MessageContent>
-          <Bubble align="end">
+          <Bubble>
             <BubbleContent>Got it, thanks.</BubbleContent>
           </Bubble>
           <MessageFooter>14:03 · Read</MessageFooter>

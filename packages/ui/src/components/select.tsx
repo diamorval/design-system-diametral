@@ -4,7 +4,7 @@ import * as React from "react"
 import { Select as SelectPrimitive } from "@base-ui/react/select"
 
 import { cn } from "../lib/utils.js"
-import { CaretDownIcon, CheckIcon, CaretUpIcon } from "@phosphor-icons/react"
+import { CaretDownIcon, CheckIcon } from "@phosphor-icons/react"
 
 const Select = SelectPrimitive.Root
 
@@ -104,9 +104,7 @@ function SelectContent({
           )}
           {...props}
         >
-          <SelectScrollUpButton />
           <SelectPrimitive.List>{children}</SelectPrimitive.List>
-          <SelectScrollDownButton />
         </SelectPrimitive.Popup>
       </SelectPrimitive.Positioner>
     </SelectPrimitive.Portal>
@@ -173,41 +171,6 @@ function SelectSeparator({
   )
 }
 
-function SelectScrollUpButton({
-  className,
-  ...props
-}: React.ComponentProps<typeof SelectPrimitive.ScrollUpArrow>) {
-  return (
-    <SelectPrimitive.ScrollUpArrow
-      data-slot="select-scroll-up-button"
-      className={cn(
-        "top-0 z-10 flex w-full cursor-default items-center justify-center bg-popover py-1 [&_svg:not([class*='size-'])]:size-3.5",
-        className
-      )}
-      {...props}
-    >
-      <CaretUpIcon />
-    </SelectPrimitive.ScrollUpArrow>
-  )
-}
-
-function SelectScrollDownButton({
-  className,
-  ...props
-}: React.ComponentProps<typeof SelectPrimitive.ScrollDownArrow>) {
-  return (
-    <SelectPrimitive.ScrollDownArrow
-      data-slot="select-scroll-down-button"
-      className={cn(
-        "bottom-0 z-10 flex w-full cursor-default items-center justify-center bg-popover py-1 [&_svg:not([class*='size-'])]:size-3.5",
-        className
-      )}
-      {...props}
-    >
-      <CaretDownIcon />
-    </SelectPrimitive.ScrollDownArrow>
-  )
-}
 
 export {
   Select,
@@ -215,8 +178,6 @@ export {
   SelectGroup,
   SelectItem,
   SelectLabel,
-  SelectScrollDownButton,
-  SelectScrollUpButton,
   SelectSeparator,
   SelectTrigger,
   SelectValue,

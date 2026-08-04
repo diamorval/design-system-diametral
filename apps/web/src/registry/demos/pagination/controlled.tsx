@@ -11,8 +11,6 @@ import {
 
 const TOTAL = 5
 
-// In an SPA the hrefs are still real links; intercept the click rather than
-// dropping the href, so the pages stay shareable and openable in a new tab.
 export default function PaginationControlled() {
   const [page, setPage] = React.useState(2)
 

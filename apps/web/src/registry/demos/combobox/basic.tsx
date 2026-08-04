@@ -19,8 +19,6 @@ const CITIES = [
   "Toulouse",
 ]
 
-// `items` on the root is what gives Base UI the list to filter — the rendered
-// `ComboboxItem`s are the view, not the source of truth.
 export default function ComboboxBasic() {
   return (
     <Field className="max-w-sm">

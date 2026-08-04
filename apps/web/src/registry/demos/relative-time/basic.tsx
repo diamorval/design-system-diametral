@@ -2,8 +2,6 @@ import { RelativeTime } from "@diametral/ui/components/relative-time"
 
 const NOW = Date.now()
 
-// Formatting falls back to an absolute date past a week — "3 hours ago" stays
-// useful, "47 days ago" does not.
 export default function RelativeTimeBasic() {
   return (
     <ul className="flex flex-col gap-2 text-sm">

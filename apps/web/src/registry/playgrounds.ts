@@ -147,18 +147,132 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
     extras: [{ prop: "isActive", type: "boolean" }],
   },
   "input-group": {
+    children: { default: "Send", label: "button" },
     variantsFrom: "inputGroupAddonVariants",
-    note: "The axis belongs to InputGroupAddon — it positions the addon within the group.",
+    note: "The axis belongs to InputGroupAddon — it positions the addon within the group, and the two block alignments turn the group into a column.",
   },
   "button-group": {
     variantsFrom: "buttonGroupVariants",
   },
+  "icon-button": {
+    note: "The axes belong to `Button` and are forwarded, so they are listed here rather than parsed — icon-button.tsx declares no cva of its own. `label` is deliberately not drivable: a control whose whole point is having an accessible name should not be steerable into having none.",
+    extras: [
+      {
+        prop: "variant",
+        type: "select",
+        options: ["default", "outline", "secondary", "ghost", "destructive"],
+      },
+      {
+        prop: "size",
+        type: "select",
+        options: ["icon", "icon-xs", "icon-sm", "icon-lg"],
+      },
+      {
+        prop: "tone",
+        type: "select",
+        options: ["noir", "rouge", "vert", "bleu", "jaune"],
+      },
+      { prop: "disabled", type: "boolean" },
+    ],
+  },
+  agenda: {
+    note: "`events` carries nodes and Dates, so the two-day list is fixed here. `locale` drives the day headings only — the time column is your own string, printed as given. Leaving it on the em dash follows the browser.",
+    extras: [
+      {
+        prop: "locale",
+        type: "select",
+        options: ["—", "en-GB", "en-US", "fr", "de", "ja"],
+      },
+    ],
+  },
+  "date-time-picker": {
+    note: "Pick a day first: the clock stays inert until the calendar has answered, rather than inventing today. `step` snaps the minutes down on commit. `min`/`max` take Dates, so they are shown in the Bounded example rather than driven here.",
+    extras: [
+      { prop: "step", type: "select", options: ["5", "1", "15", "30"] },
+      {
+        prop: "datePlaceholder",
+        type: "text",
+        placeholder: "Pick a date",
+        label: "placeholder",
+      },
+      { prop: "disabled", type: "boolean" },
+    ],
+  },
+  "color-picker": {
+    note: "Drive it in the preview: the swatches, the hex field and the native picker all converge on one value. `defaultValue` is absent from the panel because it seeds the uncontrolled state once — changing it after mount would move nothing. The hex field holds a partial value while you type and commits only once it parses, which is why the selected ring does not follow every keystroke.",
+    extras: [
+      { prop: "name", type: "text", placeholder: "tagColour" },
+      { prop: "disabled", type: "boolean" },
+    ],
+  },
+  wizard: {
+    note: "`steps` carries nodes, so the three-step flow is fixed here — drive it with Back and Next in the preview. `defaultActive` is deliberately absent: it seeds the uncontrolled state once, so a panel changing it after mount would move nothing.",
+    extras: [
+      { prop: "backLabel", type: "text", default: "Back", label: "back" },
+      { prop: "nextLabel", type: "text", default: "Next", label: "next" },
+      {
+        prop: "finishLabel",
+        type: "text",
+        default: "Finish",
+        label: "finish",
+      },
+    ],
+  },
+  "split-button": {
+    children: { default: "Save", label: "main action" },
+    note: "The menu items are fixed here — `menu` takes nodes, not a value a panel can produce. `variant`, `size` and `tone` reach both halves, which is what keeps the seam invisible.",
+    extras: [
+      { prop: "disabled", type: "boolean" },
+      {
+        prop: "variant",
+        type: "select",
+        options: ["default", "outline", "secondary", "ghost"],
+      },
+      { prop: "size", type: "select", options: ["default", "sm", "lg"] },
+      {
+        prop: "tone",
+        type: "select",
+        options: ["noir", "rouge", "vert", "bleu"],
+      },
+    ],
+  },
+  "speed-dial": {
+    children: { default: "New invoice", label: "first action" },
+    texts: {
+      second: { default: "New client", label: "second action" },
+      third: { default: "Import CSV", label: "third action" },
+    },
+    note: "`label` names the trigger, which carries no visible text — it is required, so the panel always prints it. The dial is scoped to the bordered region here: its own default is `fixed end-6 bottom-6`, which a `relative` ancestor plus an `absolute` override replaces. Pin `defaultOpen` to keep the actions on screen while you drive the rest.",
+    extras: [
+      { prop: "label", type: "text", default: "Create", always: true },
+      { prop: "defaultOpen", type: "boolean", label: "open" },
+      { prop: "side", type: "select", options: ["top", "bottom"] },
+      {
+        prop: "tone",
+        type: "select",
+        options: ["noir", "rouge", "vert", "bleu"],
+      },
+    ],
+  },
   field: {
-    children: { default: "Accept the charter", label: "label" },
+    children: { default: "Email me each release", label: "label" },
+    texts: {
+      legend: { default: "Release notifications", label: "legend" },
+      title: { default: "Private previews", label: "card title" },
+      error: { default: "Enter a valid email address.", label: "error" },
+    },
     variantsFrom: "fieldVariants",
+    note: "The orientation axis belongs to the first row; the rows below it show the invalid state and the selectable-card shape a FieldLabel takes when it wraps a whole Field.",
   },
 
   /* -- Declared-only (no cva axis) --------------------------------------- */
+  "field-array": {
+    texts: {
+      label: { default: "Session", label: "entry label" },
+      add: { default: "Add a session", label: "add button" },
+    },
+    note: "Every part is layout only, so there is no variant axis and no prop to drive — what the parts leave you is the arrangement: pass a grid to FieldArrayItemContent, or lift FieldArrayRemove into a header row of its own, as the second example does.",
+  },
   input: {
     extras: [
       {
@@ -166,7 +280,12 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
         type: "select",
         options: ["text", "email", "password", "number", "date", "file"],
       },
-      { prop: "placeholder", type: "text", placeholder: "you@diametral.com" },
+      {
+        prop: "placeholder",
+        type: "text",
+        placeholder: "you@diametral.com",
+        default: "you@diametral.com",
+      },
       { prop: "disabled", type: "boolean" },
       { prop: "readOnly", type: "boolean" },
       { prop: "aria-invalid", type: "boolean", label: "invalid" },
@@ -174,8 +293,13 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
   },
   textarea: {
     extras: [
-      { prop: "placeholder", type: "text", placeholder: "Say something…" },
-      { prop: "rows", type: "select", options: ["2", "3", "5", "8"] },
+      {
+        prop: "placeholder",
+        type: "text",
+        placeholder: "Say something…",
+        default: "Say something…",
+      },
+      { prop: "rows", type: "select", options: ["1", "2", "3", "5", "8"] },
       { prop: "disabled", type: "boolean" },
       { prop: "aria-invalid", type: "boolean", label: "invalid" },
     ],
@@ -201,7 +325,7 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
       {
         prop: "defaultValue",
         type: "select",
-        options: ["vite", "next", "astro"],
+        options: ["vite", "rolldown", "next", "astro"],
       },
     ],
   },
@@ -275,11 +399,6 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
   accordion: {
     extras: [
       { prop: "multiple", type: "boolean" },
-      {
-        prop: "orientation",
-        type: "select",
-        options: ["horizontal", "vertical"],
-      },
       { prop: "disabled", type: "boolean" },
     ],
   },
@@ -309,7 +428,7 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
     ],
   },
   form: {
-    note: "`validationMode` decides when fields validate. Errors themselves are wired through FieldError, because this system's Field is a plain div.",
+    note: "`validationMode` only reaches controls registered by Base UI's own Field.Root, and this system's Field is a plain div — so nothing here validates on its own. Errors are wired by hand through FieldError.",
     extras: [
       {
         prop: "validationMode",
@@ -340,6 +459,8 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
     extras: [{ prop: "disabled", type: "boolean" }],
   },
   "number-field": {
+    texts: { label: { default: "Seats", label: "label" } },
+    note: "The label is wrapped in `NumberFieldScrubArea`, so dragging it sideways changes the value — the part has no chrome of its own, only the cursor it renders.",
     extras: [
       { prop: "step", type: "select", options: ["1", "5", "10", "0.5"] },
       { prop: "min", type: "text", placeholder: "0" },
@@ -367,7 +488,7 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
     ],
   },
   timeline: {
-    children: { default: "Brief reçu", label: "title" },
+    children: { default: "Brief received", label: "title" },
     note: "`data-state` goes on the item, not the indicator — the indicator styles itself from it.",
     extras: [
       {
@@ -701,6 +822,12 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
   breadcrumb: {
     children: { default: "Breadcrumb", label: "current page" },
   },
+  toc: {
+    children: { default: "Package manager", label: "link" },
+    texts: { label: { default: "On this page", label: "heading" } },
+    note: "No cva block, so `level` on TocItem is the only axis — and it is depth in the list, not heading rank.",
+    extras: [{ prop: "level", type: "select", options: ["1", "2"] }],
+  },
   card: {
     children: { default: "Charte graphique", label: "title" },
   },
@@ -732,8 +859,207 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
       { prop: "emptyMessage", type: "text", placeholder: "No results." },
     ],
   },
+  kanban: {
+    note: "The columns are an array and the cards are a render prop, and the card list is state the board owns — so this panel is empty on purpose. Drag a card between columns, or tab to a grip and use the arrow keys.",
+  },
   chart: {
     note: "Chart is configured through its `config` object and recharts children, not through enumerable props — so this panel is empty on purpose. The examples below are the documentation.",
+  },
+  "line-chart": {
+    note: "`config` and `data` are objects, so the series are fixed here and only the flat props are drivable. `grid` and `dots` are on by default and so cannot be switched off from a panel that can only add props — the Dense sampling example below is where both are off.",
+    extras: [
+      { prop: "legend", type: "boolean" },
+      {
+        prop: "className",
+        type: "select",
+        options: ["h-56 w-full", "h-40 w-full", "h-80 w-full"],
+        label: "size",
+      },
+    ],
+  },
+  "area-chart": {
+    note: "Two series are declared here so `stacked` has something to stack. The panel can only add props, so anything already on by default — `grid`, and `legend` past one series — is shown switched off in an example instead.",
+    extras: [
+      { prop: "stacked", type: "boolean" },
+      { prop: "dots", type: "boolean" },
+      {
+        prop: "className",
+        type: "select",
+        options: ["h-56 w-full", "h-40 w-full", "h-80 w-full"],
+        label: "size",
+      },
+    ],
+  },
+  "bar-chart": {
+    note: "Two series are declared here, so the legend is already on and `stacked` has something to stack. `max` pins the value axis; left off, the tallest bar sets it.",
+    extras: [
+      { prop: "horizontal", type: "boolean" },
+      { prop: "stacked", type: "boolean" },
+      { prop: "max", type: "select", options: ["300", "400", "1000"] },
+      {
+        prop: "className",
+        type: "select",
+        options: ["h-56 w-full", "h-40 w-full", "h-80 w-full"],
+        label: "size",
+      },
+    ],
+  },
+  "stacked-bar": {
+    note: "Every row is normalised to its own total, so the bars stay the same length whatever the figures — only the split moves. `showLegend` is on by default and a panel can only add props, so the Inline example below is where it is off.",
+    extras: [
+      {
+        prop: "className",
+        type: "select",
+        options: ["h-40 w-full", "h-24 w-full", "h-64 w-full"],
+        label: "size",
+      },
+    ],
+  },
+  "pie-chart": {
+    note: "`valueKey` and `nameKey` name the two row fields the chart reads, so they are fixed here with the data. `legend` is on by default; the With a figure list example below is where it is off.",
+    extras: [
+      {
+        prop: "className",
+        type: "select",
+        options: [
+          "mx-auto aspect-square h-64",
+          "mx-auto aspect-square h-40",
+          "mx-auto aspect-square h-80",
+        ],
+        label: "size",
+      },
+    ],
+  },
+  "donut-chart": {
+    note: "`thickness` is a percentage of the chart radius, not pixels — the container is responsive, so a fixed ring would not scale with it. At 90 the hole closes and the donut becomes a pie.",
+    extras: [
+      {
+        prop: "thickness",
+        type: "select",
+        options: ["30", "12", "50", "90"],
+      },
+    ],
+  },
+  "radar-chart": {
+    note: "Two entities are declared here, so the legend is already on. `domain` is pinned to 0–100 with the data, because a radar that auto-scales is not comparable with the one beside it. `grid` is on by default and a panel can only add props — the Dense dimensions example below is where it is off.",
+    extras: [
+      { prop: "radiusAxis", type: "boolean" },
+      {
+        prop: "fillOpacity",
+        type: "select",
+        options: ["0.2", "0", "0.45", "0.7"],
+      },
+      {
+        prop: "className",
+        type: "select",
+        options: [
+          "mx-auto aspect-square h-64",
+          "mx-auto aspect-square h-48",
+          "mx-auto aspect-square h-80",
+        ],
+        label: "size",
+      },
+    ],
+  },
+  "combo-chart": {
+    note: "`series` and `rightAxis` are objects, so they are fixed here with the data — a bar on the left scale and a line on the right. Everything this component does lives in those two, and the panel can only add flat props: the examples below are the documentation. `legend` is already on past one series, and `grid` is on by default.",
+    extras: [
+      {
+        prop: "className",
+        type: "select",
+        options: ["h-56 w-full", "h-40 w-full", "h-80 w-full"],
+        label: "size",
+      },
+    ],
+  },
+  "funnel-chart": {
+    note: "`conversion` is the reason this component exists: the rows carry raw counts and the percentage beside each stage is derived. `previous` is stage-over-stage drop, `first` is cumulative from the top, `none` prints counts only.",
+    extras: [
+      {
+        prop: "conversion",
+        type: "select",
+        options: ["previous", "first", "none"],
+      },
+      { prop: "legend", type: "boolean" },
+      {
+        prop: "className",
+        type: "select",
+        options: ["h-64 w-full", "h-48 w-full", "h-80 w-full"],
+        label: "size",
+      },
+    ],
+  },
+  "scatter-chart": {
+    note: "Both axes are pinned to a numeric scale by the component — recharts would otherwise default the x axis to categories and space the points evenly, which turns a scatter into columns. `yKey` swaps which quantity is plotted against price; `sizeKey` turns the marks into bubbles and is shown in the Bubble example below, since a select cannot return to having no third variable.",
+    extras: [
+      {
+        prop: "yKey",
+        type: "select",
+        options: ["rating", "installs"],
+        label: "y",
+      },
+      {
+        prop: "className",
+        type: "select",
+        options: ["h-64 w-full", "h-48 w-full", "h-80 w-full"],
+        label: "size",
+      },
+    ],
+  },
+  treemap: {
+    note: "The data here is one level deep, so every tile is a leaf; nesting a second level groups the tiles and tints each group off its parent's hue. `showLabels` is on by default and suppresses itself on tiles with no room for text, which the Small tiles example below shows.",
+    extras: [
+      {
+        prop: "aspectRatio",
+        type: "select",
+        options: ["1.333", "1", "2.5"],
+        label: "aspect",
+      },
+      {
+        prop: "className",
+        type: "select",
+        options: ["h-64 w-full", "h-48 w-full", "h-80 w-full"],
+        label: "size",
+      },
+    ],
+  },
+  "waterfall-chart": {
+    note: "`totalKeys` names the two rows that restate the total rather than move it; without it the closing bar would stack on the running figure and float at roughly twice its height. `connectors` is on by default — the Accumulation example below is where it is off.",
+    extras: [
+      {
+        prop: "className",
+        type: "select",
+        options: ["h-56 w-full", "h-40 w-full", "h-80 w-full"],
+        label: "size",
+      },
+    ],
+  },
+  heatmap: {
+    note: "This component carries two forms and `layout` chooses between them, but each reads a different row shape — the data here is a `{ x, y, value }` grid, so `layout` is not drivable from a panel that cannot also swap the data. The `{ date, value }` calendar is the second example below. `legend` is on by default, and without it the colours mean nothing.",
+    extras: [
+      { prop: "cellSize", type: "select", options: ["28", "12", "16", "40"] },
+      { prop: "gap", type: "select", options: ["3", "0", "6"] },
+      { prop: "emptyLabel", type: "text", placeholder: "no data" },
+    ],
+  },
+  "bullet-chart": {
+    texts: {
+      label: { default: "New ARR" },
+      caption: { default: "Q3 quota attainment" },
+    },
+    note: "`value`, `target`, `max` and `bands` are fixed here with the data. The label and figure columns are driven by `--bullet-label` and `--bullet-value` rather than sized to their content, so a stack of these lines up when the labels differ in length.",
+    extras: [
+      {
+        prop: "className",
+        type: "select",
+        options: [
+          "w-full max-w-md",
+          "w-full max-w-md [--bullet-label:10rem]",
+          "w-full max-w-xs [--bullet-label:5rem]",
+        ],
+        label: "columns",
+      },
+    ],
   },
 
   /* -- Layout & chrome (lane 3) -------------------------------------------- */
@@ -852,6 +1178,24 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
       },
       { prop: "max", type: "select", options: ["100", "10", "256", "500"] },
       { prop: "label", type: "text", placeholder: "CPU" },
+    ],
+  },
+  sparkline: {
+    note: "`data` is a `number[]`, which a text control could only hand over as a quoted string — so the series is a literal in the template and the four flat props are what this panel drives. Leaving `stroke` on the em dash keeps the line on `currentColor`, so it inherits from whatever the sparkline sits in.",
+    extras: [
+      {
+        prop: "stroke",
+        type: "select",
+        options: [
+          "—",
+          { value: "var(--ds-chart-1)", label: "chart 1" },
+          { value: "var(--ds-chart-2)", label: "chart 2" },
+          { value: "var(--ds-chart-3)", label: "chart 3" },
+        ],
+      },
+      { prop: "fill", type: "boolean" },
+      { prop: "showDot", type: "boolean", label: "end dot" },
+      { prop: "animate", type: "boolean" },
     ],
   },
   "code-block": {

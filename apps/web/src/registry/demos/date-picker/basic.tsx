@@ -8,8 +8,6 @@ import {
 } from "@diametral/ui/components/date-picker"
 import { Field, FieldLabel } from "@diametral/ui/components/field"
 
-// `DatePicker` *is* `Popover` — the component only adds a trigger that formats the
-// date and a content wrapper with the padding stripped. The Calendar stays yours.
 export default function DatePickerBasic() {
   const [date, setDate] = React.useState<Date | undefined>()
   const [open, setOpen] = React.useState(false)

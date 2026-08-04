@@ -4,6 +4,7 @@ import { Button } from "@diametral/ui/components/button"
 import {
   ButtonGroup,
   ButtonGroupSeparator,
+  ButtonGroupText,
 } from "@diametral/ui/components/button-group"
 
 export default function ButtonGroupPlayground(
@@ -11,6 +12,7 @@ export default function ButtonGroupPlayground(
 ) {
   return (
     <ButtonGroup {...props}>
+      <ButtonGroupText>Clipboard</ButtonGroupText>
       <Button variant="outline">Copy</Button>
       <ButtonGroupSeparator />
       <Button variant="outline">Paste</Button>

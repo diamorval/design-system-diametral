@@ -8,6 +8,8 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
+  CommandSeparator,
+  CommandShortcut,
 } from "@diametral/ui/components/command"
 
 // cmdk's own props: turning `shouldFilter` off is how you hand filtering to a
@@ -23,12 +25,17 @@ export default function CommandPlayground(
         <CommandGroup heading="Actions">
           <CommandItem>
             <PlusIcon /> New project
+            <CommandShortcut>⌘N</CommandShortcut>
           </CommandItem>
           <CommandItem>
             <PaletteIcon /> Change theme
           </CommandItem>
+        </CommandGroup>
+        <CommandSeparator />
+        <CommandGroup heading="Settings">
           <CommandItem>
             <GearIcon /> Preferences
+            <CommandShortcut>⌘,</CommandShortcut>
           </CommandItem>
         </CommandGroup>
       </CommandList>

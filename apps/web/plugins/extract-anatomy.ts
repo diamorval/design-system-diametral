@@ -201,6 +201,9 @@ export function extractAnatomy(
   const parentsOf = (child: string) =>
     [...edges.values()].filter((edge) => edge.child === child)
 
+  /** Every part some demo or playground writes, as opposed to the component. */
+  const documented = new Set(Object.values(coverage).flat())
+
   const rows: AnatomyRow[] = []
   const placed = new Set<string>()
 
@@ -216,14 +219,21 @@ export function extractAnatomy(
     const alsoUnder = [...new Set(parents)].filter(
       (parent) => parent !== trail.at(-1)
     )
-    const internal = parentsOf(part).every(
-      (edge) => edge.labels.size === 1 && edge.labels.has(INTERNAL)
-    )
+    // A part only ever written by the component itself is internal: nobody
+    // composes it. Nesting shows that as parent edges the demos never walked,
+    // but the outermost element of a part's own render has no parent at all —
+    // DialogContent opens with a DialogPortal — so at root the question is
+    // simply whether any demo or playground mentions it.
+    const internal = parents.length
+      ? parentsOf(part).every(
+          (edge) => edge.labels.size === 1 && edge.labels.has(INTERNAL)
+        )
+      : !documented.has(part)
     const shared = {
       part,
       depth,
       ...(alsoUnder.length ? { alsoUnder } : {}),
-      ...(internal && parents.length ? { internal: true } : {}),
+      ...(internal ? { internal: true } : {}),
     }
 
     placed.add(part)
@@ -237,10 +247,16 @@ export function extractAnatomy(
     rows.push({ part, depth, kind: "close" })
   }
 
-  const roots = [...rootOrder.entries()]
-    .filter(([name]) => !parentsOf(name).length)
+  const ordered = [...rootOrder.entries()]
     .sort((a, b) => a[1] - b[1])
     .map(([name]) => name)
+  const unparented = ordered.filter((name) => !parentsOf(name).length)
+  // A grammar that nests inside itself leaves every part with a parent —
+  // resizable's `nested` demo puts a PanelGroup inside a Panel — and filtering
+  // on that alone would leave no root and collapse the whole tree. Where that
+  // happens the top-level parts are the roots; the trail check above reports
+  // the cycle instead of following it.
+  const roots = unparented.length ? unparented : ordered
 
   for (const root of roots) render(root, 0, [])
 

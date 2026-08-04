@@ -9,11 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@diametral/ui/components/dialog"
-import {
-  Field,
-  FieldGroup,
-  FieldLabel,
-} from "@diametral/ui/components/field"
+import { Field, FieldGroup, FieldLabel } from "@diametral/ui/components/field"
 import { Input } from "@diametral/ui/components/input"
 
 export default function DialogWithForm() {
@@ -26,13 +22,13 @@ export default function DialogWithForm() {
         <DialogHeader>
           <DialogTitle>Rename project</DialogTitle>
           <DialogDescription>
-            This changes the display name only.
+            The name is what collaborators see; the slug appears in URLs.
           </DialogDescription>
         </DialogHeader>
         <FieldGroup>
           <Field>
             <FieldLabel htmlFor="dialog-form-name">Name</FieldLabel>
-            <Input id="dialog-form-name" defaultValue="design-system2" />
+            <Input id="dialog-form-name" defaultValue="Design System 2" />
           </Field>
           <Field>
             <FieldLabel htmlFor="dialog-form-slug">Slug</FieldLabel>
@@ -40,7 +36,9 @@ export default function DialogWithForm() {
           </Field>
         </FieldGroup>
         <DialogFooter>
-          <DialogClose render={<Button variant="outline" />}>Cancel</DialogClose>
+          <DialogClose render={<Button variant="outline" />}>
+            Cancel
+          </DialogClose>
           <DialogClose render={<Button />}>Save</DialogClose>
         </DialogFooter>
       </DialogContent>

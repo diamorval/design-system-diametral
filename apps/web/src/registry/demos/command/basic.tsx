@@ -11,8 +11,6 @@ import {
   CommandShortcut,
 } from "@diametral/ui/components/command"
 
-// `CommandItem` hides its trailing check whenever the item carries a shortcut,
-// so the two never collide on the inline-end edge.
 export default function CommandBasic() {
   return (
     <Command className="max-w-sm border border-border">

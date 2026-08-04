@@ -22,4 +22,7 @@ declare module "virtual:demo-source" {
     string,
     import("../../plugins/extract-anatomy").Anatomy
   >
+
+  /** Why a part appears nowhere, keyed `<slug>/<Part>`; the build gate's exceptions. */
+  export const anatomyExceptions: Record<string, string>
 }
