@@ -12,7 +12,6 @@ import {
 import { seriesColor } from "../lib/chart-series.js"
 import { cn } from "../lib/utils.js"
 import {
-  CHART_ANIMATION_ACTIVE,
   ChartContainer,
   ChartLegend,
   ChartLegendContent,
@@ -110,7 +109,6 @@ function RadarChart({
             fill={seriesColor(key, i)}
             fillOpacity={fillOpacity}
             strokeWidth={2}
-            isAnimationActive={CHART_ANIMATION_ACTIVE}
           />
         ))}
         {children}

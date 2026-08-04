@@ -13,7 +13,6 @@ import {
 import { seriesColor, STATUS_COLORS } from "../lib/chart-series.js"
 import { cn } from "../lib/utils.js"
 import {
-  CHART_ANIMATION_ACTIVE,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
@@ -215,7 +214,6 @@ function WaterfallChart({
           fillOpacity={0}
           tooltipType="none"
           legendType="none"
-          isAnimationActive={CHART_ANIMATION_ACTIVE}
         />
         {/* The tone rides on the row as recharts' own `fill`, the same per-row
             path `BarChart`'s `statusKey` takes; the `fill` here is only the
@@ -229,7 +227,6 @@ function WaterfallChart({
           dataKey="delta"
           stackId="waterfall"
           fill={TOTAL_COLOR}
-          isAnimationActive={CHART_ANIMATION_ACTIVE}
         />
         {connectors
           ? steps.slice(0, -1).map((step, i) => (

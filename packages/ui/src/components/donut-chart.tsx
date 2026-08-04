@@ -6,7 +6,6 @@ import { Label, Pie, PieChart } from "recharts"
 import { withSliceColors } from "../lib/chart-series.js"
 import { cn } from "../lib/utils.js"
 import {
-  CHART_ANIMATION_ACTIVE,
   ChartContainer,
   ChartLegend,
   ChartLegendContent,
@@ -94,7 +93,6 @@ function DonutChart({
           nameKey={nameKey}
           outerRadius={`${outer}%`}
           innerRadius={`${Math.max(0, outer - thickness)}%`}
-          isAnimationActive={CHART_ANIMATION_ACTIVE}
         >
           {centerLabel != null ? (
             <Label

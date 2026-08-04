@@ -14,7 +14,6 @@ import {
 import { seriesColor } from "../lib/chart-series.js"
 import { cn } from "../lib/utils.js"
 import {
-  CHART_ANIMATION_ACTIVE,
   ChartContainer,
   ChartLegend,
   ChartLegendContent,
@@ -147,7 +146,6 @@ function ComboChart({
           const shared = {
             dataKey: mark.key,
             yAxisId: axisOf(mark),
-            isAnimationActive: CHART_ANIMATION_ACTIVE,
           }
 
           if (mark.type === "bar") {

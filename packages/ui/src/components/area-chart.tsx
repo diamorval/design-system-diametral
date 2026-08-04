@@ -11,7 +11,6 @@ import {
 import { seriesColor } from "../lib/chart-series.js"
 import { cn } from "../lib/utils.js"
 import {
-  CHART_ANIMATION_ACTIVE,
   ChartContainer,
   ChartLegend,
   ChartLegendContent,
@@ -90,7 +89,6 @@ function AreaChart({
             strokeWidth={2}
             dot={dots}
             activeDot={{ r: 4 }}
-            isAnimationActive={CHART_ANIMATION_ACTIVE}
           />
         ))}
         {children}

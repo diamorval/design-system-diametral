@@ -6,7 +6,6 @@ import { Treemap as RechartsTreemap, type TreemapNode } from "recharts"
 import { seriesColor } from "../lib/chart-series.js"
 import { cn } from "../lib/utils.js"
 import {
-  CHART_ANIMATION_ACTIVE,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
@@ -169,7 +168,6 @@ function Treemap({
         dataKey={valueKey}
         nameKey={nameKey}
         aspectRatio={aspectRatio}
-        isAnimationActive={CHART_ANIMATION_ACTIVE}
         content={(node) => (
           <TreemapTile
             node={node}

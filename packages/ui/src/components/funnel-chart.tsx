@@ -6,7 +6,6 @@ import { Funnel, FunnelChart as RechartsFunnelChart, LabelList } from "recharts"
 import { withSliceColors } from "../lib/chart-series.js"
 import { cn } from "../lib/utils.js"
 import {
-  CHART_ANIMATION_ACTIVE,
   ChartContainer,
   ChartLegend,
   ChartLegendContent,
@@ -160,7 +159,6 @@ function FunnelChart({
           data={rows}
           dataKey={valueKey}
           nameKey={nameKey}
-          isAnimationActive={CHART_ANIMATION_ACTIVE}
         >
           <LabelList
             dataKey="__stage"

@@ -13,36 +13,6 @@ const THEMES = { light: "", dark: ".dark" } as const
 const INITIAL_DIMENSION = { width: 320, height: 200 } as const
 type TooltipNameType = number | string
 
-/**
- * What every finished wrapper passes its recharts graphical items, in place of
- * recharts' own `"auto"` default.
- *
- * Left on `"auto"`, these wrappers render their first animation frame and never
- * advance, so a mark sits in the DOM and draws nothing on screen: a radar
- * polygon with every vertex on the centre (`d="M128,128L128,128…"`), a scatter
- * symbol at `d="M0,0"`, a bar at zero height. Counting nodes is what hides it —
- * they are all present, and only their measured size gives it away.
- *
- * The mechanism is `useAnimationId`, which recharts keys on **reference
- * equality** of the input it animates. A wrapper that derives its rows per
- * render — `withSliceColors(data, nameKey)` for the per-slice charts, the
- * running bases in `waterfall-chart.tsx` — hands it a new array every time, so
- * the id changes, the animation restarts, and it never reaches its last frame.
- * The raw-recharts examples on the Chart page animate correctly precisely
- * because their data is a module constant.
- *
- * Passing `false` is not the same path as an animation that never ran: recharts
- * seeds its state with the *final* frame when the animation is inactive
- * (`useState(isActive ? from : to)`), which is the frame we want. It is also the
- * path `"auto"` already takes for a reader who asked for reduced motion.
- *
- * ponytail: correct output, blunt instrument — it gives up the transition for
- * every wrapper rather than stabilising each derived array behind `useMemo`,
- * which is the fix that would let the animation come back. Do that per wrapper,
- * then flip this one const, and every chart is covered by the same test.
- */
-const CHART_ANIMATION_ACTIVE = false
-
 export type ChartConfig = Record<
   string,
   {
@@ -404,5 +374,4 @@ export {
   ChartLegend,
   ChartLegendContent,
   ChartStyle,
-  CHART_ANIMATION_ACTIVE,
 }

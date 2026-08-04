@@ -13,7 +13,6 @@ import {
 import { seriesColor } from "../lib/chart-series.js"
 import { cn } from "../lib/utils.js"
 import {
-  CHART_ANIMATION_ACTIVE,
   ChartContainer,
   ChartLegend,
   ChartLegendContent,
@@ -170,7 +169,6 @@ function ScatterChart({
             }
             fill={seriesColor(key, i)}
             fillOpacity={0.75}
-            isAnimationActive={CHART_ANIMATION_ACTIVE}
           />
         ))}
         {children}
