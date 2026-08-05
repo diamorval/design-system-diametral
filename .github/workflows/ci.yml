@@ -80,7 +80,7 @@ jobs:
           export const App = () => (
             <Card className={cn("m-4")}>
               <CardContent>
-                <Button variant="outline" tone="rouge">Escalate</Button>
+                <Button variant="outline" tone="red">Escalate</Button>
               </CardContent>
             </Card>
           )
@@ -108,5 +108,5 @@ jobs:
           for cls in shrink-0 tabular-nums; do
             grep -q "$cls" out.css || { echo "::error::Tailwind did not emit .$cls — the packaged @source directive is broken."; exit 1; }
           done
-          grep -q -- '--ds-rouge' out.css || { echo "::error::Brand tokens missing from consumer CSS."; exit 1; }
+          grep -q -- '--ds-red-brand' out.css || { echo "::error::Brand tokens missing from consumer CSS."; exit 1; }
           echo "Packaged stylesheet is self-scanning correctly."
