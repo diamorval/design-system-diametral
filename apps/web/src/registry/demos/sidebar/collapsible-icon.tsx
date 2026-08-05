@@ -22,7 +22,10 @@ const ITEMS = [
 
 export default function SidebarCollapsibleIcon() {
   return (
-    <SidebarProvider className="min-h-56 w-full border border-border">
+    // A collapsible rail is fixed to the viewport, which is right for a whole
+    // page and wrong for a demo frame: these three classes re-anchor it to the
+    // frame. Drop them when the sidebar really is the page shell.
+    <SidebarProvider className="relative min-h-56 w-full overflow-hidden border border-border [&_[data-slot=sidebar-container]]:absolute [&_[data-slot=sidebar-container]]:h-full">
       <Sidebar collapsible="icon">
         <SidebarContent>
           <SidebarGroup>

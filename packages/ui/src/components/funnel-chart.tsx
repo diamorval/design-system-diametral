@@ -80,7 +80,7 @@ function StageLabel({
 // and donut take, so a `config` entry keyed by stage name still wins.
 //
 // Both labels are drawn in the margins rather than inside the trapezoids: the
-// slice ramp runs from a light jaune to a saturated rouge, and no single text
+// slice ramp runs from a light yellow to a saturated red, and no single text
 // colour clears AA against all six. Outside, they sit on the page background.
 //
 // There is no `orientation` prop. recharts 3.8.0's `Funnel` computes its

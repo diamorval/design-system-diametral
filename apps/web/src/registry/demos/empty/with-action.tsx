@@ -17,7 +17,7 @@ export default function EmptyWithAction() {
         <EmptyMedia variant="icon">
           <MagnifyingGlassIcon />
         </EmptyMedia>
-        <EmptyTitle>No results for “kaki”</EmptyTitle>
+        <EmptyTitle>No results for “khaki”</EmptyTitle>
         <EmptyDescription>
           Check the spelling, or create the token yourself.
         </EmptyDescription>

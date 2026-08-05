@@ -61,7 +61,7 @@ export const COMPONENTS: ComponentDoc[] = [
         demo: "button/tones-subtle",
         title: "Tones on outline and ghost",
         description:
-          "On the low-emphasis variants, tone drives the border and hover wash while the label stays `text-foreground` for contrast on light tones like beige and jaune.",
+          "On the low-emphasis variants, tone drives the border and hover wash while the label stays `text-foreground` for contrast on light tones like beige and yellow.",
       },
       {
         demo: "button/sizes",
@@ -1536,23 +1536,30 @@ export const COMPONENTS: ComponentDoc[] = [
     name: "Rating",
     category: "Forms",
     description:
-      "A star rating with hover preview, plus a read-only mode for display.",
+      "A segmented rating with hover preview, plus a read-only mode for display.",
     intro: [
-      "Rating is a radio group wearing stars: `max` of them, one number out, arrow keys between. Reach for it to collect a score in a form, or with `readOnly` to show one back — the same component covers both, so a rating never changes shape between the review form and the review list.",
-      "Each star is labelled with its own number, and the group has no name of its own, so pass `aria-label` or wrap it in a `Field` with a label — props spread onto the underlying Base UI radio group, which also means `name` makes it submit with the form like any other radio. The scale is whole stars only: `max` changes how many there are, never the granularity, and there are no halves. `readOnly` and `disabled` both freeze the stars and drop the hover preview, and neither is dimmed — the difference is intent, so reach for `readOnly` whenever a score is being displayed rather than withheld.",
+      "Rating is a radio group wearing segments: `max` of them, one number out, arrow keys between. Reach for it to collect a score in a form, or with `readOnly` to show one back — the same component covers both, so a rating never changes shape between the review form and the review list.",
+      '`shape` picks the mark. `default` draws flat rectangles, which read as a proficiency level rather than a sentiment — the right choice for skills, languages and seniority scales. `shape="star"` draws stars, for satisfaction and reviews, where the star\'s connotation is the point. Both share every other behaviour, so switching one is a prop and never a rewrite.',
+      "Each segment is labelled with its own number, and the group has no name of its own, so pass `aria-label` or wrap it in a `Field` with a label — props spread onto the underlying Base UI radio group, which also means `name` makes it submit with the form like any other radio. The scale is whole segments only: `max` changes how many there are, never the granularity, and there are no halves. `readOnly` and `disabled` both freeze the segments and drop the hover preview, and neither is dimmed — the difference is intent, so reach for `readOnly` whenever a score is being displayed rather than withheld.",
     ],
     examples: [
       {
         demo: "rating/basic",
         title: "Basic",
         description:
-          "A radio group underneath, so each star is a real radio: arrow keys move between them and the value is one number. `max` sets the scale — five by default, ten when the survey asks for it.",
+          "A radio group underneath, so each segment is a real radio: arrow keys move between them and the value is one number. `max` sets the scale — five by default, ten when the survey asks for it.",
+      },
+      {
+        demo: "rating/shapes",
+        title: "Shapes",
+        description:
+          '`default` rectangles for a level, `shape="star"` for a sentiment. Nothing else changes between them — same value, same keyboard, same hover preview.',
       },
       {
         demo: "rating/read-only",
         title: "Read-only and controlled",
         description:
-          "`readOnly` keeps the stars but drops the hover preview and pointer affordance — for showing a score rather than collecting one. A displayed rating still needs a name, which is what `aria-label` gives it here.",
+          "`readOnly` keeps the segments but drops the hover preview and pointer affordance — for showing a score rather than collecting one. A displayed rating still needs a name, which is what `aria-label` gives it here.",
       },
       {
         demo: "rating/feedback-form",
@@ -1564,7 +1571,7 @@ export const COMPONENTS: ComponentDoc[] = [
         demo: "rating/criteria",
         title: "Several criteria",
         description:
-          "One controlled Rating per row, each named by `aria-label` since the row's caption is plain text — the average below is derived, not a Rating in a third state.",
+          "One controlled Rating per row, each named by `aria-label` since the row's caption is plain text — the average below is derived, not a Rating in a third state. The rectangles are what a proficiency list wants: five levels, no sentiment.",
       },
     ],
   },
@@ -3165,7 +3172,7 @@ export const COMPONENTS: ComponentDoc[] = [
       "A framed code surface with a filename head and copy button. Highlighter-agnostic: it takes pre-highlighted HTML, so the package pulls in no syntax highlighter of its own.",
     intro: [
       "Code Block is the framed code surface: a dark panel, an optional head carrying a filename and a copy button, and a scrolling body. Reach for it for a multi-line sample; a single copyable command is `Snippet`, the one-line sibling that shares this component's copy button.",
-      "The panel is dark in both themes — its colours come from the fixed `--ds-noir` scale rather than the theme tokens, so a sample reads the same on a light page. Highlighting stays out: `CodeBlockBody` takes plain `code` or pre-highlighted `html`, so the package depends on no highlighter of its own.",
+      "The panel is dark in both themes — its colours come from the fixed `--ds-black` scale rather than the theme tokens, so a sample reads the same on a light page. Highlighting stays out: `CodeBlockBody` takes plain `code` or pre-highlighted `html`, so the package depends on no highlighter of its own.",
     ],
     examples: [
       {
@@ -3325,19 +3332,19 @@ export const COMPONENTS: ComponentDoc[] = [
         demo: "sidebar/collapsible-icon",
         title: "Collapsible to icons",
         description:
-          '`collapsible="icon"` collapses to a rail of icons. `SidebarTrigger` toggles it; `tooltip` on each button is what keeps the labels reachable once only the icons are left.',
+          '`collapsible="icon"` collapses to a rail of icons. `SidebarTrigger` toggles it; `tooltip` on each button is what keeps the labels reachable once only the icons are left. A collapsible rail is fixed to the viewport, so the frame here re-anchors it — that is a demo concern, not something a page shell needs.',
       },
       {
         demo: "sidebar/nested",
         title: "Sub-navigation",
         description:
-          "A section with its own children: `SidebarMenuSub` goes inside the parent `SidebarMenuItem`, beside its button rather than under it, and hides itself once the rail collapses to icons. `SidebarMenuBadge` is a sibling of the button for the same reason — it is positioned against the item.",
+          "A section that opens and closes: `Collapsible` takes over the `SidebarMenuItem` through `render`, the button becomes its trigger, and `SidebarMenuSub` sits in the panel. The caret reads `aria-expanded` off the trigger it is inside, so the open state is written once. `SidebarMenuBadge` is a sibling of the button rather than a child — it is positioned against the item.",
       },
       {
         demo: "sidebar/shell",
         title: "Full shell",
         description:
-          "Header, groups and footer in one rail — the shape a real console ships. `SidebarContent` is the only part that scrolls, so the search box and the account button stay put however long the menu grows.",
+          "Header, groups and footer in one rail — the shape a real console ships. `SidebarContent` is the only part that scrolls, so the search box and the account button stay put however long the menu grows. The account row is a `DropdownMenu` trigger, and each menu row hands its count over to `SidebarMenuAction` on hover, since both are positioned against the same end of the row.",
       },
     ],
     parts: {
@@ -3349,6 +3356,8 @@ export const COMPONENTS: ComponentDoc[] = [
         "The content area, and a sibling of Sidebar rather than a child — the rail is fixed, so the inset is what actually holds the page.",
       SidebarContent:
         "The one scrolling region. Anything that must stay visible belongs in SidebarHeader or SidebarFooter, which sit outside it.",
+      SidebarInput:
+        "The rail's search field, not a bare input: an `InputGroup` with the magnifier already in it, typed `search` so Escape clears it. Props reach the control, so `placeholder` and `aria-label` land where a screen reader expects them.",
       SidebarMenuButton:
         "Pass `tooltip` and it wraps itself in a Tooltip that only shows while collapsed — the label is otherwise lost with the text.",
       SidebarMenuSub:

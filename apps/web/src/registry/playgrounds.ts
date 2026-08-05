@@ -170,7 +170,7 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
       {
         prop: "tone",
         type: "select",
-        options: ["noir", "rouge", "vert", "bleu", "jaune"],
+        options: ["black", "red", "green", "blue", "yellow"],
       },
       { prop: "disabled", type: "boolean" },
     ],
@@ -232,7 +232,7 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
       {
         prop: "tone",
         type: "select",
-        options: ["noir", "rouge", "vert", "bleu"],
+        options: ["black", "red", "green", "blue"],
       },
     ],
   },
@@ -250,7 +250,7 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
       {
         prop: "tone",
         type: "select",
-        options: ["noir", "rouge", "vert", "bleu"],
+        options: ["black", "red", "green", "blue"],
       },
     ],
   },
@@ -358,6 +358,7 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
   },
   rating: {
     extras: [
+      { prop: "shape", type: "select", options: ["default", "star"] },
       { prop: "max", type: "select", options: ["5", "10", "3"] },
       { prop: "readOnly", type: "boolean" },
       { prop: "disabled", type: "boolean" },
@@ -489,13 +490,25 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
   },
   timeline: {
     children: { default: "Brief received", label: "title" },
-    note: "`data-state` goes on the item, not the indicator — the indicator styles itself from it.",
+    note: "`data-state` and `tone` both go on the item, not the indicator — the indicator styles itself from them.",
     extras: [
       {
         prop: "data-state",
         type: "select",
         options: ["inactive", "completed", "active"],
         label: "state",
+      },
+      {
+        prop: "tone",
+        type: "select",
+        options: [
+          "neutral",
+          "info",
+          "success",
+          "warning",
+          "danger",
+          "critical",
+        ],
       },
     ],
   },
@@ -616,6 +629,7 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
     ],
   },
   meter: {
+    variantsFrom: "meterVariants",
     extras: [
       {
         prop: "value",
@@ -628,6 +642,7 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
   },
   progress: {
     note: "The panel cannot express the indeterminate state — that is `value={null}`, not a number.",
+    variantsFrom: "progressVariants",
     extras: [
       {
         prop: "value",

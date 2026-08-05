@@ -14,8 +14,18 @@ function Stepper({
     <div
       data-slot="stepper"
       data-orientation={orientation}
+      // A steps rail holds no focusable content of its own, so once the
+      // horizontal variant becomes a scroll container it is unreachable by
+      // keyboard — a pointer is the only way to pan it. Making the container
+      // itself a tab stop is the standard remedy (axe
+      // `scrollable-region-focusable`). Vertical never scrolls, so it stays out
+      // of the tab order rather than adding a stop that does nothing.
+      tabIndex={orientation === "horizontal" ? 0 : undefined}
       className={cn(
-        "group/stepper flex w-full data-horizontal:flex-row data-horizontal:items-center data-vertical:flex-col data-vertical:items-stretch",
+        // Horizontal steps wrap their labels when squeezed, but a rail narrower
+        // than the wrapped minimum has to scroll rather than spill over whatever
+        // sits beside it.
+        "group/stepper flex w-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring data-horizontal:flex-row data-horizontal:items-center data-horizontal:overflow-x-auto data-vertical:flex-col data-vertical:items-stretch",
         className
       )}
       {...props}
@@ -35,7 +45,7 @@ function StepperItem({
       data-slot="stepper-item"
       data-state={state}
       className={cn(
-        "group/stepper-item flex shrink-0 items-center gap-3 group-data-vertical/stepper:items-start",
+        "group/stepper-item flex items-center gap-3 group-data-vertical/stepper:items-start",
         className
       )}
       {...props}
@@ -114,7 +124,9 @@ function StepperSeparator({
     <div
       data-slot="stepper-separator"
       className={cn(
-        "shrink-0 bg-border group-data-horizontal/stepper:mx-3 group-data-horizontal/stepper:h-px group-data-horizontal/stepper:flex-1 group-data-vertical/stepper:my-1 group-data-vertical/stepper:ms-4 group-data-vertical/stepper:h-6 group-data-vertical/stepper:w-px",
+        // `min-w-6` in horizontal: `flex-1` means basis 0, so a squeezed row
+        // shrinks the connector to nothing before the steps give up any width.
+        "shrink-0 bg-border group-data-horizontal/stepper:mx-3 group-data-horizontal/stepper:h-px group-data-horizontal/stepper:min-w-6 group-data-horizontal/stepper:flex-1 group-data-vertical/stepper:my-1 group-data-vertical/stepper:ms-4 group-data-vertical/stepper:h-6 group-data-vertical/stepper:w-px",
         className
       )}
       {...props}

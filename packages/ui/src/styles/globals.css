@@ -69,19 +69,19 @@
    ============================================================================ */
 :root {
     /* Tier 1 — brand primaries */
-    --ds-noir: #161616;
-    --ds-blanc: #ffffff;
-    --ds-gris: #767884;
-    --ds-marron: #9f8667;
-    --ds-kaki: #aab0a6;
+    --ds-black: #161616;
+    --ds-white: #ffffff;
+    --ds-grey-brand: #767884;
+    --ds-brown: #9f8667;
+    --ds-khaki: #aab0a6;
     --ds-beige: #d5d3c4;
-    --ds-jaune: #f4fbda;
+    --ds-yellow-pale: #f4fbda;
 
     /* Tier 1 — brand secondaries */
-    --ds-rouge: #ff2a00;
-    --ds-vert: #89fc79;
-    --ds-bleu: #23e2ff;
-    --ds-jaune-vif: #fff73b;
+    --ds-red-brand: #ff2a00;
+    --ds-green-brand: #89fc79;
+    --ds-blue: #23e2ff;
+    --ds-yellow-vivid: #fff73b;
 
     /* Tier 1 — neutrals */
     --ds-grey-light: #f5f5f5;
@@ -109,7 +109,7 @@
     /* Sequential ramp, for magnitude encoded as colour — Heatmap's five steps.
        Ordered data needs one hue getting darker, not six unrelated hues; the
        --ds-chart-* ramp is categorical and reading it as a scale is the classic
-       dataviz error. Derived from --ds-chart-2 (Bleu) because a rouge ramp reads
+       dataviz error. Derived from --ds-chart-2 (Blue) because a red ramp reads
        as severity on data that is only dense.
 
        Step 1 is deliberately a real tint rather than a hairline wash: an empty
@@ -123,28 +123,28 @@
     --ds-heat-5: #0b5a70;
 
     /* Tier 2 — semantics (the retheming surface) */
-    --ds-bg: var(--ds-blanc);
+    --ds-bg: var(--ds-white);
     --ds-bg-alt: var(--ds-grey-light);
-    --ds-surface: var(--ds-blanc);
+    --ds-surface: var(--ds-white);
     --ds-overlay-scrim: rgba(22, 22, 22, .5);
-    --ds-ink: var(--ds-noir);
+    --ds-ink: var(--ds-black);
     --ds-ink-soft: var(--ds-grey-dark);
-    /* Deeper than the raw Gris primitive (#767884), which only reaches 4.38:1
+    /* Deeper than the raw brand grey primitive (#767884), which only reaches 4.38:1
        on white. This clears WCAG AA (4.5:1) on both white and --ds-bg-alt.
-       Decoupled from --ds-gris on purpose — Gris stays charter-canonical for
+       Decoupled from --ds-grey-brand on purpose — it stays charter-canonical for
        the brand swatch and the neutral status family, exactly as v1 does in
        css/tokens.css. */
     --ds-ink-faint: #6c6f7d;
-    --ds-on-accent: var(--ds-blanc);
+    --ds-on-accent: var(--ds-white);
     --ds-rule: var(--ds-grey);
     --ds-rule-soft: var(--ds-grey-faint);
     --ds-accent: #de2500;
     --ds-accent-bg: var(--ds-orange-bg);
     /* Neutral action surface — the default button fill. Kept separate from
        --ds-ink because dark mode must raise it off the page rather than
-       invert it: a noir button on a #0e0e10 background disappears. */
-    --ds-action: var(--ds-noir);
-    --ds-on-action: var(--ds-blanc);
+       invert it: a black button on a #0e0e10 background disappears. */
+    --ds-action: var(--ds-black);
+    --ds-on-action: var(--ds-white);
     --ds-focus-ring: var(--ds-ink);
     --ds-success: var(--ds-green);
     --ds-warning: var(--ds-orange);
@@ -152,7 +152,7 @@
     /* Text-weight variant of --ds-info. The functional blue is tuned as a
        surface/accent colour and only reaches 3.78:1 on --ds-bg-alt, so it fails
        WCAG AA as body text. Mirrors v1's `-ink` convention (css/tokens.css) for
-       the same reason --ds-ink-faint is decoupled from --ds-gris. 5.43:1. */
+       the same reason --ds-ink-faint is decoupled from --ds-grey-brand. 5.43:1. */
     --ds-info-ink: #0f6d85;
 
     /* Shared tone family — success/warning/danger/critical/neutral/info, each
@@ -168,12 +168,12 @@
     --ds-warning-ink: #a33900;
     --ds-danger-bg: var(--ds-red-bg);
     --ds-danger-ink: var(--ds-danger);
-    /* Critical is the vivid brand rouge — distinct from --ds-danger's muted
-       charter red, for the rarer "more severe than danger" case. Raw rouge
+    /* Critical is the vivid brand red — distinct from --ds-danger's muted
+       charter red, for the rarer "more severe than danger" case. Raw brand red
        fails AA as light text (3.76:1 on white); darkened to #c81f00 (5.75:1).
-       Dark keeps a lightened rouge (rouge itself only clears bg-alt at a
+       Dark keeps a lightened brand red (it itself only clears bg-alt at a
        razor-thin 4.53:1). */
-    --ds-critical: var(--ds-rouge);
+    --ds-critical: var(--ds-red-brand);
     --ds-critical-bg: rgba(255, 42, 0, 0.08);
     --ds-critical-ink: #c81f00;
     /* Neutral reuses the already-verified ink-soft/grey-bg tokens rather than
@@ -246,7 +246,7 @@
     --ds-rule: #2c2d31;
     --ds-rule-soft: #232428;
     --ds-action: #32333a;
-    --ds-on-action: var(--ds-blanc);
+    --ds-on-action: var(--ds-white);
     /* Danger must lift off the charter red on dark: #c0392b reaches only 3.55:1
        on --ds-bg and 3.13:1 on --ds-bg-alt, so every `text-destructive` fails
        AA. Smallest lift in the same hue that clears 4.5:1 on all three dark

@@ -12,7 +12,9 @@ export default function ButtonGroupPlayground(
 ) {
   return (
     <ButtonGroup {...props}>
-      <ButtonGroupText>Clipboard</ButtonGroupText>
+      <ButtonGroupText className="uppercase tracking-widest">
+        Clipboard
+      </ButtonGroupText>
       <Button variant="outline">Copy</Button>
       <ButtonGroupSeparator />
       <Button variant="outline">Paste</Button>

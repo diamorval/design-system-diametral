@@ -10,7 +10,7 @@ import { SplitButton } from "@diametral/ui/components/split-button"
 export default function SplitButtonPublish() {
   return (
     <SplitButton
-      tone="vert"
+      tone="green"
       menuLabel="Other publish options"
       menu={
         <>

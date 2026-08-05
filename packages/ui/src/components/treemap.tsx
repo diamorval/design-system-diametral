@@ -29,8 +29,8 @@ const VALUE_MIN_HEIGHT = 42
  * contrast decision, not a stylistic one: the label then sits on something
  * close to the page background, so `fill-foreground` clears AA on every ramp
  * slot and in both themes. A solid fill would need per-hue label colours, and
- * `--ds-chart-6` (jaune) has no text colour that works against it and against
- * `--ds-chart-1` (rouge) both.
+ * `--ds-chart-6` (yellow) has no text colour that works against it and against
+ * `--ds-chart-1` (red) both.
  */
 const GROUP_WASH = 0.3
 const CHILD_WASH_STEP = 0.05

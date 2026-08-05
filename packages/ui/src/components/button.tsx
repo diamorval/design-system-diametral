@@ -21,21 +21,21 @@ const buttonVariants = cva(
         /* --primary is darkened for AA on light surfaces (globals.css); that
            same darkened value drops bare text on dark's near-black --ds-bg
            below 4.5:1 (4.01:1), so dark keeps the original, lighter
-           --ds-rouge, which already cleared 5.13:1 there. */
-        link: "text-primary underline underline-offset-4 hover:underline dark:text-[var(--ds-rouge)]",
+           --ds-red-brand, which already cleared 5.13:1 there. */
+        link: "text-primary underline underline-offset-4 hover:underline dark:text-[var(--ds-red-brand)]",
       },
       /* Palette axis. Sets the fill (--btn) and its contrast pair (--btn-fg);
          the variants above compose off those two vars, so a tone works across
          solid / outline / ghost without a compound-variant matrix. */
       tone: {
-        noir: "[--btn:var(--ds-action)] [--btn-fg:var(--ds-on-action)]",
-        rouge: "[--btn:var(--ds-rouge)] [--btn-fg:var(--ds-noir)]",
-        marron: "[--btn:var(--ds-marron)] [--btn-fg:var(--ds-noir)]",
-        kaki: "[--btn:var(--ds-kaki)] [--btn-fg:var(--ds-noir)]",
-        beige: "[--btn:var(--ds-beige)] [--btn-fg:var(--ds-noir)]",
-        vert: "[--btn:var(--ds-vert)] [--btn-fg:var(--ds-noir)]",
-        bleu: "[--btn:var(--ds-bleu)] [--btn-fg:var(--ds-noir)]",
-        jaune: "[--btn:var(--ds-jaune-vif)] [--btn-fg:var(--ds-noir)]",
+        black: "[--btn:var(--ds-action)] [--btn-fg:var(--ds-on-action)]",
+        red: "[--btn:var(--ds-red-brand)] [--btn-fg:var(--ds-black)]",
+        brown: "[--btn:var(--ds-brown)] [--btn-fg:var(--ds-black)]",
+        khaki: "[--btn:var(--ds-khaki)] [--btn-fg:var(--ds-black)]",
+        beige: "[--btn:var(--ds-beige)] [--btn-fg:var(--ds-black)]",
+        green: "[--btn:var(--ds-green-brand)] [--btn-fg:var(--ds-black)]",
+        blue: "[--btn:var(--ds-blue)] [--btn-fg:var(--ds-black)]",
+        yellow: "[--btn:var(--ds-yellow-vivid)] [--btn-fg:var(--ds-black)]",
       },
       size: {
         default:
@@ -52,7 +52,7 @@ const buttonVariants = cva(
     defaultVariants: {
       variant: "default",
       size: "default",
-      tone: "noir",
+      tone: "black",
     },
   }
 )
@@ -61,7 +61,7 @@ function Button({
   className,
   variant = "default",
   size = "default",
-  tone = "noir",
+  tone = "black",
   ...props
 }: ButtonPrimitive.Props & VariantProps<typeof buttonVariants>) {
   return (

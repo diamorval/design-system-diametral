@@ -10,6 +10,7 @@ import { StarIcon } from "@phosphor-icons/react"
 function Rating({
   className,
   max = 5,
+  shape = "default",
   value,
   defaultValue = 0,
   onValueChange,
@@ -21,6 +22,7 @@ function Rating({
   "value" | "defaultValue" | "onValueChange"
 > & {
   max?: number
+  shape?: "default" | "star"
   value?: number
   defaultValue?: number
   onValueChange?: (value: number) => void
@@ -45,7 +47,11 @@ function Rating({
         onValueChange?.(next as number)
       }}
       onMouseLeave={() => setHovered(null)}
-      className={cn("flex w-fit items-center gap-0.5", className)}
+      className={cn(
+        "flex w-fit items-center",
+        shape === "star" ? "gap-0.5" : "gap-1",
+        className
+      )}
       {...props}
     >
       {Array.from({ length: max }, (_, index) => {
@@ -55,20 +61,32 @@ function Rating({
           <RadioPrimitive.Root
             key={rank}
             data-slot="rating-item"
+            data-shape={shape}
             value={rank}
             disabled={!interactive}
             aria-label={String(rank)}
             onMouseEnter={interactive ? () => setHovered(rank) : undefined}
             className={cn(
-              "flex size-6 items-center justify-center border-none bg-transparent text-muted-foreground outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring/30",
-              rank <= shown && "text-primary",
+              "border-none bg-transparent p-0 outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring/30",
+              shape === "star"
+                ? cn(
+                    "flex size-6 items-center justify-center text-muted-foreground",
+                    rank <= shown && "text-primary"
+                  )
+                : cn(
+                    "h-2.5 w-5 rounded-none bg-muted transition-[background-color,translate]",
+                    rank <= shown && "bg-primary",
+                    interactive && "hover:-translate-y-px"
+                  ),
               interactive ? "cursor-pointer" : "pointer-events-none"
             )}
           >
-            <StarIcon
-              className="size-5"
-              weight={rank <= shown ? "fill" : "regular"}
-            />
+            {shape === "star" && (
+              <StarIcon
+                className="size-5"
+                weight={rank <= shown ? "fill" : "regular"}
+              />
+            )}
           </RadioPrimitive.Root>
         )
       })}
