@@ -61,7 +61,7 @@ export const COMPONENTS: ComponentDoc[] = [
         demo: "button/tones-subtle",
         title: "Tones on outline and ghost",
         description:
-          "On the low-emphasis variants, tone drives the border and hover wash while the label stays `text-foreground` for contrast on light tones like beige and jaune.",
+          "On the low-emphasis variants, tone drives the border and hover wash while the label stays `text-foreground` for contrast on light tones like beige and yellow.",
       },
       {
         demo: "button/sizes",
@@ -1539,7 +1539,7 @@ export const COMPONENTS: ComponentDoc[] = [
       "A segmented rating with hover preview, plus a read-only mode for display.",
     intro: [
       "Rating is a radio group wearing segments: `max` of them, one number out, arrow keys between. Reach for it to collect a score in a form, or with `readOnly` to show one back — the same component covers both, so a rating never changes shape between the review form and the review list.",
-      "`shape` picks the mark. `default` draws flat rectangles, which read as a proficiency level rather than a sentiment — the right choice for skills, languages and seniority scales. `shape=\"star\"` draws stars, for satisfaction and reviews, where the star's connotation is the point. Both share every other behaviour, so switching one is a prop and never a rewrite.",
+      '`shape` picks the mark. `default` draws flat rectangles, which read as a proficiency level rather than a sentiment — the right choice for skills, languages and seniority scales. `shape="star"` draws stars, for satisfaction and reviews, where the star\'s connotation is the point. Both share every other behaviour, so switching one is a prop and never a rewrite.',
       "Each segment is labelled with its own number, and the group has no name of its own, so pass `aria-label` or wrap it in a `Field` with a label — props spread onto the underlying Base UI radio group, which also means `name` makes it submit with the form like any other radio. The scale is whole segments only: `max` changes how many there are, never the granularity, and there are no halves. `readOnly` and `disabled` both freeze the segments and drop the hover preview, and neither is dimmed — the difference is intent, so reach for `readOnly` whenever a score is being displayed rather than withheld.",
     ],
     examples: [
@@ -1553,7 +1553,7 @@ export const COMPONENTS: ComponentDoc[] = [
         demo: "rating/shapes",
         title: "Shapes",
         description:
-          "`default` rectangles for a level, `shape=\"star\"` for a sentiment. Nothing else changes between them — same value, same keyboard, same hover preview.",
+          '`default` rectangles for a level, `shape="star"` for a sentiment. Nothing else changes between them — same value, same keyboard, same hover preview.',
       },
       {
         demo: "rating/read-only",
@@ -3172,7 +3172,7 @@ export const COMPONENTS: ComponentDoc[] = [
       "A framed code surface with a filename head and copy button. Highlighter-agnostic: it takes pre-highlighted HTML, so the package pulls in no syntax highlighter of its own.",
     intro: [
       "Code Block is the framed code surface: a dark panel, an optional head carrying a filename and a copy button, and a scrolling body. Reach for it for a multi-line sample; a single copyable command is `Snippet`, the one-line sibling that shares this component's copy button.",
-      "The panel is dark in both themes — its colours come from the fixed `--ds-noir` scale rather than the theme tokens, so a sample reads the same on a light page. Highlighting stays out: `CodeBlockBody` takes plain `code` or pre-highlighted `html`, so the package depends on no highlighter of its own.",
+      "The panel is dark in both themes — its colours come from the fixed `--ds-black` scale rather than the theme tokens, so a sample reads the same on a light page. Highlighting stays out: `CodeBlockBody` takes plain `code` or pre-highlighted `html`, so the package depends on no highlighter of its own.",
     ],
     examples: [
       {
@@ -3659,7 +3659,7 @@ export const COMPONENTS: ComponentDoc[] = [
       "Progress through a multi-step flow, with per-step state and orientation support.",
     intro: [
       "Stepper is the rail across the top of a flow that has been split into screens: the steps, the one you are on, and how much is left. Reach for it when the count is part of the task — checkout, onboarding, a long form worth breaking up. A dated record of what has already happened is `Timeline`; a bare fraction with no names is `Progress`.",
-      "It holds no state and knows nothing about your flow: `state` is a prop on each `StepperItem` (`inactive`, `active`, `completed`) and every part below styles itself off it through `group-data-*`. Orientation is the root's alone — the parts read `data-orientation` from it, so horizontal to vertical is one prop and no change to the items.",
+      "It holds no state and knows nothing about your flow: `state` is a prop on each `StepperItem` (`inactive`, `active`, `completed`) and every part below styles itself off it through `group-data-*`. The axis is the root's alone — pass `vertical` and the parts read the resulting `data-orientation` from it, so turning the rail is one prop and no change to the items.",
     ],
     examples: [
       {
@@ -3678,7 +3678,7 @@ export const COMPONENTS: ComponentDoc[] = [
         demo: "stepper/vertical",
         title: "Vertical",
         description:
-          "`StepperSeparator` flips axis off the root's `data-orientation`, so going vertical needs no change to the items.",
+          "`StepperSeparator` flips axis off the root's `data-orientation`, which the boolean `vertical` prop writes — so turning the rail needs no change to the items.",
       },
       {
         demo: "stepper/icon-indicators",

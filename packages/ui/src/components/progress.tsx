@@ -1,20 +1,37 @@
 "use client"
 
 import { Progress as ProgressPrimitive } from "@base-ui/react/progress"
+import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "../lib/utils.js"
+
+// Mirrors meter.tsx: --tone on the root, read by the indicator the composed
+// <Progress> renders for you. Unset by default, so the bar stays --primary.
+const progressVariants = cva("flex flex-wrap gap-3", {
+  variants: {
+    tone: {
+      neutral: "[--tone:var(--ds-neutral-ink)]",
+      success: "[--tone:var(--ds-success-ink)]",
+      warning: "[--tone:var(--ds-warning-ink)]",
+      danger: "[--tone:var(--ds-danger-ink)]",
+      critical: "[--tone:var(--ds-critical-ink)]",
+      info: "[--tone:var(--ds-info-ink)]",
+    },
+  },
+})
 
 function Progress({
   className,
   children,
   value,
+  tone,
   ...props
-}: ProgressPrimitive.Root.Props) {
+}: ProgressPrimitive.Root.Props & VariantProps<typeof progressVariants>) {
   return (
     <ProgressPrimitive.Root
       value={value}
       data-slot="progress"
-      className={cn("flex flex-wrap gap-3", className)}
+      className={cn(progressVariants({ tone }), className)}
       {...props}
     >
       {children}
@@ -45,7 +62,10 @@ function ProgressIndicator({
   return (
     <ProgressPrimitive.Indicator
       data-slot="progress-indicator"
-      className={cn("h-full bg-primary transition-all", className)}
+      className={cn(
+        "h-full bg-[var(--tone,var(--primary))] transition-all",
+        className
+      )}
       {...props}
     />
   )
@@ -80,4 +100,5 @@ export {
   ProgressIndicator,
   ProgressLabel,
   ProgressValue,
+  progressVariants,
 }

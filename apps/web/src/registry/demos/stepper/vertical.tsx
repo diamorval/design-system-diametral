@@ -29,7 +29,7 @@ export default function StepperVertical() {
 
   return (
     <div className="flex w-full max-w-md flex-col gap-5">
-      <Stepper orientation="vertical">
+      <Stepper vertical>
         {STEPS.map((step, index) => (
           <StepperItem key={step.title} state={stepState(index, current)}>
             <StepperIndicator>{index + 1}</StepperIndicator>

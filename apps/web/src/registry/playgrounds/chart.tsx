@@ -17,8 +17,8 @@ const DATA = [
 ]
 
 const CONFIG = {
-  desktop: { label: "Desktop", color: "var(--ds-kaki)" },
-  mobile: { label: "Mobile", color: "var(--ds-bleu)" },
+  desktop: { label: "Desktop", color: "var(--ds-khaki)" },
+  mobile: { label: "Mobile", color: "var(--ds-blue)" },
 } satisfies ChartConfig
 
 // Chart is configured through the `config` object and its recharts children, not

@@ -460,15 +460,15 @@ const CHART_CONFIG = {
 } satisfies ChartConfig
 
 const SWATCHES = [
-  { name: "noir", token: "--ds-noir" },
-  { name: "rouge", token: "--ds-rouge" },
-  { name: "marron", token: "--ds-marron" },
-  { name: "kaki", token: "--ds-kaki" },
+  { name: "black", token: "--ds-black" },
+  { name: "red", token: "--ds-red-brand" },
+  { name: "brown", token: "--ds-brown" },
+  { name: "khaki", token: "--ds-khaki" },
   { name: "beige", token: "--ds-beige" },
-  { name: "jaune", token: "--ds-jaune" },
-  { name: "bleu", token: "--ds-bleu" },
-  { name: "vert", token: "--ds-vert" },
-  { name: "gris", token: "--ds-gris" },
+  { name: "yellow", token: "--ds-yellow-pale" },
+  { name: "blue", token: "--ds-blue" },
+  { name: "green", token: "--ds-green-brand" },
+  { name: "gris", token: "--ds-grey-brand" },
   { name: "grey", token: "--ds-grey" },
 ]
 
@@ -582,27 +582,27 @@ export function Showcase() {
             <Button variant="destructive">Destructive</Button>
           </Demo>
           <Demo label="Palette tones">
-            <Button tone="noir">Noir</Button>
-            <Button tone="rouge">Rouge</Button>
-            <Button tone="marron">Marron</Button>
-            <Button tone="kaki">Kaki</Button>
+            <Button tone="black">Black</Button>
+            <Button tone="red">Red</Button>
+            <Button tone="brown">Brown</Button>
+            <Button tone="khaki">Khaki</Button>
             <Button tone="beige">Beige</Button>
-            <Button tone="vert">Vert</Button>
-            <Button tone="bleu">Bleu</Button>
-            <Button tone="jaune">Jaune</Button>
+            <Button tone="green">Green</Button>
+            <Button tone="blue">Blue</Button>
+            <Button tone="yellow">Yellow</Button>
           </Demo>
           <Demo label="Tones on outline & ghost">
-            <Button variant="outline" tone="rouge">
-              Outline rouge
+            <Button variant="outline" tone="red">
+              Outline red
             </Button>
-            <Button variant="outline" tone="bleu">
-              Outline bleu
+            <Button variant="outline" tone="blue">
+              Outline blue
             </Button>
-            <Button variant="ghost" tone="vert">
+            <Button variant="ghost" tone="green">
               Ghost vert
             </Button>
-            <Button variant="ghost" tone="marron">
-              Ghost marron
+            <Button variant="ghost" tone="brown">
+              Ghost brown
             </Button>
           </Demo>
           <Demo label="Sizes & state">

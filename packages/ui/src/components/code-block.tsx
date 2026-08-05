@@ -6,14 +6,14 @@ import { Icon } from "./icon.js"
 import { cn } from "../lib/utils.js"
 
 // Terminal palette for the dark panel: the four brights read at AA against
-// --ds-noir, and are the same hues the docs app's dark shiki theme lands on, so
+// --ds-black, and are the same hues the docs app's dark shiki theme lands on, so
 // a `code` block and an `html` block sit side by side without clashing.
 const TOKEN_COLOR = {
-  comment: "text-[var(--ds-gris)]",
-  string: "text-[var(--ds-vert)]",
+  comment: "text-[var(--ds-grey-brand)]",
+  string: "text-[var(--ds-green-brand)]",
   keyword: "text-[var(--ds-orange)]",
-  number: "text-[var(--ds-jaune-vif)]",
-  type: "text-[var(--ds-bleu)]",
+  number: "text-[var(--ds-yellow-vivid)]",
+  type: "text-[var(--ds-blue)]",
 } as const
 
 const KEYWORDS =
@@ -74,7 +74,7 @@ function CodeBlock({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="code-block"
       className={cn(
-        "overflow-hidden rounded-none border border-[var(--ds-noir)] bg-[var(--ds-noir)] font-mono text-sm text-[var(--ds-grey-faint)]",
+        "overflow-hidden rounded-none border border-[var(--ds-black)] bg-[var(--ds-black)] font-mono text-sm text-[var(--ds-grey-faint)]",
         className
       )}
       {...props}

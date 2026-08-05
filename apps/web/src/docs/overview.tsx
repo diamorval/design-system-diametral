@@ -12,14 +12,14 @@ import {
 import { COMPONENTS, componentsByCategory } from "@/registry/registry"
 
 const SWATCHES = [
-  { name: "noir", token: "--ds-noir" },
-  { name: "rouge", token: "--ds-rouge" },
-  { name: "marron", token: "--ds-marron" },
-  { name: "kaki", token: "--ds-kaki" },
+  { name: "black", token: "--ds-black" },
+  { name: "red", token: "--ds-red-brand" },
+  { name: "brown", token: "--ds-brown" },
+  { name: "khaki", token: "--ds-khaki" },
   { name: "beige", token: "--ds-beige" },
-  { name: "vert", token: "--ds-vert" },
-  { name: "bleu", token: "--ds-bleu" },
-  { name: "jaune", token: "--ds-jaune" },
+  { name: "green", token: "--ds-green-brand" },
+  { name: "blue", token: "--ds-blue" },
+  { name: "yellow", token: "--ds-yellow-pale" },
 ]
 
 export function Overview() {

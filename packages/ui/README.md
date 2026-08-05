@@ -86,10 +86,10 @@ export function Example() {
 `Button` composes two independent axes — `variant`
 (`default` · `outline` · `secondary` · `ghost` · `destructive` · `link`) and
 `tone`, an eight-colour brand scale drawn straight from the tier-1 primitives
-(`noir` · `rouge` · `marron` · `kaki` · `beige` · `vert` · `bleu` · `jaune`):
+(`black` · `red` · `brown` · `khaki` · `beige` · `green` · `blue` · `yellow`):
 
 ```tsx
-<Button variant="outline" tone="rouge">Escalate</Button>
+<Button variant="outline" tone="red">Escalate</Button>
 ```
 
 Browse every component, with live playgrounds, in the documentation app
@@ -102,7 +102,7 @@ edited to retheme:
 
 | Tier | Example | Role |
 | --- | --- | --- |
-| 1 · primitives | `--ds-noir`, `--ds-rouge` | raw brand values, never referenced by components |
+| 1 · primitives | `--ds-black`, `--ds-red-brand` | raw brand values, never referenced by components |
 | 2 · semantics | `--ds-ink`, `--ds-rule`, `--ds-accent` | what retheming edits; the `.dark` block overrides these alone |
 | 3 · shadcn slots | `--background`, `--border`, `--primary` | thin references onto tier 2 |
 
