@@ -1,10 +1,16 @@
 import {
+  CaretRightIcon,
   ChartLineIcon,
   GearIcon,
   HouseIcon,
   TrayIcon,
 } from "@phosphor-icons/react"
 
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@diametral/ui/components/collapsible"
 import {
   Sidebar,
   SidebarContent,
@@ -22,6 +28,8 @@ import {
   SidebarProvider,
 } from "@diametral/ui/components/sidebar"
 
+const REPORTS = ["Traffic", "Conversion", "Retention"]
+
 export default function SidebarNested() {
   return (
     <SidebarProvider className="min-h-64 w-full border border-border">
@@ -36,28 +44,30 @@ export default function SidebarNested() {
                     <HouseIcon /> Overview
                   </SidebarMenuButton>
                 </SidebarMenuItem>
-                <SidebarMenuItem>
-                  <SidebarMenuButton isActive>
+                <Collapsible defaultOpen render={<SidebarMenuItem />}>
+                  <SidebarMenuButton
+                    isActive
+                    render={<CollapsibleTrigger />}
+                    className="group/collapsible"
+                  >
                     <ChartLineIcon /> Reports
+                    <CaretRightIcon className="ms-auto transition-[rotate] group-aria-expanded/collapsible:rotate-90" />
                   </SidebarMenuButton>
-                  <SidebarMenuSub>
-                    <SidebarMenuSubItem>
-                      <SidebarMenuSubButton href="#sidebar" isActive>
-                        Traffic
-                      </SidebarMenuSubButton>
-                    </SidebarMenuSubItem>
-                    <SidebarMenuSubItem>
-                      <SidebarMenuSubButton href="#sidebar">
-                        Conversion
-                      </SidebarMenuSubButton>
-                    </SidebarMenuSubItem>
-                    <SidebarMenuSubItem>
-                      <SidebarMenuSubButton href="#sidebar">
-                        Retention
-                      </SidebarMenuSubButton>
-                    </SidebarMenuSubItem>
-                  </SidebarMenuSub>
-                </SidebarMenuItem>
+                  <CollapsibleContent>
+                    <SidebarMenuSub>
+                      {REPORTS.map((report) => (
+                        <SidebarMenuSubItem key={report}>
+                          <SidebarMenuSubButton
+                            href="#sidebar"
+                            isActive={report === "Traffic"}
+                          >
+                            {report}
+                          </SidebarMenuSubButton>
+                        </SidebarMenuSubItem>
+                      ))}
+                    </SidebarMenuSub>
+                  </CollapsibleContent>
+                </Collapsible>
                 <SidebarMenuItem>
                   <SidebarMenuButton>
                     <TrayIcon /> Inbox

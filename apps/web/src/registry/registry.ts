@@ -3325,19 +3325,19 @@ export const COMPONENTS: ComponentDoc[] = [
         demo: "sidebar/collapsible-icon",
         title: "Collapsible to icons",
         description:
-          '`collapsible="icon"` collapses to a rail of icons. `SidebarTrigger` toggles it; `tooltip` on each button is what keeps the labels reachable once only the icons are left.',
+          '`collapsible="icon"` collapses to a rail of icons. `SidebarTrigger` toggles it; `tooltip` on each button is what keeps the labels reachable once only the icons are left. A collapsible rail is fixed to the viewport, so the frame here re-anchors it — that is a demo concern, not something a page shell needs.',
       },
       {
         demo: "sidebar/nested",
         title: "Sub-navigation",
         description:
-          "A section with its own children: `SidebarMenuSub` goes inside the parent `SidebarMenuItem`, beside its button rather than under it, and hides itself once the rail collapses to icons. `SidebarMenuBadge` is a sibling of the button for the same reason — it is positioned against the item.",
+          "A section that opens and closes: `Collapsible` takes over the `SidebarMenuItem` through `render`, the button becomes its trigger, and `SidebarMenuSub` sits in the panel. The caret reads `aria-expanded` off the trigger it is inside, so the open state is written once. `SidebarMenuBadge` is a sibling of the button rather than a child — it is positioned against the item.",
       },
       {
         demo: "sidebar/shell",
         title: "Full shell",
         description:
-          "Header, groups and footer in one rail — the shape a real console ships. `SidebarContent` is the only part that scrolls, so the search box and the account button stay put however long the menu grows.",
+          "Header, groups and footer in one rail — the shape a real console ships. `SidebarContent` is the only part that scrolls, so the search box and the account button stay put however long the menu grows. The account row is a `DropdownMenu` trigger, and each menu row hands its count over to `SidebarMenuAction` on hover, since both are positioned against the same end of the row.",
       },
     ],
     parts: {
@@ -3349,6 +3349,8 @@ export const COMPONENTS: ComponentDoc[] = [
         "The content area, and a sibling of Sidebar rather than a child — the rail is fixed, so the inset is what actually holds the page.",
       SidebarContent:
         "The one scrolling region. Anything that must stay visible belongs in SidebarHeader or SidebarFooter, which sit outside it.",
+      SidebarInput:
+        "The rail's search field, not a bare input: an `InputGroup` with the magnifier already in it, typed `search` so Escape clears it. Props reach the control, so `placeholder` and `aria-label` land where a screen reader expects them.",
       SidebarMenuButton:
         "Pass `tooltip` and it wraps itself in a Tooltip that only shows while collapsed — the label is otherwise lost with the text.",
       SidebarMenuSub:

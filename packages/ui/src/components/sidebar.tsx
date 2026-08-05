@@ -8,7 +8,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { useIsMobile } from "../hooks/use-mobile.js"
 import { cn } from "../lib/utils.js"
 import { Button } from "./button.js"
-import { Input } from "./input.js"
+import { InputGroup, InputGroupAddon, InputGroupInput } from "./input-group.js"
 import { Separator } from "./separator.js"
 import {
   Sheet,
@@ -23,7 +23,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "./tooltip.js"
-import { SidebarIcon } from "@phosphor-icons/react"
+import { MagnifyingGlassIcon, SidebarIcon } from "@phosphor-icons/react"
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state"
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
@@ -169,7 +169,10 @@ function Sidebar({
       <div
         data-slot="sidebar"
         className={cn(
-          "flex h-full w-(--sidebar-width) flex-col bg-sidebar text-sidebar-foreground",
+          // No `h-full`: a percentage height against the provider's auto height
+          // resolves to the content's own, which leaves the rail short of the
+          // bottom. Stretching is the flex row's job.
+          "flex w-(--sidebar-width) flex-col bg-sidebar text-sidebar-foreground",
           className
         )}
         {...props}
@@ -315,20 +318,18 @@ function SidebarInset({ className, ...props }: React.ComponentProps<"main">) {
   )
 }
 
-function SidebarInput({
-  className,
-  ...props
-}: React.ComponentProps<typeof Input>) {
+function SidebarInput({ className, ...props }: React.ComponentProps<"input">) {
   return (
-    <Input
+    <InputGroup
       data-slot="sidebar-input"
       data-sidebar="input"
-      className={cn(
-        "h-8 w-full border-input bg-transparent shadow-none",
-        className
-      )}
-      {...props}
-    />
+      className={cn("h-9", className)}
+    >
+      <InputGroupAddon>
+        <MagnifyingGlassIcon />
+      </InputGroupAddon>
+      <InputGroupInput type="search" {...props} />
+    </InputGroup>
   )
 }
 
@@ -619,14 +620,16 @@ function SidebarMenuSkeleton({
       className={cn("flex h-8 items-center gap-2 rounded-none px-2", className)}
       {...props}
     >
+      {/* Skeleton's own `bg-muted` is the sidebar's own surface colour, in both
+          themes — a placeholder drawn in it would be invisible here. */}
       {showIcon && (
         <Skeleton
-          className="size-3.5 rounded-none"
+          className="size-3.5 rounded-none bg-sidebar-accent"
           data-sidebar="menu-skeleton-icon"
         />
       )}
       <Skeleton
-        className="h-4 max-w-(--skeleton-width) flex-1"
+        className="h-4 max-w-(--skeleton-width) flex-1 bg-sidebar-accent"
         data-sidebar="menu-skeleton-text"
         style={
           {
