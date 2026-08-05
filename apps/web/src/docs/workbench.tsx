@@ -103,7 +103,10 @@ export function Workbench({ component }: { component: ComponentDoc }) {
           </div>
         ) : null}
 
-        <div className="flex flex-col">
+        {/* `min-w-0`: a grid item defaults to `min-width: auto`, so a subject
+            wider than its track (kanban's three 16rem columns) grows the track
+            past the grid instead of scrolling inside it. */}
+        <div className="flex min-w-0 flex-col">
           <div
             data-workbench-preview
             className="flex min-h-56 flex-1 items-center justify-center p-8"
