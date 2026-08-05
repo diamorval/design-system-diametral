@@ -358,6 +358,7 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
   },
   rating: {
     extras: [
+      { prop: "shape", type: "select", options: ["default", "star"] },
       { prop: "max", type: "select", options: ["5", "10", "3"] },
       { prop: "readOnly", type: "boolean" },
       { prop: "disabled", type: "boolean" },
