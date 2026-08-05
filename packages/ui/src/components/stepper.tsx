@@ -3,29 +3,24 @@ import * as React from "react"
 import { cn } from "../lib/utils.js"
 import { CheckIcon } from "@phosphor-icons/react"
 
-// A stepper only ever runs one of two ways, so the axis is a boolean rather
-// than the string `orientation` the rest of the library takes. `vertical`
-// rather than `horizontal` because it defaults to false: a default-true boolean
-// cannot be driven from the docs Workbench panel, which can only add props.
-// The rendered `data-orientation` is unchanged — every style below keys off it.
 function Stepper({
   className,
-  vertical = false,
+  orientation = "horizontal",
   ...props
 }: React.ComponentProps<"div"> & {
-  vertical?: boolean
+  orientation?: "horizontal" | "vertical"
 }) {
   return (
     <div
       data-slot="stepper"
-      data-orientation={vertical ? "vertical" : "horizontal"}
+      data-orientation={orientation}
       // A steps rail holds no focusable content of its own, so once the
       // horizontal variant becomes a scroll container it is unreachable by
       // keyboard — a pointer is the only way to pan it. Making the container
       // itself a tab stop is the standard remedy (axe
       // `scrollable-region-focusable`). Vertical never scrolls, so it stays out
       // of the tab order rather than adding a stop that does nothing.
-      tabIndex={vertical ? undefined : 0}
+      tabIndex={orientation === "horizontal" ? 0 : undefined}
       className={cn(
         // Horizontal steps wrap their labels when squeezed, but a rail narrower
         // than the wrapped minimum has to scroll rather than spill over whatever

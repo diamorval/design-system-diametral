@@ -3659,7 +3659,7 @@ export const COMPONENTS: ComponentDoc[] = [
       "Progress through a multi-step flow, with per-step state and orientation support.",
     intro: [
       "Stepper is the rail across the top of a flow that has been split into screens: the steps, the one you are on, and how much is left. Reach for it when the count is part of the task — checkout, onboarding, a long form worth breaking up. A dated record of what has already happened is `Timeline`; a bare fraction with no names is `Progress`.",
-      "It holds no state and knows nothing about your flow: `state` is a prop on each `StepperItem` (`inactive`, `active`, `completed`) and every part below styles itself off it through `group-data-*`. The axis is the root's alone — pass `vertical` and the parts read the resulting `data-orientation` from it, so turning the rail is one prop and no change to the items.",
+      "It holds no state and knows nothing about your flow: `state` is a prop on each `StepperItem` (`inactive`, `active`, `completed`) and every part below styles itself off it through `group-data-*`. Orientation is the root's alone — the parts read `data-orientation` from it, so horizontal to vertical is one prop and no change to the items.",
     ],
     examples: [
       {
@@ -3678,7 +3678,7 @@ export const COMPONENTS: ComponentDoc[] = [
         demo: "stepper/vertical",
         title: "Vertical",
         description:
-          "`StepperSeparator` flips axis off the root's `data-orientation`, which the boolean `vertical` prop writes — so turning the rail needs no change to the items.",
+          "`StepperSeparator` flips axis off the root's `data-orientation`, so going vertical needs no change to the items.",
       },
       {
         demo: "stepper/icon-indicators",

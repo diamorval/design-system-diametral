@@ -365,7 +365,13 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
     ],
   },
   stepper: {
-    extras: [{ prop: "vertical", type: "boolean" }],
+    extras: [
+      {
+        prop: "orientation",
+        type: "select",
+        options: ["horizontal", "vertical"],
+      },
+    ],
   },
   "toggle-group": {
     note: "`variant` and `size` belong to toggleVariants in toggle.tsx, so they are declared here rather than extracted.",
