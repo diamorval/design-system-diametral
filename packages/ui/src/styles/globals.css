@@ -5,6 +5,7 @@
 @import "@fontsource-variable/geist-mono";
 @import "./components/stepper.css";
 @import "./components/skeleton.css";
+@import "./components/icon.css";
 
 @custom-variant dark (&:is(.dark *));
 @source "../../../apps/**/*.{ts,tsx}";
