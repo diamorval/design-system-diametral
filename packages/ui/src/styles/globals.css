@@ -6,6 +6,7 @@
 @import "./components/stepper.css";
 @import "./components/skeleton.css";
 @import "./components/icon.css";
+@import "./components/kbd.css";
 
 @custom-variant dark (&:is(.dark *));
 @source "../../../apps/**/*.{ts,tsx}";
