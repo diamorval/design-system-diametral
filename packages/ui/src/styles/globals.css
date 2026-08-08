@@ -8,6 +8,7 @@
 @import "./components/icon.css";
 @import "./components/kbd.css";
 @import "./components/spinner.css";
+@import "./components/tag.css";
 
 @custom-variant dark (&:is(.dark *));
 @source "../../../apps/**/*.{ts,tsx}";
