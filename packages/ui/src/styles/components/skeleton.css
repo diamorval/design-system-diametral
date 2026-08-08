@@ -1,10 +1,12 @@
-@keyframes ds-skeleton-pulse {
-  50% {
-    opacity: 0.5;
+@layer utilities {
+  @keyframes ds-skeleton-pulse {
+    50% {
+      opacity: 0.5;
+    }
   }
-}
 
-.ds-skeleton {
-  background-color: var(--muted);
-  animation: ds-skeleton-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  .ds-skeleton {
+    background-color: var(--muted);
+    animation: ds-skeleton-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
 }
