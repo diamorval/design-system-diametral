@@ -9,6 +9,7 @@
 @import "./components/kbd.css";
 @import "./components/spinner.css";
 @import "./components/tag.css";
+@import "./components/avatar.css";
 
 @custom-variant dark (&:is(.dark *));
 @source "../../../apps/**/*.{ts,tsx}";
