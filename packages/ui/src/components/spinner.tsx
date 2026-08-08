@@ -15,7 +15,7 @@ function Spinner({
       data-slot="spinner"
       role="status"
       aria-label={label}
-      className={cn("size-4 animate-spin", className)}
+      className={cn("ds-spinner", className)}
       {...props}
     />
   )
