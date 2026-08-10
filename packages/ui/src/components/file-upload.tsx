@@ -49,7 +49,7 @@ function FileUpload({
         emit(event.dataTransfer.files)
       }}
       className={cn(
-        "flex w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-none border border-dashed border-input bg-transparent px-6 py-10 text-center transition-colors outline-none hover:bg-muted/50 has-[input:focus-visible]:border-ring has-[input:focus-visible]:ring-2 has-[input:focus-visible]:ring-ring/30 data-dragging:border-ring data-dragging:bg-muted/50 data-disabled:pointer-events-none data-disabled:opacity-50",
+        "ds-file-upload flex-col justify-center gap-2 px-6 py-10 text-center",
         className
       )}
       {...props}
@@ -81,10 +81,7 @@ function FileUploadIcon({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="file-upload-icon"
-      className={cn(
-        "flex size-10 items-center justify-center rounded-none border border-border text-muted-foreground [&_svg:not([class*='size-'])]:size-4",
-        className
-      )}
+      className={cn("ds-file-upload-icon", className)}
       {...props}
     >
       <UploadSimpleIcon />
@@ -96,10 +93,7 @@ function FileUploadTitle({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="file-upload-title"
-      className={cn(
-        "text-xs font-semibold tracking-wider uppercase",
-        className
-      )}
+      className={cn("ds-file-upload-title", className)}
       {...props}
     />
   )
@@ -112,10 +106,7 @@ function FileUploadDescription({
   return (
     <p
       data-slot="file-upload-description"
-      className={cn(
-        "text-sm leading-normal text-muted-foreground normal-case",
-        className
-      )}
+      className={cn("ds-file-upload-description", className)}
       {...props}
     />
   )

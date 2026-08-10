@@ -29,6 +29,7 @@
 @import "./components/wizard.css";
 @import "./components/combobox.css";
 @import "./components/date-picker.css";
+@import "./components/file-upload.css";
 
 @custom-variant dark (&:is(.dark *));
 @source "../../../apps/**/*.{ts,tsx}";
