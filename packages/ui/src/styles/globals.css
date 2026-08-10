@@ -32,6 +32,7 @@
 @import "./components/file-upload.css";
 @import "./components/switch.css";
 @import "./components/rating.css";
+@import "./components/field.css";
 
 @custom-variant dark (&:is(.dark *));
 @source "../../../apps/**/*.{ts,tsx}";
