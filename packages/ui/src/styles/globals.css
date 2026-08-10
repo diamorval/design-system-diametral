@@ -57,6 +57,7 @@
 @import "./components/editable.css";
 @import "./components/input-otp.css";
 @import "./components/form.css";
+@import "./components/radio-group.css";
 
 @custom-variant dark (&:is(.dark *));
 @source "../../../apps/**/*.{ts,tsx}";
