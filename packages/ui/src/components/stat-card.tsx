@@ -10,10 +10,7 @@ function StatCard({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="stat-card"
-      className={cn(
-        "flex flex-col border border-border bg-card px-5 py-4 text-card-foreground",
-        className
-      )}
+      className={cn("ds-stat-card", className)}
       {...props}
     />
   )
@@ -23,10 +20,7 @@ function StatCardLabel({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="stat-card-label"
-      className={cn(
-        "text-[0.6875rem] font-normal tracking-wider text-muted-foreground uppercase",
-        className
-      )}
+      className={cn("ds-stat-card-label", className)}
       {...props}
     />
   )
@@ -36,29 +30,23 @@ function StatCardValue({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="stat-card-value"
-      className={cn(
-        "mt-2 font-heading text-2xl font-semibold tracking-tight tabular-nums",
-        className
-      )}
+      className={cn("ds-stat-card-value", className)}
       {...props}
     />
   )
 }
 
-const statCardDeltaVariants = cva(
-  "mt-1 inline-flex w-fit items-center gap-1 text-xs text-muted-foreground tabular-nums",
-  {
-    variants: {
-      direction: {
-        // The `-ink` variants, not the bare tones: --ds-success is tuned as a
-        // surface colour and only reaches 3.82:1 on dark's --ds-bg, which fails
-        // AA as text. --ds-success-ink is the text-weight value (6.75:1).
-        up: "text-[var(--ds-success-ink)]",
-        down: "text-[var(--ds-danger-ink)]",
-      },
+const statCardDeltaVariants = cva("ds-stat-card-delta", {
+  variants: {
+    direction: {
+      // The `-ink` variants, not the bare tones: --ds-success is tuned as a
+      // surface colour and only reaches 3.82:1 on dark's --ds-bg, which fails
+      // AA as text. --ds-success-ink is the text-weight value (6.75:1).
+      up: "ds-stat-card-delta--up",
+      down: "ds-stat-card-delta--down",
     },
-  }
-)
+  },
+})
 
 function StatCardDelta({
   className,
@@ -84,7 +72,7 @@ function StatCardSpark({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="stat-card-spark"
-      className={cn("mt-3 leading-none", className)}
+      className={cn("ds-stat-card-spark", className)}
       {...props}
     />
   )
