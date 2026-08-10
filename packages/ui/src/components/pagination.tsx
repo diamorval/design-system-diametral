@@ -70,7 +70,7 @@ function PaginationContent({
   return (
     <ul
       data-slot="pagination-content"
-      className={cn("flex items-center gap-1", className)}
+      className={cn("ds-pagination-content", className)}
       {...props}
     />
   )
@@ -118,11 +118,11 @@ function PaginationPrevious({
     <PaginationLink
       aria-label="Go to previous page"
       size="default"
-      className={cn("ps-2!", className)}
+      className={cn("ds-pagination-previous", className)}
       {...props}
     >
-      <CaretLeftIcon data-icon="inline-start" className="rtl:rotate-180" />
-      <span className="hidden sm:block">{text}</span>
+      <CaretLeftIcon data-icon="inline-start" className="ds-pagination-caret" />
+      <span className="ds-pagination-label">{text}</span>
     </PaginationLink>
   )
 }
@@ -136,11 +136,11 @@ function PaginationNext({
     <PaginationLink
       aria-label="Go to next page"
       size="default"
-      className={cn("pe-2!", className)}
+      className={cn("ds-pagination-next", className)}
       {...props}
     >
-      <span className="hidden sm:block">{text}</span>
-      <CaretRightIcon data-icon="inline-end" className="rtl:rotate-180" />
+      <span className="ds-pagination-label">{text}</span>
+      <CaretRightIcon data-icon="inline-end" className="ds-pagination-caret" />
     </PaginationLink>
   )
 }
@@ -153,10 +153,7 @@ function PaginationEllipsis({
     <span
       aria-hidden
       data-slot="pagination-ellipsis"
-      className={cn(
-        "flex size-9 items-center justify-center [&_svg:not([class*='size-'])]:size-4",
-        className
-      )}
+      className={cn("ds-pagination-ellipsis", className)}
       {...props}
     >
       <DotsThreeIcon />
