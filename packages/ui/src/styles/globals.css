@@ -12,6 +12,8 @@
 @import "./components/avatar.css";
 @import "./components/badge.css";
 @import "./components/button.css";
+@import "./components/toggle.css";
+@import "./components/toggle-group.css";
 @import "./components/alert.css";
 @import "./components/banner.css";
 @import "./components/toast.css";
