@@ -45,6 +45,7 @@
 @import "./components/bar-chart.css";
 @import "./components/kanban.css";
 @import "./components/timeline.css";
+@import "./components/tree.css";
 
 @custom-variant dark (&:is(.dark *));
 @source "../../../apps/**/*.{ts,tsx}";
