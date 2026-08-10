@@ -43,6 +43,7 @@
 @import "./components/sparkline.css";
 @import "./components/stat-card.css";
 @import "./components/bar-chart.css";
+@import "./components/kanban.css";
 
 @custom-variant dark (&:is(.dark *));
 @source "../../../apps/**/*.{ts,tsx}";
