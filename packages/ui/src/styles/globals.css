@@ -21,6 +21,7 @@
 @import "./components/accordion.css";
 @import "./components/popover.css";
 @import "./components/panel.css";
+@import "./components/breadcrumb.css";
 
 @custom-variant dark (&:is(.dark *));
 @source "../../../apps/**/*.{ts,tsx}";
