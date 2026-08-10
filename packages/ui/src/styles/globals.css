@@ -18,6 +18,7 @@
 @import "./components/progress.css";
 @import "./components/tooltip.css";
 @import "./components/drawer.css";
+@import "./components/accordion.css";
 
 @custom-variant dark (&:is(.dark *));
 @source "../../../apps/**/*.{ts,tsx}";
