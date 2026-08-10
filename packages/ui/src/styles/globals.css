@@ -61,6 +61,8 @@
 @import "./components/form.css";
 @import "./components/radio-group.css";
 @import "./components/checkbox.css";
+@import "./components/select.css";
+@import "./components/slider.css";
 
 @custom-variant dark (&:is(.dark *));
 @source "../../../apps/**/*.{ts,tsx}";
