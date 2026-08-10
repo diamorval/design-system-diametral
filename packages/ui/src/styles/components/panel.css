@@ -1,0 +1,63 @@
+@layer utilities {
+  .ds-panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--panel-spacing);
+    border: 1px solid var(--border);
+    background: var(--card);
+    padding-block: var(--panel-spacing);
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    color: var(--card-foreground);
+    --panel-spacing: 1rem;
+  }
+  .ds-panel[data-size="sm"] {
+    --panel-spacing: 0.625rem;
+  }
+
+  .ds-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-inline: var(--panel-spacing);
+  }
+  .ds-panel-header.border-b {
+    padding-bottom: var(--panel-spacing);
+  }
+
+  .ds-panel-title {
+    font-family: var(--font-heading);
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .ds-panel-content {
+    padding-inline: var(--panel-spacing);
+  }
+
+  .ds-panel-footer {
+    display: flex;
+    align-items: center;
+    padding-inline: var(--panel-spacing);
+  }
+  .ds-panel-footer.border-t {
+    padding-top: var(--panel-spacing);
+  }
+
+  .ds-panel-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border-bottom: 1px solid var(--border);
+    padding-inline: var(--panel-spacing);
+    padding-block: 0.625rem;
+  }
+  .ds-panel-row:last-child {
+    border-bottom-width: 0;
+  }
+}
