@@ -55,6 +55,7 @@
 @import "./components/field-array.css";
 @import "./components/number-field.css";
 @import "./components/editable.css";
+@import "./components/input-otp.css";
 
 @custom-variant dark (&:is(.dark *));
 @source "../../../apps/**/*.{ts,tsx}";
