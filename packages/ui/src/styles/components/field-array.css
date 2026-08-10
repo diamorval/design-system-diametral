@@ -1,0 +1,33 @@
+@layer utilities {
+  .ds-field-array {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  /* display and align-items stay literal Tailwind utilities on the
+     component (see field-array.tsx) so demo className overrides
+     (flex-col/items-stretch) dedupe via tailwind-merge instead of
+     racing this class in the cascade. */
+  .ds-field-array-item {
+    gap: 0.75rem;
+    border-radius: 0;
+    border: 1px solid var(--border);
+    padding: 0.75rem;
+  }
+
+  /* display stays a literal Tailwind utility on the component (see
+     field-array.tsx) so the "grid" override in the submit demo dedupes
+     via tailwind-merge instead of racing this class in the cascade. */
+  .ds-field-array-item-content {
+    min-width: 0;
+    flex: 1 1 0%;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .ds-field-array-add {
+    width: 100%;
+  }
+}

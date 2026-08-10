@@ -21,7 +21,7 @@ function FieldArray({ className, ...props }: React.ComponentProps<"div">) {
     <div
       role="group"
       data-slot="field-array"
-      className={cn("flex w-full flex-col gap-3", className)}
+      className={cn("ds-field-array", className)}
       {...props}
     />
   )
@@ -31,10 +31,7 @@ function FieldArrayItem({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="field-array-item"
-      className={cn(
-        "flex items-center gap-3 rounded-none border border-border p-3",
-        className
-      )}
+      className={cn("ds-field-array-item flex items-center", className)}
       {...props}
     />
   )
@@ -49,7 +46,7 @@ function FieldArrayItemContent({
       data-slot="field-array-item-content"
       // min-w-0 is load-bearing: without it a long value refuses to shrink
       // below its content width and pushes the remove button out of the block.
-      className={cn("flex min-w-0 flex-1 flex-col gap-3", className)}
+      className={cn("ds-field-array-item-content flex", className)}
       {...props}
     />
   )
@@ -86,7 +83,7 @@ function FieldArrayAdd({
       type="button"
       variant="outline"
       data-slot="field-array-add"
-      className={cn("w-full", className)}
+      className={cn("ds-field-array-add", className)}
       {...props}
     >
       <PlusIcon className="pointer-events-none" />

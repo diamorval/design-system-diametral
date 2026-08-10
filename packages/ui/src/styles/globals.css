@@ -50,6 +50,7 @@
 @import "./components/input-group.css";
 @import "./components/label.css";
 @import "./components/textarea.css";
+@import "./components/field-array.css";
 
 @custom-variant dark (&:is(.dark *));
 @source "../../../apps/**/*.{ts,tsx}";
