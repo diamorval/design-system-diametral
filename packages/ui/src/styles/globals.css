@@ -9,12 +9,14 @@
 @import "./components/kbd.css";
 @import "./components/spinner.css";
 @import "./components/tag.css";
+@import "./components/tooltip.css";
 @import "./components/avatar.css";
 @import "./components/badge.css";
 @import "./components/button.css";
 @import "./components/alert.css";
 @import "./components/banner.css";
 @import "./components/toast.css";
+@import "./components/progress.css";
 
 @custom-variant dark (&:is(.dark *));
 @source "../../../apps/**/*.{ts,tsx}";

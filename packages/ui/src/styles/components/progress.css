@@ -1,0 +1,60 @@
+@layer utilities {
+  .ds-progress {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .ds-progress--tone-neutral {
+    --tone: var(--ds-neutral-ink);
+  }
+  .ds-progress--tone-success {
+    --tone: var(--ds-success-ink);
+  }
+  .ds-progress--tone-warning {
+    --tone: var(--ds-warning-ink);
+  }
+  .ds-progress--tone-danger {
+    --tone: var(--ds-danger-ink);
+  }
+  .ds-progress--tone-critical {
+    --tone: var(--ds-critical-ink);
+  }
+  .ds-progress--tone-info {
+    --tone: var(--ds-info-ink);
+  }
+
+  .ds-progress-track {
+    position: relative;
+    display: flex;
+    height: 0.125rem;
+    width: 100%;
+    align-items: center;
+    overflow-x: hidden;
+    border-radius: 0;
+    background-color: var(--muted);
+  }
+
+  .ds-progress-indicator {
+    height: 100%;
+    background-color: var(--tone, var(--primary));
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+
+  .ds-progress-label {
+    font-size: 0.75rem;
+    line-height: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.025em;
+    text-transform: uppercase;
+  }
+
+  .ds-progress-value {
+    margin-inline-start: auto;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    color: var(--muted-foreground);
+    font-variant-numeric: tabular-nums;
+  }
+}
