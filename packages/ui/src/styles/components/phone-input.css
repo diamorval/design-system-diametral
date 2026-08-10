@@ -1,0 +1,21 @@
+@layer utilities {
+  .ds-phone-input {
+    display: flex;
+    height: 2.5rem;
+    width: 100%;
+    align-items: stretch;
+    border: 1px solid transparent;
+    border-bottom-color: var(--input);
+    background-color: transparent;
+    transition-property: color, border-color;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+  .ds-phone-input:focus-within {
+    border-bottom-color: var(--ring);
+  }
+  .ds-phone-input[data-disabled] {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+}
