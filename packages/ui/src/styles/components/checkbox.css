@@ -1,0 +1,65 @@
+@layer utilities {
+  .ds-checkbox {
+    position: relative;
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 1.125rem;
+    height: 1.125rem;
+    border-radius: 0;
+    border-width: 1px;
+    border-style: solid;
+    border-color: var(--input);
+    background: transparent;
+    transition-property: box-shadow;
+    outline: none;
+  }
+  .group[data-disabled="true"] .ds-checkbox {
+    opacity: 0.5;
+  }
+  .ds-checkbox::after {
+    content: "";
+    position: absolute;
+    inset-inline: -0.75rem;
+    inset-block: -0.5rem;
+  }
+  .ds-checkbox:focus-visible {
+    border-color: var(--ring);
+    box-shadow: 0 0 0 2px color-mix(in oklab, var(--ring) 30%, transparent);
+  }
+  .ds-checkbox:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+  .ds-checkbox[aria-invalid="true"] {
+    border-color: var(--destructive);
+    box-shadow: 0 0 0 2px color-mix(in oklab, var(--destructive) 20%, transparent);
+  }
+  .ds-checkbox[aria-invalid="true"][aria-checked="true"] {
+    border-color: var(--primary);
+  }
+  .dark .ds-checkbox[aria-invalid="true"] {
+    border-color: color-mix(in oklab, var(--destructive) 50%, transparent);
+    box-shadow: 0 0 0 2px color-mix(in oklab, var(--destructive) 40%, transparent);
+  }
+  .ds-checkbox[data-checked] {
+    border-color: var(--primary);
+    background: var(--primary);
+    color: var(--primary-foreground);
+  }
+  .dark .ds-checkbox[data-checked] {
+    background: var(--primary);
+  }
+
+  .ds-checkbox-indicator {
+    display: grid;
+    place-content: center;
+    color: currentcolor;
+    transition-property: none;
+  }
+  .ds-checkbox-indicator > svg {
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+}
