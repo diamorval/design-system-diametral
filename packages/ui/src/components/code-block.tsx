@@ -73,10 +73,7 @@ function CodeBlock({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="code-block"
-      className={cn(
-        "overflow-hidden rounded-none border border-[var(--ds-black)] bg-[var(--ds-black)] font-mono text-sm text-[var(--ds-grey-faint)]",
-        className
-      )}
+      className={cn("ds-code-block", className)}
       {...props}
     />
   )
@@ -86,10 +83,7 @@ function CodeBlockHead({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="code-block-head"
-      className={cn(
-        "flex items-center justify-between gap-3 border-b border-[var(--ds-grey-dark)] px-3 py-2",
-        className
-      )}
+      className={cn("ds-code-block-head", className)}
       {...props}
     />
   )
@@ -102,10 +96,7 @@ function CodeBlockFilename({
   return (
     <span
       data-slot="code-block-filename"
-      className={cn(
-        "text-xs tracking-wide text-[#8e9099] uppercase",
-        className
-      )}
+      className={cn("ds-code-block-filename", className)}
       {...props}
     />
   )
@@ -131,10 +122,7 @@ function CodeBlockBody({
   return (
     <pre
       data-slot="code-block-body"
-      className={cn(
-        "m-0 overflow-auto p-3 font-mono [tab-size:2] text-inherit",
-        className
-      )}
+      className={cn("ds-code-block-body", className)}
       {...props}
     >
       {html ? (
@@ -171,10 +159,7 @@ function CodeBlockCopyButton({
         void navigator.clipboard.writeText(value)
         setCopied(true)
       }}
-      className={cn(
-        "inline-flex size-7 shrink-0 items-center justify-center rounded-none border border-[var(--ds-grey-dark)] bg-transparent text-[var(--ds-grey-faint)] transition-colors outline-none hover:bg-[var(--ds-grey-dark)] focus-visible:ring-2 focus-visible:ring-ring/30 [&_svg]:size-3.5",
-        className
-      )}
+      className={cn("ds-code-block-copy-button", className)}
       {...props}
     >
       <Icon name={copied ? "check" : "copy"} />
