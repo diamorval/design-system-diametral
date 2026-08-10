@@ -23,6 +23,7 @@
 @import "./components/panel.css";
 @import "./components/pagination.css";
 @import "./components/breadcrumb.css";
+@import "./components/tabs.css";
 @import "./components/toolbar.css";
 
 @custom-variant dark (&:is(.dark *));
