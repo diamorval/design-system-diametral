@@ -29,20 +29,17 @@ function DatePickerTrigger({
     <PopoverTrigger
       data-slot="date-picker-trigger"
       render={<Button variant="outline" />}
-      className={cn(
-        "w-56 justify-between font-normal tracking-normal normal-case",
-        className
-      )}
+      className={cn("ds-date-picker-trigger w-56", className)}
       {...props}
     >
       {children ?? (
-        <span className={cn(!value && "text-muted-foreground")}>
+        <span className={cn(!value && "ds-date-picker-value--placeholder")}>
           {value ? format(value, dateFormat) : placeholder}
         </span>
       )}
       <CalendarBlankIcon
         data-icon="inline-end"
-        className="pointer-events-none text-muted-foreground"
+        className="ds-date-picker-trigger-icon"
       />
     </PopoverTrigger>
   )
@@ -57,7 +54,7 @@ function DatePickerContent({
     <PopoverContent
       data-slot="date-picker-content"
       align={align}
-      className={cn("w-auto gap-0 p-0", className)}
+      className={cn("ds-date-picker-content", className)}
       {...props}
     />
   )

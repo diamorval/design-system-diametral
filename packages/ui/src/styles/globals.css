@@ -27,6 +27,7 @@
 @import "./components/toolbar.css";
 @import "./components/color-picker.css";
 @import "./components/wizard.css";
+@import "./components/date-picker.css";
 
 @custom-variant dark (&:is(.dark *));
 @source "../../../apps/**/*.{ts,tsx}";

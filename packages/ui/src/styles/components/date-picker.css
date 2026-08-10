@@ -1,0 +1,23 @@
+@layer utilities {
+  .ds-date-picker-trigger {
+    justify-content: space-between !important;
+    font-weight: 400 !important;
+    letter-spacing: normal !important;
+    text-transform: none !important;
+  }
+
+  .ds-date-picker-value--placeholder {
+    color: var(--muted-foreground);
+  }
+
+  .ds-date-picker-trigger-icon {
+    pointer-events: none;
+    color: var(--muted-foreground);
+  }
+
+  .ds-date-picker-content {
+    width: auto;
+    gap: 0;
+    padding: 0;
+  }
+}
