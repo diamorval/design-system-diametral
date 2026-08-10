@@ -19,6 +19,7 @@
 @import "./components/tooltip.css";
 @import "./components/drawer.css";
 @import "./components/accordion.css";
+@import "./components/popover.css";
 @import "./components/panel.css";
 
 @custom-variant dark (&:is(.dark *));
