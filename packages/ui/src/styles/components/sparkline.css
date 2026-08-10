@@ -1,0 +1,42 @@
+@layer utilities {
+  .ds-sparkline {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 1;
+  }
+
+  .ds-sparkline-svg {
+    display: block;
+    overflow: visible;
+  }
+
+  .ds-sparkline-area {
+    fill: currentColor;
+    stroke: none;
+    opacity: 0.12;
+  }
+
+  .ds-sparkline-line {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .ds-sparkline-line--animate {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: ds-sparkline-draw 0.9s ease forwards;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ds-sparkline-line--animate {
+      animation: none;
+      stroke-dashoffset: 0;
+    }
+  }
+
+  .ds-sparkline-dot {
+    fill: currentColor;
+    stroke: none;
+  }
+}

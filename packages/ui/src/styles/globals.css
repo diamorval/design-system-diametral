@@ -40,6 +40,7 @@
 @import "./components/agenda.css";
 @import "./components/description-list.css";
 @import "./components/page-header.css";
+@import "./components/sparkline.css";
 @import "./components/stat-card.css";
 
 @custom-variant dark (&:is(.dark *));
