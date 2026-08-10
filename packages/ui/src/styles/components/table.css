@@ -1,0 +1,81 @@
+@layer utilities {
+  .ds-table-container {
+    position: relative;
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .ds-table {
+    width: 100%;
+    caption-side: bottom;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+
+  .ds-table-header tr {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .ds-table-body tr:last-child {
+    border-width: 0;
+  }
+
+  .ds-table-footer {
+    border-top: 1px solid var(--border);
+    background-color: color-mix(in oklab, var(--muted) 50%, transparent);
+    font-weight: 500;
+  }
+  .ds-table-footer > tr:last-child {
+    border-bottom-width: 0;
+  }
+
+  .ds-table-row {
+    border-bottom: 1px solid var(--border);
+    transition-property:
+      color, background-color, border-color, outline-color,
+      text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+  .ds-table-row:hover {
+    background-color: color-mix(in oklab, var(--muted) 50%, transparent);
+  }
+  .ds-table-row:has([aria-expanded="true"]) {
+    background-color: color-mix(in oklab, var(--muted) 50%, transparent);
+  }
+  .ds-table-row[data-state="selected"] {
+    background-color: var(--muted);
+  }
+
+  .ds-table-head {
+    height: 3rem;
+    padding-inline: 0.75rem;
+    vertical-align: middle;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    color: var(--muted-foreground);
+    text-transform: uppercase;
+  }
+  .ds-table-head:has([role="checkbox"]) {
+    padding-inline-end: 0;
+  }
+
+  .ds-table-cell {
+    padding: 0.75rem;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+  .ds-table-cell:has([role="checkbox"]) {
+    padding-inline-end: 0;
+  }
+
+  .ds-table-caption {
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    color: var(--muted-foreground);
+  }
+}

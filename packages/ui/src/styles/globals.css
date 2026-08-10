@@ -34,6 +34,7 @@
 @import "./components/rating.css";
 @import "./components/field.css";
 @import "./components/time-picker.css";
+@import "./components/table.css";
 
 @custom-variant dark (&:is(.dark *));
 @source "../../../apps/**/*.{ts,tsx}";
