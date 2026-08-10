@@ -6,10 +6,7 @@ function PageHeader({ className, ...props }: React.ComponentProps<"header">) {
   return (
     <header
       data-slot="page-header"
-      className={cn(
-        "flex flex-col gap-4 border-b border-border pb-6 has-data-[slot=page-header-tabs]:pb-0",
-        className
-      )}
+      className={cn("ds-page-header", className)}
       {...props}
     />
   )
@@ -22,10 +19,7 @@ function PageHeaderHeading({
   return (
     <div
       data-slot="page-header-heading"
-      className={cn(
-        "flex flex-wrap items-start justify-between gap-4",
-        className
-      )}
+      className={cn("ds-page-header-heading", className)}
       {...props}
     />
   )
@@ -35,10 +29,7 @@ function PageHeaderIcon({ className, ...props }: React.ComponentProps<"span">) {
   return (
     <span
       data-slot="page-header-icon"
-      className={cn(
-        "flex h-8 shrink-0 items-center text-muted-foreground [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-6",
-        className
-      )}
+      className={cn("ds-page-header-icon", className)}
       {...props}
     />
   )
@@ -48,10 +39,7 @@ function PageHeaderTitle({ className, ...props }: React.ComponentProps<"h1">) {
   return (
     <h1
       data-slot="page-header-title"
-      className={cn(
-        "font-heading text-2xl font-semibold tracking-wide",
-        className
-      )}
+      className={cn("ds-page-header-title", className)}
       {...props}
     />
   )
@@ -64,7 +52,7 @@ function PageHeaderDescription({
   return (
     <p
       data-slot="page-header-description"
-      className={cn("text-sm text-muted-foreground", className)}
+      className={cn("ds-page-header-description", className)}
       {...props}
     />
   )
@@ -77,7 +65,7 @@ function PageHeaderActions({
   return (
     <div
       data-slot="page-header-actions"
-      className={cn("flex items-center gap-2", className)}
+      className={cn("ds-page-header-actions", className)}
       {...props}
     />
   )

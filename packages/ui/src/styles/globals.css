@@ -39,6 +39,7 @@
 @import "./components/code-block.css";
 @import "./components/agenda.css";
 @import "./components/description-list.css";
+@import "./components/page-header.css";
 
 @custom-variant dark (&:is(.dark *));
 @source "../../../apps/**/*.{ts,tsx}";
