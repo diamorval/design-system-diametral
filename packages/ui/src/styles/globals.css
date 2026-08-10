@@ -28,6 +28,7 @@
 @import "./components/color-picker.css";
 @import "./components/wizard.css";
 @import "./components/combobox.css";
+@import "./components/autocomplete.css";
 @import "./components/date-picker.css";
 @import "./components/file-upload.css";
 @import "./components/switch.css";
