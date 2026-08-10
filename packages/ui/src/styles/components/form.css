@@ -1,0 +1,8 @@
+@layer utilities {
+  .ds-form {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+}
