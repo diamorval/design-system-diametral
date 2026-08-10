@@ -47,7 +47,9 @@
 @import "./components/timeline.css";
 @import "./components/tree.css";
 @import "./components/input.css";
+@import "./components/input-group.css";
 @import "./components/label.css";
+@import "./components/textarea.css";
 
 @custom-variant dark (&:is(.dark *));
 @source "../../../apps/**/*.{ts,tsx}";

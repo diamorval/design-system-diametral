@@ -1,0 +1,39 @@
+@layer utilities {
+  .ds-textarea {
+    display: flex;
+    field-sizing: content;
+    width: 100%;
+    resize: none;
+    border-radius: 0;
+    background-color: transparent;
+    padding-inline: 0;
+    font-size: 1rem;
+    line-height: calc(1.5 / 1);
+    transition-property: color, border-color;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+    outline: none;
+  }
+  @media (min-width: 768px) {
+    .ds-textarea {
+      font-size: 0.875rem;
+      line-height: calc(1.25 / 0.875);
+    }
+  }
+  .ds-textarea::placeholder {
+    color: var(--muted-foreground);
+  }
+  .ds-textarea:focus-visible {
+    border-bottom-color: var(--ring);
+  }
+  .ds-textarea:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+  .ds-textarea[aria-invalid="true"] {
+    border-bottom-color: var(--destructive);
+  }
+  .dark .ds-textarea[aria-invalid="true"] {
+    border-bottom-color: color-mix(in oklab, var(--destructive) 50%, transparent);
+  }
+}
