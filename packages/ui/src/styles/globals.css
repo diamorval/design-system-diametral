@@ -46,6 +46,8 @@
 @import "./components/kanban.css";
 @import "./components/timeline.css";
 @import "./components/tree.css";
+@import "./components/input.css";
+@import "./components/label.css";
 
 @custom-variant dark (&:is(.dark *));
 @source "../../../apps/**/*.{ts,tsx}";
