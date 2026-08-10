@@ -1,0 +1,14 @@
+@layer utilities {
+  .ds-editable {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+  }
+  .ds-editable-edit-button {
+    opacity: 0;
+  }
+  .ds-editable:hover .ds-editable-edit-button,
+  .ds-editable-edit-button:focus-visible {
+    opacity: 1;
+  }
+}
