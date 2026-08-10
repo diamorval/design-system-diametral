@@ -9,33 +9,29 @@ import { IconButton } from "./icon-button.js"
 // setting `after:bg-*` itself: two utilities of the same specificity would
 // otherwise resolve by stylesheet order, not by the order they appear in the
 // class string, so `variant` and `tone` would fight non-deterministically.
-const alertVariants = cva(
-  "group/alert relative grid w-full gap-1 border bg-background px-4 py-3 text-start text-sm after:absolute after:-inset-y-px after:-start-px after:w-0.5 after:bg-[var(--tone-ink,var(--foreground))] has-data-[slot=alert-action]:relative has-data-[slot=alert-action]:pe-18 has-[>svg]:grid-cols-[auto_1fr] has-[>svg]:gap-x-2.5 *:data-[slot=alert-title]:text-[var(--tone-ink,inherit)] *:[svg]:row-span-2 *:[svg]:translate-y-0.5 *:[svg]:text-current *:[svg:not([class*='size-'])]:size-4",
-  {
-    variants: {
-      variant: {
-        default: "bg-card text-card-foreground",
-        destructive:
-          "bg-card text-destructive [--tone-ink:var(--destructive)] *:data-[slot=alert-description]:text-destructive/90 *:[svg]:text-current",
-      },
-      /* Semantic axis, over the shared --ds-<tone>-ink family. Unlike Banner,
-         which tints the whole block, Alert keeps its card surface and spends
-         the tone on the rail and the title only — the description stays muted,
-         so the two components read as different objects rather than duplicates. */
-      tone: {
-        neutral: "[--tone-ink:var(--ds-neutral-ink)]",
-        info: "[--tone-ink:var(--ds-info-ink)]",
-        success: "[--tone-ink:var(--ds-success-ink)]",
-        warning: "[--tone-ink:var(--ds-warning-ink)]",
-        danger: "[--tone-ink:var(--ds-danger-ink)]",
-        critical: "[--tone-ink:var(--ds-critical-ink)]",
-      },
+const alertVariants = cva("ds-alert", {
+  variants: {
+    variant: {
+      default: "ds-alert--default",
+      destructive: "ds-alert--destructive",
     },
-    defaultVariants: {
-      variant: "default",
+    /* Semantic axis, over the shared --ds-<tone>-ink family. Unlike Banner,
+       which tints the whole block, Alert keeps its card surface and spends
+       the tone on the rail and the title only — the description stays muted,
+       so the two components read as different objects rather than duplicates. */
+    tone: {
+      neutral: "ds-alert--tone-neutral",
+      info: "ds-alert--tone-info",
+      success: "ds-alert--tone-success",
+      warning: "ds-alert--tone-warning",
+      danger: "ds-alert--tone-danger",
+      critical: "ds-alert--tone-critical",
     },
-  }
-)
+  },
+  defaultVariants: {
+    variant: "default",
+  },
+})
 
 function Alert({
   className,
@@ -57,10 +53,7 @@ function AlertTitle({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="alert-title"
-      className={cn(
-        "text-sm font-semibold group-has-[>svg]/alert:col-start-2 [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground",
-        className
-      )}
+      className={cn("ds-alert-title", className)}
       {...props}
     />
   )
@@ -73,10 +66,7 @@ function AlertDescription({
   return (
     <div
       data-slot="alert-description"
-      className={cn(
-        "text-sm text-balance text-muted-foreground md:text-pretty [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground [&_p:not(:last-child)]:mb-4",
-        className
-      )}
+      className={cn("ds-alert-description", className)}
       {...props}
     />
   )
@@ -86,7 +76,7 @@ function AlertAction({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="alert-action"
-      className={cn("absolute end-3 top-2.5", className)}
+      className={cn("ds-alert-action", className)}
       {...props}
     />
   )
@@ -108,7 +98,7 @@ function AlertDismiss({
       label={label}
       variant="ghost"
       size="icon-xs"
-      className={cn("absolute end-3 top-2.5", className)}
+      className={cn("ds-alert-dismiss", className)}
       {...props}
     >
       <XIcon />
