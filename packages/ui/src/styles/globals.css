@@ -11,6 +11,7 @@
 @import "./components/tag.css";
 @import "./components/avatar.css";
 @import "./components/badge.css";
+@import "./components/banner.css";
 
 @custom-variant dark (&:is(.dark *));
 @source "../../../apps/**/*.{ts,tsx}";

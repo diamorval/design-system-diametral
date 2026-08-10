@@ -6,29 +6,21 @@ import { cn } from "../lib/utils.js"
 // Tone axis over the shared six-tone family in globals.css — the same
 // --ds-<tone>-bg / --ds-<tone>-ink pair button.tsx's `tone` variant reads,
 // so a new tone never needs a bespoke colour here.
-const bannerVariants = cva(
-  "group/banner flex w-full items-start gap-3 rounded-none bg-[var(--tone-bg)] px-4 py-3 text-sm text-[var(--tone-ink)] *:[svg]:mt-0.5 *:[svg]:shrink-0 *:[svg:not([class*='size-'])]:size-4",
-  {
-    variants: {
-      tone: {
-        neutral:
-          "[--tone-bg:var(--ds-neutral-bg)] [--tone-ink:var(--ds-neutral-ink)]",
-        info: "[--tone-bg:var(--ds-info-bg)] [--tone-ink:var(--ds-info-ink)]",
-        success:
-          "[--tone-bg:var(--ds-success-bg)] [--tone-ink:var(--ds-success-ink)]",
-        warning:
-          "[--tone-bg:var(--ds-warning-bg)] [--tone-ink:var(--ds-warning-ink)]",
-        danger:
-          "[--tone-bg:var(--ds-danger-bg)] [--tone-ink:var(--ds-danger-ink)]",
-        critical:
-          "[--tone-bg:var(--ds-critical-bg)] [--tone-ink:var(--ds-critical-ink)]",
-      },
+const bannerVariants = cva("ds-banner", {
+  variants: {
+    tone: {
+      neutral: "ds-banner--neutral",
+      info: "ds-banner--info",
+      success: "ds-banner--success",
+      warning: "ds-banner--warning",
+      danger: "ds-banner--danger",
+      critical: "ds-banner--critical",
     },
-    defaultVariants: {
-      tone: "neutral",
-    },
-  }
-)
+  },
+  defaultVariants: {
+    tone: "neutral",
+  },
+})
 
 function Banner({
   className,
@@ -49,7 +41,7 @@ function BannerContent({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="banner-content"
-      className={cn("flex flex-1 flex-col gap-0.5", className)}
+      className={cn("ds-banner-content", className)}
       {...props}
     />
   )
@@ -59,7 +51,7 @@ function BannerTitle({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="banner-title"
-      className={cn("font-medium", className)}
+      className={cn("ds-banner-title", className)}
       {...props}
     />
   )
@@ -86,7 +78,7 @@ function BannerAction({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="banner-action"
-      className={cn("flex shrink-0 items-center gap-2", className)}
+      className={cn("ds-banner-action", className)}
       {...props}
     />
   )
