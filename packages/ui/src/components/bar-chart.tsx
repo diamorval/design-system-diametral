@@ -120,7 +120,7 @@ function BarChart({
   return (
     <ChartContainer
       config={config}
-      className={cn("h-56 w-full", className)}
+      className={cn("ds-bar-chart", className)}
       {...props}
     >
       <RechartsBarChart

@@ -42,6 +42,7 @@
 @import "./components/page-header.css";
 @import "./components/sparkline.css";
 @import "./components/stat-card.css";
+@import "./components/bar-chart.css";
 
 @custom-variant dark (&:is(.dark *));
 @source "../../../apps/**/*.{ts,tsx}";
