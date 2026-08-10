@@ -16,6 +16,7 @@
 @import "./components/banner.css";
 @import "./components/toast.css";
 @import "./components/progress.css";
+@import "./components/tooltip.css";
 
 @custom-variant dark (&:is(.dark *));
 @source "../../../apps/**/*.{ts,tsx}";
