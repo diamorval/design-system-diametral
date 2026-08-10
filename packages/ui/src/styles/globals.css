@@ -38,6 +38,7 @@
 @import "./components/card.css";
 @import "./components/code-block.css";
 @import "./components/agenda.css";
+@import "./components/description-list.css";
 
 @custom-variant dark (&:is(.dark *));
 @source "../../../apps/**/*.{ts,tsx}";
