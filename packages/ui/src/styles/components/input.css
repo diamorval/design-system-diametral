@@ -1,0 +1,48 @@
+@layer utilities {
+  .ds-input {
+    height: 2.5rem;
+    width: 100%;
+    min-width: 0;
+    background-color: transparent;
+    padding-block: 0.25rem;
+    font-size: 1rem;
+    line-height: calc(1.5 / 1);
+    transition-property: color, border-color;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+    outline: none;
+  }
+  @media (min-width: 768px) {
+    .ds-input {
+      font-size: 0.875rem;
+      line-height: calc(1.25 / 0.875);
+    }
+  }
+  .ds-input::file-selector-button {
+    display: inline-flex;
+    height: 1.75rem;
+    border: 0;
+    background-color: transparent;
+    font-size: 0.875rem;
+    line-height: calc(1.25 / 0.875);
+    font-weight: 500;
+    color: var(--foreground);
+  }
+  .ds-input::placeholder {
+    color: var(--muted-foreground);
+  }
+  .ds-input:focus-visible {
+    border-bottom-color: var(--ring);
+  }
+  .ds-input:disabled {
+    pointer-events: none;
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+  .ds-input[aria-invalid="true"] {
+    border-bottom-color: var(--destructive);
+  }
+  .dark .ds-input[aria-invalid="true"] {
+    border-bottom-color: color-mix(in oklab, var(--destructive) 50%, transparent);
+  }
+}
