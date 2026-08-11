@@ -23,6 +23,7 @@
 @import "./components/drawer.css";
 @import "./components/accordion.css";
 @import "./components/popover.css";
+@import "./components/hover-card.css";
 @import "./components/panel.css";
 @import "./components/pagination.css";
 @import "./components/breadcrumb.css";
@@ -71,6 +72,7 @@
 @import "./components/alert-dialog.css";
 @import "./components/sheet.css";
 @import "./components/context-menu.css";
+@import "./components/dropdown-menu.css";
 
 @custom-variant dark (&:is(.dark *));
 @source "../../../apps/**/*.{ts,tsx}";
