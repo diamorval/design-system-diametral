@@ -160,6 +160,18 @@
     height: 0.875rem;
   }
 
+  /* border-0 (input-group.tsx) stays a literal Tailwind utility: Input's own
+     "border border-transparent border-b-input" defaults are themselves kept
+     literal (see input.tsx) specifically so this override dedupes against
+     them via tailwind-merge. Baking either side into a plain class would
+     leave both the old and new declarations applied at once. */
+  .ds-input-group:has(> [data-align="inline-end"]) > .ds-input-group-input {
+    padding-inline-end: 0.5rem;
+  }
+  .ds-input-group:has(> [data-align="inline-start"]) > .ds-input-group-input {
+    padding-inline-start: 0.5rem;
+  }
+
   .ds-input-group-input {
     flex: 1 1 0%;
     background-color: transparent;
@@ -175,6 +187,12 @@
     background-color: transparent;
   }
 
+  /* border-0, py-2.5 and [--textarea-chrome:1.25rem] (input-group.tsx) stay
+     literal Tailwind utilities for the same reason as InputGroupInput's
+     border-0 above: Textarea's own "border border-transparent
+     border-b-input py-3 [--textarea-chrome:...]" defaults are themselves
+     kept literal (see textarea.tsx) so these overrides dedupe against them
+     via tailwind-merge. */
   .ds-input-group-textarea {
     flex: 1 1 0%;
     resize: none;

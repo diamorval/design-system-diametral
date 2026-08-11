@@ -1,3 +1,10 @@
+/* The component's own "border border-transparent border-b-input py-3
+   [--textarea-chrome:calc(1.5rem+2px)]" (see textarea.tsx) stay literal
+   Tailwind utilities, mirroring input.css's own border/px-0 default —
+   InputGroupTextarea overrides all three ("border-0 py-2.5
+   [--textarea-chrome:1.25rem]", input-group.tsx) and relies on
+   tailwind-merge to dedupe against them. Baking either side into a plain
+   class would leave both the old and new declarations applied at once. */
 @layer utilities {
   .ds-textarea {
     display: flex;
@@ -34,6 +41,10 @@
     border-bottom-color: var(--destructive);
   }
   .dark .ds-textarea[aria-invalid="true"] {
-    border-bottom-color: color-mix(in oklab, var(--destructive) 50%, transparent);
+    border-bottom-color: color-mix(
+      in oklab,
+      var(--destructive) 50%,
+      transparent
+    );
   }
 }

@@ -102,10 +102,7 @@ function InputGroupInput({
   return (
     <Input
       data-slot="input-group-control"
-      className={cn(
-        "ds-input-group-input border-0 group-has-[>[data-align=inline-end]]/input-group:pe-2 group-has-[>[data-align=inline-start]]/input-group:ps-2",
-        className
-      )}
+      className={cn("ds-input-group-input border-0", className)}
       {...props}
     />
   )

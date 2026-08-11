@@ -89,7 +89,6 @@ function Editable({
             }
           }}
           onBlur={() => (submitOnBlur ? submit() : cancel())}
-          className="h-8"
         />
         <Button
           type="button"
@@ -122,10 +121,7 @@ function Editable({
       className={cn("ds-editable", className)}
       {...props}
     >
-      <span
-        data-slot="editable-preview"
-        className={cn(!committed && "text-muted-foreground")}
-      >
+      <span data-slot="editable-preview" data-empty={!committed || undefined}>
         {committed || placeholder}
       </span>
       <Button

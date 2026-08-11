@@ -6,11 +6,7 @@ import { cn } from "../lib/utils.js"
 
 function Label({ className, ...props }: React.ComponentProps<"label">) {
   return (
-    <label
-      data-slot="label"
-      className={cn("ds-label text-xs", className)}
-      {...props}
-    />
+    <label data-slot="label" className={cn("ds-label", className)} {...props} />
   )
 }
 

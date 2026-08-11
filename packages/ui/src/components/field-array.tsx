@@ -68,7 +68,7 @@ function FieldArrayRemove({
       data-slot="field-array-remove"
       {...props}
     >
-      {children ?? <TrashIcon className="pointer-events-none" />}
+      {children ?? <TrashIcon />}
     </IconButton>
   )
 }
@@ -86,7 +86,7 @@ function FieldArrayAdd({
       className={cn("ds-field-array-add", className)}
       {...props}
     >
-      <PlusIcon className="pointer-events-none" />
+      <PlusIcon />
       {children}
     </Button>
   )

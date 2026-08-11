@@ -85,7 +85,7 @@ function TagsInput({
             onClick={() => removeTag(index)}
             className="ds-tags-input-tag-remove"
           >
-            <XIcon className="pointer-events-none" />
+            <XIcon />
           </Button>
         </span>
       ))}
