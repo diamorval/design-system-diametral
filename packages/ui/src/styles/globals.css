@@ -48,11 +48,14 @@
 @import "./components/sparkline.css";
 @import "./components/stat-card.css";
 @import "./components/chart.css";
-@import "./components/bar-chart.css";
 @import "./components/pie-chart.css";
+@import "./components/donut-chart.css";
+@import "./components/radar-chart.css";
+@import "./components/scatter-chart.css";
 @import "./components/funnel-chart.css";
 @import "./components/treemap.css";
 @import "./components/waterfall-chart.css";
+@import "./components/stacked-bar.css";
 @import "./components/kanban.css";
 @import "./components/timeline.css";
 @import "./components/tree.css";
