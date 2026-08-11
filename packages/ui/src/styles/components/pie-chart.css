@@ -1,0 +1,10 @@
+@layer utilities {
+  /* aspect-square and h-64 stay literal Tailwind utilities on PieChart's own
+     className (see pie-chart.tsx) — pie-chart/compact.tsx overrides h-64 with
+     h-28, relying on tailwind-merge to dedupe against the component's own
+     default, and aspect-square itself has to dedupe against ChartContainer's
+     literal aspect-video default. Same constraint as donut-chart.css's note. */
+  .ds-pie-chart-root {
+    margin-inline: auto;
+  }
+}
