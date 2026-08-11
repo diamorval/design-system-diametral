@@ -80,6 +80,9 @@
 @import "./components/message-scroller.css";
 @import "./components/status.css";
 @import "./components/empty.css";
+@import "./components/snippet.css";
+@import "./components/resizable.css";
+@import "./components/scroll-area.css";
 
 @custom-variant dark (&:is(.dark *));
 @source "../../../apps/**/*.{ts,tsx}";

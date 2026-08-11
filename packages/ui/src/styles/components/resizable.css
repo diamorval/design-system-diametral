@@ -1,0 +1,45 @@
+@layer utilities {
+  .ds-resizable-panel-group {
+    display: flex;
+  }
+  .ds-resizable-panel-group[aria-orientation="vertical"] {
+    flex-direction: column;
+  }
+
+  .ds-resizable-handle {
+    position: relative;
+    display: flex;
+    width: 1px;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--border);
+  }
+  .ds-resizable-handle:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 1px var(--ring);
+  }
+  .ds-resizable-handle::after {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 50%;
+    width: 0.25rem;
+    translate: -50% 0;
+  }
+  :where([dir="rtl"], [dir="rtl"] *) .ds-resizable-handle::after {
+    translate: 50% 0;
+  }
+  .ds-resizable-handle[aria-orientation="horizontal"] {
+    height: 1px;
+    width: 100%;
+  }
+  .ds-resizable-handle[aria-orientation="horizontal"]::after {
+    inset-inline-start: 0;
+    height: 0.25rem;
+    width: 100%;
+    translate: 0 -50%;
+  }
+  .ds-resizable-handle[aria-orientation="horizontal"] > div {
+    rotate: 90deg;
+  }
+}
