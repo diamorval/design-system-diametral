@@ -181,19 +181,21 @@ function WaterfallChart({
               formatter={(_value, _name, item) => {
                 const step = item.payload as Step
                 return (
-                  <div className="grid flex-1 gap-1">
-                    <div className="flex items-center justify-between gap-4">
-                      <span className="text-muted-foreground">
+                  <div className="ds-waterfall-chart-tooltip">
+                    <div className="ds-waterfall-chart-tooltip-row">
+                      <span className="ds-waterfall-chart-tooltip-label">
                         {step.isTotal ? "Total" : "Change"}
                       </span>
-                      <span className="font-mono font-medium text-foreground tabular-nums">
+                      <span className="ds-waterfall-chart-tooltip-value">
                         {signedLabel(step)}
                       </span>
                     </div>
                     {step.isTotal ? null : (
-                      <div className="flex items-center justify-between gap-4">
-                        <span className="text-muted-foreground">Running</span>
-                        <span className="font-mono text-muted-foreground tabular-nums">
+                      <div className="ds-waterfall-chart-tooltip-row">
+                        <span className="ds-waterfall-chart-tooltip-label">
+                          Running
+                        </span>
+                        <span className="ds-waterfall-chart-tooltip-value-muted">
                           {formatValue(step.running)}
                         </span>
                       </div>
@@ -223,11 +225,7 @@ function WaterfallChart({
             bar — an offset and the delta floating on it — so animating the
             visible half against a static offset would detach the two for the
             length of the transition. */}
-        <Bar
-          dataKey="delta"
-          stackId="waterfall"
-          fill={TOTAL_COLOR}
-        />
+        <Bar dataKey="delta" stackId="waterfall" fill={TOTAL_COLOR} />
         {connectors
           ? steps.slice(0, -1).map((step, i) => (
               <ReferenceLine

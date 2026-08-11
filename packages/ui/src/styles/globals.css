@@ -49,6 +49,9 @@
 @import "./components/stat-card.css";
 @import "./components/chart.css";
 @import "./components/bar-chart.css";
+@import "./components/funnel-chart.css";
+@import "./components/treemap.css";
+@import "./components/waterfall-chart.css";
 @import "./components/kanban.css";
 @import "./components/timeline.css";
 @import "./components/tree.css";

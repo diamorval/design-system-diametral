@@ -155,18 +155,14 @@ function FunnelChart({
             which the selector rebuilds every render, so the animation restarts
             forever and the labels never arrive. With the animation off they
             render on the first paint, which is what a docs page needs anyway. */}
-        <Funnel
-          data={rows}
-          dataKey={valueKey}
-          nameKey={nameKey}
-        >
+        <Funnel data={rows} dataKey={valueKey} nameKey={nameKey}>
           <LabelList
             dataKey="__stage"
             content={(labelProps) => (
               <StageLabel
                 {...labelProps}
                 side="right"
-                className="fill-foreground text-xs"
+                className="ds-funnel-chart-stage-label"
               />
             )}
           />
@@ -177,7 +173,7 @@ function FunnelChart({
                 <StageLabel
                   {...labelProps}
                   side="left"
-                  className="fill-muted-foreground font-mono text-xs tabular-nums"
+                  className="ds-funnel-chart-share-label"
                 />
               )}
             />

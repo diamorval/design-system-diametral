@@ -1,0 +1,15 @@
+@layer utilities {
+  .ds-funnel-chart-stage-label {
+    fill: var(--foreground);
+    font-size: 0.75rem;
+    line-height: calc(1 / 0.75);
+  }
+
+  .ds-funnel-chart-share-label {
+    fill: var(--muted-foreground);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    line-height: calc(1 / 0.75);
+    font-variant-numeric: tabular-nums;
+  }
+}

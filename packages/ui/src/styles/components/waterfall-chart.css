@@ -1,0 +1,31 @@
+@layer utilities {
+  .ds-waterfall-chart-tooltip {
+    display: grid;
+    flex: 1 1 0%;
+    gap: 0.25rem;
+  }
+
+  .ds-waterfall-chart-tooltip-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .ds-waterfall-chart-tooltip-label {
+    color: var(--muted-foreground);
+  }
+
+  .ds-waterfall-chart-tooltip-value {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    color: var(--foreground);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ds-waterfall-chart-tooltip-value-muted {
+    font-family: var(--font-mono);
+    color: var(--muted-foreground);
+    font-variant-numeric: tabular-nums;
+  }
+}
