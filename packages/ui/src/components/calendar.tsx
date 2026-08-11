@@ -10,7 +10,11 @@ import {
 
 import { cn } from "../lib/utils.js"
 import { Button, buttonVariants } from "./button.js"
-import { CaretLeftIcon, CaretRightIcon, CaretDownIcon } from "@phosphor-icons/react"
+import {
+  CaretLeftIcon,
+  CaretRightIcon,
+  CaretDownIcon,
+} from "@phosphor-icons/react"
 
 function Calendar({
   className,
@@ -30,12 +34,7 @@ function Calendar({
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
-      className={cn(
-        "group/calendar bg-background p-3 [--cell-radius:0] [--cell-size:--spacing(8)] in-data-[slot=card-content]:bg-transparent in-data-[slot=popover-content]:bg-transparent",
-        String.raw`rtl:**:[.rdp-button\_next>svg]:rotate-180`,
-        String.raw`rtl:**:[.rdp-button\_previous>svg]:rotate-180`,
-        className
-      )}
+      className={cn("ds-calendar", className)}
       captionLayout={captionLayout}
       locale={locale}
       formatters={{
@@ -44,93 +43,67 @@ function Calendar({
         ...formatters,
       }}
       classNames={{
-        root: cn("w-fit", defaultClassNames.root),
-        months: cn(
-          "relative flex flex-col gap-4 md:flex-row",
-          defaultClassNames.months
-        ),
-        month: cn("flex w-full flex-col gap-4", defaultClassNames.month),
-        nav: cn(
-          "absolute inset-x-0 top-0 flex w-full items-center justify-between gap-1",
-          defaultClassNames.nav
-        ),
+        root: cn("ds-calendar-root", defaultClassNames.root),
+        months: cn("ds-calendar-months", defaultClassNames.months),
+        month: cn("ds-calendar-month", defaultClassNames.month),
+        nav: cn("ds-calendar-nav", defaultClassNames.nav),
         button_previous: cn(
           buttonVariants({ variant: buttonVariant }),
-          "size-(--cell-size) p-0 select-none aria-disabled:opacity-50",
+          "ds-calendar-nav-button size-(--cell-size) p-0",
           defaultClassNames.button_previous
         ),
         button_next: cn(
           buttonVariants({ variant: buttonVariant }),
-          "size-(--cell-size) p-0 select-none aria-disabled:opacity-50",
+          "ds-calendar-nav-button size-(--cell-size) p-0",
           defaultClassNames.button_next
         ),
         month_caption: cn(
-          "flex h-(--cell-size) w-full items-center justify-center px-(--cell-size)",
+          "ds-calendar-month-caption",
           defaultClassNames.month_caption
         ),
-        dropdowns: cn(
-          "flex h-(--cell-size) w-full items-center justify-center gap-1.5 text-sm font-medium",
-          defaultClassNames.dropdowns
-        ),
+        dropdowns: cn("ds-calendar-dropdowns", defaultClassNames.dropdowns),
         dropdown_root: cn(
-          "relative rounded-(--cell-radius)",
+          "ds-calendar-dropdown-root",
           defaultClassNames.dropdown_root
         ),
-        dropdown: cn(
-          "absolute inset-0 bg-popover opacity-0",
-          defaultClassNames.dropdown
-        ),
+        dropdown: cn("ds-calendar-dropdown", defaultClassNames.dropdown),
         caption_label: cn(
-          "font-medium select-none",
-          captionLayout === "label"
-            ? "text-sm"
-            : "flex items-center gap-1 rounded-(--cell-radius) text-sm [&>svg]:size-3.5 [&>svg]:text-muted-foreground",
+          "ds-calendar-caption-label",
+          captionLayout !== "label" && "ds-calendar-caption-label--dropdown",
           defaultClassNames.caption_label
         ),
-        month_grid: cn("w-full border-collapse", defaultClassNames.month_grid),
-        weekdays: cn("flex", defaultClassNames.weekdays),
-        weekday: cn(
-          "flex-1 rounded-(--cell-radius) text-[0.8rem] font-normal text-muted-foreground select-none",
-          defaultClassNames.weekday
-        ),
-        week: cn("mt-2 flex w-full", defaultClassNames.week),
+        month_grid: cn("ds-calendar-month-grid", defaultClassNames.month_grid),
+        weekdays: cn("ds-calendar-weekdays", defaultClassNames.weekdays),
+        weekday: cn("ds-calendar-weekday", defaultClassNames.weekday),
+        week: cn("ds-calendar-week", defaultClassNames.week),
         week_number_header: cn(
-          "w-(--cell-size) select-none",
+          "ds-calendar-week-number-header",
           defaultClassNames.week_number_header
         ),
         week_number: cn(
-          "text-[0.8rem] text-muted-foreground select-none",
+          "ds-calendar-week-number",
           defaultClassNames.week_number
         ),
         day: cn(
-          "group/day relative aspect-square h-full w-full rounded-(--cell-radius) p-0 text-center select-none [&:last-child[data-selected=true]_button]:rounded-e-(--cell-radius)",
+          "ds-calendar-day",
           props.showWeekNumber
-            ? "[&:nth-child(2)[data-selected=true]_button]:rounded-s-(--cell-radius)"
-            : "[&:first-child[data-selected=true]_button]:rounded-s-(--cell-radius)",
+            ? "ds-calendar-day--round-start-second"
+            : "ds-calendar-day--round-start-first",
           defaultClassNames.day
         ),
         range_start: cn(
-          "relative isolate z-0 rounded-s-(--cell-radius) bg-muted after:absolute after:inset-y-0 after:end-0 after:w-4 after:bg-muted",
+          "ds-calendar-range-start",
           defaultClassNames.range_start
         ),
-        range_middle: cn("rounded-none", defaultClassNames.range_middle),
-        range_end: cn(
-          "relative isolate z-0 rounded-e-(--cell-radius) bg-muted after:absolute after:inset-y-0 after:start-0 after:w-4 after:bg-muted",
-          defaultClassNames.range_end
+        range_middle: cn(
+          "ds-calendar-range-middle",
+          defaultClassNames.range_middle
         ),
-        today: cn(
-          "rounded-(--cell-radius) bg-muted text-foreground data-[selected=true]:rounded-none",
-          defaultClassNames.today
-        ),
-        outside: cn(
-          "text-muted-foreground aria-selected:text-muted-foreground",
-          defaultClassNames.outside
-        ),
-        disabled: cn(
-          "text-muted-foreground opacity-50",
-          defaultClassNames.disabled
-        ),
-        hidden: cn("invisible", defaultClassNames.hidden),
+        range_end: cn("ds-calendar-range-end", defaultClassNames.range_end),
+        today: cn("ds-calendar-today", defaultClassNames.today),
+        outside: cn("ds-calendar-outside", defaultClassNames.outside),
+        disabled: cn("ds-calendar-disabled", defaultClassNames.disabled),
+        hidden: cn("ds-calendar-hidden", defaultClassNames.hidden),
         ...classNames,
       }}
       components={{
@@ -147,18 +120,33 @@ function Calendar({
         Chevron: ({ className, orientation, ...props }) => {
           if (orientation === "left") {
             return (
-              <CaretLeftIcon className={cn("rtl:rotate-180 size-4", className)} {...props} />
+              <CaretLeftIcon
+                className={cn(
+                  "ds-calendar-chevron ds-calendar-chevron--directional",
+                  className
+                )}
+                {...props}
+              />
             )
           }
 
           if (orientation === "right") {
             return (
-              <CaretRightIcon className={cn("rtl:rotate-180 size-4", className)} {...props} />
+              <CaretRightIcon
+                className={cn(
+                  "ds-calendar-chevron ds-calendar-chevron--directional",
+                  className
+                )}
+                {...props}
+              />
             )
           }
 
           return (
-            <CaretDownIcon className={cn("size-4", className)} {...props} />
+            <CaretDownIcon
+              className={cn("ds-calendar-chevron", className)}
+              {...props}
+            />
           )
         },
         DayButton: ({ ...props }) => (
@@ -167,9 +155,7 @@ function Calendar({
         WeekNumber: ({ children, ...props }) => {
           return (
             <td {...props}>
-              <div className="flex size-(--cell-size) items-center justify-center text-center">
-                {children}
-              </div>
+              <div className="ds-calendar-week-number-cell">{children}</div>
             </td>
           )
         },
@@ -209,7 +195,7 @@ function CalendarDayButton({
       data-range-end={modifiers.range_end}
       data-range-middle={modifiers.range_middle}
       className={cn(
-        "relative isolate z-10 flex aspect-square size-auto w-full min-w-(--cell-size) flex-col gap-1 border-0 leading-none font-normal group-data-[focused=true]/day:relative group-data-[focused=true]/day:z-10 group-data-[focused=true]/day:border-ring group-data-[focused=true]/day:ring-[3px] group-data-[focused=true]/day:ring-ring/50 data-[range-end=true]:rounded-(--cell-radius) data-[range-end=true]:rounded-e-(--cell-radius) data-[range-end=true]:bg-primary data-[range-end=true]:text-primary-foreground data-[range-middle=true]:rounded-none data-[range-middle=true]:bg-muted data-[range-middle=true]:text-foreground data-[range-start=true]:rounded-(--cell-radius) data-[range-start=true]:rounded-s-(--cell-radius) data-[range-start=true]:bg-primary data-[range-start=true]:text-primary-foreground data-[selected-single=true]:bg-primary data-[selected-single=true]:text-primary-foreground dark:hover:text-foreground [&>span]:text-xs [&>span]:opacity-70",
+        "ds-calendar-day-button aspect-square size-auto w-full min-w-(--cell-size)",
         defaultClassNames.day,
         className
       )}
