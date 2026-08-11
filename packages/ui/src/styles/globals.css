@@ -68,6 +68,7 @@
 @import "./components/tags-input.css";
 @import "./components/dialog.css";
 @import "./components/alert-dialog.css";
+@import "./components/sheet.css";
 
 @custom-variant dark (&:is(.dark *));
 @source "../../../apps/**/*.{ts,tsx}";
