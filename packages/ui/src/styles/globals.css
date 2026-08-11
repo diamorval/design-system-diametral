@@ -74,6 +74,9 @@
 @import "./components/context-menu.css";
 @import "./components/dropdown-menu.css";
 @import "./components/menubar.css";
+@import "./components/bubble.css";
+@import "./components/message.css";
+@import "./components/message-scroller.css";
 @import "./components/status.css";
 @import "./components/empty.css";
 

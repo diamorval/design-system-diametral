@@ -1,0 +1,88 @@
+@layer utilities {
+  .ds-message-scroller {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* scroll-fade-b stays a literal Tailwind utility (see message-scroller.tsx)
+     rather than baked CSS — it comes from shadcn/tailwind.css (imported in
+     globals.css) and its scroll-driven mask/animation internals are owned by
+     that plugin, not one-off arbitrary values this file should re-implement. */
+  .ds-message-scroller-viewport {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    min-width: 0;
+    scrollbar-width: thin;
+    scrollbar-gutter: stable;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    contain: content;
+  }
+  .ds-message-scroller-viewport[data-autoscrolling] {
+    scrollbar-color: transparent transparent;
+  }
+
+  /* gap-8 stays a literal Tailwind utility on the component's own className
+     (see message-scroller.tsx) — several demos override it with gap-2,
+     relying on tailwind-merge to dedupe against this literal default. */
+  .ds-message-scroller-content {
+    display: flex;
+    height: max-content;
+    min-height: 100%;
+    flex-direction: column;
+  }
+
+  .ds-message-scroller-item {
+    min-width: 0;
+    flex-shrink: 0;
+    contain-intrinsic-size: auto 10rem;
+    content-visibility: auto;
+  }
+
+  .ds-message-scroller-button {
+    --ds-message-scroller-button-x: -50%;
+    --ds-message-scroller-button-y: 0px;
+    position: absolute;
+    inset-inline-start: 50%;
+    translate: var(--ds-message-scroller-button-x)
+      var(--ds-message-scroller-button-y);
+    transition-property: translate, scale, opacity;
+    transition-duration: 200ms;
+  }
+  :where([dir="rtl"], [dir="rtl"] *).ds-message-scroller-button {
+    --ds-message-scroller-button-x: 50%;
+  }
+  .ds-message-scroller-button[data-active="false"] {
+    pointer-events: none;
+    scale: 0.95;
+    opacity: 0;
+    transition-duration: 400ms;
+    transition-timing-function: cubic-bezier(0.7, 0, 0.84, 0);
+  }
+  .ds-message-scroller-button[data-active="true"] {
+    scale: 1;
+    opacity: 1;
+    transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .ds-message-scroller-button[data-direction="end"] {
+    bottom: 1rem;
+  }
+  .ds-message-scroller-button[data-direction="end"][data-active="false"] {
+    --ds-message-scroller-button-y: 100%;
+  }
+  .ds-message-scroller-button[data-direction="start"] {
+    top: 1rem;
+  }
+  .ds-message-scroller-button[data-direction="start"][data-active="false"] {
+    --ds-message-scroller-button-y: -100%;
+  }
+  .ds-message-scroller-button[data-direction="start"] svg {
+    rotate: 180deg;
+  }
+}
