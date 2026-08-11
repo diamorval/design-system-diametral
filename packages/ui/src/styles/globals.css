@@ -101,6 +101,7 @@
 @import "./components/date-time-picker.css";
 @import "./components/toc.css";
 @import "./components/data-table.css";
+@import "./components/sidebar.css";
 
 @custom-variant dark (&:is(.dark *));
 @source "../../../apps/**/*.{ts,tsx}";
