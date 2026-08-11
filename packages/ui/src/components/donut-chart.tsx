@@ -82,7 +82,7 @@ function DonutChart({
       // A definite height is what `aspect-square` resolves the width against:
       // capping with `max-h-*` alone leaves both axes indefinite and the
       // container measures 0, so recharts never draws.
-      className={cn("mx-auto aspect-square h-64", className)}
+      className={cn("ds-donut-chart-root aspect-square h-64", className)}
       {...props}
     >
       <PieChart>
@@ -115,7 +115,7 @@ function DonutChart({
                       x={cx}
                       y={centerCaption != null ? cy - 6 : cy}
                       dominantBaseline="central"
-                      className="fill-foreground font-heading text-2xl font-semibold tabular-nums"
+                      className="ds-donut-chart-center-label"
                     >
                       {centerLabel}
                     </tspan>
@@ -124,7 +124,7 @@ function DonutChart({
                         x={cx}
                         y={cy + 16}
                         dominantBaseline="central"
-                        className="fill-muted-foreground text-[10px] tracking-wide uppercase"
+                        className="ds-donut-chart-center-caption"
                       >
                         {centerCaption}
                       </tspan>

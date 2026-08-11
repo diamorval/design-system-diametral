@@ -1,0 +1,9 @@
+@layer utilities {
+  /* h-40 stays a literal Tailwind utility on StackedBar's own className (see
+     stacked-bar.tsx) — stacked-bar/basic.tsx and inline.tsx override it with
+     h-24/h-8, relying on tailwind-merge to dedupe against the component's own
+     default. */
+  .ds-stacked-bar-root {
+    width: 100%;
+  }
+}

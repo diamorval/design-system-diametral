@@ -1,0 +1,25 @@
+@layer utilities {
+  /* aspect-square and h-64 stay literal Tailwind utilities on DonutChart's own
+     className (see donut-chart.tsx) — donut-chart/thin.tsx overrides h-64 with
+     h-40, relying on tailwind-merge to dedupe against the component's own
+     default, and aspect-square itself has to dedupe against ChartContainer's
+     literal aspect-video default. Same constraint as chart.css's note. */
+  .ds-donut-chart-root {
+    margin-inline: auto;
+  }
+
+  .ds-donut-chart-center-label {
+    fill: var(--foreground);
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ds-donut-chart-center-caption {
+    fill: var(--muted-foreground);
+    font-size: 0.625rem;
+    letter-spacing: 0.025em;
+    text-transform: uppercase;
+  }
+}
