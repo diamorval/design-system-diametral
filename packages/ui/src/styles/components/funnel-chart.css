@@ -1,4 +1,9 @@
 @layer utilities {
+  /* h-64 and w-full stay literal Tailwind utilities on FunnelChart's own
+     className (see funnel-chart.tsx) — every funnel-chart demo overrides
+     h-64 (h-72/h-40) while keeping w-full, relying on tailwind-merge to
+     dedupe against this exact literal class. Same constraint as
+     chart.css's note. */
   .ds-funnel-chart-stage-label {
     fill: var(--foreground);
     font-size: 0.75rem;

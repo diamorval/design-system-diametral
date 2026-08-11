@@ -1,4 +1,9 @@
 @layer utilities {
+  /* h-56 and w-full stay literal Tailwind utilities on WaterfallChart's own
+     className (see waterfall-chart.tsx) — most waterfall-chart demos
+     override h-56 with h-64 while keeping w-full, relying on tailwind-merge
+     to dedupe against this exact literal class. Same constraint as
+     chart.css's note. */
   .ds-waterfall-chart-tooltip {
     display: grid;
     flex: 1 1 0%;

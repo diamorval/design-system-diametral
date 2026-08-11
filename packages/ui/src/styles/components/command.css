@@ -1,4 +1,14 @@
 @layer utilities {
+  /* top-1/3, translate-y-0 and p-0 stay literal Tailwind utilities on
+     CommandDialog's DialogContent (see command.tsx) — they dedupe via
+     tailwind-merge against DialogContent's own literal top-1/2/translate-y/p-6
+     defaults (see dialog.css's note), which only works while both sides
+     remain literal classes. overflow-hidden has no such conflict, so it is
+     baked here instead. */
+  .ds-command-dialog-content {
+    overflow: hidden;
+  }
+
   .ds-command {
     display: flex;
     height: 100%;

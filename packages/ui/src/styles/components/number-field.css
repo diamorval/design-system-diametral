@@ -28,9 +28,17 @@
     opacity: 0.5;
   }
   .dark .ds-number-field-group:has([aria-invalid="true"]) {
-    border-bottom-color: color-mix(in oklab, var(--destructive) 50%, transparent);
+    border-bottom-color: color-mix(
+      in oklab,
+      var(--destructive) 50%,
+      transparent
+    );
   }
 
+  /* px-2 and text-center stay literal Tailwind utilities on NumberFieldInput's
+     own className (see number-field.tsx) — number-field/with-scrub.tsx
+     overrides both (ps-0 text-start), relying on tailwind-merge to dedupe
+     against these exact literal classes. */
   .ds-number-field-input {
     height: 100%;
     min-width: 0;

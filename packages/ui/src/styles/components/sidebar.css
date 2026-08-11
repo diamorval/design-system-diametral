@@ -7,6 +7,27 @@
     background-color: var(--sidebar);
   }
 
+  /* w-(--sidebar-width), bg-sidebar and text-sidebar-foreground stay literal
+     Tailwind utilities on the mobile SheetContent (see sidebar.tsx) — they
+     dedupe via tailwind-merge against SheetContent's own literal
+     bg-popover/text-popover-foreground/data-[side]:w-3/4 defaults (see
+     sheet.css's note), which only works while both sides remain literal
+     classes. p-0 and the [&>button]:hidden arbitrary variant have no such
+     counterpart on SheetContent's defaults, so both are baked here instead. */
+  .ds-sidebar-sheet-content {
+    padding: 0;
+  }
+  .ds-sidebar-sheet-content > button {
+    display: none;
+  }
+
+  .ds-sidebar-sheet-inner {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    flex-direction: column;
+  }
+
   /* `w-(--sidebar-width)` stays a literal Tailwind utility on the component
      itself (see sidebar.tsx) — the basic/nested/shell demos and the
      playground all override it (w-52/w-56/w-60), relying on tailwind-merge
@@ -624,5 +645,15 @@
   .ds-sidebar-menu-sub-button > svg:not([class*="size-"]) {
     width: 0.875rem;
     height: 0.875rem;
+  }
+
+  /* w-auto and bg-sidebar-border stay literal Tailwind utilities on
+     SidebarSeparator (see sidebar.tsx) — they dedupe via tailwind-merge
+     against Separator's own literal bg-border/data-horizontal:w-full
+     defaults (see separator.css's note on Separator itself), which only
+     works while both sides remain literal classes. mx-2 has no such
+     counterpart on Separator's defaults, so it is baked here instead. */
+  .ds-sidebar-separator {
+    margin-inline: 0.5rem;
   }
 }

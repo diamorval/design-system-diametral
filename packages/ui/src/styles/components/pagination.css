@@ -1,4 +1,13 @@
 @layer utilities {
+  /* mx-auto, w-full and justify-center stay literal Tailwind utilities on
+     Pagination's own className (see pagination.tsx) — pagination/under-a-
+     table.tsx overrides all three (mx-0/w-auto/justify-end), relying on
+     tailwind-merge to dedupe against these exact literal classes. display
+     has no such conflict, so it is baked here instead. */
+  .ds-pagination {
+    display: flex;
+  }
+
   .ds-pagination-content {
     display: flex;
     align-items: center;

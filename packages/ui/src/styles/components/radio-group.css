@@ -1,4 +1,11 @@
 @layer utilities {
+  /* w-full and gap-3 stay literal Tailwind utilities on RadioGroup's own
+     className (see radio-group.tsx) — label/with-controls.tsx overrides
+     gap-3 with gap-2.5, and radio-group/inline.tsx overrides both (w-auto
+     grid-flow-col gap-6), relying on tailwind-merge to dedupe against these
+     exact literal classes. Nothing on this className is left to bake:
+     display is the only other property involved and already lives on
+     .ds-radio-group below. */
   .ds-radio-group {
     display: grid;
   }
@@ -31,14 +38,16 @@
   }
   .ds-radio-group-item[aria-invalid="true"] {
     border-color: var(--destructive);
-    box-shadow: 0 0 0 2px color-mix(in oklab, var(--destructive) 20%, transparent);
+    box-shadow: 0 0 0 2px
+      color-mix(in oklab, var(--destructive) 20%, transparent);
   }
   .ds-radio-group-item[aria-invalid="true"][aria-checked="true"] {
     border-color: var(--foreground);
   }
   .dark .ds-radio-group-item[aria-invalid="true"] {
     border-color: color-mix(in oklab, var(--destructive) 50%, transparent);
-    box-shadow: 0 0 0 2px color-mix(in oklab, var(--destructive) 40%, transparent);
+    box-shadow: 0 0 0 2px
+      color-mix(in oklab, var(--destructive) 40%, transparent);
   }
   .ds-radio-group-item[data-checked] {
     border-color: var(--foreground);
