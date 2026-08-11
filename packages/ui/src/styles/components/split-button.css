@@ -1,0 +1,12 @@
+@layer utilities {
+  .ds-split-button-caret {
+    padding-inline: 0.5rem !important;
+  }
+
+  .ds-split-button-caret-icon {
+    transition: rotate 200ms;
+  }
+  .ds-split-button-caret[aria-expanded="true"] .ds-split-button-caret-icon {
+    rotate: 180deg;
+  }
+}

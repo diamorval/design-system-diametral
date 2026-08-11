@@ -102,6 +102,12 @@
 @import "./components/toc.css";
 @import "./components/data-table.css";
 @import "./components/sidebar.css";
+@import "./components/carousel.css";
+@import "./components/date-range-picker.css";
+@import "./components/relative-time.css";
+@import "./components/split-button.css";
+@import "./components/aspect-ratio.css";
+@import "./components/qr-code.css";
 
 @custom-variant dark (&:is(.dark *));
 @source "../../../apps/**/*.{ts,tsx}";

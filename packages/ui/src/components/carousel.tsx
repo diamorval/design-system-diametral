@@ -120,7 +120,7 @@ function Carousel({
     >
       <div
         onKeyDownCapture={handleKeyDown}
-        className={cn("relative", className)}
+        className={cn("ds-carousel", className)}
         role="region"
         aria-roledescription="carousel"
         data-slot="carousel"
@@ -138,15 +138,12 @@ function CarouselContent({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       ref={carouselRef}
-      className="overflow-hidden"
+      className="ds-carousel-viewport"
       data-slot="carousel-content"
     >
       <div
-        className={cn(
-          "flex",
-          orientation === "horizontal" ? "-ms-4" : "-mt-4 flex-col",
-          className
-        )}
+        data-orientation={orientation}
+        className={cn("ds-carousel-content", className)}
         {...props}
       />
     </div>
@@ -161,11 +158,8 @@ function CarouselItem({ className, ...props }: React.ComponentProps<"div">) {
       role="group"
       aria-roledescription="slide"
       data-slot="carousel-item"
-      className={cn(
-        "min-w-0 shrink-0 grow-0 basis-full",
-        orientation === "horizontal" ? "ps-4" : "pt-4",
-        className
-      )}
+      data-orientation={orientation}
+      className={cn("ds-carousel-item basis-full", className)}
       {...props}
     />
   )
@@ -182,15 +176,10 @@ function CarouselPrevious({
   return (
     <Button
       data-slot="carousel-previous"
+      data-orientation={orientation}
       variant={variant}
       size={size}
-      className={cn(
-        "absolute touch-manipulation",
-        orientation === "horizontal"
-          ? "inset-y-0 -start-12 my-auto"
-          : "-top-12 start-1/2 -translate-x-1/2 rtl:translate-x-1/2 rotate-90",
-        className
-      )}
+      className={cn("ds-carousel-control", className)}
       disabled={!canScrollPrev}
       onClick={scrollPrev}
       {...props}
@@ -212,15 +201,10 @@ function CarouselNext({
   return (
     <Button
       data-slot="carousel-next"
+      data-orientation={orientation}
       variant={variant}
       size={size}
-      className={cn(
-        "absolute touch-manipulation",
-        orientation === "horizontal"
-          ? "inset-y-0 -end-12 my-auto"
-          : "-bottom-12 start-1/2 -translate-x-1/2 rtl:translate-x-1/2 rotate-90",
-        className
-      )}
+      className={cn("ds-carousel-control", className)}
       disabled={!canScrollNext}
       onClick={scrollNext}
       {...props}

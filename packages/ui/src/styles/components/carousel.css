@@ -1,0 +1,65 @@
+@layer utilities {
+  .ds-carousel {
+    position: relative;
+  }
+
+  .ds-carousel-viewport {
+    overflow: hidden;
+  }
+
+  .ds-carousel-content {
+    display: flex;
+  }
+  .ds-carousel-content[data-orientation="horizontal"] {
+    margin-inline-start: -1rem;
+  }
+  .ds-carousel-content[data-orientation="vertical"] {
+    flex-direction: column;
+    margin-top: -1rem;
+  }
+
+  .ds-carousel-item {
+    min-width: 0;
+    flex-shrink: 0;
+    flex-grow: 0;
+  }
+  .ds-carousel-item[data-orientation="horizontal"] {
+    padding-inline-start: 1rem;
+  }
+  .ds-carousel-item[data-orientation="vertical"] {
+    padding-top: 1rem;
+  }
+
+  .ds-carousel-control {
+    position: absolute;
+    touch-action: manipulation;
+  }
+  .ds-carousel-control[data-orientation="horizontal"] {
+    top: 0;
+    bottom: 0;
+    margin-block: auto;
+  }
+  .ds-carousel-control[data-orientation="vertical"] {
+    inset-inline-start: 50%;
+    translate: -50%;
+    rotate: 90deg;
+  }
+  :where(
+      [dir="rtl"],
+      [dir="rtl"] *
+    ).ds-carousel-control[data-orientation="vertical"] {
+    translate: 50%;
+  }
+  .ds-carousel-control[data-slot="carousel-previous"][data-orientation="horizontal"] {
+    inset-inline-start: -3rem;
+  }
+  .ds-carousel-control[data-slot="carousel-next"][data-orientation="horizontal"] {
+    inset-inline-end: -3rem;
+  }
+  .ds-carousel-control[data-slot="carousel-previous"][data-orientation="vertical"] {
+    top: -3rem;
+  }
+  .ds-carousel-control[data-slot="carousel-next"][data-orientation="vertical"] {
+    bottom: -3rem;
+  }
+}

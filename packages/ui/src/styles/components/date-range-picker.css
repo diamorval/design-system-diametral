@@ -1,0 +1,41 @@
+@layer utilities {
+  .ds-date-range-picker-trigger {
+    justify-content: space-between !important;
+    font-weight: 400 !important;
+    letter-spacing: normal !important;
+    text-transform: none !important;
+  }
+
+  .ds-date-range-picker-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .ds-date-range-picker-label--placeholder {
+    color: var(--muted-foreground);
+  }
+
+  .ds-date-range-picker-trigger-icon {
+    pointer-events: none;
+    color: var(--muted-foreground);
+  }
+
+  .ds-date-range-picker-content {
+    width: auto;
+    gap: 0;
+    padding: 0;
+  }
+
+  .ds-date-range-picker-times-separator {
+    color: var(--muted-foreground);
+  }
+
+  .ds-date-range-picker-times {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    border-top: 1px solid var(--border);
+    padding: 0.75rem;
+  }
+}
