@@ -78,7 +78,7 @@ function ThemeSwitcher({
               variant="outline"
               size="sm"
               aria-label="Theme"
-              className={cn("gap-1.5 px-2.5", className)}
+              className={cn("ds-theme-switcher-dropdown-trigger", className)}
               {...props}
             />
           }
@@ -111,10 +111,9 @@ function ThemeSwitcher({
       data-variant="segmented"
       variant="outline"
       size="sm"
-      // gap-0 joins the three cells into one control; -ms-px then collapses
-      // the doubled seam where two 1px borders meet. relative anchors the
-      // sliding indicator.
-      className={cn("relative gap-0", className)}
+      // Joins the three cells into one control and anchors the sliding
+      // indicator — see ds-theme-switcher in theme-switcher.css.
+      className={cn("ds-theme-switcher", className)}
       value={[value]}
       onValueChange={(next) => {
         // Base UI unpresses an already-pressed item, which would leave the
@@ -131,7 +130,7 @@ function ThemeSwitcher({
       <span
         aria-hidden="true"
         style={{ "--index": index } as React.CSSProperties}
-        className="absolute inset-y-0 start-0 w-9 translate-x-[calc(var(--index)*(--spacing(9)-1px))] bg-muted transition-transform duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none rtl:-translate-x-[calc(var(--index)*(--spacing(9)-1px))]"
+        className="ds-theme-switcher-indicator"
       />
       {MODES.map(({ value: mode, label, Icon }) => (
         <ToggleGroupItem
@@ -143,7 +142,7 @@ function ThemeSwitcher({
           // bg-muted is switched off — otherwise the fill would appear on the
           // target cell before the indicator arrives. relative keeps the cell
           // painting above the positioned indicator (DOM order decides).
-          className="relative -ms-px w-9 px-0 text-muted-foreground first:ms-0 aria-pressed:bg-transparent data-[state=on]:bg-transparent"
+          className="ds-theme-switcher-item"
         >
           <Icon weight={mode === value ? "fill" : "regular"} />
         </ToggleGroupItem>

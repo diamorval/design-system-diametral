@@ -53,10 +53,8 @@ function SpeedDial({
           >
             {/* Both glyphs render and CSS picks one: `aria-expanded` lands on
                 the trigger, so the swap needs no open state of its own. */}
-            <span className="contents group-aria-expanded/button:hidden">
-              {icon}
-            </span>
-            <XIcon className="hidden group-aria-expanded/button:block" />
+            <span className="ds-speed-dial-icon">{icon}</span>
+            <XIcon className="ds-speed-dial-icon-close" />
           </Button>
         }
       />
@@ -69,7 +67,7 @@ function SpeedDial({
         >
           <MenuPrimitive.Popup
             data-slot="speed-dial-actions"
-            className="flex flex-col items-end gap-2 rounded-none bg-transparent outline-none data-[side=bottom]:slide-in-from-top-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0"
+            className="ds-speed-dial-actions"
           >
             {children}
           </MenuPrimitive.Popup>
@@ -94,17 +92,12 @@ function SpeedDialAction({
   return (
     <MenuPrimitive.Item
       data-slot="speed-dial-action"
-      className={cn(
-        "group/speed-dial-action flex cursor-default items-center gap-2 rounded-none outline-none data-disabled:pointer-events-none data-disabled:opacity-50",
-        className
-      )}
+      className={cn("ds-speed-dial-action", className)}
       {...props}
     >
       {/* The plate is the quiet half and the box the loud one, so the column
           reads as buttons under the trigger rather than as a stack of chips. */}
-      <span className="border border-border bg-background px-3 py-1.5 text-xs font-semibold tracking-widest text-foreground uppercase">
-        {children}
-      </span>
+      <span className="ds-speed-dial-action-label">{children}</span>
       {/* Styled by `buttonVariants` rather than hand-picked tokens, so the box
           sits on the same fill scale as the trigger — a raw `bg-foreground`
           reads louder than any button in the system once dark mode inverts it.
@@ -112,8 +105,7 @@ function SpeedDialAction({
       <span
         className={buttonVariants({
           size: "icon-lg",
-          className:
-            "group-focus/speed-dial-action:border-ring group-focus/speed-dial-action:bg-[color-mix(in_oklch,var(--btn),var(--btn-fg)_14%)] group-focus/speed-dial-action:ring-2 group-focus/speed-dial-action:ring-ring/30",
+          className: "ds-speed-dial-action-icon",
         })}
       >
         {icon}
