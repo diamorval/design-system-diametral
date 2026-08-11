@@ -65,17 +65,14 @@ function TagsInput({
           inputRef.current?.focus()
         }
       }}
-      className={cn(
-        "flex min-h-10 w-full flex-wrap items-center gap-1.5 rounded-none border border-transparent border-b-input bg-transparent px-0 py-1.5 text-sm transition-[color,border-color] focus-within:border-b-ring data-disabled:pointer-events-none data-disabled:cursor-not-allowed data-disabled:opacity-50",
-        className
-      )}
+      className={cn("ds-tags-input", className)}
       {...props}
     >
       {tags.map((tag, index) => (
         <span
           key={`${tag}-${index}`}
           data-slot="tags-input-tag"
-          className="flex h-[calc(--spacing(5.5))] w-fit items-center justify-center gap-1 rounded-none bg-muted px-2 text-xs font-medium whitespace-nowrap text-foreground"
+          className="ds-tags-input-tag"
         >
           {tag}
           <Button
@@ -86,7 +83,7 @@ function TagsInput({
             disabled={disabled}
             aria-label={`Remove ${tag}`}
             onClick={() => removeTag(index)}
-            className="-me-1 size-4 opacity-50 hover:opacity-100"
+            className="ds-tags-input-tag-remove"
           >
             <XIcon className="pointer-events-none" />
           </Button>
@@ -112,7 +109,7 @@ function TagsInput({
           }
         }}
         onBlur={() => addTag(draft)}
-        className="min-w-16 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed"
+        className="ds-tags-input-field"
       />
     </div>
   )

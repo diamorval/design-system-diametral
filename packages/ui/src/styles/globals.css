@@ -65,6 +65,7 @@
 @import "./components/checkbox-group.css";
 @import "./components/select.css";
 @import "./components/slider.css";
+@import "./components/tags-input.css";
 
 @custom-variant dark (&:is(.dark *));
 @source "../../../apps/**/*.{ts,tsx}";
