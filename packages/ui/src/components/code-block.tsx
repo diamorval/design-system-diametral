@@ -9,11 +9,11 @@ import { cn } from "../lib/utils.js"
 // --ds-black, and are the same hues the docs app's dark shiki theme lands on, so
 // a `code` block and an `html` block sit side by side without clashing.
 const TOKEN_COLOR = {
-  comment: "text-[var(--ds-grey-brand)]",
-  string: "text-[var(--ds-green-brand)]",
-  keyword: "text-[var(--ds-orange)]",
-  number: "text-[var(--ds-yellow-vivid)]",
-  type: "text-[var(--ds-blue)]",
+  comment: "ds-code-block-token-comment",
+  string: "ds-code-block-token-string",
+  keyword: "ds-code-block-token-keyword",
+  number: "ds-code-block-token-number",
+  type: "ds-code-block-token-type",
 } as const
 
 const KEYWORDS =

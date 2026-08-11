@@ -1,4 +1,8 @@
 @layer utilities {
+  /* w-full stays a literal Tailwind utility on the root's own className
+     (see number-field.tsx) — number-field/quantity.tsx overrides it with
+     w-28, relying on tailwind-merge to dedupe against this exact literal
+     class. */
   .ds-number-field {
     display: flex;
     flex-direction: column;

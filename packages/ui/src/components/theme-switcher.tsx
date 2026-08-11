@@ -84,7 +84,10 @@ function ThemeSwitcher({
           }
         >
           <current.Icon weight="fill" />
-          <CaretDownIcon aria-hidden className="size-3 text-muted-foreground" />
+          <CaretDownIcon
+            aria-hidden
+            className="ds-theme-switcher-dropdown-icon"
+          />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="min-w-36">
           <DropdownMenuRadioGroup

@@ -5,6 +5,10 @@
     flex-direction: column;
   }
 
+  /* pb-8 and last:pb-0 stay literal Tailwind utilities on the item's own
+     className (see timeline.tsx) — timeline/in-panel.tsx overrides pb-8
+     with pb-4, relying on tailwind-merge to dedupe against this exact
+     literal class. */
   .ds-timeline-item {
     position: relative;
     display: flex;

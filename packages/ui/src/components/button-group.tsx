@@ -63,7 +63,11 @@ function ButtonGroupSeparator({
       data-slot="button-group-separator"
       orientation={orientation}
       className={cn(
-        "relative self-stretch bg-input data-horizontal:w-auto data-vertical:h-auto",
+        // bg-input/data-horizontal:w-auto/data-vertical:h-auto stay literal
+        // Tailwind utilities (see separator.css's note on Separator itself)
+        // — they dedupe via tailwind-merge against Separator's own literal
+        // bg-border/data-horizontal:w-full/data-vertical:w-px defaults.
+        "ds-button-group-separator bg-input data-horizontal:w-auto data-vertical:h-auto",
         className
       )}
       {...props}

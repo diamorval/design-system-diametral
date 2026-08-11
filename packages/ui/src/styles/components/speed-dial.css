@@ -6,6 +6,12 @@
      dedupe against the component's own defaults. Nothing else lives on that
      className, so there is no ds-* class for the trigger itself. */
 
+  .ds-speed-dial-positioner {
+    isolation: isolate;
+    z-index: 50;
+    outline: none;
+  }
+
   .ds-speed-dial-icon {
     display: contents;
   }

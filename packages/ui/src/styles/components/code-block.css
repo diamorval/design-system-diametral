@@ -65,4 +65,23 @@
     width: 0.875rem;
     height: 0.875rem;
   }
+
+  /* Syntax-highlighting token colours (see the TOKEN_COLOR map in
+     code-block.tsx) — plain classes rather than arbitrary text-[var(...)]
+     utilities, since the class name is picked at runtime per regex match. */
+  .ds-code-block-token-comment {
+    color: var(--ds-grey-brand);
+  }
+  .ds-code-block-token-string {
+    color: var(--ds-green-brand);
+  }
+  .ds-code-block-token-keyword {
+    color: var(--ds-orange);
+  }
+  .ds-code-block-token-number {
+    color: var(--ds-yellow-vivid);
+  }
+  .ds-code-block-token-type {
+    color: var(--ds-blue);
+  }
 }

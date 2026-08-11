@@ -1,4 +1,7 @@
 @layer utilities {
+  /* w-56 stays a literal Tailwind utility on the trigger's own className
+     (see date-picker.tsx) — date-picker/range.tsx overrides it with w-72,
+     relying on tailwind-merge to dedupe against this exact literal class. */
   .ds-date-picker-trigger {
     justify-content: space-between !important;
     font-weight: 400 !important;

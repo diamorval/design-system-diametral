@@ -4,6 +4,12 @@
     padding-inline: 0.625rem;
   }
 
+  .ds-theme-switcher-dropdown-icon {
+    width: 0.75rem;
+    height: 0.75rem;
+    color: var(--muted-foreground);
+  }
+
   .ds-theme-switcher {
     position: relative;
     gap: 0;

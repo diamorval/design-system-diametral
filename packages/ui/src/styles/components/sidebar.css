@@ -215,6 +215,17 @@
     inset-inline-start: -0.5rem;
   }
 
+  .ds-sidebar-trigger-icon {
+    rotate: 0deg;
+  }
+  :where([dir="rtl"], [dir="rtl"] *) .ds-sidebar-trigger-icon {
+    rotate: 180deg;
+  }
+
+  .ds-sidebar-input {
+    height: 2.25rem;
+  }
+
   .ds-sidebar-inset {
     position: relative;
     display: flex;

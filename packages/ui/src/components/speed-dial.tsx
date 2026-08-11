@@ -60,7 +60,7 @@ function SpeedDial({
       />
       <MenuPrimitive.Portal>
         <MenuPrimitive.Positioner
-          className="isolate z-50 outline-none"
+          className="ds-speed-dial-positioner"
           side={side}
           align="end"
           sideOffset={sideOffset}

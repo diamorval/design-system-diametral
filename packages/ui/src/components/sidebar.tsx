@@ -253,7 +253,7 @@ function SidebarTrigger({
       }}
       {...props}
     >
-      <SidebarIcon className="rtl:rotate-180" />
+      <SidebarIcon className="ds-sidebar-trigger-icon" />
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   )
@@ -291,7 +291,7 @@ function SidebarInput({ className, ...props }: React.ComponentProps<"input">) {
     <InputGroup
       data-slot="sidebar-input"
       data-sidebar="input"
-      className={cn("h-9", className)}
+      className={cn("ds-sidebar-input", className)}
     >
       <InputGroupAddon>
         <MagnifyingGlassIcon />
