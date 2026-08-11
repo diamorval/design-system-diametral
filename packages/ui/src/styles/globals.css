@@ -62,6 +62,7 @@
 @import "./components/form.css";
 @import "./components/radio-group.css";
 @import "./components/checkbox.css";
+@import "./components/checkbox-group.css";
 @import "./components/select.css";
 @import "./components/slider.css";
 

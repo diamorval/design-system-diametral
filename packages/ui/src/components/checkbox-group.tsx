@@ -11,10 +11,7 @@ function CheckboxGroup({
   return (
     <CheckboxGroupPrimitive
       data-slot="checkbox-group"
-      className={cn(
-        "flex flex-col gap-3 data-disabled:pointer-events-none data-disabled:opacity-50",
-        className
-      )}
+      className={cn("flex flex-col gap-3 ds-checkbox-group", className)}
       {...props}
     />
   )

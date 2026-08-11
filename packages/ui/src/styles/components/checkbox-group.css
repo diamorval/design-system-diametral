@@ -1,0 +1,6 @@
+@layer utilities {
+  .ds-checkbox-group[data-disabled] {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+}
