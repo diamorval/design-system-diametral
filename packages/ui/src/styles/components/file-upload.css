@@ -1,4 +1,11 @@
 @layer utilities {
+  /* flex-col, justify-center, gap-2, px-6, py-10, and text-center all stay
+     literal Tailwind utilities on FileUpload's own default className (see
+     file-upload.tsx) — file-upload/compact.tsx overrides every one of them
+     (flex-row items-center justify-start gap-3 px-4 py-3 text-start),
+     relying on tailwind-merge to dedupe against this component's own
+     defaults, which only works while they remain literal classes rather
+     than baked CSS. */
   .ds-file-upload {
     display: flex;
     width: 100%;

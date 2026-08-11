@@ -14,7 +14,7 @@ function Tabs({
     <TabsPrimitive.Root
       data-slot="tabs"
       data-orientation={orientation}
-      className={cn("ds-tabs gap-2", className)}
+      className={cn("ds-tabs", className)}
       {...props}
     />
   )

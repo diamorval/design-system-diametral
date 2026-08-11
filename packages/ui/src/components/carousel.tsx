@@ -184,7 +184,7 @@ function CarouselPrevious({
       onClick={scrollPrev}
       {...props}
     >
-      <CaretLeftIcon className="rtl:rotate-180" />
+      <CaretLeftIcon className="ds-carousel-control-icon" />
       <span className="sr-only">Previous slide</span>
     </Button>
   )
@@ -209,7 +209,7 @@ function CarouselNext({
       onClick={scrollNext}
       {...props}
     >
-      <CaretRightIcon className="rtl:rotate-180" />
+      <CaretRightIcon className="ds-carousel-control-icon" />
       <span className="sr-only">Next slide</span>
     </Button>
   )

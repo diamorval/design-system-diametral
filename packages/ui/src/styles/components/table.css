@@ -47,6 +47,11 @@
     background-color: var(--muted);
   }
 
+  /* text-start stays a literal Tailwind utility on TableHead's own default
+     className (see table.tsx) — several table demos override it with
+     text-end/text-right, relying on tailwind-merge to dedupe against this
+     component's own default, which only works while text-start remains a
+     literal class rather than baked CSS. */
   .ds-table-head {
     height: 3rem;
     padding-inline: 0.75rem;

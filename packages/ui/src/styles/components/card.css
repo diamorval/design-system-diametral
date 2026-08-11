@@ -46,6 +46,11 @@
     padding-bottom: var(--card-spacing);
   }
 
+  /* text-lg stays a literal Tailwind utility on CardTitle's own default
+     className (see card.tsx) — card/stat.tsx overrides it with text-3xl,
+     relying on tailwind-merge to dedupe against this component's own
+     default, which only works while text-lg remains a literal class rather
+     than baked CSS. */
   .ds-card-title {
     font-family: var(--font-heading);
     font-weight: 600;

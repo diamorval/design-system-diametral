@@ -1,6 +1,7 @@
 @layer utilities {
   .ds-tabs {
     display: flex;
+    gap: 0.5rem;
   }
   .ds-tabs[data-orientation="horizontal"] {
     flex-direction: column;
@@ -146,3 +147,9 @@
     outline: none;
   }
 }
+
+/* text-sm stays a literal Tailwind utility on TabsContent's own default
+   className (see tabs.tsx) — tabs/in-card.tsx overrides it with font-mono
+   text-xs, relying on tailwind-merge to dedupe against this component's own
+   default, which only works while text-sm remains a literal class rather
+   than baked CSS. */
