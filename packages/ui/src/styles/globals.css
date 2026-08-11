@@ -73,6 +73,7 @@
 @import "./components/sheet.css";
 @import "./components/context-menu.css";
 @import "./components/dropdown-menu.css";
+@import "./components/menubar.css";
 
 @custom-variant dark (&:is(.dark *));
 @source "../../../apps/**/*.{ts,tsx}";
