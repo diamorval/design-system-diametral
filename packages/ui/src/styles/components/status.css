@@ -1,0 +1,59 @@
+@layer utilities {
+  .ds-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+  }
+
+  .ds-status--success {
+    --tone: var(--ds-success-ink);
+  }
+  .ds-status--warning {
+    --tone: var(--ds-warning-ink);
+  }
+  .ds-status--danger {
+    --tone: var(--ds-danger-ink);
+  }
+  .ds-status--critical {
+    --tone: var(--ds-critical-ink);
+  }
+  .ds-status--neutral {
+    --tone: var(--ds-neutral-ink);
+  }
+  .ds-status--info {
+    --tone: var(--ds-info-ink);
+  }
+
+  .ds-status-indicator {
+    position: relative;
+    display: inline-flex;
+    flex-shrink: 0;
+    width: 0.375rem;
+    height: 0.375rem;
+    background-color: var(--tone);
+  }
+
+  .ds-status-indicator-ping {
+    position: absolute;
+    inset: 0;
+    background-color: var(--tone);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .ds-status-indicator-ping {
+      animation: ds-status-ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+    }
+  }
+  @keyframes ds-status-ping {
+    75%,
+    100% {
+      transform: scale(2);
+      opacity: 0;
+    }
+  }
+
+  .ds-status-label {
+    font-size: 0.875rem;
+    line-height: calc(1.25 / 0.875);
+    color: var(--tone);
+  }
+}
