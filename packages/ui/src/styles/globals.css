@@ -56,6 +56,9 @@
 @import "./components/treemap.css";
 @import "./components/waterfall-chart.css";
 @import "./components/stacked-bar.css";
+@import "./components/gauge.css";
+@import "./components/heatmap.css";
+@import "./components/bullet-chart.css";
 @import "./components/kanban.css";
 @import "./components/timeline.css";
 @import "./components/tree.css";
@@ -90,6 +93,13 @@
 @import "./components/snippet.css";
 @import "./components/resizable.css";
 @import "./components/scroll-area.css";
+@import "./components/navigation-menu.css";
+@import "./components/speed-dial.css";
+@import "./components/theme-switcher.css";
+@import "./components/item.css";
+@import "./components/calendar.css";
+@import "./components/date-time-picker.css";
+@import "./components/toc.css";
 
 @custom-variant dark (&:is(.dark *));
 @source "../../../apps/**/*.{ts,tsx}";

@@ -1,0 +1,29 @@
+@layer utilities {
+  .ds-gauge {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .ds-gauge-svg {
+    overflow: visible;
+  }
+
+  .ds-gauge-track {
+    stroke: var(--border);
+  }
+
+  .ds-gauge-value {
+    fill: var(--foreground);
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ds-gauge-label {
+    fill: var(--muted-foreground);
+    font-size: 0.625rem;
+    letter-spacing: 0.025em;
+    text-transform: uppercase;
+  }
+}
