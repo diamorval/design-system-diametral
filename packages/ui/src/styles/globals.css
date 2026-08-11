@@ -66,6 +66,7 @@
 @import "./components/select.css";
 @import "./components/slider.css";
 @import "./components/tags-input.css";
+@import "./components/command.css";
 @import "./components/dialog.css";
 @import "./components/alert-dialog.css";
 @import "./components/sheet.css";
