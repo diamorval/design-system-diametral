@@ -70,6 +70,7 @@
 @import "./components/dialog.css";
 @import "./components/alert-dialog.css";
 @import "./components/sheet.css";
+@import "./components/context-menu.css";
 
 @custom-variant dark (&:is(.dark *));
 @source "../../../apps/**/*.{ts,tsx}";
