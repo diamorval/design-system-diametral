@@ -250,4 +250,4 @@ Substrate deps (`@base-ui/react`, `@phosphor-icons/react`, `class-variance-autho
 
 - Target export symbols: every `export const|function` in `react/index.js` and `react/components/*.js` — 93, matching #152.
 - **Behaviour-bearing vs class-applier** is mechanical: a symbol is behaviour-bearing if its body contains `useState`, `useEffect`, `useRef`, `onKeyDown`, `addEventListener` or `createPortal`. That gives **32** (#156 counted 31; the extra is `ConsoleLayout`, target-only) and **61** appliers, of which 42 are cited by an inventory row.
-- Verdicts follow #156s rules in order: withdrawn alias or no counterpart → rule 7; counterpart is a class-applier → source wins; counterpart is behaviour-bearing → contest, resolved by tests (a)/(a-bis)/(b) with #164s and this tickets overrides applied.
+- Verdicts follow #156's rules in order: withdrawn alias or no counterpart → rule 7; counterpart is a class-applier → source wins; counterpart is behaviour-bearing → contest, resolved by tests (a)/(a-bis)/(b) with #164's and this ticket's overrides applied.
