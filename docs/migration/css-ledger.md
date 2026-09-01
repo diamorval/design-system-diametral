@@ -253,6 +253,8 @@ All 111 source stylesheets are wrapped in `@layer utilities` (222 markers). Ever
 
 **82 source CSS files.** (83 by #166's verdicts, minus `stat-card` per §6.1.) This is the one item that scales, and it is CI-enforceable per #157's C-series.
 
+**Amended 2026-09-01 (#171, via #174).** 82 is the *landing subset*; it is not the scope of the work. The strip is applied to **all 111 files at once, upstream** — on `migration-source-stripped`, tagged `migration-source-v1`, which every batch reads. Stripping the 29 files that never land costs nothing and removes a per-file judgement call from every batch. The 222 markers are 113 real blocks in 111 files (`label.css` carries a genuine second `@layer components` block; `separator.css`'s second match is inside a comment), so the transform must key on the `@layer` line rather than line 1 — `label.css`, `textarea.css` and `kbd.css` open with a preamble comment. The CI check survives in batch 0.1 as an invariant guard, not as an enforcement mechanism.
+
 ### 5.2 `z-index: 50` remap — 18 rules, not 28
 
 The 28 hard-coded rules sit in 15 source files. **Ten of them are on stylesheets that are never imported**, because their target component holds:
