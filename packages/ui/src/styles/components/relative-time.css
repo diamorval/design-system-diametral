@@ -1,5 +1,3 @@
-@layer utilities {
-  .ds-relative-time {
-    font-variant-numeric: tabular-nums;
-  }
+.ds-relative-time {
+  font-variant-numeric: tabular-nums;
 }

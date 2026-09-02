@@ -1,71 +1,69 @@
-@layer utilities {
-  .ds-toggle-group {
-    display: flex;
-    width: fit-content;
-    flex-direction: row;
-    align-items: center;
-    gap: calc(0.25rem * var(--gap));
-  }
-  .ds-toggle-group[data-spacing="0"][data-variant="outline"] {
-    border-radius: 0;
-  }
-  .ds-toggle-group[data-orientation="vertical"] {
-    flex-direction: column;
-    align-items: stretch;
-  }
+.ds-toggle-group {
+  display: flex;
+  width: fit-content;
+  flex-direction: row;
+  align-items: center;
+  gap: calc(0.25rem * var(--gap));
+}
+.ds-toggle-group[data-spacing="0"][data-variant="outline"] {
+  border-radius: 0;
+}
+.ds-toggle-group[data-orientation="vertical"] {
+  flex-direction: column;
+  align-items: stretch;
+}
 
-  .ds-toggle-group-item {
-    flex-shrink: 0;
-  }
-  :where(.ds-toggle-group[data-spacing="0"]) .ds-toggle-group-item {
-    border-radius: 0;
-    padding-inline: 1.5rem;
-    box-shadow: none;
-  }
-  :where(.ds-toggle-group[data-spacing="0"])
-    .ds-toggle-group-item:has([data-icon="inline-end"]) {
-    padding-inline-end: 1rem;
-  }
-  :where(.ds-toggle-group[data-spacing="0"])
-    .ds-toggle-group-item:has([data-icon="inline-start"]) {
-    padding-inline-start: 1rem;
-  }
-  .ds-toggle-group-item:focus,
-  .ds-toggle-group-item:focus-visible {
-    z-index: 10;
-  }
-  :where(.ds-toggle-group[data-orientation="horizontal"][data-spacing="0"])
-    .ds-toggle-group-item:first-child,
-  :where(.ds-toggle-group[data-orientation="vertical"][data-spacing="0"])
-    .ds-toggle-group-item:first-child,
-  :where(.ds-toggle-group[data-orientation="horizontal"][data-spacing="0"])
-    .ds-toggle-group-item:last-child,
-  :where(.ds-toggle-group[data-orientation="vertical"][data-spacing="0"])
-    .ds-toggle-group-item:last-child {
-    border-radius: 0;
-  }
-  .ds-toggle-group-item[data-state="on"] {
-    background-color: var(--muted);
-    color: var(--foreground);
-  }
-  :where(
-      .ds-toggle-group[data-orientation="horizontal"][data-spacing="0"]
-    )
-    .ds-toggle-group-item[data-variant="outline"] {
-    border-inline-start-width: 0;
-  }
-  :where(.ds-toggle-group[data-orientation="vertical"][data-spacing="0"])
-    .ds-toggle-group-item[data-variant="outline"] {
-    border-top-width: 0;
-  }
-  :where(
-      .ds-toggle-group[data-orientation="horizontal"][data-spacing="0"]
-    )
-    .ds-toggle-group-item[data-variant="outline"]:first-child {
-    border-inline-start-width: 1px;
-  }
-  :where(.ds-toggle-group[data-orientation="vertical"][data-spacing="0"])
-    .ds-toggle-group-item[data-variant="outline"]:first-child {
-    border-top-width: 1px;
-  }
+.ds-toggle-group-item {
+  flex-shrink: 0;
+}
+:where(.ds-toggle-group[data-spacing="0"]) .ds-toggle-group-item {
+  border-radius: 0;
+  padding-inline: 1.5rem;
+  box-shadow: none;
+}
+:where(.ds-toggle-group[data-spacing="0"])
+  .ds-toggle-group-item:has([data-icon="inline-end"]) {
+  padding-inline-end: 1rem;
+}
+:where(.ds-toggle-group[data-spacing="0"])
+  .ds-toggle-group-item:has([data-icon="inline-start"]) {
+  padding-inline-start: 1rem;
+}
+.ds-toggle-group-item:focus,
+.ds-toggle-group-item:focus-visible {
+  z-index: 10;
+}
+:where(.ds-toggle-group[data-orientation="horizontal"][data-spacing="0"])
+  .ds-toggle-group-item:first-child,
+:where(.ds-toggle-group[data-orientation="vertical"][data-spacing="0"])
+  .ds-toggle-group-item:first-child,
+:where(.ds-toggle-group[data-orientation="horizontal"][data-spacing="0"])
+  .ds-toggle-group-item:last-child,
+:where(.ds-toggle-group[data-orientation="vertical"][data-spacing="0"])
+  .ds-toggle-group-item:last-child {
+  border-radius: 0;
+}
+.ds-toggle-group-item[data-state="on"] {
+  background-color: var(--muted);
+  color: var(--foreground);
+}
+:where(
+    .ds-toggle-group[data-orientation="horizontal"][data-spacing="0"]
+  )
+  .ds-toggle-group-item[data-variant="outline"] {
+  border-inline-start-width: 0;
+}
+:where(.ds-toggle-group[data-orientation="vertical"][data-spacing="0"])
+  .ds-toggle-group-item[data-variant="outline"] {
+  border-top-width: 0;
+}
+:where(
+    .ds-toggle-group[data-orientation="horizontal"][data-spacing="0"]
+  )
+  .ds-toggle-group-item[data-variant="outline"]:first-child {
+  border-inline-start-width: 1px;
+}
+:where(.ds-toggle-group[data-orientation="vertical"][data-spacing="0"])
+  .ds-toggle-group-item[data-variant="outline"]:first-child {
+  border-top-width: 1px;
 }

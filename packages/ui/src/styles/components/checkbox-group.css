@@ -1,14 +1,12 @@
-@layer utilities {
-  /* flex-col and gap-3 stay literal Tailwind utilities on CheckboxGroup's own
-     className (see checkbox-group.tsx) — checkbox-group/filters.tsx overrides
-     both (flex-row flex-wrap gap-x-6), relying on tailwind-merge to dedupe
-     against these exact literal classes. display has no such conflict, so
-     it is baked here instead. */
-  .ds-checkbox-group {
-    display: flex;
-  }
-  .ds-checkbox-group[data-disabled] {
-    pointer-events: none;
-    opacity: 0.5;
-  }
+/* flex-col and gap-3 stay literal Tailwind utilities on CheckboxGroup's own
+   className (see checkbox-group.tsx) — checkbox-group/filters.tsx overrides
+   both (flex-row flex-wrap gap-x-6), relying on tailwind-merge to dedupe
+   against these exact literal classes. display has no such conflict, so
+   it is baked here instead. */
+.ds-checkbox-group {
+  display: flex;
+}
+.ds-checkbox-group[data-disabled] {
+  pointer-events: none;
+  opacity: 0.5;
 }

@@ -1,30 +1,28 @@
-@layer utilities {
-  .ds-phone-input {
-    display: flex;
-    height: 2.5rem;
-    width: 100%;
-    align-items: stretch;
-    border: 1px solid transparent;
-    border-bottom-color: var(--input);
-    background-color: transparent;
-    transition-property: color, border-color;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 150ms;
-  }
-  .ds-phone-input:focus-within {
-    border-bottom-color: var(--ring);
-  }
-  .ds-phone-input[data-disabled] {
-    pointer-events: none;
-    opacity: 0.5;
-  }
-
-  /* The internal SelectTrigger's "w-fit shrink-0 border-0 ps-0 pe-2" and
-     Input's "flex-1 border-0 ps-2" (see phone-input.tsx) stay literal
-     Tailwind utilities — select.css and input.css both document that
-     SelectTrigger's own "w-fit border px-0" and Input's own "border
-     border-transparent border-b-input px-0" defaults are themselves kept
-     literal specifically so phone-input.tsx's overrides dedupe against them
-     via tailwind-merge. Baking either side into a plain class would leave
-     both the old and new declarations applied at once. */
+.ds-phone-input {
+  display: flex;
+  height: 2.5rem;
+  width: 100%;
+  align-items: stretch;
+  border: 1px solid transparent;
+  border-bottom-color: var(--input);
+  background-color: transparent;
+  transition-property: color, border-color;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
 }
+.ds-phone-input:focus-within {
+  border-bottom-color: var(--ring);
+}
+.ds-phone-input[data-disabled] {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* The internal SelectTrigger's "w-fit shrink-0 border-0 ps-0 pe-2" and
+   Input's "flex-1 border-0 ps-2" (see phone-input.tsx) stay literal
+   Tailwind utilities — select.css and input.css both document that
+   SelectTrigger's own "w-fit border px-0" and Input's own "border
+   border-transparent border-b-input px-0" defaults are themselves kept
+   literal specifically so phone-input.tsx's overrides dedupe against them
+   via tailwind-merge. Baking either side into a plain class would leave
+   both the old and new declarations applied at once. */

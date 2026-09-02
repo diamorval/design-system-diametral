@@ -1,67 +1,65 @@
-@layer utilities {
-  .ds-agenda {
-    width: 100%;
-  }
-  .ds-agenda-list {
-    display: flex;
-    flex-direction: column;
-  }
+.ds-agenda {
+  width: 100%;
+}
+.ds-agenda-list {
+  display: flex;
+  flex-direction: column;
+}
 
-  .ds-agenda-day {
-    display: flex;
-    align-items: baseline;
-    gap: 0.5rem;
-    border-bottom: 1px solid var(--border);
-    padding-block: 0.5rem;
-    font-size: 0.6875rem;
-    letter-spacing: 0.05em;
-    color: var(--muted-foreground);
-    text-transform: uppercase;
-  }
-  .ds-agenda-day-weekday {
-    font-weight: 600;
-    color: var(--foreground);
-  }
+.ds-agenda-day {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--border);
+  padding-block: 0.5rem;
+  font-size: 0.6875rem;
+  letter-spacing: 0.05em;
+  color: var(--muted-foreground);
+  text-transform: uppercase;
+}
+.ds-agenda-day-weekday {
+  font-weight: 600;
+  color: var(--foreground);
+}
 
-  .ds-agenda-event {
-    display: flex;
-    align-items: baseline;
-    gap: 0.75rem;
-    border-bottom: 1px solid var(--border);
-    padding-block: 0.75rem;
-  }
-  .ds-agenda-event:last-child {
-    border-bottom: none;
-  }
+.ds-agenda-event {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  border-bottom: 1px solid var(--border);
+  padding-block: 0.75rem;
+}
+.ds-agenda-event:last-child {
+  border-bottom: none;
+}
 
-  .ds-agenda-event-status {
-    flex-shrink: 0;
-    align-self: center;
-  }
+.ds-agenda-event-status {
+  flex-shrink: 0;
+  align-self: center;
+}
 
-  .ds-agenda-event-time {
-    width: 3.5rem;
-    flex-shrink: 0;
-    font-size: 0.875rem;
-    line-height: calc(1.25 / 0.875);
-    color: var(--muted-foreground);
-    font-variant-numeric: tabular-nums;
-  }
+.ds-agenda-event-time {
+  width: 3.5rem;
+  flex-shrink: 0;
+  font-size: 0.875rem;
+  line-height: calc(1.25 / 0.875);
+  color: var(--muted-foreground);
+  font-variant-numeric: tabular-nums;
+}
 
-  .ds-agenda-event-body {
-    min-width: 0;
-    flex: 1 1 0%;
-  }
+.ds-agenda-event-body {
+  min-width: 0;
+  flex: 1 1 0%;
+}
 
-  .ds-agenda-event-title {
-    font-size: 0.875rem;
-    line-height: calc(1.25 / 0.875);
-    font-weight: 500;
-  }
+.ds-agenda-event-title {
+  font-size: 0.875rem;
+  line-height: calc(1.25 / 0.875);
+  font-weight: 500;
+}
 
-  .ds-agenda-event-meta {
-    font-size: 0.875rem;
-    line-height: calc(1.25 / 0.875);
-    color: var(--muted-foreground);
-  }
+.ds-agenda-event-meta {
+  font-size: 0.875rem;
+  line-height: calc(1.25 / 0.875);
+  color: var(--muted-foreground);
 }

@@ -1,42 +1,40 @@
-@layer utilities {
-  .ds-tag {
-    display: inline-flex;
-    width: fit-content;
-    flex-shrink: 0;
-    align-items: center;
-    gap: 0.375rem;
-    border-radius: 0;
-    background: var(--tone-bg);
-    padding: 0.375rem 0.75rem;
-    font-size: 0.75rem;
-    line-height: 1rem;
-    font-weight: 500;
-    color: var(--tone-ink);
-    font-variant-numeric: tabular-nums;
-  }
+.ds-tag {
+  display: inline-flex;
+  width: fit-content;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.375rem;
+  border-radius: 0;
+  background: var(--tone-bg);
+  padding: 0.375rem 0.75rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+  color: var(--tone-ink);
+  font-variant-numeric: tabular-nums;
+}
 
-  .ds-tag--neutral {
-    --tone-bg: var(--ds-neutral-bg);
-    --tone-ink: var(--ds-neutral-ink);
-  }
-  .ds-tag--success {
-    --tone-bg: var(--ds-success-bg);
-    --tone-ink: var(--ds-success-ink);
-  }
-  .ds-tag--warning {
-    --tone-bg: var(--ds-warning-bg);
-    --tone-ink: var(--ds-warning-ink);
-  }
-  .ds-tag--danger {
-    --tone-bg: var(--ds-danger-bg);
-    --tone-ink: var(--ds-danger-ink);
-  }
-  .ds-tag--critical {
-    --tone-bg: var(--ds-critical-bg);
-    --tone-ink: var(--ds-critical-ink);
-  }
-  .ds-tag--info {
-    --tone-bg: var(--ds-info-bg);
-    --tone-ink: var(--ds-info-ink);
-  }
+.ds-tag--neutral {
+  --tone-bg: var(--ds-neutral-bg);
+  --tone-ink: var(--ds-neutral-ink);
+}
+.ds-tag--success {
+  --tone-bg: var(--ds-success-bg);
+  --tone-ink: var(--ds-success-ink);
+}
+.ds-tag--warning {
+  --tone-bg: var(--ds-warning-bg);
+  --tone-ink: var(--ds-warning-ink);
+}
+.ds-tag--danger {
+  --tone-bg: var(--ds-danger-bg);
+  --tone-ink: var(--ds-danger-ink);
+}
+.ds-tag--critical {
+  --tone-bg: var(--ds-critical-bg);
+  --tone-ink: var(--ds-critical-ink);
+}
+.ds-tag--info {
+  --tone-bg: var(--ds-info-bg);
+  --tone-ink: var(--ds-info-ink);
 }

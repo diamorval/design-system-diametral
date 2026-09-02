@@ -1,8 +1,6 @@
-@layer utilities {
-  /* Icon carries no Tailwind utilities in v2 today — size/color come from the
-   Phosphor `size`/`weight` props or from a consumer's own classes targeting
-   the svg (see code-block.tsx's `[&_svg]:size-3.5`). The ds-icon class is a
-   plain data-slot hook, kept empty to preserve current output exactly. */
-  .ds-icon {
-  }
+/* Icon carries no Tailwind utilities in v2 today — size/color come from the
+ Phosphor `size`/`weight` props or from a consumer's own classes targeting
+ the svg (see code-block.tsx's `[&_svg]:size-3.5`). The ds-icon class is a
+ plain data-slot hook, kept empty to preserve current output exactly. */
+.ds-icon {
 }

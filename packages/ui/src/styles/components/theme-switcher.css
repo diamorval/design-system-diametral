@@ -1,59 +1,57 @@
-@layer utilities {
-  .ds-theme-switcher-dropdown-trigger {
-    gap: 0.375rem;
-    padding-inline: 0.625rem;
-  }
+.ds-theme-switcher-dropdown-trigger {
+  gap: 0.375rem;
+  padding-inline: 0.625rem;
+}
 
-  .ds-theme-switcher-dropdown-icon {
-    width: 0.75rem;
-    height: 0.75rem;
-    color: var(--muted-foreground);
-  }
+.ds-theme-switcher-dropdown-icon {
+  width: 0.75rem;
+  height: 0.75rem;
+  color: var(--muted-foreground);
+}
 
-  .ds-theme-switcher {
-    position: relative;
-    gap: 0;
-  }
+.ds-theme-switcher {
+  position: relative;
+  gap: 0;
+}
 
+.ds-theme-switcher-indicator {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: 2.25rem;
+  translate: calc(var(--index) * (2.25rem - 1px)) 0;
+  background-color: var(--muted);
+  transition-property: transform, translate, scale, rotate;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+:where([dir="rtl"], [dir="rtl"] *) .ds-theme-switcher-indicator {
+  translate: calc(var(--index) * (2.25rem - 1px) * -1) 0;
+}
+@media (prefers-reduced-motion: reduce) {
   .ds-theme-switcher-indicator {
-    position: absolute;
-    inset-block: 0;
-    inset-inline-start: 0;
-    width: 2.25rem;
-    translate: calc(var(--index) * (2.25rem - 1px)) 0;
-    background-color: var(--muted);
-    transition-property: transform, translate, scale, rotate;
-    transition-duration: 200ms;
-    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    transition-property: none;
   }
-  :where([dir="rtl"], [dir="rtl"] *) .ds-theme-switcher-indicator {
-    translate: calc(var(--index) * (2.25rem - 1px) * -1) 0;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .ds-theme-switcher-indicator {
-      transition-property: none;
-    }
-  }
+}
 
-  /* The sliding indicator owns the pressed fill, so the cell's own pressed
-     background (set by ds-toggle/ds-toggle-group-item) is switched off here —
-     otherwise it would paint on the target cell before the indicator arrives.
-     Same specificity as those base rules, so this file must stay imported
-     after toggle.css/toggle-group.css for the override to win. */
-  .ds-theme-switcher-item {
-    position: relative;
-    margin-inline-start: -1px;
-    width: 2.25rem;
-    padding-inline: 0;
-    color: var(--muted-foreground);
-  }
-  .ds-theme-switcher-item:first-child {
-    margin-inline-start: 0;
-  }
-  .ds-theme-switcher-item[aria-pressed="true"] {
-    background: transparent;
-  }
-  .ds-theme-switcher-item[data-state="on"] {
-    background-color: transparent;
-  }
+/* The sliding indicator owns the pressed fill, so the cell's own pressed
+   background (set by ds-toggle/ds-toggle-group-item) is switched off here —
+   otherwise it would paint on the target cell before the indicator arrives.
+   Same specificity as those base rules, so this file must stay imported
+   after toggle.css/toggle-group.css for the override to win. */
+.ds-theme-switcher-item {
+  position: relative;
+  margin-inline-start: -1px;
+  width: 2.25rem;
+  padding-inline: 0;
+  color: var(--muted-foreground);
+}
+.ds-theme-switcher-item:first-child {
+  margin-inline-start: 0;
+}
+.ds-theme-switcher-item[aria-pressed="true"] {
+  background: transparent;
+}
+.ds-theme-switcher-item[data-state="on"] {
+  background-color: transparent;
 }

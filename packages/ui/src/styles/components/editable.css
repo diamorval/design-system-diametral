@@ -1,27 +1,25 @@
-@layer utilities {
-  .ds-editable {
-    display: flex;
-    align-items: center;
-    gap: 0.375rem;
-  }
-  [data-slot="editable-preview"][data-empty] {
-    color: var(--muted-foreground);
-  }
+.ds-editable {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+[data-slot="editable-preview"][data-empty] {
+  color: var(--muted-foreground);
+}
 
-  /* Was a literal "h-8" on the Input (editable.tsx) — Input's own height is
-     now baked into ".ds-input" (input.css), so the literal utility no longer
-     wins the cascade (Tailwind's generated utilities land earlier in the
-     "utilities" layer than component CSS imported later in globals.css).
-     Targeting the slot directly sidesteps that import-order dependency. */
-  [data-slot="editable-input"] {
-    height: 2rem;
-  }
+/* Was a literal "h-8" on the Input (editable.tsx) — Input's own height is
+   now baked into ".ds-input" (input.css), so the literal utility no longer
+   wins the cascade (Tailwind's generated utilities land earlier in the
+   "utilities" layer than component CSS imported later in globals.css).
+   Targeting the slot directly sidesteps that import-order dependency. */
+[data-slot="editable-input"] {
+  height: 2rem;
+}
 
-  .ds-editable-edit-button {
-    opacity: 0;
-  }
-  .ds-editable:hover .ds-editable-edit-button,
-  .ds-editable-edit-button:focus-visible {
-    opacity: 1;
-  }
+.ds-editable-edit-button {
+  opacity: 0;
+}
+.ds-editable:hover .ds-editable-edit-button,
+.ds-editable-edit-button:focus-visible {
+  opacity: 1;
 }

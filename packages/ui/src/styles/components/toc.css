@@ -1,55 +1,53 @@
-@layer utilities {
-  /* position (sticky/top) stays a literal Tailwind utility on the component's
-     own default className (see toc.tsx) — every demo overrides sticky with
-     static, and component-page.tsx overrides top-8 with xl:top-25, both
-     relying on tailwind-merge to dedupe against the component's own
-     defaults, which only works while those utilities remain literal rather
-     than baked CSS. */
-  .ds-toc {
-    height: fit-content;
-    flex-shrink: 0;
-  }
+/* position (sticky/top) stays a literal Tailwind utility on the component's
+   own default className (see toc.tsx) — every demo overrides sticky with
+   static, and component-page.tsx overrides top-8 with xl:top-25, both
+   relying on tailwind-merge to dedupe against the component's own
+   defaults, which only works while those utilities remain literal rather
+   than baked CSS. */
+.ds-toc {
+  height: fit-content;
+  flex-shrink: 0;
+}
 
-  /* margin-bottom stays literal (see toc.tsx) — anatomy.tsx overrides mb-3
-     with mb-2 (and mt-4 mb-2 on its second label) and relies on
-     tailwind-merge to dedupe against the component's own default. */
-  .ds-toc-label {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.025em;
-    color: var(--muted-foreground);
-    text-transform: uppercase;
-  }
+/* margin-bottom stays literal (see toc.tsx) — anatomy.tsx overrides mb-3
+   with mb-2 (and mt-4 mb-2 on its second label) and relies on
+   tailwind-merge to dedupe against the component's own default. */
+.ds-toc-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.025em;
+  color: var(--muted-foreground);
+  text-transform: uppercase;
+}
 
-  /* gap stays literal (see toc.tsx) — anatomy.tsx overrides gap-2 with
-     gap-0.5 and relies on tailwind-merge to dedupe against the component's
-     own default. */
-  .ds-toc-list {
-    display: flex;
-    flex-direction: column;
-    border-inline-start: 1px solid var(--border);
-  }
+/* gap stays literal (see toc.tsx) — anatomy.tsx overrides gap-2 with
+   gap-0.5 and relies on tailwind-merge to dedupe against the component's
+   own default. */
+.ds-toc-list {
+  display: flex;
+  flex-direction: column;
+  border-inline-start: 1px solid var(--border);
+}
 
-  /* border-color, text-color and text-sm (font-size + line-height) stay
-     literal Tailwind utilities on the component's own default className
-     (see toc.tsx) — the Toc playground overrides
-     border-transparent/text-muted-foreground with
-     border-foreground/text-foreground on its "current" link, and
-     anatomy.tsx overrides text-sm with text-[13px] leading-snug; both rely
-     on tailwind-merge to dedupe against the component's own defaults, which
-     only works while those specific utilities remain literal classes
-     rather than baked CSS. */
-  .ds-toc-link {
-    display: block;
-    margin-inline-start: -1px;
-    border-inline-start-width: 1px;
-    padding-inline-start: 0.75rem;
-    transition-property:
-      color, background-color, border-color, text-decoration-color, fill, stroke;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 150ms;
-  }
-  [data-level="2"] .ds-toc-link {
-    padding-inline-start: 1.5rem;
-  }
+/* border-color, text-color and text-sm (font-size + line-height) stay
+   literal Tailwind utilities on the component's own default className
+   (see toc.tsx) — the Toc playground overrides
+   border-transparent/text-muted-foreground with
+   border-foreground/text-foreground on its "current" link, and
+   anatomy.tsx overrides text-sm with text-[13px] leading-snug; both rely
+   on tailwind-merge to dedupe against the component's own defaults, which
+   only works while those specific utilities remain literal classes
+   rather than baked CSS. */
+.ds-toc-link {
+  display: block;
+  margin-inline-start: -1px;
+  border-inline-start-width: 1px;
+  padding-inline-start: 0.75rem;
+  transition-property:
+    color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+[data-level="2"] .ds-toc-link {
+  padding-inline-start: 1.5rem;
 }

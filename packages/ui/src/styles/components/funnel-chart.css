@@ -1,20 +1,18 @@
-@layer utilities {
-  /* h-64 and w-full stay literal Tailwind utilities on FunnelChart's own
-     className (see funnel-chart.tsx) — every funnel-chart demo overrides
-     h-64 (h-72/h-40) while keeping w-full, relying on tailwind-merge to
-     dedupe against this exact literal class. Same constraint as
-     chart.css's note. */
-  .ds-funnel-chart-stage-label {
-    fill: var(--foreground);
-    font-size: 0.75rem;
-    line-height: calc(1 / 0.75);
-  }
+/* h-64 and w-full stay literal Tailwind utilities on FunnelChart's own
+   className (see funnel-chart.tsx) — every funnel-chart demo overrides
+   h-64 (h-72/h-40) while keeping w-full, relying on tailwind-merge to
+   dedupe against this exact literal class. Same constraint as
+   chart.css's note. */
+.ds-funnel-chart-stage-label {
+  fill: var(--foreground);
+  font-size: 0.75rem;
+  line-height: calc(1 / 0.75);
+}
 
-  .ds-funnel-chart-share-label {
-    fill: var(--muted-foreground);
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    line-height: calc(1 / 0.75);
-    font-variant-numeric: tabular-nums;
-  }
+.ds-funnel-chart-share-label {
+  fill: var(--muted-foreground);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: calc(1 / 0.75);
+  font-variant-numeric: tabular-nums;
 }

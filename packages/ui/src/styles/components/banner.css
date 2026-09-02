@@ -1,66 +1,64 @@
-@layer utilities {
-  .ds-banner {
-    display: flex;
-    width: 100%;
-    align-items: flex-start;
-    gap: 0.75rem;
-    border-radius: 0;
-    background-color: var(--tone-bg);
-    padding-inline: 1rem;
-    padding-block: 0.75rem;
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-    color: var(--tone-ink);
-  }
-  .ds-banner > svg {
-    margin-top: 0.125rem;
-    flex-shrink: 0;
-  }
-  .ds-banner > svg:not([class*="size-"]) {
-    width: 1rem;
-    height: 1rem;
-  }
+.ds-banner {
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  gap: 0.75rem;
+  border-radius: 0;
+  background-color: var(--tone-bg);
+  padding-inline: 1rem;
+  padding-block: 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--tone-ink);
+}
+.ds-banner > svg {
+  margin-top: 0.125rem;
+  flex-shrink: 0;
+}
+.ds-banner > svg:not([class*="size-"]) {
+  width: 1rem;
+  height: 1rem;
+}
 
-  .ds-banner--neutral {
-    --tone-bg: var(--ds-neutral-bg);
-    --tone-ink: var(--ds-neutral-ink);
-  }
-  .ds-banner--info {
-    --tone-bg: var(--ds-info-bg);
-    --tone-ink: var(--ds-info-ink);
-  }
-  .ds-banner--success {
-    --tone-bg: var(--ds-success-bg);
-    --tone-ink: var(--ds-success-ink);
-  }
-  .ds-banner--warning {
-    --tone-bg: var(--ds-warning-bg);
-    --tone-ink: var(--ds-warning-ink);
-  }
-  .ds-banner--danger {
-    --tone-bg: var(--ds-danger-bg);
-    --tone-ink: var(--ds-danger-ink);
-  }
-  .ds-banner--critical {
-    --tone-bg: var(--ds-critical-bg);
-    --tone-ink: var(--ds-critical-ink);
-  }
+.ds-banner--neutral {
+  --tone-bg: var(--ds-neutral-bg);
+  --tone-ink: var(--ds-neutral-ink);
+}
+.ds-banner--info {
+  --tone-bg: var(--ds-info-bg);
+  --tone-ink: var(--ds-info-ink);
+}
+.ds-banner--success {
+  --tone-bg: var(--ds-success-bg);
+  --tone-ink: var(--ds-success-ink);
+}
+.ds-banner--warning {
+  --tone-bg: var(--ds-warning-bg);
+  --tone-ink: var(--ds-warning-ink);
+}
+.ds-banner--danger {
+  --tone-bg: var(--ds-danger-bg);
+  --tone-ink: var(--ds-danger-ink);
+}
+.ds-banner--critical {
+  --tone-bg: var(--ds-critical-bg);
+  --tone-ink: var(--ds-critical-ink);
+}
 
-  .ds-banner-content {
-    display: flex;
-    flex: 1 1 0%;
-    flex-direction: column;
-    gap: 0.125rem;
-  }
+.ds-banner-content {
+  display: flex;
+  flex: 1 1 0%;
+  flex-direction: column;
+  gap: 0.125rem;
+}
 
-  .ds-banner-title {
-    font-weight: 500;
-  }
+.ds-banner-title {
+  font-weight: 500;
+}
 
-  .ds-banner-action {
-    display: flex;
-    flex-shrink: 0;
-    align-items: center;
-    gap: 0.5rem;
-  }
+.ds-banner-action {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.5rem;
 }

@@ -1,60 +1,58 @@
-@layer utilities {
-  .ds-color-picker {
-    display: flex;
-    width: 100%;
-    max-width: 24rem;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
+.ds-color-picker {
+  display: flex;
+  width: 100%;
+  max-width: 24rem;
+  flex-direction: column;
+  gap: 0.75rem;
+}
 
-  .ds-color-picker-swatches {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.375rem;
-  }
+.ds-color-picker-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
 
-  .ds-color-picker-swatch {
-    width: 1.5rem;
-    height: 1.5rem;
-    border: 1px solid var(--border);
-    outline: none;
-  }
-  .ds-color-picker-swatch:focus-visible {
-    box-shadow: 0 0 0 2px color-mix(in oklab, var(--ring) 30%, transparent);
-  }
-  .ds-color-picker-swatch:disabled {
-    pointer-events: none;
-    opacity: 0.5;
-  }
-  /* Selected swatch is marked with a ring rather than a border colour, which
-     would be invisible on a swatch whose own colour is close to the border's. */
-  .ds-color-picker-swatch[aria-pressed="true"] {
-    box-shadow:
-      0 0 0 2px var(--background),
-      0 0 0 4px var(--foreground);
-  }
+.ds-color-picker-swatch {
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 1px solid var(--border);
+  outline: none;
+}
+.ds-color-picker-swatch:focus-visible {
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--ring) 30%, transparent);
+}
+.ds-color-picker-swatch:disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+/* Selected swatch is marked with a ring rather than a border colour, which
+   would be invisible on a swatch whose own colour is close to the border's. */
+.ds-color-picker-swatch[aria-pressed="true"] {
+  box-shadow:
+    0 0 0 2px var(--background),
+    0 0 0 4px var(--foreground);
+}
 
-  .ds-color-picker-row {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
+.ds-color-picker-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
 
-  .ds-color-picker-native {
-    width: 2.25rem;
-    height: 2.25rem;
-    flex-shrink: 0;
-    cursor: pointer;
-    border: 1px solid var(--border);
-    background-color: transparent;
-    padding: 0.25rem;
-    outline: none;
-  }
-  .ds-color-picker-native:focus-visible {
-    box-shadow: 0 0 0 2px color-mix(in oklab, var(--ring) 30%, transparent);
-  }
-  .ds-color-picker-native:disabled {
-    pointer-events: none;
-    opacity: 0.5;
-  }
+.ds-color-picker-native {
+  width: 2.25rem;
+  height: 2.25rem;
+  flex-shrink: 0;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background-color: transparent;
+  padding: 0.25rem;
+  outline: none;
+}
+.ds-color-picker-native:focus-visible {
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--ring) 30%, transparent);
+}
+.ds-color-picker-native:disabled {
+  pointer-events: none;
+  opacity: 0.5;
 }

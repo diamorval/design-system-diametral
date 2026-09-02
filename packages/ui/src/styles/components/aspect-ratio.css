@@ -1,6 +1,4 @@
-@layer utilities {
-  .ds-aspect-ratio {
-    position: relative;
-    aspect-ratio: var(--ratio);
-  }
+.ds-aspect-ratio {
+  position: relative;
+  aspect-ratio: var(--ratio);
 }

@@ -1,9 +1,7 @@
-@layer utilities {
-  /* h-64 stays a literal Tailwind utility on ScatterChart's own className
-     (see scatter-chart.tsx) — scatter-chart/bubble.tsx and dense.tsx override
-     it with h-72, relying on tailwind-merge to dedupe against the component's
-     own default. */
-  .ds-scatter-chart-root {
-    width: 100%;
-  }
+/* h-64 stays a literal Tailwind utility on ScatterChart's own className
+   (see scatter-chart.tsx) — scatter-chart/bubble.tsx and dense.tsx override
+   it with h-72, relying on tailwind-merge to dedupe against the component's
+   own default. */
+.ds-scatter-chart-root {
+  width: 100%;
 }

@@ -1,10 +1,8 @@
-@layer utilities {
-  .ds-masonry {
-    columns: var(--columns);
-    gap: 1rem;
-  }
-  .ds-masonry > * {
-    margin-bottom: 1rem;
-    break-inside: avoid;
-  }
+.ds-masonry {
+  columns: var(--columns);
+  gap: 1rem;
+}
+.ds-masonry > * {
+  margin-bottom: 1rem;
+  break-inside: avoid;
 }

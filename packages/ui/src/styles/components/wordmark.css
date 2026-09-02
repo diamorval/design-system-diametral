@@ -1,13 +1,11 @@
-@layer utilities {
-  .ds-wordmark {
-    display: inline-flex;
-    align-items: center;
-    color: var(--foreground);
-  }
-
-  /* svg sizing per variant stays literal on wordmark.tsx's cva (see
-     wordmark.tsx) — wordmark/app-header.tsx overrides it with
-     [&_svg]:size-6, relying on tailwind-merge to dedupe against the
-     variant's own [&_svg]:h-5/[&_svg]:w-auto, which only works while both
-     sides remain literal Tailwind classes. */
+.ds-wordmark {
+  display: inline-flex;
+  align-items: center;
+  color: var(--foreground);
 }
+
+/* svg sizing per variant stays literal on wordmark.tsx's cva (see
+   wordmark.tsx) — wordmark/app-header.tsx overrides it with
+   [&_svg]:size-6, relying on tailwind-merge to dedupe against the
+   variant's own [&_svg]:h-5/[&_svg]:w-auto, which only works while both
+   sides remain literal Tailwind classes. */
