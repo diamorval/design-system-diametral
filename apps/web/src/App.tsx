@@ -7,7 +7,7 @@ import { Showcase } from "@/pages/showcase"
 
 export function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <Routes>
         <Route element={<DocsLayout />}>
           <Route index element={<Overview />} />

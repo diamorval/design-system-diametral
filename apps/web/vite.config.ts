@@ -7,6 +7,8 @@ import { demoSource } from "./plugins/demo-source"
 
 // https://vite.dev/config/
 export default defineConfig({
+  // Served from https://diamorval.github.io/design-system-diametral/ (GitHub Pages project site).
+  base: "/design-system-diametral/",
   plugins: [react(), tailwindcss(), demoSource()],
   resolve: {
     alias: {
