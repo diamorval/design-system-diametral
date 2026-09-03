@@ -41,7 +41,7 @@ function KanbanCardTitle({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="kanban-card-title"
-      className={cn("ds-kanban-card-title", className)}
+      className={cn("text-sm font-medium text-foreground", className)}
       {...props}
     />
   )
@@ -102,19 +102,19 @@ function KanbanCard({
         opacity: isDragging ? 0.85 : undefined,
         zIndex: isDragging ? 1 : undefined,
       }}
-      className="ds-kanban-card"
+      className="flex items-start gap-2 border border-border bg-background p-2.5 text-sm text-foreground motion-reduce:transition-none!"
     >
       <button
         type="button"
         data-slot="kanban-card-grip"
-        className="ds-kanban-card-grip"
+        className="mt-0.5 cursor-grab text-muted-foreground transition-transform duration-150 ease-out outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/30 active:scale-[0.97] active:cursor-grabbing motion-reduce:transition-none"
         aria-label={`Move ${label}`}
         {...attributes}
         {...listeners}
       >
-        <DotsSixVerticalIcon />
+        <DotsSixVerticalIcon className="size-3.5" />
       </button>
-      <div className="ds-kanban-card-body">{children}</div>
+      <div className="min-w-0 flex-1">{children}</div>
     </div>
   )
 }
@@ -139,7 +139,7 @@ function KanbanColumnBody({
         ref={setNodeRef}
         data-slot="kanban-column-list"
         data-over={isOver ? "" : undefined}
-        className="ds-kanban-column-list"
+        className="flex min-h-24 flex-1 flex-col gap-2 transition-colors duration-150 ease-out data-over:bg-muted/40 motion-reduce:transition-none"
       >
         {children}
       </div>
@@ -272,7 +272,10 @@ function Kanban<Item extends KanbanItem>({
   return (
     <div
       data-slot="kanban"
-      className={cn("ds-kanban", className)}
+      className={cn(
+        "flex w-full items-stretch gap-4 overflow-x-auto",
+        className
+      )}
       {...props}
     >
       <DndContext
@@ -290,21 +293,21 @@ function Kanban<Item extends KanbanItem>({
             <div
               key={column.id}
               data-slot="kanban-column"
-              className="ds-kanban-column"
+              className="flex w-64 shrink-0 flex-col gap-3 border border-border bg-card p-3"
             >
               <div
                 data-slot="kanban-column-header"
-                className="ds-kanban-column-header"
+                className="flex items-center justify-between gap-2"
               >
                 <div
                   data-slot="kanban-column-title"
-                  className="ds-kanban-column-title"
+                  className="font-heading text-sm font-semibold tracking-wider uppercase"
                 >
                   {column.title}
                 </div>
                 <span
                   data-slot="kanban-column-count"
-                  className="ds-kanban-column-count"
+                  className="text-xs text-muted-foreground tabular-nums"
                 >
                   {cards.length}
                 </span>

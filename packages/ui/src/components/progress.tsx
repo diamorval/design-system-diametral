@@ -7,15 +7,15 @@ import { cn } from "../lib/utils.js"
 
 // Mirrors meter.tsx: --tone on the root, read by the indicator the composed
 // <Progress> renders for you. Unset by default, so the bar stays --primary.
-const progressVariants = cva("ds-progress", {
+const progressVariants = cva("flex flex-wrap gap-3", {
   variants: {
     tone: {
-      neutral: "ds-progress--tone-neutral",
-      success: "ds-progress--tone-success",
-      warning: "ds-progress--tone-warning",
-      danger: "ds-progress--tone-danger",
-      critical: "ds-progress--tone-critical",
-      info: "ds-progress--tone-info",
+      neutral: "[--tone:var(--ds-neutral-ink)]",
+      success: "[--tone:var(--ds-success-ink)]",
+      warning: "[--tone:var(--ds-warning-ink)]",
+      danger: "[--tone:var(--ds-danger-ink)]",
+      critical: "[--tone:var(--ds-critical-ink)]",
+      info: "[--tone:var(--ds-info-ink)]",
     },
   },
 })
@@ -45,7 +45,10 @@ function Progress({
 function ProgressTrack({ className, ...props }: ProgressPrimitive.Track.Props) {
   return (
     <ProgressPrimitive.Track
-      className={cn("ds-progress-track", className)}
+      className={cn(
+        "relative flex h-0.5 w-full items-center overflow-x-hidden rounded-none bg-muted",
+        className
+      )}
       data-slot="progress-track"
       {...props}
     />
@@ -59,7 +62,10 @@ function ProgressIndicator({
   return (
     <ProgressPrimitive.Indicator
       data-slot="progress-indicator"
-      className={cn("ds-progress-indicator", className)}
+      className={cn(
+        "h-full bg-[var(--tone,var(--primary))] transition-all",
+        className
+      )}
       {...props}
     />
   )
@@ -68,7 +74,7 @@ function ProgressIndicator({
 function ProgressLabel({ className, ...props }: ProgressPrimitive.Label.Props) {
   return (
     <ProgressPrimitive.Label
-      className={cn("ds-progress-label", className)}
+      className={cn("text-xs font-semibold tracking-wide uppercase", className)}
       data-slot="progress-label"
       {...props}
     />
@@ -78,7 +84,10 @@ function ProgressLabel({ className, ...props }: ProgressPrimitive.Label.Props) {
 function ProgressValue({ className, ...props }: ProgressPrimitive.Value.Props) {
   return (
     <ProgressPrimitive.Value
-      className={cn("ds-progress-value", className)}
+      className={cn(
+        "ms-auto text-sm text-muted-foreground tabular-nums",
+        className
+      )}
       data-slot="progress-value"
       {...props}
     />

@@ -6,8 +6,6 @@ import {
   type Icon as PhosphorIcon,
 } from "@phosphor-icons/react"
 
-import { cn } from "../lib/utils.js"
-
 // A typed name → component registry over @phosphor-icons/react. Add an entry
 // here (import + key) as a consuming component needs one — only the icons
 // listed get bundled, unlike v1's hand-drawn SVG map which shipped every icon
@@ -22,13 +20,10 @@ type IconName = keyof typeof icons
 
 function Icon({
   name,
-  className,
   ...props
 }: { name: IconName } & React.ComponentProps<PhosphorIcon>) {
   const Component = icons[name]
-  return (
-    <Component data-slot="icon" className={cn("ds-icon", className)} {...props} />
-  )
+  return <Component data-slot="icon" {...props} />
 }
 
 export { Icon, icons }

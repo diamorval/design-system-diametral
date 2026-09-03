@@ -145,7 +145,7 @@ function RelativeTime({
       <time
         data-slot="relative-time"
         data-invalid=""
-        className={cn("ds-relative-time", className)}
+        className={cn("tabular-nums", className)}
         {...props}
       >
         {String(date)}
@@ -163,7 +163,7 @@ function RelativeTime({
         dateStyle: "long",
         timeStyle: "short",
       })}
-      className={cn("ds-relative-time", className)}
+      className={cn("tabular-nums", className)}
       {...props}
     >
       {formatRelativeTime(parsed, locale)}

@@ -18,7 +18,7 @@ const SQUARE_FILL_PATH =
 const SQUARE_STROKE_PATH =
   "m1493.21 288.018-1185.22.001.001 374.94M1493.21 288.018l-374.94 374.941m374.94-374.941v374.941M307.991 1473.24H1493.21v-370.63M307.991 1473.24l370.629-370.63m-370.629 370.63v-370.63m1432.309 0c-96.76 371.41-434.44 645.56-836.153 645.56-401.711 0-739.39-274.15-836.149-645.56m.728-439.651c97.715-370 434.712-642.785 835.421-642.785 400.713 0 737.703 272.785 835.423 642.785"
 
-const wordmarkVariants = cva("ds-wordmark", {
+const wordmarkVariants = cva("inline-flex items-center text-foreground", {
   variants: {
     variant: {
       horizontal: "[&_svg]:h-5 [&_svg]:w-auto",

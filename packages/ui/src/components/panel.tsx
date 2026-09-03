@@ -11,7 +11,10 @@ function Panel({
     <div
       data-slot="panel"
       data-size={size}
-      className={cn("ds-panel", className)}
+      className={cn(
+        "flex flex-col gap-(--panel-spacing) border border-border bg-card py-(--panel-spacing) text-sm text-card-foreground [--panel-spacing:--spacing(4)] data-[size=sm]:[--panel-spacing:--spacing(2.5)]",
+        className
+      )}
       {...props}
     />
   )
@@ -21,7 +24,10 @@ function PanelHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="panel-header"
-      className={cn("ds-panel-header", className)}
+      className={cn(
+        "flex items-center justify-between gap-4 px-(--panel-spacing) [.border-b]:pb-(--panel-spacing)",
+        className
+      )}
       {...props}
     />
   )
@@ -31,7 +37,10 @@ function PanelTitle({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="panel-title"
-      className={cn("ds-panel-title", className)}
+      className={cn(
+        "font-heading text-sm font-semibold tracking-wider uppercase",
+        className
+      )}
       {...props}
     />
   )
@@ -41,7 +50,7 @@ function PanelContent({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="panel-content"
-      className={cn("ds-panel-content", className)}
+      className={cn("px-(--panel-spacing)", className)}
       {...props}
     />
   )
@@ -51,7 +60,10 @@ function PanelFooter({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="panel-footer"
-      className={cn("ds-panel-footer", className)}
+      className={cn(
+        "flex items-center px-(--panel-spacing) [.border-t]:pt-(--panel-spacing)",
+        className
+      )}
       {...props}
     />
   )
@@ -64,7 +76,10 @@ function PanelRow({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="panel-row"
-      className={cn("ds-panel-row", className)}
+      className={cn(
+        "flex items-center justify-between gap-4 border-b border-border px-(--panel-spacing) py-2.5 last:border-b-0",
+        className
+      )}
       {...props}
     />
   )

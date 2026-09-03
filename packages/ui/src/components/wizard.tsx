@@ -71,7 +71,7 @@ function Wizard({
   return (
     <div
       data-slot="wizard"
-      className={cn("ds-wizard", className)}
+      className={cn("flex w-full flex-col gap-6", className)}
       {...props}
     >
       <Stepper aria-label={label}>
@@ -101,7 +101,7 @@ function Wizard({
 
       <div
         data-slot="wizard-footer"
-        className="ds-wizard-footer"
+        className="flex items-center justify-between gap-2"
       >
         <Button
           variant="ghost"

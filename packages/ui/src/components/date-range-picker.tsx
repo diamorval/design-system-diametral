@@ -73,28 +73,23 @@ function DateRangePicker({
         data-slot="date-range-picker-trigger"
         render={<Button variant="outline" />}
         className={cn(
-          "ds-date-range-picker-trigger",
+          "justify-between font-normal tracking-normal normal-case",
           showTime ? "w-96" : "w-72",
           className
         )}
       >
-        <span
-          className={cn(
-            "ds-date-range-picker-label",
-            !label && "ds-date-range-picker-label--placeholder"
-          )}
-        >
+        <span className={cn("truncate", !label && "text-muted-foreground")}>
           {label ?? placeholder}
         </span>
         <CalendarBlankIcon
           data-icon="inline-end"
-          className="ds-date-range-picker-trigger-icon"
+          className="pointer-events-none text-muted-foreground"
         />
       </PopoverTrigger>
       <PopoverContent
         data-slot="date-range-picker-content"
         align="start"
-        className="ds-date-range-picker-content"
+        className="w-auto gap-0 p-0"
       >
         <Calendar
           mode="range"
@@ -108,7 +103,7 @@ function DateRangePicker({
         {showTime && (
           <div
             data-slot="date-range-picker-times"
-            className="ds-date-range-picker-times"
+            className="flex items-center justify-between gap-3 border-t border-border p-3"
           >
             <TimePicker
               aria-label="Start time"
@@ -119,10 +114,7 @@ function DateRangePicker({
               onValueChange={setTime("from")}
               disabled={!range.from}
             />
-            <span
-              aria-hidden="true"
-              className="ds-date-range-picker-times-separator"
-            >
+            <span aria-hidden="true" className="text-muted-foreground">
               –
             </span>
             <TimePicker

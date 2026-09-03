@@ -10,15 +10,15 @@ import { cn } from "../lib/utils.js"
 // composed <Meter>. Left unset by default so the bar stays --primary; the
 // six keys are the shared family from globals.css, the same one
 // status/tag/banner read.
-const meterVariants = cva("ds-meter", {
+const meterVariants = cva("flex flex-wrap gap-3", {
   variants: {
     tone: {
-      neutral: "ds-meter--tone-neutral",
-      success: "ds-meter--tone-success",
-      warning: "ds-meter--tone-warning",
-      danger: "ds-meter--tone-danger",
-      critical: "ds-meter--tone-critical",
-      info: "ds-meter--tone-info",
+      neutral: "[--tone:var(--ds-neutral-ink)]",
+      success: "[--tone:var(--ds-success-ink)]",
+      warning: "[--tone:var(--ds-warning-ink)]",
+      danger: "[--tone:var(--ds-danger-ink)]",
+      critical: "[--tone:var(--ds-critical-ink)]",
+      info: "[--tone:var(--ds-info-ink)]",
     },
   },
 })
@@ -47,7 +47,10 @@ function MeterTrack({ className, ...props }: MeterPrimitive.Track.Props) {
   return (
     <MeterPrimitive.Track
       data-slot="meter-track"
-      className={cn("ds-meter-track", className)}
+      className={cn(
+        "relative flex h-0.5 w-full items-center overflow-x-hidden rounded-none bg-muted",
+        className
+      )}
       {...props}
     />
   )
@@ -60,7 +63,10 @@ function MeterIndicator({
   return (
     <MeterPrimitive.Indicator
       data-slot="meter-indicator"
-      className={cn("ds-meter-indicator", className)}
+      className={cn(
+        "h-full bg-[var(--tone,var(--primary))] transition-all",
+        className
+      )}
       {...props}
     />
   )
@@ -70,7 +76,7 @@ function MeterLabel({ className, ...props }: MeterPrimitive.Label.Props) {
   return (
     <MeterPrimitive.Label
       data-slot="meter-label"
-      className={cn("ds-meter-label", className)}
+      className={cn("text-xs font-semibold tracking-wide uppercase", className)}
       {...props}
     />
   )
@@ -80,7 +86,10 @@ function MeterValue({ className, ...props }: MeterPrimitive.Value.Props) {
   return (
     <MeterPrimitive.Value
       data-slot="meter-value"
-      className={cn("ds-meter-value", className)}
+      className={cn(
+        "ms-auto text-sm text-muted-foreground tabular-nums",
+        className
+      )}
       {...props}
     />
   )

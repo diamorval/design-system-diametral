@@ -9,7 +9,7 @@ function Toc({ className, ...props }: React.ComponentProps<"nav">) {
     <nav
       aria-label="On this page"
       data-slot="toc"
-      className={cn("ds-toc sticky top-8", className)}
+      className={cn("sticky top-8 h-fit shrink-0", className)}
       {...props}
     />
   )
@@ -19,7 +19,10 @@ function TocLabel({ className, ...props }: React.ComponentProps<"p">) {
   return (
     <p
       data-slot="toc-label"
-      className={cn("ds-toc-label mb-3", className)}
+      className={cn(
+        "mb-3 font-mono text-[11px] tracking-wide text-muted-foreground uppercase",
+        className
+      )}
       {...props}
     />
   )
@@ -29,7 +32,7 @@ function TocList({ className, ...props }: React.ComponentProps<"ul">) {
   return (
     <ul
       data-slot="toc-list"
-      className={cn("ds-toc-list gap-2", className)}
+      className={cn("flex flex-col gap-2 border-s border-border", className)}
       {...props}
     />
   )
@@ -44,7 +47,7 @@ function TocItem({
     <li
       data-slot="toc-item"
       data-level={level}
-      className={cn(className)}
+      className={cn("group/toc-item", className)}
       {...props}
     />
   )
@@ -60,7 +63,8 @@ function TocLink({
     props: mergeProps<"a">(
       {
         className: cn(
-          "ds-toc-link border-transparent text-sm text-muted-foreground hover:border-foreground hover:text-foreground",
+          "-ms-px block border-s border-transparent ps-3 text-sm text-muted-foreground transition-colors hover:border-foreground hover:text-foreground",
+          "group-data-[level=2]/toc-item:ps-6",
           className
         ),
       },

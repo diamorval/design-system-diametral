@@ -95,7 +95,7 @@ function ScatterChart({
   return (
     <ChartContainer
       config={config}
-      className={cn("ds-scatter-chart-root h-64", className)}
+      className={cn("h-64 w-full", className)}
       {...props}
     >
       <RechartsScatterChart accessibilityLayer margin={margin}>

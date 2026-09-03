@@ -33,7 +33,10 @@ function QrCode({
         data-slot="qr-code"
         role="img"
         aria-label="QR code unavailable"
-        className={cn("ds-qr-code-error", className)}
+        className={cn(
+          "flex items-center justify-center border border-dashed border-destructive/50 p-4 text-center text-xs text-balance text-destructive",
+          className
+        )}
         style={{ width: size, height: size }}
       >
         {error instanceof Error ? error.message : "QR encoding failed"}
@@ -60,7 +63,7 @@ function QrCode({
       width={size}
       height={size}
       shapeRendering="crispEdges"
-      className={cn("ds-qr-code", className)}
+      className={cn("rounded-none", className)}
       {...props}
     >
       <rect width={dim} height={dim} fill="#fff" />

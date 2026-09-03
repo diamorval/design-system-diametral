@@ -98,16 +98,14 @@ function DataTableSortIcon({
   direction: false | "asc" | "desc"
 }) {
   if (direction === "asc") {
-    return <CaretUpIcon className="ds-data-table-sort-icon" />
+    return <CaretUpIcon className="size-3" />
   }
 
   if (direction === "desc") {
-    return <CaretDownIcon className="ds-data-table-sort-icon" />
+    return <CaretDownIcon className="size-3" />
   }
 
-  return (
-    <CaretUpDownIcon className="ds-data-table-sort-icon ds-data-table-sort-icon--unsorted" />
-  )
+  return <CaretUpDownIcon className="size-3 opacity-50" />
 }
 
 function DataTableColumnHeader<TData, TValue>({
@@ -129,7 +127,7 @@ function DataTableColumnHeader<TData, TValue>({
       type="button"
       data-slot="data-table-column-header"
       onClick={header.column.getToggleSortingHandler()}
-      className="ds-data-table-column-header"
+      className="-mx-1 inline-flex items-center gap-1.5 rounded-none px-1 text-inherit uppercase outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/30"
     >
       {content}
       <DataTableSortIcon direction={header.column.getIsSorted()} />
@@ -198,7 +196,12 @@ function expanderColumn<TData, TValue>(
           aria-label={label(row.original)}
           onClick={row.getToggleExpandedHandler()}
         >
-          <CaretRightIcon className="ds-data-table-expander-icon" />
+          <CaretRightIcon
+            className={cn(
+              "transition-[rotate] duration-200",
+              row.getIsExpanded() && "rotate-90"
+            )}
+          />
         </Button>
       ) : null,
   }
@@ -230,18 +233,18 @@ function SortableHeadCell({
         transform: CSS.Translate.toString(transform),
         opacity: isDragging ? 0.6 : undefined,
       }}
-      className="ds-data-table-head--sortable"
+      className="relative"
     >
-      <span className="ds-data-table-head-grip-wrap">
+      <span className="inline-flex items-center gap-1">
         <button
           type="button"
           data-slot="data-table-grip"
-          className="ds-data-table-grip"
+          className="cursor-grab text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/30"
           aria-label={`Reorder ${id} column`}
           {...attributes}
           {...listeners}
         >
-          <DotsSixVerticalIcon className="ds-data-table-grip-icon" />
+          <DotsSixVerticalIcon className="size-3.5" />
         </button>
         {children}
       </span>
@@ -585,12 +588,20 @@ function DataTable<TData, TValue>({
   }
 
   return (
-    <div data-slot="data-table" className={cn("ds-data-table", className)}>
+    <div
+      data-slot="data-table"
+      className={cn("flex w-full flex-col gap-4", className)}
+    >
       {(title || toolbar || columnToggle || filterColumn) && (
-        <div data-slot="data-table-header" className="ds-data-table-header">
-          <div className="ds-data-table-header-start">
+        <div
+          data-slot="data-table-header"
+          className="flex flex-wrap items-center justify-between gap-3"
+        >
+          <div className="flex flex-wrap items-center gap-3">
             {title ? (
-              <div className="ds-data-table-title">{title}</div>
+              <div className="text-sm font-semibold tracking-wider uppercase">
+                {title}
+              </div>
             ) : null}
             {filterColumn && (
               <Input
@@ -600,11 +611,11 @@ function DataTable<TData, TValue>({
                   filterColumn.setFilterValue(event.target.value)
                 }
                 placeholder={searchPlaceholder}
-                className="ds-data-table-search"
+                className="max-w-64"
               />
             )}
           </div>
-          <div className="ds-data-table-header-end">
+          <div className="flex items-center gap-2">
             {toolbar}
             {columnToggle && (
               <DropdownMenu>
@@ -646,7 +657,7 @@ function DataTable<TData, TValue>({
         collisionDetection={closestCenter}
         onDragEnd={onDragEnd}
       >
-        <div className="ds-data-table-body-wrap">
+        <div className="border-t border-border">
           <SortableContext
             items={orderedIds}
             strategy={horizontalListSortingStrategy}
@@ -699,7 +710,7 @@ function DataTable<TData, TValue>({
                         <TableRow data-slot="data-table-detail">
                           <TableCell
                             colSpan={row.getVisibleCells().length}
-                            className="ds-data-table-detail-cell"
+                            className="bg-muted/40 p-4"
                           >
                             {renderDetail?.(row.original)}
                           </TableCell>
@@ -711,7 +722,7 @@ function DataTable<TData, TValue>({
                   <TableRow>
                     <TableCell
                       colSpan={resolvedColumns.length}
-                      className="ds-data-table-empty-cell"
+                      className="h-24 text-center text-muted-foreground"
                     >
                       {emptyMessage}
                     </TableCell>
@@ -724,8 +735,11 @@ function DataTable<TData, TValue>({
       </DndContext>
 
       {lazy && lazyMode === "infinite" ? (
-        <div data-slot="data-table-more" className="ds-data-table-more">
-          <span className="ds-data-table-pagination-info">
+        <div
+          data-slot="data-table-more"
+          className="flex items-center justify-between gap-4"
+        >
+          <span className="text-xs tracking-wide text-muted-foreground tabular-nums">
             {lazyRows.length} of {total}
           </span>
           <Button
@@ -748,13 +762,13 @@ function DataTable<TData, TValue>({
       {(pageSize || lazy) && lazyMode !== "infinite" && (
         <div
           data-slot="data-table-pagination"
-          className="ds-data-table-pagination"
+          className="flex items-center justify-between gap-4"
         >
-          <span className="ds-data-table-pagination-info">
+          <span className="text-xs tracking-wide text-muted-foreground tabular-nums">
             Page {table.getState().pagination.pageIndex + 1} of{" "}
             {table.getPageCount() || 1}
           </span>
-          <div className="ds-data-table-pagination-controls">
+          <div className="flex items-center gap-2">
             <Button
               variant="outline"
               size="icon-sm"
@@ -762,7 +776,7 @@ function DataTable<TData, TValue>({
               disabled={!table.getCanPreviousPage()}
               aria-label="Previous page"
             >
-              <CaretLeftIcon className="ds-data-table-pagination-icon" />
+              <CaretLeftIcon className="rtl:rotate-180" />
             </Button>
             <Button
               variant="outline"
@@ -771,7 +785,7 @@ function DataTable<TData, TValue>({
               disabled={!table.getCanNextPage()}
               aria-label="Next page"
             >
-              <CaretRightIcon className="ds-data-table-pagination-icon" />
+              <CaretRightIcon className="rtl:rotate-180" />
             </Button>
           </div>
         </div>

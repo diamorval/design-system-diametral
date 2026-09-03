@@ -16,9 +16,12 @@ function InputOTP({
   return (
     <OTPInput
       data-slot="input-otp"
-      containerClassName={cn("cn-input-otp ds-input-otp", containerClassName)}
+      containerClassName={cn(
+        "cn-input-otp flex items-center has-disabled:opacity-50",
+        containerClassName
+      )}
       spellCheck={false}
-      className={cn("ds-input-otp-input", className)}
+      className={cn("disabled:cursor-not-allowed", className)}
       {...props}
     />
   )
@@ -28,7 +31,10 @@ function InputOTPGroup({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="input-otp-group"
-      className={cn("ds-input-otp-group", className)}
+      className={cn(
+        "flex items-center gap-1 rounded-none has-aria-invalid:border-b-destructive dark:has-aria-invalid:border-b-destructive/50",
+        className
+      )}
       {...props}
     />
   )
@@ -48,13 +54,16 @@ function InputOTPSlot({
     <div
       data-slot="input-otp-slot"
       data-active={isActive}
-      className={cn("ds-input-otp-slot", className)}
+      className={cn(
+        "relative flex size-10 items-center justify-center border border-transparent border-b-input bg-transparent text-sm transition-[color,border-color] outline-none first:rounded-none last:rounded-none aria-invalid:border-b-destructive data-[active=true]:z-10 data-[active=true]:border-b-ring dark:aria-invalid:border-b-destructive/50",
+        className
+      )}
       {...props}
     >
       {char}
       {hasFakeCaret && (
-        <div className="ds-input-otp-slot-caret">
-          <div className="ds-input-otp-slot-caret-line" />
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+          <div className="h-4 w-px animate-caret-blink bg-foreground duration-1000" />
         </div>
       )}
     </div>
@@ -65,7 +74,7 @@ function InputOTPSeparator({ ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="input-otp-separator"
-      className="ds-input-otp-separator"
+      className="flex items-center [&_svg:not([class*='size-'])]:size-3.5"
       role="separator"
       {...props}
     >

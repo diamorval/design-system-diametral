@@ -6,15 +6,15 @@ import { cn } from "../lib/utils.js"
 // Sets --tone for the dot and label to share; the six tones mirror
 // tag/banner/alert's shared substrate (globals.css) so a status reading
 // "danger" always means the same color everywhere in the system.
-const statusVariants = cva("group/status ds-status", {
+const statusVariants = cva("group/status inline-flex items-center gap-1.5", {
   variants: {
     tone: {
-      success: "ds-status--success",
-      warning: "ds-status--warning",
-      danger: "ds-status--danger",
-      critical: "ds-status--critical",
-      neutral: "ds-status--neutral",
-      info: "ds-status--info",
+      success: "[--tone:var(--ds-success-ink)]",
+      warning: "[--tone:var(--ds-warning-ink)]",
+      danger: "[--tone:var(--ds-danger-ink)]",
+      critical: "[--tone:var(--ds-critical-ink)]",
+      neutral: "[--tone:var(--ds-neutral-ink)]",
+      info: "[--tone:var(--ds-info-ink)]",
     },
   },
   defaultVariants: {
@@ -45,10 +45,15 @@ function StatusIndicator({
     <span
       data-slot="status-indicator"
       aria-hidden="true"
-      className={cn("ds-status-indicator", className)}
+      className={cn(
+        "relative inline-flex size-1.5 shrink-0 bg-[var(--tone)]",
+        className
+      )}
       {...props}
     >
-      {pulse && <span className="ds-status-indicator-ping" />}
+      {pulse && (
+        <span className="absolute inset-0 bg-[var(--tone)] motion-safe:animate-ping" />
+      )}
     </span>
   )
 }
@@ -57,7 +62,7 @@ function StatusLabel({ className, ...props }: React.ComponentProps<"span">) {
   return (
     <span
       data-slot="status-label"
-      className={cn("ds-status-label", className)}
+      className={cn("text-sm text-[var(--tone)]", className)}
       {...props}
     />
   )

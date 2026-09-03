@@ -48,8 +48,8 @@ function Rating({
       }}
       onMouseLeave={() => setHovered(null)}
       className={cn(
-        "ds-rating",
-        shape === "star" ? "ds-rating--star" : "ds-rating--default",
+        "flex w-fit items-center",
+        shape === "star" ? "gap-0.5" : "gap-1",
         className
       )}
       {...props}
@@ -67,15 +67,23 @@ function Rating({
             aria-label={String(rank)}
             onMouseEnter={interactive ? () => setHovered(rank) : undefined}
             className={cn(
-              "ds-rating-item",
-              rank <= shown && "ds-rating-item--active",
-              interactive && shape !== "star" && "ds-rating-item--hover-lift",
-              interactive ? "ds-rating-item--interactive" : "ds-rating-item--disabled"
+              "border-none bg-transparent p-0 outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring/30",
+              shape === "star"
+                ? cn(
+                    "flex size-6 items-center justify-center text-muted-foreground",
+                    rank <= shown && "text-primary"
+                  )
+                : cn(
+                    "h-2.5 w-5 rounded-none bg-muted transition-[background-color,translate]",
+                    rank <= shown && "bg-primary",
+                    interactive && "hover:-translate-y-px"
+                  ),
+              interactive ? "cursor-pointer" : "pointer-events-none"
             )}
           >
             {shape === "star" && (
               <StarIcon
-                className="ds-rating-star-icon"
+                className="size-5"
                 weight={rank <= shown ? "fill" : "regular"}
               />
             )}

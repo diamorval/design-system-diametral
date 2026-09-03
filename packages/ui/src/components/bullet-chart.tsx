@@ -104,17 +104,19 @@ function BulletChart({
     <div
       data-slot="bullet-chart"
       className={cn(
-        "ds-bullet-chart [--bullet-label:7rem] [--bullet-value:4rem]",
+        "grid grid-cols-[var(--bullet-label)_1fr_var(--bullet-value)] items-center gap-3 [--bullet-label:7rem] [--bullet-value:4rem]",
         className
       )}
       {...props}
     >
-      <div className="ds-bullet-chart-info">
+      <div className="min-w-0">
         {label != null ? (
-          <div className="ds-bullet-chart-label">{label}</div>
+          <div className="truncate text-sm font-medium">{label}</div>
         ) : null}
         {caption != null ? (
-          <div className="ds-bullet-chart-caption">{caption}</div>
+          <div className="truncate text-xs text-muted-foreground">
+            {caption}
+          </div>
         ) : null}
       </div>
       {/* The role and the name go on the same element: a name on the outer grid
@@ -128,7 +130,7 @@ function BulletChart({
         aria-valuemin={min}
         aria-valuemax={max}
         aria-valuetext={valueText}
-        className="ds-bullet-chart-track"
+        className="relative h-4 w-full"
       >
         {ranges.map((band, i) => {
           const from = i === 0 ? min : ranges[i - 1].to
@@ -136,7 +138,7 @@ function BulletChart({
             <div
               key={band.to}
               aria-hidden
-              className="ds-bullet-chart-band"
+              className="absolute inset-y-0 rounded-none"
               style={{
                 left: pct(from),
                 width: `calc(${pct(band.to)} - ${pct(from)})`,
@@ -147,18 +149,20 @@ function BulletChart({
         })}
         <div
           aria-hidden
-          className="ds-bullet-chart-measure"
+          className="absolute top-1/2 left-0 h-1.5 -translate-y-1/2 rounded-none bg-foreground"
           style={{ width: pct(value) }}
         />
         {target === undefined ? null : (
           <div
             aria-hidden
-            className="ds-bullet-chart-target"
+            className="absolute inset-y-0 w-0.5 -translate-x-1/2 rounded-none bg-accent"
             style={{ left: pct(target) }}
           />
         )}
       </div>
-      <div className="ds-bullet-chart-value">{formatValue(value)}</div>
+      <div className="text-right text-sm font-medium tabular-nums">
+        {formatValue(value)}
+      </div>
     </div>
   )
 }

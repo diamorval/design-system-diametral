@@ -120,7 +120,7 @@ function Carousel({
     >
       <div
         onKeyDownCapture={handleKeyDown}
-        className={cn("ds-carousel", className)}
+        className={cn("relative", className)}
         role="region"
         aria-roledescription="carousel"
         data-slot="carousel"
@@ -138,12 +138,15 @@ function CarouselContent({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       ref={carouselRef}
-      className="ds-carousel-viewport"
+      className="overflow-hidden"
       data-slot="carousel-content"
     >
       <div
-        data-orientation={orientation}
-        className={cn("ds-carousel-content", className)}
+        className={cn(
+          "flex",
+          orientation === "horizontal" ? "-ms-4" : "-mt-4 flex-col",
+          className
+        )}
         {...props}
       />
     </div>
@@ -158,8 +161,11 @@ function CarouselItem({ className, ...props }: React.ComponentProps<"div">) {
       role="group"
       aria-roledescription="slide"
       data-slot="carousel-item"
-      data-orientation={orientation}
-      className={cn("ds-carousel-item basis-full", className)}
+      className={cn(
+        "min-w-0 shrink-0 grow-0 basis-full",
+        orientation === "horizontal" ? "ps-4" : "pt-4",
+        className
+      )}
       {...props}
     />
   )
@@ -176,15 +182,20 @@ function CarouselPrevious({
   return (
     <Button
       data-slot="carousel-previous"
-      data-orientation={orientation}
       variant={variant}
       size={size}
-      className={cn("ds-carousel-control", className)}
+      className={cn(
+        "absolute touch-manipulation",
+        orientation === "horizontal"
+          ? "inset-y-0 -start-12 my-auto"
+          : "-top-12 start-1/2 -translate-x-1/2 rtl:translate-x-1/2 rotate-90",
+        className
+      )}
       disabled={!canScrollPrev}
       onClick={scrollPrev}
       {...props}
     >
-      <CaretLeftIcon className="ds-carousel-control-icon" />
+      <CaretLeftIcon className="rtl:rotate-180" />
       <span className="sr-only">Previous slide</span>
     </Button>
   )
@@ -201,15 +212,20 @@ function CarouselNext({
   return (
     <Button
       data-slot="carousel-next"
-      data-orientation={orientation}
       variant={variant}
       size={size}
-      className={cn("ds-carousel-control", className)}
+      className={cn(
+        "absolute touch-manipulation",
+        orientation === "horizontal"
+          ? "inset-y-0 -end-12 my-auto"
+          : "-bottom-12 start-1/2 -translate-x-1/2 rtl:translate-x-1/2 rotate-90",
+        className
+      )}
       disabled={!canScrollNext}
       onClick={scrollNext}
       {...props}
     >
-      <CaretRightIcon className="ds-carousel-control-icon" />
+      <CaretRightIcon className="rtl:rotate-180" />
       <span className="sr-only">Next slide</span>
     </Button>
   )

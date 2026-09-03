@@ -10,7 +10,7 @@ function NumberField({ className, ...props }: NumberFieldPrimitive.Root.Props) {
   return (
     <NumberFieldPrimitive.Root
       data-slot="number-field"
-      className={cn("ds-number-field w-full", className)}
+      className={cn("flex w-full flex-col gap-1", className)}
       {...props}
     />
   )
@@ -23,7 +23,10 @@ function NumberFieldGroup({
   return (
     <NumberFieldPrimitive.Group
       data-slot="number-field-group"
-      className={cn("ds-number-field-group", className)}
+      className={cn(
+        "flex h-10 w-full items-center border border-transparent border-b-input bg-transparent transition-[color,border-color] focus-within:border-b-ring has-aria-invalid:border-b-destructive has-disabled:pointer-events-none has-disabled:opacity-50 dark:has-aria-invalid:border-b-destructive/50",
+        className
+      )}
       {...props}
     />
   )
@@ -36,7 +39,10 @@ function NumberFieldInput({
   return (
     <NumberFieldPrimitive.Input
       data-slot="number-field-input"
-      className={cn("ds-number-field-input px-2 text-center", className)}
+      className={cn(
+        "h-full min-w-0 flex-1 bg-transparent px-2 text-center text-base tabular-nums outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed md:text-sm",
+        className
+      )}
       {...props}
     />
   )
@@ -51,7 +57,10 @@ function NumberFieldDecrement({
     <NumberFieldPrimitive.Decrement
       data-slot="number-field-decrement"
       render={<Button variant="ghost" size="icon-sm" />}
-      className={cn("ds-number-field-decrement", className)}
+      className={cn(
+        "shrink-0 text-muted-foreground hover:text-foreground",
+        className
+      )}
       {...props}
     >
       {children ?? <MinusIcon />}
@@ -68,7 +77,10 @@ function NumberFieldIncrement({
     <NumberFieldPrimitive.Increment
       data-slot="number-field-increment"
       render={<Button variant="ghost" size="icon-sm" />}
-      className={cn("ds-number-field-increment", className)}
+      className={cn(
+        "shrink-0 text-muted-foreground hover:text-foreground",
+        className
+      )}
       {...props}
     >
       {children ?? <PlusIcon />}
@@ -84,13 +96,13 @@ function NumberFieldScrubArea({
   return (
     <NumberFieldPrimitive.ScrubArea
       data-slot="number-field-scrub-area"
-      className={cn("ds-number-field-scrub-area", className)}
+      className={cn("cursor-ew-resize select-none", className)}
       {...props}
     >
       {children}
       <NumberFieldPrimitive.ScrubAreaCursor
         data-slot="number-field-scrub-area-cursor"
-        className="ds-number-field-scrub-area-cursor"
+        className="drop-shadow-sm"
       />
     </NumberFieldPrimitive.ScrubArea>
   )

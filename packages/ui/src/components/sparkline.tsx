@@ -61,7 +61,7 @@ function Sparkline({
       data-slot="sparkline"
       role="img"
       aria-label={ariaLabel ?? `Sparkline of ${n} value${n === 1 ? "" : "s"}`}
-      className={cn("ds-sparkline", className)}
+      className={cn("inline-block align-middle leading-none", className)}
       style={stroke ? { color: stroke, ...style } : style}
       {...props}
     >
@@ -72,12 +72,12 @@ function Sparkline({
         preserveAspectRatio="none"
         aria-hidden="true"
         focusable="false"
-        className="ds-sparkline-svg"
+        className="block overflow-visible"
       >
         {fill && area ? (
           <path
             d={area}
-            className="ds-sparkline-area"
+            className="fill-current stroke-none opacity-[0.12]"
             style={typeof fill === "string" ? { fill } : undefined}
           />
         ) : null}
@@ -86,10 +86,11 @@ function Sparkline({
             points={line}
             pathLength={animate ? 1 : undefined}
             className={cn(
-              "ds-sparkline-line",
+              "fill-none stroke-current stroke-[1.5] [stroke-linecap:round] [stroke-linejoin:round]",
               // pathLength=1 makes the dash maths resolution-free, so one
               // keyframe draws any width.
-              animate && "ds-sparkline-line--animate"
+              animate &&
+                "animate-[ds-sparkline-draw_0.9s_ease_forwards] [stroke-dasharray:1] [stroke-dashoffset:1] motion-reduce:animate-none motion-reduce:[stroke-dashoffset:0]"
             )}
           />
         ) : null}
@@ -98,7 +99,7 @@ function Sparkline({
             cx={last[0]}
             cy={last[1]}
             r={2}
-            className="ds-sparkline-dot"
+            className="fill-current stroke-none"
           />
         ) : null}
       </svg>

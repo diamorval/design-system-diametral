@@ -9,7 +9,7 @@ function DescriptionList({ className, ...props }: React.ComponentProps<"dl">) {
   return (
     <dl
       data-slot="description-list"
-      className={cn("ds-description-list", className)}
+      className={cn("grid grid-cols-[auto_1fr] gap-x-6", className)}
       {...props}
     />
   )
@@ -19,7 +19,10 @@ function DescriptionTerm({ className, ...props }: React.ComponentProps<"dt">) {
   return (
     <dt
       data-slot="description-term"
-      className={cn("ds-description-term", className)}
+      className={cn(
+        "border-t border-border py-2.5 text-[0.6875rem] font-normal tracking-wider whitespace-nowrap text-muted-foreground uppercase first-of-type:border-t-0",
+        className
+      )}
       {...props}
     />
   )
@@ -32,7 +35,10 @@ function DescriptionDetail({
   return (
     <dd
       data-slot="description-detail"
-      className={cn("ds-description-detail", className)}
+      className={cn(
+        "flex items-start border-t border-border py-2.5 text-sm text-foreground tabular-nums first-of-type:border-t-0",
+        className
+      )}
       {...props}
     />
   )

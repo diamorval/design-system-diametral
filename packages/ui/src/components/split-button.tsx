@@ -56,17 +56,18 @@ function SplitButton({
         <DropdownMenuTrigger
           render={
             <Button
-              data-slot="split-button-caret"
               variant={variant}
               size={size}
               tone={tone}
               disabled={disabled}
               // The caret half is square whatever the main half's size, so it
               // reads as one control rather than a second, wider button.
-              className="ds-split-button-caret"
+              className="px-2"
               aria-label={menuLabel}
             >
-              <CaretDownIcon className="ds-split-button-caret-icon" />
+              {/* Tailwind's rotate-* sets the `rotate` property, not
+                  `transform` — the open-state flip is asserted on `rotate`. */}
+              <CaretDownIcon className="transition-[rotate] duration-200 group-aria-expanded/button:rotate-180" />
             </Button>
           }
         />

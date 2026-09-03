@@ -71,7 +71,7 @@ function Editable({
       <div
         data-slot="editable"
         data-editing="true"
-        className={cn("ds-editable", className)}
+        className={cn("flex items-center gap-1.5", className)}
         {...props}
       >
         <Input
@@ -89,6 +89,7 @@ function Editable({
             }
           }}
           onBlur={() => (submitOnBlur ? submit() : cancel())}
+          className="h-8"
         />
         <Button
           type="button"
@@ -118,10 +119,13 @@ function Editable({
     <div
       data-slot="editable"
       data-editing="false"
-      className={cn("ds-editable", className)}
+      className={cn("group/editable flex items-center gap-1.5", className)}
       {...props}
     >
-      <span data-slot="editable-preview" data-empty={!committed || undefined}>
+      <span
+        data-slot="editable-preview"
+        className={cn(!committed && "text-muted-foreground")}
+      >
         {committed || placeholder}
       </span>
       <Button
@@ -131,7 +135,7 @@ function Editable({
         aria-label="Edit"
         disabled={disabled}
         onClick={startEditing}
-        className="ds-editable-edit-button"
+        className="opacity-0 group-hover/editable:opacity-100 focus-visible:opacity-100"
       >
         <PencilSimpleIcon />
       </Button>

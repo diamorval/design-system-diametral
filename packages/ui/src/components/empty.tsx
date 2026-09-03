@@ -6,7 +6,10 @@ function Empty({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="empty"
-      className={cn("ds-empty p-12", className)}
+      className={cn(
+        "flex w-full min-w-0 flex-1 flex-col items-center justify-center gap-4 border-dashed p-12 text-center text-balance",
+        className
+      )}
       {...props}
     />
   )
@@ -16,23 +19,26 @@ function EmptyHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="empty-header"
-      className={cn("ds-empty-header", className)}
+      className={cn("flex max-w-sm flex-col items-center gap-2", className)}
       {...props}
     />
   )
 }
 
-const emptyMediaVariants = cva("ds-empty-media", {
-  variants: {
-    variant: {
-      default: "ds-empty-media--default",
-      icon: "ds-empty-media--icon",
+const emptyMediaVariants = cva(
+  "mb-2 flex shrink-0 items-center justify-center [&_svg]:pointer-events-none [&_svg]:shrink-0",
+  {
+    variants: {
+      variant: {
+        default: "bg-transparent",
+        icon: "flex size-10 shrink-0 items-center justify-center rounded-none bg-muted text-foreground [&_svg:not([class*='size-'])]:size-5",
+      },
     },
-  },
-  defaultVariants: {
-    variant: "default",
-  },
-})
+    defaultVariants: {
+      variant: "default",
+    },
+  }
+)
 
 function EmptyMedia({
   className,
@@ -53,7 +59,10 @@ function EmptyTitle({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="empty-title"
-      className={cn("ds-empty-title", className)}
+      className={cn(
+        "font-heading text-lg font-semibold tracking-wider uppercase",
+        className
+      )}
       {...props}
     />
   )
@@ -63,7 +72,10 @@ function EmptyDescription({ className, ...props }: React.ComponentProps<"p">) {
   return (
     <div
       data-slot="empty-description"
-      className={cn("ds-empty-description", className)}
+      className={cn(
+        "mt-0.5 text-sm/relaxed text-muted-foreground [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary",
+        className
+      )}
       {...props}
     />
   )
@@ -73,7 +85,10 @@ function EmptyContent({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="empty-content"
-      className={cn("ds-empty-content", className)}
+      className={cn(
+        "flex w-full max-w-sm min-w-0 flex-col items-center gap-4 text-sm text-balance",
+        className
+      )}
       {...props}
     />
   )

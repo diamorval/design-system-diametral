@@ -11,7 +11,7 @@ function Tree({ className, ...props }: React.ComponentProps<"ul">) {
     <ul
       role="tree"
       data-slot="tree"
-      className={cn("ds-tree", className)}
+      className={cn("flex w-full flex-col gap-0.5", className)}
       {...props}
     />
   )
@@ -22,7 +22,7 @@ function TreeItem({ className, ...props }: CollapsiblePrimitive.Root.Props) {
     <CollapsiblePrimitive.Root
       data-slot="tree-item"
       render={<li role="treeitem" />}
-      className={cn("ds-tree-item", className)}
+      className={cn("flex flex-col", className)}
       {...props}
     />
   )
@@ -36,11 +36,14 @@ function TreeItemTrigger({
   return (
     <CollapsiblePrimitive.Trigger
       data-slot="tree-item-trigger"
-      className={cn("ds-tree-item-trigger group/tree-item-trigger", className)}
+      className={cn(
+        "group/tree-item-trigger flex h-8 w-full items-center gap-2 rounded-none bg-transparent px-2 text-start text-sm outline-none transition-colors hover:bg-muted/50 focus-visible:ring-2 focus-visible:ring-ring/30 [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3.5",
+        className
+      )}
       {...props}
     >
-      <CaretRightIcon className="ds-tree-item-trigger-caret-right" />
-      <CaretDownIcon className="ds-tree-item-trigger-caret-down" />
+      <CaretRightIcon className="size-3 text-muted-foreground group-data-panel-open/tree-item-trigger:hidden rtl:rotate-180" />
+      <CaretDownIcon className="hidden size-3 text-muted-foreground group-data-panel-open/tree-item-trigger:block" />
       {children}
     </CollapsiblePrimitive.Trigger>
   )
@@ -54,7 +57,10 @@ function TreeItemContent({
     <CollapsiblePrimitive.Panel
       data-slot="tree-item-content"
       render={<ul role="group" />}
-      className={cn("ds-tree-item-content", className)}
+      className={cn(
+        "ms-4 flex flex-col gap-0.5 border-s border-border ps-2",
+        className
+      )}
       {...props}
     />
   )
@@ -65,10 +71,13 @@ function TreeLeaf({ className, children, ...props }: React.ComponentProps<"li">)
     <li
       role="treeitem"
       data-slot="tree-leaf"
-      className={cn("ds-tree-leaf", className)}
+      className={cn(
+        "flex h-8 items-center gap-2 rounded-none px-2 text-sm text-muted-foreground transition-colors hover:bg-muted/50 [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3.5",
+        className
+      )}
       {...props}
     >
-      <span className="ds-tree-leaf-spacer" />
+      <span className="size-3 shrink-0" />
       {children}
     </li>
   )

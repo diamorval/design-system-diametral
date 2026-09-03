@@ -20,7 +20,10 @@ function BreadcrumbList({ className, ...props }: React.ComponentProps<"ol">) {
   return (
     <ol
       data-slot="breadcrumb-list"
-      className={cn("ds-breadcrumb-list", className)}
+      className={cn(
+        "flex flex-wrap items-center gap-1.5 text-xs tracking-wide wrap-break-word text-muted-foreground uppercase sm:gap-2.5",
+        className
+      )}
       {...props}
     />
   )
@@ -30,7 +33,7 @@ function BreadcrumbItem({ className, ...props }: React.ComponentProps<"li">) {
   return (
     <li
       data-slot="breadcrumb-item"
-      className={cn("ds-breadcrumb-item", className)}
+      className={cn("inline-flex items-center gap-1.5", className)}
       {...props}
     />
   )
@@ -45,7 +48,7 @@ function BreadcrumbLink({
     defaultTagName: "a",
     props: mergeProps<"a">(
       {
-        className: cn("ds-breadcrumb-link", className),
+        className: cn("transition-colors hover:text-foreground", className),
       },
       props
     ),
@@ -63,7 +66,7 @@ function BreadcrumbPage({ className, ...props }: React.ComponentProps<"span">) {
       role="link"
       aria-disabled="true"
       aria-current="page"
-      className={cn("ds-breadcrumb-page", className)}
+      className={cn("font-normal text-foreground", className)}
       {...props}
     />
   )
@@ -79,11 +82,11 @@ function BreadcrumbSeparator({
       data-slot="breadcrumb-separator"
       role="presentation"
       aria-hidden="true"
-      className={cn("ds-breadcrumb-separator", className)}
+      className={cn("[&>svg]:size-3.5", className)}
       {...props}
     >
       {children ?? (
-        <CaretRightIcon className="ds-breadcrumb-separator-icon" />
+        <CaretRightIcon className="rtl:rotate-180" />
       )}
     </li>
   )
@@ -98,7 +101,10 @@ function BreadcrumbEllipsis({
       data-slot="breadcrumb-ellipsis"
       role="presentation"
       aria-hidden="true"
-      className={cn("ds-breadcrumb-ellipsis", className)}
+      className={cn(
+        "flex size-5 items-center justify-center [&>svg]:size-4",
+        className
+      )}
       {...props}
     >
       <DotsThreeIcon

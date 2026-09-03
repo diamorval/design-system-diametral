@@ -95,12 +95,16 @@ function TreemapTile({
         <text
           x={x + 8}
           y={y + 8}
-          className="ds-treemap-tile-label"
+          className="fill-foreground text-[11px] font-medium"
           dominantBaseline="hanging"
         >
           {name}
           {height > VALUE_MIN_HEIGHT ? (
-            <tspan x={x + 8} dy={15} className="ds-treemap-tile-value">
+            <tspan
+              x={x + 8}
+              dy={15}
+              className="fill-muted-foreground font-mono text-[10px] tabular-nums"
+            >
               {formatValue(value)}
             </tspan>
           ) : null}

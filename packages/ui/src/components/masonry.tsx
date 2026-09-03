@@ -15,7 +15,10 @@ function Masonry({
     <div
       data-slot="masonry"
       style={{ "--columns": columns } as React.CSSProperties}
-      className={cn("ds-masonry", className)}
+      className={cn(
+        "columns-(--columns) gap-4 *:mb-4 *:break-inside-avoid",
+        className
+      )}
       {...props}
     />
   )

@@ -57,7 +57,7 @@ function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
       role="navigation"
       aria-label="pagination"
       data-slot="pagination"
-      className={cn("ds-pagination mx-auto w-full justify-center", className)}
+      className={cn("mx-auto flex w-full justify-center", className)}
       {...props}
     />
   )
@@ -70,7 +70,7 @@ function PaginationContent({
   return (
     <ul
       data-slot="pagination-content"
-      className={cn("ds-pagination-content", className)}
+      className={cn("flex items-center gap-1", className)}
       {...props}
     />
   )
@@ -118,11 +118,11 @@ function PaginationPrevious({
     <PaginationLink
       aria-label="Go to previous page"
       size="default"
-      className={cn("ds-pagination-previous", className)}
+      className={cn("ps-2!", className)}
       {...props}
     >
-      <CaretLeftIcon data-icon="inline-start" className="ds-pagination-caret" />
-      <span className="ds-pagination-label">{text}</span>
+      <CaretLeftIcon data-icon="inline-start" className="rtl:rotate-180" />
+      <span className="hidden sm:block">{text}</span>
     </PaginationLink>
   )
 }
@@ -136,11 +136,11 @@ function PaginationNext({
     <PaginationLink
       aria-label="Go to next page"
       size="default"
-      className={cn("ds-pagination-next", className)}
+      className={cn("pe-2!", className)}
       {...props}
     >
-      <span className="ds-pagination-label">{text}</span>
-      <CaretRightIcon data-icon="inline-end" className="ds-pagination-caret" />
+      <span className="hidden sm:block">{text}</span>
+      <CaretRightIcon data-icon="inline-end" className="rtl:rotate-180" />
     </PaginationLink>
   )
 }
@@ -153,7 +153,10 @@ function PaginationEllipsis({
     <span
       aria-hidden
       data-slot="pagination-ellipsis"
-      className={cn("ds-pagination-ellipsis", className)}
+      className={cn(
+        "flex size-9 items-center justify-center [&_svg:not([class*='size-'])]:size-4",
+        className
+      )}
       {...props}
     >
       <DotsThreeIcon />

@@ -5,17 +5,24 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "../lib/utils.js"
 import { Separator } from "./separator.js"
 
-// The orientation classes are applied via the `data-orientation` attribute
-// selector in button-group.css, so cva only needs the shape (its variant
-// keys) for apps/web's build-time playground extraction.
-const buttonGroupVariants = cva("ds-button-group", {
-  variants: {
-    orientation: { horizontal: "", vertical: "" },
-  },
-  defaultVariants: {
-    orientation: "horizontal",
-  },
-})
+const buttonGroupVariants = cva(
+  "group/button-group flex w-fit items-stretch *:focus-visible:relative *:focus-visible:z-10 has-[>[data-slot=button-group]]:gap-2 *:data-[slot=input]:px-4 [&>[data-slot=select-trigger]:not([class*='w-'])]:w-fit [&>input]:flex-1",
+  {
+    variants: {
+      orientation: {
+        /* A separator stands in for the shared edge, so the member before it
+           drops its own end border; without that the two stack into 2px. */
+        horizontal:
+          "[&>[data-slot]~[data-slot]]:border-s-0 [&>[data-slot]:has(+[data-slot=button-group-separator])]:border-e-0",
+        vertical:
+          "flex-col [&>[data-slot]~[data-slot]]:border-t-0 [&>[data-slot]:has(+[data-slot=button-group-separator])]:border-b-0",
+      },
+    },
+    defaultVariants: {
+      orientation: "horizontal",
+    },
+  }
+)
 
 function ButtonGroup({
   className,
@@ -42,7 +49,13 @@ function ButtonGroupText({
     defaultTagName: "div",
     props: mergeProps<"div">(
       {
-        className: cn("ds-button-group-text", className),
+        className: cn(
+          /* Boxed by default so it closes the outline next to bordered
+             buttons; an Input sibling is underline-only, so match that
+             instead and the two share one continuous rule. */
+          "flex items-center gap-2 border border-border bg-transparent px-4 text-xs font-semibold group-has-[>[data-slot=input]]/button-group:border-transparent group-has-[>[data-slot=input]]/button-group:border-b-input [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-3.5",
+          className
+        ),
       },
       props
     ),
@@ -63,11 +76,7 @@ function ButtonGroupSeparator({
       data-slot="button-group-separator"
       orientation={orientation}
       className={cn(
-        // bg-input/data-horizontal:w-auto/data-vertical:h-auto stay literal
-        // Tailwind utilities (see separator.css's note on Separator itself)
-        // — they dedupe via tailwind-merge against Separator's own literal
-        // bg-border/data-horizontal:w-full/data-vertical:w-px defaults.
-        "ds-button-group-separator bg-input data-horizontal:w-auto data-vertical:h-auto",
+        "relative self-stretch bg-input data-horizontal:w-auto data-vertical:h-auto",
         className
       )}
       {...props}

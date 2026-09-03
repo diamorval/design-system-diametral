@@ -85,7 +85,10 @@ function PhoneInput({
     <div
       data-slot="phone-input"
       data-disabled={disabled || undefined}
-      className={cn("ds-phone-input", className)}
+      className={cn(
+        "flex h-10 w-full items-stretch border border-transparent border-b-input bg-transparent transition-[color,border-color] focus-within:border-b-ring data-disabled:pointer-events-none data-disabled:opacity-50",
+        className
+      )}
     >
       <Select
         items={COUNTRIES.map((c) => ({ value: c.code, label: c.dialCode }))}
