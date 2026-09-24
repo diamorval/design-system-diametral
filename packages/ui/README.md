@@ -113,6 +113,13 @@ Each component also has its own path — `diametral-ds/button`,
 `diametral-ds/data-table` — for faster dev-server loads in large apps. The root
 also exports `cn` (class merging) and `useIsMobile`.
 
+`MessageScroller` is the one exception: it is not in the root, only at
+`diametral-ds/message-scroller`, and it needs React 19 and one extra install:
+
+```bash
+pnpm add @shadcn/react
+```
+
 ## Assets
 
 Logos ship under `diametral-ds/assets/` as SVG, with PNG fallbacks in `raster/`:
