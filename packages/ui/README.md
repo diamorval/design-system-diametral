@@ -12,9 +12,12 @@
 
 ---
 
-Diametral is a flat, sharp visual language: **1px rules, no shadows, no
-border-radius**, white / whitesmoke surfaces, black ink, **Ufficio** Light 300
-titles over **Geist** body, uppercase labels at `0.08em`, tabular numerals.
+Diametral is a flat, sharp visual language: **1px rules, no shadows in the page
+flow, no border-radius**, white / whitesmoke surfaces, black ink, **Ufficio**
+Light 300 titles over **Geist** body, uppercase labels at `0.08em`, tabular
+numerals. Only overlays that float above the page (dialogs, sheets, menus,
+popovers, tooltips) carry a shadow. There is no default accent colour: checked,
+selected and active states are ink, and brand colours are opt-in per instance.
 
 This package is the **React layer**. It complements
 [`@diametral/design-system`](https://www.npmjs.com/package/@diametral/design-system)
