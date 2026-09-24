@@ -8,6 +8,22 @@ checked against `packages/ui/src/components/` on 2026-09-24.
 Already fixed in `b7a7d12` (published as `0.1.0-rc.1`): chart heights, Card
 shadow, CardTitle heading, DataTable empty node + column labels.
 
+## Status (2026-09-24, uncommitted on `feat/publish-diametral-ds`)
+
+- **D1** kept: `AlertDialogAction` stays a plain Button.
+- **D2** decided by the standing "no default accent" rule: `--primary` and
+  `--sidebar-primary` now map to `--ds-ink` / `--ds-bg`, so checked, selected,
+  active and link states are neutral and invert on dark. `--ds-accent` is
+  untouched and still available as a tone.
+- **D3** documented in `packages/ui/README.md`: no shadows in the page flow;
+  overlays keep theirs.
+- **Done:** M1, M2, M3, M4, M5, M6, W2, W3 (hash-router scroll only; the
+  `aria-label` was already overridable), W4 (`TimelineTime render`), W5.
+- **W1 was not a DS bug:** `DrawerContent` already wraps children in a
+  `select-text` layer. The example's `select-text` can be deleted.
+- **Left:** publish `0.1.0-rc.2`, then drop the example's workarounds; W6–W10,
+  M7–M9 after `0.1.0`.
+
 ## 0 · Decisions needed first
 
 | # | Question | Where | Default if nobody objects |
