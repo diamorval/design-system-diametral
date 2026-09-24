@@ -1,6 +1,6 @@
 name: CI
 
-# Typecheck, lint and build on every push and PR. Also packs @diametral/ui and
+# Typecheck, lint and build on every push and PR. Also packs diametral-ds and
 # installs the tarball into a throwaway project, because the monorepo build
 # passes even when the *published* artifact is broken — extensionless ESM
 # specifiers and @source paths that climb out of the package both fail only for
@@ -53,12 +53,17 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - name: Pack @diametral/ui
-        run: pnpm --filter @diametral/ui pack --pack-destination /tmp
+      # Mirrors publish-npm.yml, so CI tests the tarball as it will be published.
+      - name: Rename to the published name
+        working-directory: packages/ui
+        run: npm pkg set name=diametral-ds
+
+      - name: Pack diametral-ds
+        run: pnpm --filter ./packages/ui pack --pack-destination /tmp
 
       - name: Assert the commercial font never ships
         run: |
-          if tar tzf /tmp/diametral-ui-*.tgz | grep -iE 'ufficio|\.(woff2?|otf|ttf)$'; then
+          if tar tzf /tmp/diametral-ds-*.tgz | grep -iE 'ufficio|\.(woff2?|otf|ttf)$'; then
             echo "::error::A font file is present in the tarball. Ufficio is commercial and must never be distributed (see packages/ui/NOTICE.md)."
             exit 1
           fi
@@ -74,20 +79,19 @@ jobs:
             "skipLibCheck":true }, "include":["src"] }
           JSON
           cat > src/app.tsx <<'TSX'
-          import { Button } from "@diametral/ui/components/button"
-          import { Card, CardContent } from "@diametral/ui/components/card"
-          import { cn } from "@diametral/ui/lib/utils"
+          import { Card, CardContent, cn } from "diametral-ds"
+          import { Button } from "diametral-ds/button"
           export const App = () => (
             <Card className={cn("m-4")}>
               <CardContent>
-                <Button variant="outline" tone="rouge">Escalate</Button>
+                <Button variant="outline" tone="red">Escalate</Button>
               </CardContent>
             </Card>
           )
           TSX
-          printf '@import "@diametral/ui/globals.css";\n@source "./src/**/*.tsx";\n' > src/app.css
+          printf '@import "diametral-ds/styles.css";\n@source "./src/**/*.tsx";\n' > src/app.css
           npm install --no-audit --no-fund react@19 react-dom@19 @types/react@19 \
-            @types/react-dom@19 typescript tailwindcss @tailwindcss/cli /tmp/diametral-ui-*.tgz
+            @types/react-dom@19 typescript tailwindcss @tailwindcss/cli /tmp/diametral-ds-*.tgz
 
       - name: Consumer typechecks against the tarball
         run: cd /tmp/consumer && npx tsc --noEmit
@@ -96,7 +100,7 @@ jobs:
         run: |
           cd /tmp/consumer
           node --input-type=module -e "
-            import('@diametral/ui/components/button')
+            Promise.all([import('diametral-ds'), import('diametral-ds/button')])
               .then(() => console.log('Node ESM resolution OK'))
               .catch(e => { console.error('Node ESM resolution FAILED:', e.code); process.exit(1) })
           "
@@ -108,5 +112,5 @@ jobs:
           for cls in shrink-0 tabular-nums; do
             grep -q "$cls" out.css || { echo "::error::Tailwind did not emit .$cls — the packaged @source directive is broken."; exit 1; }
           done
-          grep -q -- '--ds-rouge' out.css || { echo "::error::Brand tokens missing from consumer CSS."; exit 1; }
+          grep -q -- '--ds-red' out.css || { echo "::error::Brand tokens missing from consumer CSS."; exit 1; }
           echo "Packaged stylesheet is self-scanning correctly."

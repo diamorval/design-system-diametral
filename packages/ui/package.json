@@ -13,25 +13,23 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/LittleBigCode/design-system2.git",
+    "url": "git+https://github.com/diamorval/design-system-diametral.git",
     "directory": "packages/ui"
   },
   "publishConfig": {
     "access": "public",
-    "//": "pnpm swaps these fields in at pack time. Source stays the entry point in-repo so the docs app keeps HMR on component edits; the tarball resolves to dist.",
+    "//": "pnpm swaps these fields in at pack time. Source stays the entry point in-repo so the docs app keeps HMR on component edits; the tarball resolves to dist. Public paths are flat (diametral-ds, diametral-ds/button, diametral-ds/assets/*) — the src/ folder layout is not API. The name itself is swapped to diametral-ds by the publish workflow.",
     "exports": {
-      "./globals.css": "./dist/globals.css",
-      "./components/*": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./styles.css": "./dist/globals.css",
+      "./assets/*": "./dist/assets/*",
+      "./package.json": "./package.json",
+      "./*": {
         "types": "./dist/components/*.d.ts",
         "default": "./dist/components/*.js"
-      },
-      "./hooks/*": {
-        "types": "./dist/hooks/*.d.ts",
-        "default": "./dist/hooks/*.js"
-      },
-      "./lib/*": {
-        "types": "./dist/lib/*.d.ts",
-        "default": "./dist/lib/*.js"
       }
     }
   },
@@ -45,7 +43,7 @@
     "NOTICE.md"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json && node scripts/build-css.mjs",
+    "build": "tsc -p tsconfig.build.json && node scripts/build-css.mjs && node scripts/build-entry.mjs",
     "clean": "rm -rf dist",
     "lint": "eslint && node scripts/lint-components.mjs",
     "lint:components": "node scripts/lint-components.mjs",
