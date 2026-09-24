@@ -4,7 +4,6 @@ import * as React from "react"
 import { Funnel, FunnelChart as RechartsFunnelChart, LabelList } from "recharts"
 
 import { withSliceColors } from "../lib/chart-series.js"
-import { cn } from "../lib/utils.js"
 import {
   ChartContainer,
   ChartLegend,
@@ -145,7 +144,7 @@ function FunnelChart({
   return (
     <ChartContainer
       config={config ?? {}}
-      className={cn("h-64 w-full", className)}
+      className={className}
       {...props}
     >
       <RechartsFunnelChart margin={margin}>

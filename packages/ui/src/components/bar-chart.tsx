@@ -14,7 +14,6 @@ import {
   STATUS_COLORS,
   type ChartStatus,
 } from "../lib/chart-series.js"
-import { cn } from "../lib/utils.js"
 import {
   ChartContainer,
   ChartLegend,
@@ -120,7 +119,7 @@ function BarChart({
   return (
     <ChartContainer
       config={config}
-      className={cn("h-56 w-full", className)}
+      className={className}
       {...props}
     >
       <RechartsBarChart

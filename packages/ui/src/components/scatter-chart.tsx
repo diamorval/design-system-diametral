@@ -11,7 +11,6 @@ import {
 } from "recharts"
 
 import { seriesColor } from "../lib/chart-series.js"
-import { cn } from "../lib/utils.js"
 import {
   ChartContainer,
   ChartLegend,
@@ -95,7 +94,7 @@ function ScatterChart({
   return (
     <ChartContainer
       config={config}
-      className={cn("h-64 w-full", className)}
+      className={className}
       {...props}
     >
       <RechartsScatterChart accessibilityLayer margin={margin}>
