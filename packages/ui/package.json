@@ -59,13 +59,16 @@
     "./lib/*": "./src/lib/*.ts"
   },
   "peerDependencies": {
-    "react": ">=19",
-    "react-dom": ">=19",
-    "tailwindcss": "^4",
-    "@shadcn/react": "^0.2.1"
+    "@shadcn/react": "^0.2.1",
+    "react": ">=18",
+    "react-dom": ">=18",
+    "tailwindcss": "^4"
   },
   "peerDependenciesMeta": {
     "@shadcn/react": {
+      "optional": true
+    },
+    "tailwindcss": {
       "optional": true
     }
   },

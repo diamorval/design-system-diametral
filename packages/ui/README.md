@@ -31,8 +31,15 @@ this when you are building a React application.
 pnpm add diametral-ds
 ```
 
-`react`, `react-dom` (>= 19) and `tailwindcss` (v4) are **peer dependencies** —
-this package will not pull its own copy of React.
+`react` and `react-dom` (>= 18) are **peer dependencies**, so this package will
+not pull its own copy of React. `tailwindcss` v4 is an optional peer: without it,
+use the precompiled stylesheet (see below).
+
+On React 18, also install the matching `react-is`, which the charts need:
+
+```bash
+pnpm add react-is@18
+```
 
 ## Setup
 

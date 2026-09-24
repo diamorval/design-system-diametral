@@ -114,3 +114,39 @@ jobs:
           done
           grep -q -- '--ds-red' out.css || { echo "::error::Brand tokens missing from consumer CSS."; exit 1; }
           echo "Packaged stylesheet is self-scanning correctly."
+
+      # Consumers on React 18 or without Tailwind v4 use styles.compiled.css.
+      - name: React 18 consumer without Tailwind builds against the tarball
+        run: |
+          mkdir -p /tmp/consumer18/src && cd /tmp/consumer18
+          echo '{"name":"consumer18","private":true,"type":"module"}' > package.json
+          cat > tsconfig.json <<'JSON'
+          { "compilerOptions": { "target":"ES2022","lib":["ES2022","DOM"],"module":"ESNext",
+            "moduleResolution":"bundler","jsx":"react-jsx","strict":true,"noEmit":true,
+            "skipLibCheck":true,"types":["vite/client"] }, "include":["src"] }
+          JSON
+          cat > src/main.tsx <<'TSX'
+          import "diametral-ds/styles.compiled.css"
+          import { createRoot } from "react-dom/client"
+          import { Card, CardContent, Tabs, TabsList, TabsTrigger, TabsContent, cn } from "diametral-ds"
+          import { Button } from "diametral-ds/button"
+          createRoot(document.getElementById("root")!).render(
+            <Card className={cn("m-4")}>
+              <CardContent>
+                <Tabs defaultValue="a">
+                  <TabsList><TabsTrigger value="a">A</TabsTrigger></TabsList>
+                  <TabsContent value="a"><Button variant="outline" tone="red">Escalate</Button></TabsContent>
+                </Tabs>
+              </CardContent>
+            </Card>
+          )
+          TSX
+          echo '<div id="root"></div><script type="module" src="/src/main.tsx"></script>' > index.html
+          npm install --no-audit --no-fund react@18 react-dom@18 react-is@18 @types/react@18 \
+            @types/react-dom@18 typescript vite /tmp/diametral-ds-*.tgz
+          if [ -d node_modules/tailwindcss ]; then echo "::error::tailwindcss was installed; it should be an optional peer."; exit 1; fi
+          npx tsc --noEmit
+          npx vite build
+          grep -q -- '--ds-red' dist/assets/*.css || { echo "::error::Brand tokens missing from the compiled CSS bundle."; exit 1; }
+          ls dist/assets/*.woff2 >/dev/null || { echo "::error::Geist fonts did not resolve from the compiled CSS."; exit 1; }
+          echo "React 18 consumer without Tailwind builds."
