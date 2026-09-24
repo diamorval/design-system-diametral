@@ -12,7 +12,7 @@ export default function CarouselPlayground(
   props: ComponentProps<typeof Carousel>
 ) {
   return (
-    <Carousel className="w-full max-w-3xs px-12" {...props}>
+    <Carousel className="w-full max-w-3xs" {...props}>
       <CarouselContent>
         {[1, 2, 3, 4].map((slide) => (
           <CarouselItem key={slide}>

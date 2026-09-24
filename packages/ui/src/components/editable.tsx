@@ -11,6 +11,9 @@ import { Input } from "./input.js"
 // Inline click-to-edit text. `onMouseDown` preventDefault on the Save/Cancel
 // buttons stops them from blurring the input first — without it, the blur
 // handler would commit or discard before the button's own onClick runs.
+// `aria-label` names the field, not the wrapper: it labels the input and
+// suffixes each button ("Edit Project name"), so several Editables on one
+// page stay distinguishable.
 function Editable({
   className,
   value,
@@ -21,6 +24,7 @@ function Editable({
   placeholder = "Empty",
   disabled = false,
   submitOnBlur = true,
+  "aria-label": fieldName,
   ...props
 }: Omit<
   React.ComponentProps<"div">,
@@ -47,6 +51,8 @@ function Editable({
   React.useEffect(() => {
     if (editing) inputRef.current?.focus()
   }, [editing])
+
+  const label = (verb: string) => (fieldName ? `${verb} ${fieldName}` : verb)
 
   const startEditing = () => {
     if (disabled) return
@@ -77,6 +83,7 @@ function Editable({
         <Input
           ref={inputRef}
           data-slot="editable-input"
+          aria-label={fieldName}
           value={draft}
           onChange={(event) => setDraft(event.target.value)}
           onKeyDown={(event) => {
@@ -95,7 +102,7 @@ function Editable({
           type="button"
           variant="ghost"
           size="icon-xs"
-          aria-label="Save"
+          aria-label={label("Save")}
           onMouseDown={(event) => event.preventDefault()}
           onClick={submit}
         >
@@ -105,7 +112,7 @@ function Editable({
           type="button"
           variant="ghost"
           size="icon-xs"
-          aria-label="Cancel"
+          aria-label={label("Cancel")}
           onMouseDown={(event) => event.preventDefault()}
           onClick={cancel}
         >
@@ -132,7 +139,7 @@ function Editable({
         type="button"
         variant="ghost"
         size="icon-xs"
-        aria-label="Edit"
+        aria-label={label("Edit")}
         disabled={disabled}
         onClick={startEditing}
         className="opacity-0 group-hover/editable:opacity-100 focus-visible:opacity-100"

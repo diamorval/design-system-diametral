@@ -25,7 +25,11 @@ function DateRangePicker({
   dateFormat = "PP",
   showTime = false,
   numberOfMonths = 2,
-}: {
+  ...props
+}: Omit<
+  React.ComponentProps<typeof PopoverTrigger>,
+  "value" | "defaultValue" | "children"
+> & {
   value?: DateRange
   defaultValue?: DateRange
   onValueChange?: (value: DateRange) => void
@@ -77,6 +81,7 @@ function DateRangePicker({
           showTime ? "w-96" : "w-72",
           className
         )}
+        {...props}
       >
         <span className={cn("truncate", !label && "text-muted-foreground")}>
           {label ?? placeholder}

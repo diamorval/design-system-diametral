@@ -1,4 +1,6 @@
 import * as React from "react"
+import { mergeProps } from "@base-ui/react/merge-props"
+import { useRender } from "@base-ui/react/use-render"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "../lib/utils.js"
@@ -104,17 +106,29 @@ function TimelineDescription({
   )
 }
 
-function TimelineTime({ className, ...props }: React.ComponentProps<"time">) {
-  return (
-    <time
-      data-slot="timeline-time"
-      className={cn(
-        "text-xs tracking-wide text-muted-foreground tabular-nums",
-        className
-      )}
-      {...props}
-    />
-  )
+// `render={<RelativeTime date={…} />}` swaps the element instead of nesting a
+// second <time> inside this one, which is invalid HTML.
+function TimelineTime({
+  className,
+  render,
+  ...props
+}: useRender.ComponentProps<"time">) {
+  return useRender({
+    defaultTagName: "time",
+    props: mergeProps<"time">(
+      {
+        className: cn(
+          "text-xs tracking-wide text-muted-foreground tabular-nums",
+          className
+        ),
+      },
+      props
+    ),
+    render,
+    state: {
+      slot: "timeline-time",
+    },
+  })
 }
 
 export {
