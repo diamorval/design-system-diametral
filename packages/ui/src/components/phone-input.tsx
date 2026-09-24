@@ -51,7 +51,16 @@ function PhoneInput({
   defaultCountry = "FR",
   disabled = false,
   placeholder = "6 12 34 56 78",
-}: {
+  ...inputProps
+}: Pick<
+  React.ComponentProps<"input">,
+  | "id"
+  | "name"
+  | "aria-label"
+  | "aria-labelledby"
+  | "aria-describedby"
+  | "aria-invalid"
+> & {
   value?: string
   defaultValue?: string
   onValueChange?: (value: string) => void
@@ -86,7 +95,7 @@ function PhoneInput({
       data-slot="phone-input"
       data-disabled={disabled || undefined}
       className={cn(
-        "flex h-10 w-full items-stretch border border-transparent border-b-input bg-transparent transition-[color,border-color] focus-within:border-b-ring data-disabled:pointer-events-none data-disabled:opacity-50",
+        "flex h-10 w-full items-stretch border border-transparent border-b-input bg-transparent transition-[color,border-color] focus-within:border-b-ring has-aria-invalid:border-b-destructive dark:has-aria-invalid:border-b-destructive/50 data-disabled:pointer-events-none data-disabled:opacity-50",
         className
       )}
     >
@@ -115,7 +124,12 @@ function PhoneInput({
         data-slot="phone-input-number"
         type="tel"
         inputMode="tel"
-        aria-label="Phone number"
+        aria-label={
+          inputProps.id || inputProps["aria-labelledby"]
+            ? undefined
+            : "Phone number"
+        }
+        {...inputProps}
         value={national}
         disabled={disabled}
         placeholder={placeholder}

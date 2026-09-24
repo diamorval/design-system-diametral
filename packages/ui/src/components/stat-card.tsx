@@ -49,27 +49,39 @@ const statCardDeltaVariants = cva(
   "mt-1 inline-flex w-fit items-center gap-1 text-xs text-muted-foreground tabular-nums",
   {
     variants: {
-      direction: {
+      tone: {
         // The `-ink` variants, not the bare tones: --ds-success is tuned as a
         // surface colour and only reaches 3.82:1 on dark's --ds-bg, which fails
         // AA as text. --ds-success-ink is the text-weight value (6.75:1).
-        up: "text-[var(--ds-success-ink)]",
-        down: "text-[var(--ds-danger-ink)]",
+        positive: "text-[var(--ds-success-ink)]",
+        negative: "text-[var(--ds-danger-ink)]",
+        neutral: "",
       },
     },
   }
 )
 
+// `direction` draws the arrow; `tone` says whether that is good news. They
+// default together (up is positive), and split for metrics where up is bad —
+// churn, cost, latency: `direction="up" tone="negative"`.
 function StatCardDelta({
   className,
   direction,
+  tone = direction === "up"
+    ? "positive"
+    : direction === "down"
+      ? "negative"
+      : undefined,
   children,
   ...props
-}: React.ComponentProps<"div"> & VariantProps<typeof statCardDeltaVariants>) {
+}: React.ComponentProps<"div"> &
+  VariantProps<typeof statCardDeltaVariants> & {
+    direction?: "up" | "down" | null
+  }) {
   return (
     <div
       data-slot="stat-card-delta"
-      className={cn(statCardDeltaVariants({ direction }), className)}
+      className={cn(statCardDeltaVariants({ tone }), className)}
       {...props}
     >
       {direction && (

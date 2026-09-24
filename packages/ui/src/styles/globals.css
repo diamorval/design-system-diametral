@@ -201,10 +201,11 @@
     --card-foreground: var(--ds-ink);
     --popover: var(--ds-surface);
     --popover-foreground: var(--ds-ink);
-    /* Brand signal red is shadcn's `primary` (the solid fill), not its
-       `accent` — which is only the subtle hover surface. */
-    --primary: var(--ds-accent);
-    --primary-foreground: var(--ds-on-accent);
+    /* No standing accent: `primary` (checked, selected, active, link) is ink,
+       so it stays neutral and inverts on dark. Red is selected per instance
+       through a tone, never inherited. */
+    --primary: var(--ds-ink);
+    --primary-foreground: var(--ds-bg);
     --secondary: var(--ds-bg-alt);
     --secondary-foreground: var(--ds-ink);
     --muted: var(--ds-bg-alt);
@@ -223,8 +224,8 @@
     --radius: var(--ds-radius);
     --sidebar: var(--ds-bg-alt);
     --sidebar-foreground: var(--ds-ink);
-    --sidebar-primary: var(--ds-accent);
-    --sidebar-primary-foreground: var(--ds-on-accent);
+    --sidebar-primary: var(--ds-ink);
+    --sidebar-primary-foreground: var(--ds-bg);
     --sidebar-accent: var(--ds-rule-soft);
     --sidebar-accent-foreground: var(--ds-ink);
     --sidebar-border: var(--ds-rule);
@@ -233,8 +234,7 @@
 
 /* Dark theme — Tier 2 semantics only, mirroring v1's css/themes/dark.css. The
    shadcn slots above re-resolve automatically because they are var() refs and
-   this class lands on the same root element. Brand red is deliberately kept as
-   the accent: it pops on dark. */
+   this class lands on the same root element. */
 .dark {
     --ds-bg: #0e0e10;
     --ds-bg-alt: #1b1c1f;

@@ -1,6 +1,6 @@
 <div align="center">
 
-# @diametral/ui
+# diametral-ds
 
 > Diametral Design System — **72 React components** on [Base UI](https://base-ui.com)
 > and Tailwind CSS v4.
@@ -12,9 +12,12 @@
 
 ---
 
-Diametral is a flat, sharp visual language: **1px rules, no shadows, no
-border-radius**, white / whitesmoke surfaces, black ink, **Ufficio** Light 300
-titles over **Geist** body, uppercase labels at `0.08em`, tabular numerals.
+Diametral is a flat, sharp visual language: **1px rules, no shadows in the page
+flow, no border-radius**, white / whitesmoke surfaces, black ink, **Ufficio**
+Light 300 titles over **Geist** body, uppercase labels at `0.08em`, tabular
+numerals. Only overlays that float above the page (dialogs, sheets, menus,
+popovers, tooltips) carry a shadow. There is no default accent colour: checked,
+selected and active states are ink, and brand colours are opt-in per instance.
 
 This package is the **React layer**. It complements
 [`@diametral/design-system`](https://www.npmjs.com/package/@diametral/design-system)
@@ -25,7 +28,7 @@ this when you are building a React application.
 ## Install
 
 ```bash
-pnpm add @diametral/ui
+pnpm add diametral-ds
 ```
 
 `react`, `react-dom` (>= 19) and `tailwindcss` (v4) are **peer dependencies** —
@@ -36,7 +39,7 @@ this package will not pull its own copy of React.
 **1 · Import the stylesheet** once, at your app's entry:
 
 ```ts
-import "@diametral/ui/globals.css"
+import "diametral-ds/styles.css"
 ```
 
 That single import brings in Tailwind, the `--ds-*` design tokens, the shadcn
@@ -51,19 +54,20 @@ Tailwind finds the classes used inside this package without extra configuration.
 
 ## Usage
 
-Components are imported one per path — there is no barrel file, so bundlers
-tree-shake by default:
+Import everything from the package root. The package declares
+`sideEffects: ["**/*.css"]`, so bundlers drop the components you don't use:
 
 ```tsx
-import { Button } from "@diametral/ui/components/button"
 import {
+  Button,
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from "@diametral/ui/components/card"
-import { Field, FieldLabel } from "@diametral/ui/components/field"
-import { Input } from "@diametral/ui/components/input"
+  Field,
+  FieldLabel,
+  Input,
+} from "diametral-ds"
 
 export function Example() {
   return (
@@ -91,6 +95,22 @@ export function Example() {
 ```tsx
 <Button variant="outline" tone="red">Escalate</Button>
 ```
+
+Each component also has its own path — `diametral-ds/button`,
+`diametral-ds/data-table` — for faster dev-server loads in large apps. The root
+also exports `cn` (class merging) and `useIsMobile`.
+
+## Assets
+
+Logos ship under `diametral-ds/assets/` as SVG, with PNG fallbacks in `raster/`:
+
+```tsx
+import mark from "diametral-ds/assets/diametral-mark.svg"
+import lockup from "diametral-ds/assets/raster/diametral-lockup-horizontal-black.png"
+```
+
+The `<Wordmark>` component renders the lockups inline. The marks are trademarks
+and are not covered by the MIT licence — see `dist/assets/NOTICE.md`.
 
 Browse every component, with live playgrounds, in the documentation app
 (`apps/web` in this repository).
@@ -126,14 +146,15 @@ See [NOTICE.md](NOTICE.md) for the full clauses.
 ## Development
 
 ```bash
-pnpm build       # tsc -> dist/, then dist/globals.css
+pnpm build       # tsc -> dist/, then dist/globals.css, dist/index.js, dist/assets
 pnpm typecheck
 pnpm lint
 ```
 
 In this monorepo, `exports` resolves to `src/` so the docs app keeps hot module
 reloading on component edits. `publishConfig.exports` swaps those entries to
-`dist/` at pack time — so verify packaging changes with `pnpm pack`, not by
+`dist/` at pack time, and the publish workflow renames the package from
+`@diametral/ui` to `diametral-ds` — so verify packaging changes with `pnpm pack`, not by
 reading `exports` alone.
 
 Internal imports are **relative and carry explicit `.js` extensions**

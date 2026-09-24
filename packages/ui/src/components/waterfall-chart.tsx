@@ -11,7 +11,6 @@ import {
 } from "recharts"
 
 import { seriesColor, STATUS_COLORS } from "../lib/chart-series.js"
-import { cn } from "../lib/utils.js"
 import {
   ChartContainer,
   ChartTooltip,
@@ -158,7 +157,7 @@ function WaterfallChart({
   return (
     <ChartContainer
       config={config ?? {}}
-      className={cn("h-56 w-full", className)}
+      className={className}
       {...props}
     >
       <ComposedChart accessibilityLayer data={steps} margin={margin}>

@@ -4,7 +4,6 @@ import * as React from "react"
 import { Treemap as RechartsTreemap, type TreemapNode } from "recharts"
 
 import { seriesColor } from "../lib/chart-series.js"
-import { cn } from "../lib/utils.js"
 import {
   ChartContainer,
   ChartTooltip,
@@ -160,7 +159,7 @@ function Treemap({
   return (
     <ChartContainer
       config={config ?? {}}
-      className={cn("h-64 w-full", className)}
+      className={className}
       {...props}
     >
       <RechartsTreemap

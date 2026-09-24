@@ -1,11 +1,16 @@
-name: Publish @diametral/ui to npm
+name: Publish diametral-ds to npm
 
 # MANUAL ONLY, ON PURPOSE. There is no tag or release trigger: publishing has not
 # been authorised yet, so this workflow exists to be ready, not to fire. Add a
 # `push: tags: ["v*"]` trigger when that changes.
 #
-# Requires an NPM_TOKEN secret (an npm automation token for an account that owns
-# the @diametral scope).
+# Requires an NPM_TOKEN secret (a granular npm token with publish rights on
+# diametral-ds).
+#
+# In-repo the package is @diametral/ui; it is published as diametral-ds (personal
+# npm account, while the @diametral scope is not available to us). The rename is
+# one step below — delete it to publish under the in-repo name. Filters use the
+# package path, not its name, because the name changes mid-job.
 #
 # Note the guards below. The tarball must never contain a font binary: Ufficio is
 # commercial and its licence requires offline-only storage (see
@@ -20,6 +25,10 @@ on:
         description: "Pack and verify only — do not publish"
         type: boolean
         default: true
+      version:
+        description: "Override the version (e.g. 0.1.0-rc.0). A prerelease publishes under the `next` dist-tag."
+        type: string
+        default: ""
 
 permissions:
   contents: read
@@ -44,20 +53,30 @@ jobs:
           node-version: 20
           cache: pnpm
           registry-url: "https://registry.npmjs.org"
-          scope: "@diametral"
 
       - run: pnpm install --frozen-lockfile
 
       - run: pnpm typecheck
 
-      - run: pnpm --filter @diametral/ui run build
+      - name: Rename to the published name
+        working-directory: packages/ui
+        run: npm pkg set name=diametral-ds
+
+      - name: Set the version
+        if: ${{ inputs.version != '' }}
+        working-directory: packages/ui
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.]+)?$ ]] || { echo "::error::Not a semver version: $VERSION"; exit 1; }
+          npm pkg set "version=$VERSION"
 
       - name: Pack
-        run: pnpm --filter @diametral/ui pack --pack-destination /tmp
+        run: pnpm --filter ./packages/ui pack --pack-destination /tmp
 
       - name: Assert no font binary ships
         run: |
-          if tar tzf /tmp/diametral-ui-*.tgz | grep -iE 'ufficio|\.(woff2?|otf|ttf)$'; then
+          if tar tzf /tmp/diametral-ds-*.tgz | grep -iE 'ufficio|\.(woff2?|otf|ttf)$'; then
             echo "::error::A font file is present in the tarball. Ufficio is commercial and must never be distributed."
             exit 1
           fi
@@ -67,16 +86,19 @@ jobs:
         run: |
           mkdir -p /tmp/verify && cd /tmp/verify
           echo '{"name":"verify","private":true,"type":"module"}' > package.json
-          npm install --no-audit --no-fund react@19 react-dom@19 /tmp/diametral-ui-*.tgz
+          npm install --no-audit --no-fund react@19 react-dom@19 /tmp/diametral-ds-*.tgz
           node --input-type=module -e "
-            import('@diametral/ui/components/button')
-              .then(() => console.log('resolution OK'))
-              .catch(e => { console.error('resolution FAILED:', e.code); process.exit(1) })
+            const root = await import('diametral-ds')
+            const sub = await import('diametral-ds/button')
+            if (root.Button !== sub.Button || typeof root.cn !== 'function') throw new Error('root/subpath mismatch')
+            import.meta.resolve('diametral-ds/styles.css')
+            import.meta.resolve('diametral-ds/assets/diametral-mark.svg')
+            console.log('resolution OK:', Object.keys(root).length, 'root exports')
           "
 
       - name: Publish (public, with provenance)
         if: ${{ !inputs.dry_run }}
-        run: pnpm --filter @diametral/ui publish --access public --no-git-checks --provenance
+        run: pnpm --filter ./packages/ui publish --access public --no-git-checks --provenance --tag ${{ contains(inputs.version, '-') && 'next' || 'latest' }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
