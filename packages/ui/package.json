@@ -25,6 +25,7 @@
         "default": "./dist/index.js"
       },
       "./styles.css": "./dist/globals.css",
+      "./styles.compiled.css": "./dist/styles.compiled.css",
       "./assets/*": "./dist/assets/*",
       "./package.json": "./package.json",
       "./*": {
@@ -87,6 +88,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^10",
+    "@tailwindcss/cli": "^4.3.3",
     "@tailwindcss/vite": "^4",
     "@turbo/gen": "^2.9.15",
     "@types/node": "^24",

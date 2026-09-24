@@ -52,6 +52,19 @@ Tailwind finds the classes used inside this package without extra configuration.
 @source "./src/**/*.{ts,tsx}";
 ```
 
+### Without Tailwind v4
+
+On Tailwind v3, or with no Tailwind at all, import the precompiled stylesheet
+instead. It needs no Tailwind configuration:
+
+```ts
+import "diametral-ds/styles.compiled.css"
+```
+
+It holds every class the components use, plus the tokens, dark theme and Geist.
+It does not generate utilities for your own markup, so style your own files with
+your existing setup and the `--ds-*` variables.
+
 ## Usage
 
 Import everything from the package root. The package declares
