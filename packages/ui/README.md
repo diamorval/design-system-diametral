@@ -31,8 +31,15 @@ this when you are building a React application.
 pnpm add diametral-ds
 ```
 
-`react`, `react-dom` (>= 19) and `tailwindcss` (v4) are **peer dependencies** —
-this package will not pull its own copy of React.
+`react` and `react-dom` (>= 18) are **peer dependencies**, so this package will
+not pull its own copy of React. `tailwindcss` v4 is an optional peer: without it,
+use the precompiled stylesheet (see below).
+
+On React 18, also install the matching `react-is`, which the charts need:
+
+```bash
+pnpm add react-is@18
+```
 
 ## Setup
 
@@ -51,6 +58,19 @@ Tailwind finds the classes used inside this package without extra configuration.
 ```css
 @source "./src/**/*.{ts,tsx}";
 ```
+
+### Without Tailwind v4
+
+On Tailwind v3, or with no Tailwind at all, import the precompiled stylesheet
+instead. It needs no Tailwind configuration:
+
+```ts
+import "diametral-ds/styles.compiled.css"
+```
+
+It holds every class the components use, plus the tokens, dark theme and Geist.
+It does not generate utilities for your own markup, so style your own files with
+your existing setup and the `--ds-*` variables.
 
 ## Usage
 
@@ -99,6 +119,13 @@ export function Example() {
 Each component also has its own path — `diametral-ds/button`,
 `diametral-ds/data-table` — for faster dev-server loads in large apps. The root
 also exports `cn` (class merging) and `useIsMobile`.
+
+`MessageScroller` is the one exception: it is not in the root, only at
+`diametral-ds/message-scroller`, and it needs React 19 and one extra install:
+
+```bash
+pnpm add @shadcn/react
+```
 
 ## Assets
 

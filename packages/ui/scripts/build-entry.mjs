@@ -19,8 +19,14 @@ const components = (await readdir(resolve(dist, "components")))
   .filter((f) => f.endsWith(".js"))
   .sort()
 
+// Subpath-only: their dependency is an optional peer the consumer may not have,
+// and a root re-export would make every bundler resolve it.
+const SUBPATH_ONLY = new Set(["message-scroller.js"])
+
 const lines = [
-  ...components.map((f) => `export * from "./components/${f}"`),
+  ...components
+    .filter((f) => !SUBPATH_ONLY.has(f))
+    .map((f) => `export * from "./components/${f}"`),
   `export { cn } from "./lib/utils.js"`,
   `export { useIsMobile } from "./hooks/use-mobile.js"`,
 ]
@@ -36,6 +42,6 @@ await cp(resolve(root, "../assets/logo"), resolve(dist, "assets"), {
 await cp(resolve(root, "../assets/NOTICE.md"), resolve(dist, "assets/NOTICE.md"))
 
 console.log(
-  `build-entry: dist/index.js exports ${components.length} component modules; ` +
+  `build-entry: dist/index.js exports ${components.length - SUBPATH_ONLY.size} component modules; ` +
     `assets copied to dist/assets`
 )

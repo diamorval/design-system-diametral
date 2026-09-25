@@ -6,7 +6,8 @@
 // published copy sits at dist/globals.css beside dist/components/*.js, so it
 // scans its own emitted JS instead — consumers still declare their own sources.
 
-import { mkdir, readFile, writeFile } from "node:fs/promises"
+import { execFileSync } from "node:child_process"
+import { mkdir, readFile, rm, writeFile } from "node:fs/promises"
 import { dirname, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
 
@@ -36,4 +37,27 @@ const dropped = css.match(/^@source\s+"[^"]*";\s*$/gm) ?? []
 console.log(
   `build-css: dist/globals.css written (${dropped.length} @source ` +
     `directive(s) replaced with ${PACKAGED_SOURCE})`
+)
+
+// Also emit dist/styles.compiled.css: plain CSS for consumers on Tailwind 3 or
+// no Tailwind at all. Font imports are kept as bare @imports rather than
+// inlined, because inlining breaks fontsource's relative url(./files/...) paths.
+const FONT_IMPORT = /^@import "@fontsource-variable\/[^"]+";\s*$/gm
+const fontImports = out.match(FONT_IMPORT) ?? []
+const input = resolve(root, "dist/.compile-input.css")
+const compiled = resolve(root, "dist/styles.compiled.css")
+
+await writeFile(input, out.replace(FONT_IMPORT, ""), "utf8")
+try {
+  execFileSync("tailwindcss", ["-i", input, "-o", compiled, "--minify"], {
+    cwd: root,
+    stdio: ["ignore", "ignore", "inherit"],
+  })
+} finally {
+  await rm(input)
+}
+const body = await readFile(compiled, "utf8")
+await writeFile(compiled, fontImports.join("\n") + "\n" + body, "utf8")
+console.log(
+  `build-css: dist/styles.compiled.css written (${(body.length / 1024).toFixed(0)} KB)`
 )
