@@ -89,7 +89,7 @@ jobs:
             </Card>
           )
           TSX
-          printf '@import "diametral-ds/styles.css";\n@source "./src/**/*.tsx";\n' > src/app.css
+          printf '@import "diametral-ds/styles.tailwind.css";\n@source "./src/**/*.tsx";\n' > src/app.css
           npm install --no-audit --no-fund react@19 react-dom@19 @types/react@19 \
             @types/react-dom@19 typescript tailwindcss @tailwindcss/cli /tmp/diametral-ds-*.tgz
 
@@ -115,7 +115,7 @@ jobs:
           grep -q -- '--ds-red' out.css || { echo "::error::Brand tokens missing from consumer CSS."; exit 1; }
           echo "Packaged stylesheet is self-scanning correctly."
 
-      # Consumers on React 18 or without Tailwind v4 use styles.compiled.css.
+      # Consumers on React 18 or without Tailwind v4 use the default styles.css.
       - name: React 18 consumer without Tailwind builds against the tarball
         run: |
           mkdir -p /tmp/consumer18/src && cd /tmp/consumer18
@@ -126,7 +126,7 @@ jobs:
             "skipLibCheck":true,"types":["vite/client"] }, "include":["src"] }
           JSON
           cat > src/main.tsx <<'TSX'
-          import "diametral-ds/styles.compiled.css"
+          import "diametral-ds/styles.css"
           import { createRoot } from "react-dom/client"
           import { Card, CardContent, Tabs, TabsList, TabsTrigger, TabsContent, cn } from "diametral-ds"
           import { Button } from "diametral-ds/button"
@@ -142,9 +142,9 @@ jobs:
           )
           TSX
           echo '<div id="root"></div><script type="module" src="/src/main.tsx"></script>' > index.html
-          npm install --no-audit --no-fund react@18 react-dom@18 react-is@18 @types/react@18 \
+          npm install --no-audit --no-fund react@18 react-dom@18 @types/react@18 \
             @types/react-dom@18 typescript vite /tmp/diametral-ds-*.tgz
-          if [ -d node_modules/tailwindcss ]; then echo "::error::tailwindcss was installed; it should be an optional peer."; exit 1; fi
+          if [ -d node_modules/tailwindcss ]; then echo "::error::tailwindcss was installed; it should not be a dependency."; exit 1; fi
           npx tsc --noEmit
           npx vite build
           grep -q -- '--ds-red' dist/assets/*.css || { echo "::error::Brand tokens missing from the compiled CSS bundle."; exit 1; }

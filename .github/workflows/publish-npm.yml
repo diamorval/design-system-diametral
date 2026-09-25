@@ -91,7 +91,7 @@ jobs:
             const root = await import('diametral-ds')
             const sub = await import('diametral-ds/button')
             if (root.Button !== sub.Button || typeof root.cn !== 'function') throw new Error('root/subpath mismatch')
-            import.meta.resolve('diametral-ds/styles.css')
+            import.meta.resolve('diametral-ds/styles.css'); import.meta.resolve('diametral-ds/styles.tailwind.css')
             import.meta.resolve('diametral-ds/assets/diametral-mark.svg')
             console.log('resolution OK:', Object.keys(root).length, 'root exports')
           "
