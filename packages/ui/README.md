@@ -32,45 +32,35 @@ pnpm add diametral-ds
 ```
 
 `react` and `react-dom` (>= 18) are **peer dependencies**, so this package will
-not pull its own copy of React. `tailwindcss` v4 is an optional peer: without it,
-use the precompiled stylesheet (see below).
-
-On React 18, also install the matching `react-is`, which the charts need:
-
-```bash
-pnpm add react-is@18
-```
+not pull its own copy of React. Tailwind is not required.
 
 ## Setup
 
-**1 · Import the stylesheet** once, at your app's entry:
+Import the stylesheet once, at your app's entry:
 
 ```ts
 import "diametral-ds/styles.css"
 ```
 
-That single import brings in Tailwind, the `--ds-*` design tokens, the shadcn
-slot mappings, the dark theme, and Geist. It also declares its own `@source`, so
-Tailwind finds the classes used inside this package without extra configuration.
+It is precompiled plain CSS: every class the components use, the `--ds-*`
+design tokens, the dark theme, and Geist. It works on React 18 or 19, with
+Tailwind 3, Tailwind 4, or no Tailwind at all, and needs no configuration.
+Style your own markup with your existing setup and the `--ds-*` variables.
 
-**2 · Point Tailwind at your own files** in that same CSS file or your own:
+### Tailwind v4: generate utilities from the tokens
+
+To also use the tokens as Tailwind utilities in your own markup (`bg-primary`,
+`text-muted-foreground`, …), import the Tailwind source stylesheet instead,
+then point Tailwind at your files:
 
 ```css
+@import "diametral-ds/styles.tailwind.css";
 @source "./src/**/*.{ts,tsx}";
 ```
 
-### Without Tailwind v4
-
-On Tailwind v3, or with no Tailwind at all, import the precompiled stylesheet
-instead. It needs no Tailwind configuration:
-
-```ts
-import "diametral-ds/styles.compiled.css"
-```
-
-It holds every class the components use, plus the tokens, dark theme and Geist.
-It does not generate utilities for your own markup, so style your own files with
-your existing setup and the `--ds-*` variables.
+It brings in Tailwind, the tokens, the shadcn slot mappings, the dark theme and
+Geist, and declares its own `@source` so Tailwind finds the classes used inside
+this package.
 
 ## Usage
 

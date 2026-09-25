@@ -1,6 +1,6 @@
 {
   "name": "@diametral/ui",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "type": "module",
   "description": "Diametral Design System — React components on Base UI and Tailwind v4. Flat, 1px, no radius, no shadows.",
   "license": "MIT",
@@ -24,8 +24,8 @@
         "types": "./dist/index.d.ts",
         "default": "./dist/index.js"
       },
-      "./styles.css": "./dist/globals.css",
-      "./styles.compiled.css": "./dist/styles.compiled.css",
+      "./styles.css": "./dist/styles.compiled.css",
+      "./styles.tailwind.css": "./dist/globals.css",
       "./assets/*": "./dist/assets/*",
       "./package.json": "./package.json",
       "./*": {
@@ -61,14 +61,10 @@
   "peerDependencies": {
     "@shadcn/react": "^0.2.1",
     "react": ">=18",
-    "react-dom": ">=18",
-    "tailwindcss": "^4"
+    "react-dom": ">=18"
   },
   "peerDependenciesMeta": {
     "@shadcn/react": {
-      "optional": true
-    },
-    "tailwindcss": {
       "optional": true
     }
   },
@@ -88,6 +84,7 @@
     "embla-carousel-react": "^8.6.0",
     "input-otp": "^1.4.2",
     "react-day-picker": "^10.0.1",
+    "react-is": "^18.0.0 || ^19.0.0",
     "react-resizable-panels": "^4.12.2",
     "recharts": "3.8.0",
     "shadcn": "^4.14.1",

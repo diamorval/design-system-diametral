@@ -56,7 +56,44 @@ try {
 } finally {
   await rm(input)
 }
-const body = await readFile(compiled, "utf8")
+// Unwrap the cascade layers. Unlayered CSS beats any layered CSS, so in a
+// Tailwind 3 app (whose @layer is compile-time only) its preflight
+// `button { background-color: transparent }` would override our utilities.
+// Tailwind emits the layers in cascade order, so unwrapping keeps our own order.
+function unwrapLayers(css) {
+  let out = ""
+  let i = 0
+  while (i < css.length) {
+    const at = css.indexOf("@layer", i)
+    if (at === -1) return out + css.slice(i)
+    out += css.slice(i, at)
+    const end = css.slice(at).search(/[{;]/) + at
+    if (css[end] === ";") {
+      i = end + 1
+      continue
+    }
+    let depth = 1
+    let j = end + 1
+    let quote = null
+    for (; depth > 0; j++) {
+      const c = css[j]
+      // Escapes appear outside strings too: class names like .content-\[\'\'\].
+      if (c === "\\") j++
+      else if (quote) {
+        if (c === quote) quote = null
+      } else if (c === '"' || c === "'") quote = c
+      else if (c === "{") depth++
+      else if (c === "}") depth--
+    }
+    // Recurse: the body is kept, the wrapper and its closing brace dropped.
+    out += unwrapLayers(css.slice(end + 1, j - 1))
+    i = j
+  }
+  return out
+}
+
+const body = unwrapLayers(await readFile(compiled, "utf8"))
+if (body.includes("@layer")) throw new Error("build-css: @layer left in compiled CSS")
 await writeFile(compiled, fontImports.join("\n") + "\n" + body, "utf8")
 console.log(
   `build-css: dist/styles.compiled.css written (${(body.length / 1024).toFixed(0)} KB)`
