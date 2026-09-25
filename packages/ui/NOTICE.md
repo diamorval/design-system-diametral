@@ -38,6 +38,15 @@ redistribute Ufficio. Obtain your own licence from the foundry.
 1.1** and are bundled via `@fontsource-variable/geist` and
 `@fontsource-variable/geist-mono`, which `globals.css` imports.
 
+## Vendored code
+
+### shadcn Tailwind layer (MIT)
+
+`src/styles/shadcn.css` (shipped as `dist/shadcn.css`) is `dist/tailwind.css`
+from the [`shadcn`](https://github.com/shadcn-ui/ui) package, MIT licensed,
+© shadcn. It is copied rather than depended on so installing this package does
+not pull in the shadcn CLI.
+
 ## Summary
 
 | Asset | License | Bundled here? | May third parties redistribute? |
@@ -45,6 +54,7 @@ redistribute Ufficio. Obtain your own licence from the foundry.
 | This package's code | MIT | — | Yes |
 | Ufficio | Commercial (Giulia B.) | **No** | **No** — obtain your own |
 | Geist / Geist Mono | SIL OFL 1.1 | Yes | Yes (under OFL) |
+| shadcn Tailwind layer | MIT | Yes | Yes (under MIT) |
 
 Related: the v1 system's `assets/fonts/LICENSE-FONTS.md` and `NOTICE.md` in
 [`@diametral/design-system`](https://www.npmjs.com/package/@diametral/design-system).

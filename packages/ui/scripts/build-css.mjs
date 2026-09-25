@@ -7,7 +7,7 @@
 // scans its own emitted JS instead — consumers still declare their own sources.
 
 import { execFileSync } from "node:child_process"
-import { mkdir, readFile, rm, writeFile } from "node:fs/promises"
+import { copyFile, mkdir, readFile, rm, writeFile } from "node:fs/promises"
 import { dirname, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
 
@@ -32,6 +32,8 @@ const out = css.replace(sourceRun, PACKAGED_SOURCE)
 
 await mkdir(dirname(to), { recursive: true })
 await writeFile(to, out, "utf8")
+// globals.css imports the vendored shadcn layer by relative path.
+await copyFile(resolve(root, "src/styles/shadcn.css"), resolve(root, "dist/shadcn.css"))
 
 const dropped = css.match(/^@source\s+"[^"]*";\s*$/gm) ?? []
 console.log(

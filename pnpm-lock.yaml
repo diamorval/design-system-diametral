@@ -159,9 +159,6 @@ importers:
       recharts:
         specifier: 3.8.0
         version: 3.8.0(@types/react@19.2.15)(react-dom@19.2.8(react@19.2.8))(react-is@19.2.8)(react@19.2.8)(redux@5.0.1)
-      shadcn:
-        specifier: ^4.14.1
-        version: 4.14.1(typescript@6.0.3)
       tailwind-merge:
         specifier: ^3.6.0
         version: 3.6.0
@@ -211,6 +208,9 @@ importers:
       react-dom:
         specifier: ^19.2.8
         version: 19.2.8(react@19.2.8)
+      shadcn:
+        specifier: ^4.14.1
+        version: 4.14.1(typescript@6.0.3)
       tailwindcss:
         specifier: ^4
         version: 4.3.0
