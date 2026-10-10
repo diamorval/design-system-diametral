@@ -8,6 +8,7 @@
 
 import { execFileSync } from "node:child_process"
 import { mkdir, readFile, rm, writeFile } from "node:fs/promises"
+import { createRequire } from "node:module"
 import { dirname, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
 
@@ -28,7 +29,27 @@ if (!sourceRun.test(css)) {
   )
 }
 
-const out = css.replace(sourceRun, PACKAGED_SOURCE)
+// shadcn is a devDependency (its CLI is authoring tooling), so the published
+// stylesheet cannot @import it: inline its tailwind.css after the last @import
+// (an @import below other rules is ignored).
+const SHADCN_IMPORT = /^@import "shadcn\/tailwind\.css";\s*\n/m
+if (!SHADCN_IMPORT.test(css)) {
+  throw new Error(
+    `No @import "shadcn/tailwind.css" in ${from}; update build-css.mjs.`
+  )
+}
+const shadcnCss = await readFile(
+  createRequire(import.meta.url).resolve("shadcn/tailwind.css"),
+  "utf8"
+)
+
+const out = css
+  .replace(sourceRun, PACKAGED_SOURCE)
+  .replace(SHADCN_IMPORT, "")
+  .replace(
+    /((?:^@import [^\n]*;\s*\n)+)/m,
+    (imports) => `${imports}\n${shadcnCss.trimEnd()}\n`
+  )
 
 await mkdir(dirname(to), { recursive: true })
 await writeFile(to, out, "utf8")
