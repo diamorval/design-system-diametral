@@ -1,10 +1,4 @@
 @layer components {
-  .ds-slider:where([data-orientation="horizontal"]) {
-    width: 100%;
-  }
-  .ds-slider:where([data-orientation="vertical"]) {
-    height: 100%;
-  }
 
   .ds-slider-control {
     position: relative;
@@ -14,15 +8,6 @@
     align-items: center;
     user-select: none;
   }
-  .ds-slider-control[data-disabled] {
-    opacity: 0.5;
-  }
-  .ds-slider-control:where([data-orientation="vertical"]) {
-    height: 100%;
-    min-height: 10rem;
-    width: auto;
-    flex-direction: column;
-  }
 
   .ds-slider-track {
     position: relative;
@@ -31,24 +16,10 @@
     background: color-mix(in oklab, var(--input) 50%, transparent);
     user-select: none;
   }
-  .ds-slider-track:where([data-orientation="horizontal"]) {
-    height: 0.125rem;
-    width: 100%;
-  }
-  .ds-slider-track:where([data-orientation="vertical"]) {
-    height: 100%;
-    width: 0.125rem;
-  }
 
   .ds-slider-range {
     background: var(--primary);
     user-select: none;
-  }
-  .ds-slider-range:where([data-orientation="horizontal"]) {
-    height: 100%;
-  }
-  .ds-slider-range:where([data-orientation="vertical"]) {
-    width: 100%;
   }
 
   .ds-slider-thumb {
@@ -63,6 +34,41 @@
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 150ms;
     user-select: none;
+  }
+}
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+
+@layer utilities {
+  .ds-slider:where([data-orientation="horizontal"]) {
+    width: 100%;
+  }
+  .ds-slider:where([data-orientation="vertical"]) {
+    height: 100%;
+  }
+  .ds-slider-control[data-disabled] {
+    opacity: 0.5;
+  }
+  .ds-slider-control:where([data-orientation="vertical"]) {
+    height: 100%;
+    min-height: 10rem;
+    width: auto;
+    flex-direction: column;
+  }
+  .ds-slider-track:where([data-orientation="horizontal"]) {
+    height: 0.125rem;
+    width: 100%;
+  }
+  .ds-slider-track:where([data-orientation="vertical"]) {
+    height: 100%;
+    width: 0.125rem;
+  }
+  .ds-slider-range:where([data-orientation="horizontal"]) {
+    height: 100%;
+  }
+  .ds-slider-range:where([data-orientation="vertical"]) {
+    width: 100%;
   }
   .ds-slider-thumb:hover {
     box-shadow: 0 0 0 2px color-mix(in oklab, var(--ring) 30%, transparent);

@@ -30,31 +30,11 @@
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 150ms;
   }
-  .ds-tree-item-trigger:hover {
-    background-color: color-mix(in oklab, var(--muted) 50%, transparent);
-  }
-  .ds-tree-item-trigger:focus-visible {
-    box-shadow: 0 0 0 2px color-mix(in oklab, var(--ring) 30%, transparent);
-  }
-  .ds-tree-item-trigger :where(svg) {
-    flex-shrink: 0;
-  }
-  .ds-tree-item-trigger :where(svg:not([class*="size-"])) {
-    width: 0.875rem;
-    height: 0.875rem;
-  }
 
   .ds-tree-item-trigger-caret-right {
     width: 0.75rem;
     height: 0.75rem;
     color: var(--muted-foreground);
-  }
-  .ds-tree-item-trigger[aria-expanded="true"]
-    .ds-tree-item-trigger-caret-right {
-    display: none;
-  }
-  :where([dir="rtl"], [dir="rtl"] *) .ds-tree-item-trigger-caret-right {
-    rotate: 180deg;
   }
 
   .ds-tree-item-trigger-caret-down {
@@ -62,9 +42,6 @@
     width: 0.75rem;
     height: 0.75rem;
     color: var(--muted-foreground);
-  }
-  .ds-tree-item-trigger[aria-expanded="true"] .ds-tree-item-trigger-caret-down {
-    display: block;
   }
 
   .ds-tree-item-content {
@@ -92,6 +69,40 @@
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 150ms;
   }
+
+  .ds-tree-leaf-spacer {
+    width: 0.75rem;
+    height: 0.75rem;
+    flex-shrink: 0;
+  }
+}
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+@layer utilities {
+  .ds-tree-item-trigger:hover {
+    background-color: color-mix(in oklab, var(--muted) 50%, transparent);
+  }
+  .ds-tree-item-trigger:focus-visible {
+    box-shadow: 0 0 0 2px color-mix(in oklab, var(--ring) 30%, transparent);
+  }
+  .ds-tree-item-trigger :where(svg) {
+    flex-shrink: 0;
+  }
+  .ds-tree-item-trigger :where(svg:not([class*="size-"])) {
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+  .ds-tree-item-trigger[aria-expanded="true"]
+    .ds-tree-item-trigger-caret-right {
+    display: none;
+  }
+  :where([dir="rtl"], [dir="rtl"] *) .ds-tree-item-trigger-caret-right {
+    rotate: 180deg;
+  }
+  .ds-tree-item-trigger[aria-expanded="true"] .ds-tree-item-trigger-caret-down {
+    display: block;
+  }
   .ds-tree-leaf:hover {
     background-color: color-mix(in oklab, var(--muted) 50%, transparent);
   }
@@ -101,11 +112,5 @@
   .ds-tree-leaf :where(svg:not([class*="size-"])) {
     width: 0.875rem;
     height: 0.875rem;
-  }
-
-  .ds-tree-leaf-spacer {
-    width: 0.75rem;
-    height: 0.75rem;
-    flex-shrink: 0;
   }
 }

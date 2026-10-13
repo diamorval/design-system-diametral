@@ -6,6 +6,11 @@
   .ds-split-button-caret-icon {
     transition: rotate 200ms;
   }
+}
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+@layer utilities {
   .ds-split-button-caret[aria-expanded="true"] .ds-split-button-caret-icon {
     rotate: 180deg;
   }

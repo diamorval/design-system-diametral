@@ -11,6 +11,21 @@
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 150ms;
   }
+
+  /* The internal SelectTrigger's "w-fit shrink-0 border-0 ps-0 pe-2" and
+     Input's "flex-1 border-0 ps-2" (see phone-input.tsx) stay literal
+     Tailwind utilities — select.css and input.css both document that
+     SelectTrigger's own "w-fit border px-0" and Input's own "border
+     border-transparent border-b-input px-0" defaults are themselves kept
+     literal specifically so phone-input.tsx's overrides dedupe against them
+     via tailwind-merge. Baking either side into a plain class would leave
+     both the old and new declarations applied at once. */
+}
+
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+@layer utilities {
   .ds-phone-input:focus-within {
     border-bottom-color: var(--ring);
   }
@@ -24,13 +39,4 @@
     pointer-events: none;
     opacity: 0.5;
   }
-
-  /* The internal SelectTrigger's "w-fit shrink-0 border-0 ps-0 pe-2" and
-     Input's "flex-1 border-0 ps-2" (see phone-input.tsx) stay literal
-     Tailwind utilities — select.css and input.css both document that
-     SelectTrigger's own "w-fit border px-0" and Input's own "border
-     border-transparent border-b-input px-0" defaults are themselves kept
-     literal specifically so phone-input.tsx's overrides dedupe against them
-     via tailwind-merge. Baking either side into a plain class would leave
-     both the old and new declarations applied at once. */
 }

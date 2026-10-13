@@ -10,13 +10,6 @@
   .ds-carousel-content {
     display: flex;
   }
-  .ds-carousel-content[data-orientation="horizontal"] {
-    margin-inline-start: -1rem;
-  }
-  .ds-carousel-content[data-orientation="vertical"] {
-    flex-direction: column;
-    margin-top: -1rem;
-  }
 
   /* basis-full stays a literal Tailwind utility on CarouselItem's own default
      className (see carousel.tsx) — carousel/multiple.tsx overrides it with
@@ -28,16 +21,33 @@
     flex-shrink: 0;
     flex-grow: 0;
   }
+
+  .ds-carousel-control {
+    position: absolute;
+    touch-action: manipulation;
+  }
+
+  .ds-carousel-control-icon {
+    rotate: 0deg;
+  }
+}
+
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+@layer utilities {
+  .ds-carousel-content[data-orientation="horizontal"] {
+    margin-inline-start: -1rem;
+  }
+  .ds-carousel-content[data-orientation="vertical"] {
+    flex-direction: column;
+    margin-top: -1rem;
+  }
   .ds-carousel-item[data-orientation="horizontal"] {
     padding-inline-start: 1rem;
   }
   .ds-carousel-item[data-orientation="vertical"] {
     padding-top: 1rem;
-  }
-
-  .ds-carousel-control {
-    position: absolute;
-    touch-action: manipulation;
   }
   .ds-carousel-control[data-orientation="horizontal"] {
     top: 0;
@@ -66,10 +76,6 @@
   }
   .ds-carousel-control[data-slot="carousel-next"][data-orientation="vertical"] {
     bottom: 0.5rem;
-  }
-
-  .ds-carousel-control-icon {
-    rotate: 0deg;
   }
   :where([dir="rtl"], [dir="rtl"] *) .ds-carousel-control-icon {
     rotate: 180deg;

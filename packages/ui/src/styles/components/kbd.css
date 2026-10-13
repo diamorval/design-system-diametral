@@ -23,6 +23,17 @@
     color: var(--muted-foreground);
     user-select: none;
   }
+
+  .ds-kbd-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+}
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+@layer utilities {
   :where([data-slot="input-group"]) .ds-kbd {
     background: var(--input);
   }
@@ -36,11 +47,5 @@
   .ds-kbd svg:not([class*="size-"]) {
     width: 0.75rem;
     height: 0.75rem;
-  }
-
-  .ds-kbd-group {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
   }
 }

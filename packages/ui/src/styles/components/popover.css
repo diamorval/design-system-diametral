@@ -29,6 +29,48 @@
 
   /* Direction each side's popup enters from — 0.5rem (spacing-2), negated
      towards the trigger so the content settles in from the opposite edge. */
+
+  @keyframes ds-popover-enter {
+    from {
+      opacity: 0;
+      scale: 0.95;
+      translate: var(--ds-popover-slide-x) var(--ds-popover-slide-y);
+    }
+  }
+  @keyframes ds-popover-exit {
+    to {
+      opacity: 0;
+      scale: 0.95;
+    }
+  }
+
+  .ds-popover-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.875rem;
+    line-height: calc(1.25 / 0.875);
+  }
+
+  .ds-popover-title {
+    font-size: 0.75rem;
+    line-height: calc(1 / 0.75);
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .ds-popover-description {
+    margin-top: 0.125rem;
+    font-size: 0.875rem;
+    line-height: 1.625;
+    color: var(--muted-foreground);
+  }
+}
+
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+@layer utilities {
   .ds-popover-content[data-side="bottom"] {
     --ds-popover-slide-y: -0.5rem;
   }
@@ -59,46 +101,10 @@
     ).ds-popover-content[data-side="inline-start"] {
     --ds-popover-slide-x: -0.5rem;
   }
-
-  @keyframes ds-popover-enter {
-    from {
-      opacity: 0;
-      scale: 0.95;
-      translate: var(--ds-popover-slide-x) var(--ds-popover-slide-y);
-    }
-  }
-  @keyframes ds-popover-exit {
-    to {
-      opacity: 0;
-      scale: 0.95;
-    }
-  }
   .ds-popover-content[data-open] {
     animation: ds-popover-enter 100ms ease;
   }
   .ds-popover-content[data-closed] {
     animation: ds-popover-exit 100ms ease;
-  }
-
-  .ds-popover-header {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    font-size: 0.875rem;
-    line-height: calc(1.25 / 0.875);
-  }
-
-  .ds-popover-title {
-    font-size: 0.75rem;
-    line-height: calc(1 / 0.75);
-    font-weight: 600;
-    text-transform: uppercase;
-  }
-
-  .ds-popover-description {
-    margin-top: 0.125rem;
-    font-size: 0.875rem;
-    line-height: 1.625;
-    color: var(--muted-foreground);
   }
 }

@@ -17,6 +17,41 @@
     transition-duration: 150ms;
     outline: none;
   }
+
+  /* Variant axis */
+  .ds-toggle--default {
+    background: transparent;
+  }
+
+  .ds-toggle--outline {
+    border: 1px solid var(--input);
+    background: transparent;
+  }
+
+  /* Size axis */
+  .ds-toggle--size-default {
+    height: 2.5rem;
+    min-width: 2.5rem;
+    padding-inline: 1.5rem;
+  }
+
+  .ds-toggle--size-sm {
+    height: 2.25rem;
+    min-width: 2.25rem;
+    padding-inline: 1rem;
+  }
+
+  .ds-toggle--size-lg {
+    height: 2.75rem;
+    min-width: 2.75rem;
+    padding-inline: 2rem;
+  }
+}
+
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+@layer utilities {
   .ds-toggle svg {
     pointer-events: none;
     flex-shrink: 0;
@@ -49,46 +84,17 @@
   .ds-toggle[aria-pressed="true"] {
     background: var(--muted);
   }
-
-  /* Variant axis */
-  .ds-toggle--default {
-    background: transparent;
-  }
-
-  .ds-toggle--outline {
-    border: 1px solid var(--input);
-    background: transparent;
-  }
-
-  /* Size axis */
-  .ds-toggle--size-default {
-    height: 2.5rem;
-    min-width: 2.5rem;
-    padding-inline: 1.5rem;
-  }
   .ds-toggle--size-default:has([data-icon="inline-end"]) {
     padding-inline-end: 1rem;
   }
   .ds-toggle--size-default:has([data-icon="inline-start"]) {
     padding-inline-start: 1rem;
   }
-
-  .ds-toggle--size-sm {
-    height: 2.25rem;
-    min-width: 2.25rem;
-    padding-inline: 1rem;
-  }
   .ds-toggle--size-sm:has([data-icon="inline-end"]) {
     padding-inline-end: 0.75rem;
   }
   .ds-toggle--size-sm:has([data-icon="inline-start"]) {
     padding-inline-start: 0.75rem;
-  }
-
-  .ds-toggle--size-lg {
-    height: 2.75rem;
-    min-width: 2.75rem;
-    padding-inline: 2rem;
   }
   .ds-toggle--size-lg:has([data-icon="inline-end"]) {
     padding-inline-end: 1.25rem;

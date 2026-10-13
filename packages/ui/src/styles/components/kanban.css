@@ -53,9 +53,6 @@
     transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
     transition-duration: 150ms;
   }
-  .ds-kanban-column-list[data-over] {
-    background-color: color-mix(in oklab, var(--muted) 40%, transparent);
-  }
   @media (prefers-reduced-motion: reduce) {
     .ds-kanban-column-list {
       transition-property: none;
@@ -88,20 +85,6 @@
     transition-duration: 150ms;
     outline: none;
   }
-  .ds-kanban-card-grip:hover {
-    color: var(--foreground);
-  }
-  .ds-kanban-card-grip:focus-visible {
-    box-shadow: 0 0 0 2px color-mix(in oklab, var(--ring) 30%, transparent);
-  }
-  .ds-kanban-card-grip:active {
-    scale: 0.97;
-    cursor: grabbing;
-  }
-  .ds-kanban-card-grip svg {
-    width: 0.875rem;
-    height: 0.875rem;
-  }
   @media (prefers-reduced-motion: reduce) {
     .ds-kanban-card-grip {
       transition-property: none;
@@ -118,5 +101,27 @@
     line-height: calc(1.25 / 0.875);
     font-weight: 500;
     color: var(--foreground);
+  }
+}
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+@layer utilities {
+  .ds-kanban-column-list[data-over] {
+    background-color: color-mix(in oklab, var(--muted) 40%, transparent);
+  }
+  .ds-kanban-card-grip:hover {
+    color: var(--foreground);
+  }
+  .ds-kanban-card-grip:focus-visible {
+    box-shadow: 0 0 0 2px color-mix(in oklab, var(--ring) 30%, transparent);
+  }
+  .ds-kanban-card-grip:active {
+    scale: 0.97;
+    cursor: grabbing;
+  }
+  .ds-kanban-card-grip svg {
+    width: 0.875rem;
+    height: 0.875rem;
   }
 }

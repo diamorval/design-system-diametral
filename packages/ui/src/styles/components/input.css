@@ -18,6 +18,11 @@
       line-height: calc(1.25 / 0.875);
     }
   }
+}
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+@layer utilities {
   .ds-input::file-selector-button {
     display: inline-flex;
     height: 1.75rem;

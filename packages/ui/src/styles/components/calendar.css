@@ -13,16 +13,6 @@
     --cell-radius: 0px;
     --cell-size: 2rem;
   }
-  [data-slot="card-content"] .ds-calendar,
-  [data-slot="popover-content"] .ds-calendar {
-    background-color: transparent;
-  }
-  :where([dir="rtl"], [dir="rtl"] *) .ds-calendar .rdp-button_next > svg {
-    rotate: 180deg;
-  }
-  :where([dir="rtl"], [dir="rtl"] *) .ds-calendar .rdp-button_previous > svg {
-    rotate: 180deg;
-  }
 
   .ds-calendar-root {
     width: fit-content;
@@ -64,9 +54,6 @@
      as tailwind-merge did before the conversion. */
   .ds-calendar-nav-button {
     user-select: none;
-  }
-  .ds-calendar-nav-button[aria-disabled="true"] {
-    opacity: 0.5;
   }
 
   .ds-calendar-month-caption {
@@ -112,11 +99,6 @@
     align-items: center;
     gap: 0.25rem;
     border-radius: var(--cell-radius);
-  }
-  .ds-calendar-caption-label--dropdown > svg {
-    width: 0.875rem;
-    height: 0.875rem;
-    color: var(--muted-foreground);
   }
 
   .ds-calendar-month-grid {
@@ -173,19 +155,6 @@
     text-align: center;
     user-select: none;
   }
-  .ds-calendar-day:last-child[data-selected="true"] button {
-    border-start-end-radius: var(--cell-radius);
-    border-end-end-radius: var(--cell-radius);
-  }
-  .ds-calendar-day--round-start-first:first-child[data-selected="true"] button {
-    border-start-start-radius: var(--cell-radius);
-    border-end-start-radius: var(--cell-radius);
-  }
-  .ds-calendar-day--round-start-second:nth-child(2)[data-selected="true"]
-    button {
-    border-start-start-radius: var(--cell-radius);
-    border-end-start-radius: var(--cell-radius);
-  }
 
   .ds-calendar-range-start {
     position: relative;
@@ -193,14 +162,6 @@
     z-index: 0;
     border-start-start-radius: var(--cell-radius);
     border-end-start-radius: var(--cell-radius);
-    background-color: var(--muted);
-  }
-  .ds-calendar-range-start::after {
-    content: "";
-    position: absolute;
-    inset-block: 0;
-    inset-inline-end: 0;
-    width: 1rem;
     background-color: var(--muted);
   }
 
@@ -216,28 +177,14 @@
     border-end-end-radius: var(--cell-radius);
     background-color: var(--muted);
   }
-  .ds-calendar-range-end::after {
-    content: "";
-    position: absolute;
-    inset-block: 0;
-    inset-inline-start: 0;
-    width: 1rem;
-    background-color: var(--muted);
-  }
 
   .ds-calendar-today {
     border-radius: var(--cell-radius);
     background-color: var(--muted);
     color: var(--foreground);
   }
-  .ds-calendar-today[data-selected="true"] {
-    border-radius: 0;
-  }
 
   .ds-calendar-outside {
-    color: var(--muted-foreground);
-  }
-  .ds-calendar-outside[aria-selected="true"] {
     color: var(--muted-foreground);
   }
 
@@ -254,9 +201,6 @@
     width: 1rem;
     height: 1rem;
   }
-  :where([dir="rtl"], [dir="rtl"] *) .ds-calendar-chevron--directional {
-    rotate: 180deg;
-  }
 
   /* aspect-ratio, height, width and min-width stay literal Tailwind
      utilities on the day button (see calendar.tsx), for the same reason as
@@ -271,6 +215,67 @@
     border-width: 0;
     line-height: 1;
     font-weight: 400;
+  }
+}
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+@layer utilities {
+  [data-slot="card-content"] .ds-calendar,
+  [data-slot="popover-content"] .ds-calendar {
+    background-color: transparent;
+  }
+  :where([dir="rtl"], [dir="rtl"] *) .ds-calendar .rdp-button_next > svg {
+    rotate: 180deg;
+  }
+  :where([dir="rtl"], [dir="rtl"] *) .ds-calendar .rdp-button_previous > svg {
+    rotate: 180deg;
+  }
+  .ds-calendar-nav-button[aria-disabled="true"] {
+    opacity: 0.5;
+  }
+  .ds-calendar-caption-label--dropdown > svg {
+    width: 0.875rem;
+    height: 0.875rem;
+    color: var(--muted-foreground);
+  }
+  .ds-calendar-day:last-child[data-selected="true"] button {
+    border-start-end-radius: var(--cell-radius);
+    border-end-end-radius: var(--cell-radius);
+  }
+  .ds-calendar-day--round-start-first:first-child[data-selected="true"] button {
+    border-start-start-radius: var(--cell-radius);
+    border-end-start-radius: var(--cell-radius);
+  }
+  .ds-calendar-day--round-start-second:nth-child(2)[data-selected="true"]
+    button {
+    border-start-start-radius: var(--cell-radius);
+    border-end-start-radius: var(--cell-radius);
+  }
+  .ds-calendar-range-start::after {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    inset-inline-end: 0;
+    width: 1rem;
+    background-color: var(--muted);
+  }
+  .ds-calendar-range-end::after {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    width: 1rem;
+    background-color: var(--muted);
+  }
+  .ds-calendar-today[data-selected="true"] {
+    border-radius: 0;
+  }
+  .ds-calendar-outside[aria-selected="true"] {
+    color: var(--muted-foreground);
+  }
+  :where([dir="rtl"], [dir="rtl"] *) .ds-calendar-chevron--directional {
+    rotate: 180deg;
   }
   .ds-calendar-day-button > span {
     font-size: 0.75rem;

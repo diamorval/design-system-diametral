@@ -22,14 +22,24 @@
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 150ms;
   }
-  .ds-rating-item:focus-visible {
-    box-shadow: 0 0 0 2px color-mix(in oklab, var(--ring) 30%, transparent);
-  }
   .ds-rating-item--interactive {
     cursor: pointer;
   }
   .ds-rating-item--disabled {
     pointer-events: none;
+  }
+
+  .ds-rating-star-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+@layer utilities {
+  .ds-rating-item:focus-visible {
+    box-shadow: 0 0 0 2px color-mix(in oklab, var(--ring) 30%, transparent);
   }
 
   .ds-rating-item[data-shape="star"] {
@@ -56,10 +66,5 @@
   }
   .ds-rating-item[data-shape="default"].ds-rating-item--hover-lift:hover {
     translate: 0 -1px;
-  }
-
-  .ds-rating-star-icon {
-    width: 1.25rem;
-    height: 1.25rem;
   }
 }

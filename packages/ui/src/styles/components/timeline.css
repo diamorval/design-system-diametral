@@ -14,22 +14,6 @@
     display: flex;
     gap: 1rem;
   }
-  .ds-timeline-item::before {
-    content: "";
-    position: absolute;
-    inset-inline-start: 0.75rem;
-    top: 1.5rem;
-    bottom: 0;
-    width: 1px;
-    transform: translateX(-50%);
-    background: var(--border);
-  }
-  .ds-timeline-item:dir(rtl)::before {
-    transform: translateX(50%);
-  }
-  .ds-timeline-item:last-child::before {
-    display: none;
-  }
 
   .ds-timeline-item--neutral {
     --tone: var(--ds-neutral-ink);
@@ -65,19 +49,6 @@
     font-weight: 600;
     color: var(--muted-foreground);
   }
-  .ds-timeline-indicator svg:not([class*="size-"]) {
-    width: 0.75rem;
-    height: 0.75rem;
-  }
-  .ds-timeline-item[data-state="completed"] .ds-timeline-indicator {
-    border-color: var(--tone, var(--primary));
-    background: var(--tone, var(--primary));
-    color: var(--primary-foreground);
-  }
-  .ds-timeline-item[data-state="active"] .ds-timeline-indicator {
-    border-color: var(--tone, var(--primary));
-    color: var(--foreground);
-  }
 
   .ds-timeline-content {
     display: flex;
@@ -111,5 +82,40 @@
     letter-spacing: 0.025em;
     color: var(--muted-foreground);
     font-variant-numeric: tabular-nums;
+  }
+}
+
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+@layer utilities {
+  .ds-timeline-item::before {
+    content: "";
+    position: absolute;
+    inset-inline-start: 0.75rem;
+    top: 1.5rem;
+    bottom: 0;
+    width: 1px;
+    transform: translateX(-50%);
+    background: var(--border);
+  }
+  .ds-timeline-item:dir(rtl)::before {
+    transform: translateX(50%);
+  }
+  .ds-timeline-item:last-child::before {
+    display: none;
+  }
+  .ds-timeline-indicator svg:not([class*="size-"]) {
+    width: 0.75rem;
+    height: 0.75rem;
+  }
+  .ds-timeline-item[data-state="completed"] .ds-timeline-indicator {
+    border-color: var(--tone, var(--primary));
+    background: var(--tone, var(--primary));
+    color: var(--primary-foreground);
+  }
+  .ds-timeline-item[data-state="active"] .ds-timeline-indicator {
+    border-color: var(--tone, var(--primary));
+    color: var(--foreground);
   }
 }

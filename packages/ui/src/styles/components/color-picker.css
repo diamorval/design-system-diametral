@@ -19,20 +19,8 @@
     border: 1px solid var(--border);
     outline: none;
   }
-  .ds-color-picker-swatch:focus-visible {
-    box-shadow: 0 0 0 2px color-mix(in oklab, var(--ring) 30%, transparent);
-  }
-  .ds-color-picker-swatch:disabled {
-    pointer-events: none;
-    opacity: 0.5;
-  }
   /* Selected swatch is marked with a ring rather than a border colour, which
      would be invisible on a swatch whose own colour is close to the border's. */
-  .ds-color-picker-swatch[aria-pressed="true"] {
-    box-shadow:
-      0 0 0 2px var(--background),
-      0 0 0 4px var(--foreground);
-  }
 
   .ds-color-picker-row {
     display: flex;
@@ -49,6 +37,23 @@
     background-color: transparent;
     padding: 0.25rem;
     outline: none;
+  }
+}
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+@layer utilities {
+  .ds-color-picker-swatch:focus-visible {
+    box-shadow: 0 0 0 2px color-mix(in oklab, var(--ring) 30%, transparent);
+  }
+  .ds-color-picker-swatch:disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+  .ds-color-picker-swatch[aria-pressed="true"] {
+    box-shadow:
+      0 0 0 2px var(--background),
+      0 0 0 4px var(--foreground);
   }
   .ds-color-picker-native:focus-visible {
     box-shadow: 0 0 0 2px color-mix(in oklab, var(--ring) 30%, transparent);

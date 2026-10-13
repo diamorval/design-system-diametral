@@ -15,6 +15,71 @@
     transition-duration: 150ms;
     outline: none;
   }
+
+  .ds-input-group-addon {
+    display: flex;
+    height: auto;
+    cursor: text;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding-block: 0.5rem;
+    font-size: 0.875rem;
+    line-height: calc(1.25 / 0.875);
+    font-weight: 500;
+    color: var(--muted-foreground);
+    user-select: none;
+  }
+
+  .ds-input-group-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 0;
+    font-size: 0.875rem;
+    line-height: calc(1.25 / 0.875);
+    box-shadow: none;
+  }
+
+  .ds-input-group-text {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    line-height: calc(1.25 / 0.875);
+    color: var(--muted-foreground);
+  }
+
+  /* border-0 (input-group.tsx) stays a literal Tailwind utility: Input's own
+     "border border-transparent border-b-input" defaults are themselves kept
+     literal (see input.tsx) specifically so this override dedupes against
+     them via tailwind-merge. Baking either side into a plain class would
+     leave both the old and new declarations applied at once. */
+
+  .ds-input-group-input {
+    flex: 1 1 0%;
+    background-color: transparent;
+    box-shadow: none;
+  }
+
+  /* border-0, py-2.5 and [--textarea-chrome:1.25rem] (input-group.tsx) stay
+     literal Tailwind utilities for the same reason as InputGroupInput's
+     border-0 above: Textarea's own "border border-transparent
+     border-b-input py-3 [--textarea-chrome:...]" defaults are themselves
+     kept literal (see textarea.tsx) so these overrides dedupe against them
+     via tailwind-merge. */
+  .ds-input-group-textarea {
+    flex: 1 1 0%;
+    resize: none;
+    background-color: transparent;
+    box-shadow: none;
+  }
+}
+
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+@layer utilities {
   :where([data-slot="combobox-content"]) .ds-input-group:focus-within {
     border-color: inherit;
     box-shadow: none;
@@ -51,21 +116,6 @@
   }
   .ds-input-group:has(> [data-align="block-start"]) > input {
     padding-bottom: 0.75rem;
-  }
-
-  .ds-input-group-addon {
-    display: flex;
-    height: auto;
-    cursor: text;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding-block: 0.5rem;
-    font-size: 0.875rem;
-    line-height: calc(1.25 / 0.875);
-    font-weight: 500;
-    color: var(--muted-foreground);
-    user-select: none;
   }
   .ds-input-group[data-disabled="true"] .ds-input-group-addon {
     opacity: 0.5;
@@ -104,16 +154,6 @@
   .border-t .ds-input-group-addon[data-align="block-end"] {
     padding-top: 0.875rem;
   }
-
-  .ds-input-group-button {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    border-radius: 0;
-    font-size: 0.875rem;
-    line-height: calc(1.25 / 0.875);
-    box-shadow: none;
-  }
   .ds-input-group-button[data-size="xs"] {
     height: 1.5rem;
     gap: 0.25rem;
@@ -143,15 +183,6 @@
   .ds-input-group-button[data-size="icon-sm"]:has(> svg) {
     padding: 0;
   }
-
-  .ds-input-group-text {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.875rem;
-    line-height: calc(1.25 / 0.875);
-    color: var(--muted-foreground);
-  }
   .ds-input-group-text svg {
     pointer-events: none;
   }
@@ -159,23 +190,11 @@
     width: 0.875rem;
     height: 0.875rem;
   }
-
-  /* border-0 (input-group.tsx) stays a literal Tailwind utility: Input's own
-     "border border-transparent border-b-input" defaults are themselves kept
-     literal (see input.tsx) specifically so this override dedupes against
-     them via tailwind-merge. Baking either side into a plain class would
-     leave both the old and new declarations applied at once. */
   .ds-input-group:has(> [data-align="inline-end"]) > .ds-input-group-input {
     padding-inline-end: 0.5rem;
   }
   .ds-input-group:has(> [data-align="inline-start"]) > .ds-input-group-input {
     padding-inline-start: 0.5rem;
-  }
-
-  .ds-input-group-input {
-    flex: 1 1 0%;
-    background-color: transparent;
-    box-shadow: none;
   }
   .ds-input-group-input:focus-visible {
     box-shadow: none;
@@ -185,19 +204,6 @@
   }
   .dark .ds-input-group-input {
     background-color: transparent;
-  }
-
-  /* border-0, py-2.5 and [--textarea-chrome:1.25rem] (input-group.tsx) stay
-     literal Tailwind utilities for the same reason as InputGroupInput's
-     border-0 above: Textarea's own "border border-transparent
-     border-b-input py-3 [--textarea-chrome:...]" defaults are themselves
-     kept literal (see textarea.tsx) so these overrides dedupe against them
-     via tailwind-merge. */
-  .ds-input-group-textarea {
-    flex: 1 1 0%;
-    resize: none;
-    background-color: transparent;
-    box-shadow: none;
   }
   .ds-input-group-textarea:focus-visible {
     box-shadow: none;

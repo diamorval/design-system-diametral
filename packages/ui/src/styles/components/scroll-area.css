@@ -10,10 +10,6 @@
     outline: none;
     transition-property: color, box-shadow;
   }
-  .ds-scroll-area-viewport:focus-visible {
-    outline: 1px solid var(--ring);
-    box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 50%, transparent);
-  }
 
   .ds-scroll-area-scrollbar {
     display: flex;
@@ -22,6 +18,22 @@
     transition-property:
       color, background-color, border-color, text-decoration-color, fill, stroke;
     user-select: none;
+  }
+
+  .ds-scroll-area-thumb {
+    position: relative;
+    flex: 1 1 0%;
+    border-radius: 0;
+    background-color: var(--border);
+  }
+}
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+@layer utilities {
+  .ds-scroll-area-viewport:focus-visible {
+    outline: 1px solid var(--ring);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 50%, transparent);
   }
   .ds-scroll-area-scrollbar[data-orientation="horizontal"] {
     height: 0.625rem;
@@ -32,12 +44,5 @@
     height: 100%;
     width: 0.625rem;
     border-inline-start: 1px solid transparent;
-  }
-
-  .ds-scroll-area-thumb {
-    position: relative;
-    flex: 1 1 0%;
-    border-radius: 0;
-    background-color: var(--border);
   }
 }

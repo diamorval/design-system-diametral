@@ -9,31 +9,15 @@
     background-color: var(--background);
     padding: 0.25rem;
   }
-  .ds-toolbar[data-disabled] {
-    opacity: 0.5;
-  }
-  .ds-toolbar[data-orientation="vertical"] {
-    flex-direction: column;
-    align-items: stretch;
-  }
 
   .ds-toolbar-group {
     display: flex;
     align-items: center;
     gap: 0.25rem;
   }
-  .ds-toolbar-group[data-disabled] {
-    opacity: 0.5;
-  }
-  :where(.ds-toolbar[data-orientation="vertical"]) .ds-toolbar-group {
-    flex-direction: column;
-  }
 
   .ds-toolbar-button {
     flex-shrink: 0;
-  }
-  .ds-toolbar-button[data-pressed] {
-    background-color: var(--muted);
   }
 
   .ds-toolbar-link {
@@ -51,13 +35,34 @@
     text-underline-offset: 4px;
     outline: none;
   }
-  .ds-toolbar-link:focus-visible {
-    box-shadow: 0 0 0 2px color-mix(in oklab, var(--ring) 30%, transparent);
-  }
 
   .ds-toolbar-separator {
     flex-shrink: 0;
     background-color: var(--border);
+  }
+}
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+@layer utilities {
+  .ds-toolbar[data-disabled] {
+    opacity: 0.5;
+  }
+  .ds-toolbar[data-orientation="vertical"] {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .ds-toolbar-group[data-disabled] {
+    opacity: 0.5;
+  }
+  :where(.ds-toolbar[data-orientation="vertical"]) .ds-toolbar-group {
+    flex-direction: column;
+  }
+  .ds-toolbar-button[data-pressed] {
+    background-color: var(--muted);
+  }
+  .ds-toolbar-link:focus-visible {
+    box-shadow: 0 0 0 2px color-mix(in oklab, var(--ring) 30%, transparent);
   }
   .ds-toolbar-separator[data-orientation="horizontal"] {
     height: 1px;

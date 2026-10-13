@@ -21,12 +21,6 @@
     outline-offset: 2px;
     user-select: none;
   }
-  .ds-menubar-trigger:hover {
-    background-color: var(--muted);
-  }
-  .ds-menubar-trigger[aria-expanded="true"] {
-    background-color: var(--muted);
-  }
 
   /* MenubarContent/MenubarSubTrigger render through DropdownMenuContent/
      DropdownMenuSubTrigger, which already apply ds-dropdown-menu-content /
@@ -64,6 +58,38 @@
     outline-offset: 2px;
     user-select: none;
   }
+
+  .ds-menubar-item-indicator {
+    pointer-events: none;
+    position: absolute;
+    inset-inline-start: 0.75rem;
+    display: flex;
+    width: 1rem;
+    height: 1rem;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ds-menubar-label {
+    padding-inline: 0.875rem;
+  }
+
+  .ds-menubar-separator {
+    margin-inline: -0.25rem;
+    margin-block: 0.25rem;
+  }
+}
+
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+@layer utilities {
+  .ds-menubar-trigger:hover {
+    background-color: var(--muted);
+  }
+  .ds-menubar-trigger[aria-expanded="true"] {
+    background-color: var(--muted);
+  }
   .ds-menubar-checkbox-item:focus,
   .ds-menubar-radio-item:focus {
     background-color: var(--accent);
@@ -83,28 +109,8 @@
     pointer-events: none;
     flex-shrink: 0;
   }
-
-  .ds-menubar-item-indicator {
-    pointer-events: none;
-    position: absolute;
-    inset-inline-start: 0.75rem;
-    display: flex;
-    width: 1rem;
-    height: 1rem;
-    align-items: center;
-    justify-content: center;
-  }
   .ds-menubar-item-indicator svg:not([class*="size-"]) {
     width: 1rem;
     height: 1rem;
-  }
-
-  .ds-menubar-label {
-    padding-inline: 0.875rem;
-  }
-
-  .ds-menubar-separator {
-    margin-inline: -0.25rem;
-    margin-block: 0.25rem;
   }
 }

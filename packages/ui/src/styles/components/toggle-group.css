@@ -6,16 +6,21 @@
     align-items: center;
     gap: calc(0.25rem * var(--gap));
   }
+
+  .ds-toggle-group-item {
+    flex-shrink: 0;
+  }
+}
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+@layer utilities {
   .ds-toggle-group[data-spacing="0"][data-variant="outline"] {
     border-radius: 0;
   }
   .ds-toggle-group[data-orientation="vertical"] {
     flex-direction: column;
     align-items: stretch;
-  }
-
-  .ds-toggle-group-item {
-    flex-shrink: 0;
   }
   :where(.ds-toggle-group[data-spacing="0"]) .ds-toggle-group-item {
     border-radius: 0;

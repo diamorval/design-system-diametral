@@ -29,9 +29,6 @@
   }
   /* Empty cell is a ring with nothing in it, not the lowest step, see
      HeatmapTile in heatmap.tsx. */
-  .ds-heatmap-tile[data-empty] {
-    box-shadow: inset 0 0 0 1px var(--border);
-  }
 
   .ds-heatmap-grid {
     display: grid;
@@ -92,5 +89,13 @@
 
   .ds-heatmap-calendar-days {
     display: grid;
+  }
+}
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+@layer utilities {
+  .ds-heatmap-tile[data-empty] {
+    box-shadow: inset 0 0 0 1px var(--border);
   }
 }

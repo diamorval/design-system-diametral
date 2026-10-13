@@ -18,14 +18,6 @@
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 150ms;
   }
-  .ds-tags-input:focus-within {
-    border-bottom-color: var(--ring);
-  }
-  .ds-tags-input[data-disabled] {
-    pointer-events: none;
-    cursor: not-allowed;
-    opacity: 0.5;
-  }
 
   .ds-tags-input-tag {
     display: flex;
@@ -53,9 +45,6 @@
     height: 1rem !important;
     opacity: 0.5;
   }
-  .ds-tags-input-tag-remove:hover {
-    opacity: 1;
-  }
 
   .ds-tags-input-field {
     min-width: 4rem;
@@ -64,6 +53,22 @@
     font-size: 0.875rem;
     line-height: calc(1.25 / 0.875);
     outline: none;
+  }
+}
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+@layer utilities {
+  .ds-tags-input:focus-within {
+    border-bottom-color: var(--ring);
+  }
+  .ds-tags-input[data-disabled] {
+    pointer-events: none;
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+  .ds-tags-input-tag-remove:hover {
+    opacity: 1;
   }
   .ds-tags-input-field::placeholder {
     color: var(--muted-foreground);

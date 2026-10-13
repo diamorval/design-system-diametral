@@ -12,16 +12,6 @@
     color: var(--card-foreground);
     border: 1px solid var(--border);
   }
-  .ds-card:has(> img:first-child) {
-    padding-top: 0;
-  }
-  .ds-card[data-size="sm"] {
-    --card-spacing: 1.25rem;
-  }
-  .ds-card > img:first-child,
-  .ds-card > img:last-child {
-    border-radius: 0;
-  }
 
   .ds-card-header {
     container-type: inline-size;
@@ -32,15 +22,6 @@
     gap: 0.375rem;
     border-radius: 0;
     padding-inline: var(--card-spacing);
-  }
-  .ds-card-header:has([data-slot="card-action"]) {
-    grid-template-columns: 1fr auto;
-  }
-  .ds-card-header:has([data-slot="card-description"]) {
-    grid-template-rows: auto auto;
-  }
-  .ds-card-header.border-b {
-    padding-bottom: var(--card-spacing);
   }
 
   /* text-lg stays a literal Tailwind utility on CardTitle's own default
@@ -77,6 +58,31 @@
     display: flex;
     align-items: center;
     padding-inline: var(--card-spacing);
+  }
+}
+
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+@layer utilities {
+  .ds-card:has(> img:first-child) {
+    padding-top: 0;
+  }
+  .ds-card[data-size="sm"] {
+    --card-spacing: 1.25rem;
+  }
+  .ds-card > img:first-child,
+  .ds-card > img:last-child {
+    border-radius: 0;
+  }
+  .ds-card-header:has([data-slot="card-action"]) {
+    grid-template-columns: 1fr auto;
+  }
+  .ds-card-header:has([data-slot="card-description"]) {
+    grid-template-rows: auto auto;
+  }
+  .ds-card-header.border-b {
+    padding-bottom: var(--card-spacing);
   }
   .ds-card-footer.border-t {
     padding-top: var(--card-spacing);

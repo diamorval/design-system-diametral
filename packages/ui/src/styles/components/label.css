@@ -10,6 +10,11 @@
     text-transform: uppercase;
     user-select: none;
   }
+}
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+@layer utilities {
   .group[data-disabled="true"] .ds-label {
     pointer-events: none;
     opacity: 0.5;

@@ -4,42 +4,9 @@
     width: fit-content;
     align-items: stretch;
   }
-  .ds-button-group > *:focus-visible {
-    position: relative;
-    z-index: 10;
-  }
-  .ds-button-group:has(> [data-slot="button-group"]) {
-    gap: 0.5rem;
-  }
-  .ds-button-group > [data-slot="input"] {
-    padding-inline: 1rem;
-  }
-  .ds-button-group > [data-slot="select-trigger"]:not([class*="w-"]) {
-    width: fit-content;
-  }
-  .ds-button-group > input {
-    flex: 1;
-  }
 
   /* A separator stands in for the shared edge, so the member before it drops
      its own end border; without that the two stack into 2px. */
-  .ds-button-group[data-orientation="horizontal"] > [data-slot] ~ [data-slot] {
-    border-inline-start-width: 0;
-  }
-  .ds-button-group[data-orientation="horizontal"]
-    > [data-slot]:has(+ [data-slot="button-group-separator"]) {
-    border-inline-end-width: 0;
-  }
-  .ds-button-group[data-orientation="vertical"] {
-    flex-direction: column;
-  }
-  .ds-button-group[data-orientation="vertical"] > [data-slot] ~ [data-slot] {
-    border-top-width: 0;
-  }
-  .ds-button-group[data-orientation="vertical"]
-    > [data-slot]:has(+ [data-slot="button-group-separator"]) {
-    border-bottom-width: 0;
-  }
 
   .ds-button-group-separator {
     position: relative;
@@ -60,6 +27,45 @@
   /* Boxed by default so it closes the outline next to bordered buttons; an
      Input sibling is underline-only, so match that instead and the two share
      one continuous rule. */
+}
+
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+@layer utilities {
+  .ds-button-group > *:focus-visible {
+    position: relative;
+    z-index: 10;
+  }
+  .ds-button-group:has(> [data-slot="button-group"]) {
+    gap: 0.5rem;
+  }
+  .ds-button-group > [data-slot="input"] {
+    padding-inline: 1rem;
+  }
+  .ds-button-group > [data-slot="select-trigger"]:not([class*="w-"]) {
+    width: fit-content;
+  }
+  .ds-button-group > input {
+    flex: 1;
+  }
+  .ds-button-group[data-orientation="horizontal"] > [data-slot] ~ [data-slot] {
+    border-inline-start-width: 0;
+  }
+  .ds-button-group[data-orientation="horizontal"]
+    > [data-slot]:has(+ [data-slot="button-group-separator"]) {
+    border-inline-end-width: 0;
+  }
+  .ds-button-group[data-orientation="vertical"] {
+    flex-direction: column;
+  }
+  .ds-button-group[data-orientation="vertical"] > [data-slot] ~ [data-slot] {
+    border-top-width: 0;
+  }
+  .ds-button-group[data-orientation="vertical"]
+    > [data-slot]:has(+ [data-slot="button-group-separator"]) {
+    border-bottom-width: 0;
+  }
   .ds-button-group:has(> [data-slot="input"]) .ds-button-group-text {
     border-color: transparent;
     border-bottom-color: var(--input);

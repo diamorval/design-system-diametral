@@ -55,16 +55,6 @@
     transition-duration: 150ms;
     outline: none;
   }
-  .ds-code-block-copy-button:hover {
-    background-color: var(--ds-grey-dark);
-  }
-  .ds-code-block-copy-button:focus-visible {
-    box-shadow: 0 0 0 2px color-mix(in oklab, var(--ring) 30%, transparent);
-  }
-  .ds-code-block-copy-button svg {
-    width: 0.875rem;
-    height: 0.875rem;
-  }
 
   /* Syntax-highlighting token colours (see the TOKEN_COLOR map in
      code-block.tsx) — plain classes rather than arbitrary text-[var(...)]
@@ -83,5 +73,21 @@
   }
   .ds-code-block-token-type {
     color: var(--ds-blue);
+  }
+}
+
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+@layer utilities {
+  .ds-code-block-copy-button:hover {
+    background-color: var(--ds-grey-dark);
+  }
+  .ds-code-block-copy-button:focus-visible {
+    box-shadow: 0 0 0 2px color-mix(in oklab, var(--ring) 30%, transparent);
+  }
+  .ds-code-block-copy-button svg {
+    width: 0.875rem;
+    height: 0.875rem;
   }
 }

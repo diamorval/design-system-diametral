@@ -15,15 +15,9 @@
   .ds-speed-dial-icon {
     display: contents;
   }
-  [data-slot="speed-dial"][aria-expanded="true"] .ds-speed-dial-icon {
-    display: none;
-  }
 
   .ds-speed-dial-icon-close {
     display: none;
-  }
-  [data-slot="speed-dial"][aria-expanded="true"] .ds-speed-dial-icon-close {
-    display: block;
   }
 
   .ds-speed-dial-actions {
@@ -36,12 +30,6 @@
     outline: none;
     --ds-speed-dial-slide-y: 0;
   }
-  .ds-speed-dial-actions[data-side="bottom"] {
-    --ds-speed-dial-slide-y: -0.5rem;
-  }
-  .ds-speed-dial-actions[data-side="top"] {
-    --ds-speed-dial-slide-y: 0.5rem;
-  }
   @keyframes ds-speed-dial-actions-enter {
     from {
       opacity: 0;
@@ -53,12 +41,6 @@
       opacity: 0;
     }
   }
-  .ds-speed-dial-actions[data-open] {
-    animation: ds-speed-dial-actions-enter 150ms ease;
-  }
-  .ds-speed-dial-actions[data-closed] {
-    animation: ds-speed-dial-actions-exit 150ms ease;
-  }
 
   .ds-speed-dial-action {
     display: flex;
@@ -67,10 +49,6 @@
     gap: 0.5rem;
     border-radius: 0;
     outline: none;
-  }
-  .ds-speed-dial-action[data-disabled] {
-    pointer-events: none;
-    opacity: 0.5;
   }
 
   .ds-speed-dial-action-label {
@@ -89,6 +67,34 @@
   /* The icon box is otherwise styled by buttonVariants() — this only adds
      the focus lift that used to ride the (unnamed outside this file)
      `group/speed-dial-action` marker. */
+}
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+
+@layer utilities {
+  [data-slot="speed-dial"][aria-expanded="true"] .ds-speed-dial-icon {
+    display: none;
+  }
+  [data-slot="speed-dial"][aria-expanded="true"] .ds-speed-dial-icon-close {
+    display: block;
+  }
+  .ds-speed-dial-actions[data-side="bottom"] {
+    --ds-speed-dial-slide-y: -0.5rem;
+  }
+  .ds-speed-dial-actions[data-side="top"] {
+    --ds-speed-dial-slide-y: 0.5rem;
+  }
+  .ds-speed-dial-actions[data-open] {
+    animation: ds-speed-dial-actions-enter 150ms ease;
+  }
+  .ds-speed-dial-actions[data-closed] {
+    animation: ds-speed-dial-actions-exit 150ms ease;
+  }
+  .ds-speed-dial-action[data-disabled] {
+    pointer-events: none;
+    opacity: 0.5;
+  }
   .ds-speed-dial-action:focus .ds-speed-dial-action-icon {
     border-color: var(--ring);
     background-color: color-mix(in oklch, var(--btn), var(--btn-fg) 14%);

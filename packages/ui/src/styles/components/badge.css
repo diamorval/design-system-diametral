@@ -22,6 +22,36 @@
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 150ms;
   }
+
+  .ds-badge--default {
+    color: var(--foreground);
+  }
+
+  .ds-badge--secondary {
+    color: var(--muted-foreground);
+  }
+
+  .ds-badge--destructive {
+    color: var(--destructive);
+  }
+
+  .ds-badge--outline {
+    color: var(--foreground);
+  }
+
+  .ds-badge--ghost {
+    color: var(--muted-foreground);
+  }
+
+  .ds-badge--link {
+    color: var(--foreground);
+    text-underline-offset: 4px;
+  }
+}
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+@layer utilities {
   .ds-badge:focus-visible {
     border-color: var(--ring);
     box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 50%, transparent);
@@ -48,23 +78,11 @@
     width: 0.75rem !important;
     height: 0.75rem !important;
   }
-
-  .ds-badge--default {
-    color: var(--foreground);
-  }
   .ds-badge--default:is(a):hover {
     color: color-mix(in oklab, var(--foreground) 70%, transparent);
   }
-
-  .ds-badge--secondary {
-    color: var(--muted-foreground);
-  }
   .ds-badge--secondary:is(a):hover {
     color: var(--foreground);
-  }
-
-  .ds-badge--destructive {
-    color: var(--destructive);
   }
   .ds-badge--destructive:focus-visible {
     box-shadow: 0 0 0 3px
@@ -77,24 +95,11 @@
   .ds-badge--destructive:is(a):hover {
     color: color-mix(in oklab, var(--destructive) 70%, transparent);
   }
-
-  .ds-badge--outline {
-    color: var(--foreground);
-  }
   .ds-badge--outline:is(a):hover {
     color: color-mix(in oklab, var(--foreground) 70%, transparent);
   }
-
-  .ds-badge--ghost {
-    color: var(--muted-foreground);
-  }
   .ds-badge--ghost:hover {
     color: var(--foreground);
-  }
-
-  .ds-badge--link {
-    color: var(--foreground);
-    text-underline-offset: 4px;
   }
   .ds-badge--link:hover {
     text-decoration-line: underline;

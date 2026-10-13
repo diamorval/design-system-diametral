@@ -14,13 +14,6 @@
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 150ms;
   }
-  .ds-time-picker:focus-within {
-    border-bottom-color: var(--ring);
-  }
-  .ds-time-picker[data-disabled] {
-    pointer-events: none;
-    opacity: 0.5;
-  }
 
   .ds-time-picker-field {
     width: auto;
@@ -49,15 +42,6 @@
       text-decoration-color, fill, stroke;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 150ms;
-  }
-  .ds-time-picker-trigger:hover {
-    color: var(--foreground);
-  }
-  .ds-time-picker-trigger:focus-visible {
-    box-shadow: 0 0 0 2px color-mix(in oklab, var(--ring) 30%, transparent);
-  }
-  .ds-time-picker-trigger[aria-expanded="true"] {
-    color: var(--foreground);
   }
 
   .ds-time-picker-trigger-icon {
@@ -96,12 +80,6 @@
       text-decoration-color, fill, stroke;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 150ms;
-  }
-  .ds-time-picker-dial-unit:focus-visible {
-    box-shadow: 0 0 0 2px color-mix(in oklab, var(--ring) 30%, transparent);
-  }
-  .ds-time-picker-dial-unit[aria-pressed="true"] {
-    color: var(--foreground);
   }
 
   .ds-time-picker-dial-face {
@@ -167,16 +145,6 @@
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 150ms;
   }
-  .ds-time-picker-dial-mark:hover {
-    background-color: var(--muted);
-  }
-  .ds-time-picker-dial-mark:focus-visible {
-    box-shadow: 0 0 0 2px color-mix(in oklab, var(--ring) 30%, transparent);
-  }
-  .ds-time-picker-dial-mark[aria-pressed="true"] {
-    background-color: var(--foreground);
-    color: var(--background);
-  }
 
   .ds-time-picker-dial-mark--outer {
     width: 1.75rem;
@@ -207,9 +175,6 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
-  .ds-time-picker-column::-webkit-scrollbar {
-    display: none;
-  }
 
   .ds-time-picker-column-item {
     height: 2rem;
@@ -223,6 +188,46 @@
       text-decoration-color, fill, stroke;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 150ms;
+  }
+}
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+@layer utilities {
+  .ds-time-picker:focus-within {
+    border-bottom-color: var(--ring);
+  }
+  .ds-time-picker[data-disabled] {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+  .ds-time-picker-trigger:hover {
+    color: var(--foreground);
+  }
+  .ds-time-picker-trigger:focus-visible {
+    box-shadow: 0 0 0 2px color-mix(in oklab, var(--ring) 30%, transparent);
+  }
+  .ds-time-picker-trigger[aria-expanded="true"] {
+    color: var(--foreground);
+  }
+  .ds-time-picker-dial-unit:focus-visible {
+    box-shadow: 0 0 0 2px color-mix(in oklab, var(--ring) 30%, transparent);
+  }
+  .ds-time-picker-dial-unit[aria-pressed="true"] {
+    color: var(--foreground);
+  }
+  .ds-time-picker-dial-mark:hover {
+    background-color: var(--muted);
+  }
+  .ds-time-picker-dial-mark:focus-visible {
+    box-shadow: 0 0 0 2px color-mix(in oklab, var(--ring) 30%, transparent);
+  }
+  .ds-time-picker-dial-mark[aria-pressed="true"] {
+    background-color: var(--foreground);
+    color: var(--background);
+  }
+  .ds-time-picker-column::-webkit-scrollbar {
+    display: none;
   }
   .ds-time-picker-column-item:hover {
     background-color: var(--muted);

@@ -24,9 +24,6 @@
     overscroll-behavior: contain;
     contain: content;
   }
-  .ds-message-scroller-viewport[data-autoscrolling] {
-    scrollbar-color: transparent transparent;
-  }
 
   /* gap-8 stays a literal Tailwind utility on the component's own className
      (see message-scroller.tsx) — several demos override it with gap-2,
@@ -54,6 +51,15 @@
       var(--ds-message-scroller-button-y);
     transition-property: translate, scale, opacity;
     transition-duration: 200ms;
+  }
+}
+
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+@layer utilities {
+  .ds-message-scroller-viewport[data-autoscrolling] {
+    scrollbar-color: transparent transparent;
   }
   :where([dir="rtl"], [dir="rtl"] *).ds-message-scroller-button {
     --ds-message-scroller-button-x: 50%;

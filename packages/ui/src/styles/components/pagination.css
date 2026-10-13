@@ -22,10 +22,6 @@
     padding-inline-end: 0.5rem !important;
   }
 
-  :where([dir="rtl"], [dir="rtl"] *) .ds-pagination-caret {
-    rotate: 180deg;
-  }
-
   .ds-pagination-label {
     display: none;
   }
@@ -41,6 +37,15 @@
     height: 2.25rem;
     align-items: center;
     justify-content: center;
+  }
+}
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+@layer utilities {
+
+  :where([dir="rtl"], [dir="rtl"] *) .ds-pagination-caret {
+    rotate: 180deg;
   }
   .ds-pagination-ellipsis svg:not([class*="size-"]) {
     width: 1rem;
