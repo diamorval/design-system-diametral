@@ -77,7 +77,7 @@ function StackedBar({
   return (
     <ChartContainer
       config={config}
-      className={cn("h-40 w-full", className)}
+      className={cn("ds-stacked-bar-root h-40", className)}
       {...props}
     >
       <BarChart

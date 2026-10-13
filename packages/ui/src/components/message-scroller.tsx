@@ -23,10 +23,7 @@ function MessageScroller({
   return (
     <MessageScrollerPrimitive.Root
       data-slot="message-scroller"
-      className={cn(
-        "group/message-scroller relative flex size-full min-h-0 flex-col overflow-hidden",
-        className
-      )}
+      className={cn("ds-message-scroller", className)}
       {...props}
     />
   )
@@ -39,10 +36,7 @@ function MessageScrollerViewport({
   return (
     <MessageScrollerPrimitive.Viewport
       data-slot="message-scroller-viewport"
-      className={cn(
-        "size-full min-h-0 min-w-0 scroll-fade-b scrollbar-thin scrollbar-gutter-stable overflow-y-auto overscroll-contain contain-content data-autoscrolling:scrollbar-thumb-transparent data-autoscrolling:scrollbar-track-transparent",
-        className
-      )}
+      className={cn("ds-message-scroller-viewport scroll-fade-b", className)}
       {...props}
     />
   )
@@ -55,7 +49,10 @@ function MessageScrollerContent({
   return (
     <MessageScrollerPrimitive.Content
       data-slot="message-scroller-content"
-      className={cn("flex h-max min-h-full flex-col gap-8", className)}
+      // gap-8 stays a literal Tailwind utility (see message-scroller.css) so
+      // tailwind-merge can keep deduping it against a consumer's own gap-*
+      // override — several demos pass gap-2, relying on that dedup.
+      className={cn("ds-message-scroller-content gap-8", className)}
       {...props}
     />
   )
@@ -70,10 +67,7 @@ function MessageScrollerItem({
     <MessageScrollerPrimitive.Item
       data-slot="message-scroller-item"
       scrollAnchor={scrollAnchor}
-      className={cn(
-        "min-w-0 shrink-0 [contain-intrinsic-size:auto_10rem] [content-visibility:auto]",
-        className
-      )}
+      className={cn("ds-message-scroller-item", className)}
       {...props}
     />
   )
@@ -96,8 +90,14 @@ function MessageScrollerButton({
       data-variant={variant}
       data-size={size}
       direction={direction}
+      // border-border/bg-background/text-foreground/hover:bg-muted/
+      // hover:text-foreground stay literal Tailwind utilities (see
+      // message-scroller.css): they're generated early in the cascade (same
+      // layer as everything else here) and only ever show through the holes
+      // Button's own variant CSS leaves — baking them as a later-imported
+      // class would flip that precedence and win over the Button variant.
       className={cn(
-        "absolute inset-s-1/2 -translate-x-1/2 rtl:translate-x-1/2 border-border bg-background text-foreground transition-[translate,scale,opacity] duration-200 hover:bg-muted hover:text-foreground data-[active=false]:pointer-events-none data-[active=false]:scale-95 data-[active=false]:opacity-0 data-[active=false]:duration-400 data-[active=false]:ease-[cubic-bezier(0.7,0,0.84,0)] data-[active=true]:translate-y-0 data-[active=true]:scale-100 data-[active=true]:opacity-100 data-[active=true]:ease-[cubic-bezier(0.23,1,0.32,1)] data-[direction=end]:bottom-4 data-[direction=end]:data-[active=false]:translate-y-full data-[direction=start]:top-4 data-[direction=start]:data-[active=false]:-translate-y-full rtl:translate-x-1/2 data-[direction=start]:[&_svg]:rotate-180",
+        "ds-message-scroller-button border-border bg-background text-foreground hover:bg-muted hover:text-foreground",
         className
       )}
       render={render ?? <Button variant={variant} size={size} />}
@@ -105,8 +105,7 @@ function MessageScrollerButton({
     >
       {children ?? (
         <>
-          <ArrowDownIcon
-          />
+          <ArrowDownIcon />
           <span className="sr-only">
             {direction === "end" ? "Scroll to end" : "Scroll to start"}
           </span>

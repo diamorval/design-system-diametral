@@ -36,10 +36,9 @@ const EASE = "cubic-bezier(0.22,1,0.36,1)"
 
 // The 24-hour ring is the secondary read: smaller and muted so 0–11 still
 // scans as a clock face rather than 24 numbers competing at one weight.
-const markClassName =
-  "absolute flex -translate-x-1/2 -translate-y-1/2 items-center justify-center tabular-nums outline-none transition-colors duration-150 hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring/30 aria-pressed:bg-foreground aria-pressed:text-background"
-const outerMarkClassName = "size-7 text-xs"
-const innerMarkClassName = "size-6 text-[0.6875rem] text-muted-foreground"
+const markClassName = "ds-time-picker-dial-mark"
+const outerMarkClassName = "ds-time-picker-dial-mark--outer"
+const innerMarkClassName = "ds-time-picker-dial-mark--inner"
 
 // The hand sweeps, so it needs a continuous angle rather than a modular one:
 // 55 → 00 minutes has to travel 30° forward, not 330° back. The accumulation
@@ -92,24 +91,24 @@ function TimeDial({
   }
 
   return (
-    <div data-slot="time-picker-dial" className="flex flex-col items-center">
-      <div className="flex items-baseline text-2xl tabular-nums">
+    <div data-slot="time-picker-dial" className="ds-time-picker-dial">
+      <div className="ds-time-picker-dial-readout">
         <button
           type="button"
           aria-pressed={isHours}
           onClick={() => setMode("hours")}
-          className="px-1 transition-colors outline-none not-aria-pressed:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring/30 aria-pressed:text-foreground"
+          className="ds-time-picker-dial-unit"
         >
           {pad(value.hours)}
         </button>
-        <span aria-hidden="true" className="text-muted-foreground">
+        <span aria-hidden="true" className="ds-time-picker-colon">
           :
         </span>
         <button
           type="button"
           aria-pressed={!isHours}
           onClick={() => setMode("minutes")}
-          className="px-1 transition-colors outline-none not-aria-pressed:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring/30 aria-pressed:text-foreground"
+          className="ds-time-picker-dial-unit"
         >
           {pad(value.minutes)}
         </button>
@@ -117,16 +116,13 @@ function TimeDial({
       <div
         role="group"
         aria-label={isHours ? "Hours" : "Minutes"}
-        className="relative mt-3 rounded-full border border-border"
+        className="ds-time-picker-dial-face"
         style={{ width: FACE, height: FACE }}
       >
+        <span aria-hidden="true" className="ds-time-picker-dial-center" />
         <span
           aria-hidden="true"
-          className="absolute top-1/2 left-1/2 size-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-foreground"
-        />
-        <span
-          aria-hidden="true"
-          className="absolute top-1/2 left-1/2 w-px bg-foreground transition-transform duration-300 motion-reduce:transition-none"
+          className="ds-time-picker-dial-hand"
           style={{
             height: OUTER_RING,
             transformOrigin: "top center",
@@ -138,7 +134,7 @@ function TimeDial({
             values under the pointer. */}
         <div
           key={mode}
-          className="absolute inset-0 animate-in duration-200 fade-in-0 zoom-in-95 motion-reduce:animate-none"
+          className="ds-time-picker-dial-marks"
           style={{ animationTimingFunction: EASE }}
         >
           {marks.map((mark) => {
@@ -210,7 +206,7 @@ function TimeColumn({
       ref={viewport}
       role="group"
       aria-label={label}
-      className="no-scrollbar flex w-13 snap-y snap-mandatory flex-col overflow-y-auto overscroll-contain"
+      className="ds-time-picker-column"
       style={{
         height: COLUMN_HEIGHT,
         paddingBlock: (COLUMN_HEIGHT - ITEM_HEIGHT) / 2,
@@ -222,7 +218,7 @@ function TimeColumn({
           type="button"
           aria-pressed={value === mark}
           onClick={() => onSelect(mark)}
-          className="h-8 shrink-0 snap-center text-xs tabular-nums transition-colors duration-150 outline-none hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring/30 aria-pressed:bg-foreground aria-pressed:text-background"
+          className="ds-time-picker-column-item"
         >
           {pad(mark)}
         </button>
@@ -249,7 +245,7 @@ function TimeList({
   ] as const
 
   return (
-    <div data-slot="time-picker-list" className="flex gap-1">
+    <div data-slot="time-picker-list" className="ds-time-picker-list">
       {columns.map((column) => (
         <TimeColumn
           key={column.part}
@@ -301,10 +297,7 @@ function TimePicker({
       <div
         data-slot="time-picker"
         data-disabled={disabled || undefined}
-        className={cn(
-          "flex h-10 w-fit items-center gap-0.5 border border-transparent border-b-input bg-transparent px-2 tabular-nums transition-[color,border-color] focus-within:border-b-ring data-disabled:pointer-events-none data-disabled:opacity-50",
-          className
-        )}
+        className={cn("ds-time-picker", className)}
         {...props}
       >
         <NumberField
@@ -314,14 +307,14 @@ function TimePicker({
           value={time.hours}
           onValueChange={setPart("hours")}
           disabled={disabled}
-          className="w-auto"
+          className="ds-time-picker-field"
         >
           <NumberFieldInput
             aria-label="Hours"
-            className="w-8 px-0 text-center"
+            className="ds-time-picker-field-input"
           />
         </NumberField>
-        <span aria-hidden="true" className="text-muted-foreground">
+        <span aria-hidden="true" className="ds-time-picker-colon">
           :
         </span>
         <NumberField
@@ -331,16 +324,16 @@ function TimePicker({
           value={time.minutes}
           onValueChange={setPart("minutes")}
           disabled={disabled}
-          className="w-auto"
+          className="ds-time-picker-field"
         >
           <NumberFieldInput
             aria-label="Minutes"
-            className="w-8 px-0 text-center"
+            className="ds-time-picker-field-input"
           />
         </NumberField>
         {showSeconds && (
           <>
-            <span aria-hidden="true" className="text-muted-foreground">
+            <span aria-hidden="true" className="ds-time-picker-colon">
               :
             </span>
             <NumberField
@@ -350,11 +343,11 @@ function TimePicker({
               value={time.seconds ?? 0}
               onValueChange={setPart("seconds")}
               disabled={disabled}
-              className="w-auto"
+              className="ds-time-picker-field"
             >
               <NumberFieldInput
                 aria-label="Seconds"
-                className="w-8 px-0 text-center"
+                className="ds-time-picker-field-input"
               />
             </NumberField>
           </>
@@ -364,21 +357,21 @@ function TimePicker({
             data-slot="time-picker-trigger"
             aria-label="Choose a time"
             disabled={disabled}
-            className="ms-1 flex size-7 items-center justify-center text-muted-foreground transition-colors outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/30 aria-expanded:text-foreground"
+            className="ds-time-picker-trigger"
           >
-            <ClockIcon className="size-4" />
+            <ClockIcon className="ds-time-picker-trigger-icon" />
           </PopoverTrigger>
         )}
       </div>
       <PopoverContent
         data-slot="time-picker-content"
         align="start"
-        className="w-auto p-3"
+        className="ds-time-picker-content"
         initialFocus={surface}
       >
         {/* Base UI otherwise opens on the first mark, and focusing a mark
             scrolls its column back to the top. */}
-        <div ref={surface} tabIndex={-1} className="outline-none">
+        <div ref={surface} tabIndex={-1} className="ds-time-picker-surface">
           {picker === "list" ? (
             <TimeList
               value={time}

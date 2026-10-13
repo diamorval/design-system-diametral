@@ -67,7 +67,7 @@ function Gauge({
       data-slot="gauge"
       role="img"
       aria-label={ariaLabel}
-      className={cn("inline-flex flex-col items-center", className)}
+      className={cn("ds-gauge", className)}
       {...props}
     >
       <svg
@@ -75,13 +75,13 @@ function Gauge({
         height={size}
         viewBox={`0 0 ${size} ${size}`}
         aria-hidden="true"
-        className="overflow-visible"
+        className="ds-gauge-svg"
       >
         <path
           d={track}
           fill="none"
           strokeWidth={thickness}
-          className="stroke-border"
+          className="ds-gauge-track"
         />
         <path
           d={track}
@@ -96,7 +96,7 @@ function Gauge({
           dominantBaseline="central"
           textAnchor="middle"
           fontSize={size * 0.24}
-          className="fill-foreground font-heading font-semibold tabular-nums"
+          className="ds-gauge-value"
         >
           {centerText}
         </text>
@@ -106,7 +106,7 @@ function Gauge({
             y={cxy + size * 0.18}
             dominantBaseline="central"
             textAnchor="middle"
-            className="fill-muted-foreground text-[10px] tracking-wide uppercase"
+            className="ds-gauge-label"
           >
             {label}
           </text>

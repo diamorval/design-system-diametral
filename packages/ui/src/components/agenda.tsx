@@ -81,7 +81,7 @@ function Agenda({
 
   if (!groups.length) {
     return (
-      <div data-slot="agenda" className={cn("w-full", className)} {...props}>
+      <div data-slot="agenda" className={cn("ds-agenda", className)} {...props}>
         <Empty>
           <EmptyHeader>
             <EmptyDescription>{emptyMessage}</EmptyDescription>
@@ -94,16 +94,13 @@ function Agenda({
   return (
     <div
       data-slot="agenda"
-      className={cn("flex w-full flex-col", className)}
+      className={cn("ds-agenda ds-agenda-list", className)}
       {...props}
     >
       {groups.map((group) => (
         <section key={group.key}>
-          <h3
-            data-slot="agenda-day"
-            className="flex items-baseline gap-2 border-b border-border py-2 text-[0.6875rem] tracking-wider text-muted-foreground uppercase"
-          >
-            <span className="font-semibold text-foreground">
+          <h3 data-slot="agenda-day" className="ds-agenda-day">
+            <span className="ds-agenda-day-weekday">
               {group.date.toLocaleDateString(locale, { weekday: "long" })}
             </span>
             <time dateTime={group.key}>
@@ -118,20 +115,16 @@ function Agenda({
             <div
               key={index}
               data-slot="agenda-event"
-              className="flex items-baseline gap-3 border-b border-border py-3 last:border-b-0"
+              className="ds-agenda-event"
             >
-              <span className="w-14 shrink-0 text-sm text-muted-foreground tabular-nums">
-                {event.time}
-              </span>
-              <Status tone={event.status} className="shrink-0 self-center">
+              <span className="ds-agenda-event-time">{event.time}</span>
+              <Status tone={event.status} className="ds-agenda-event-status">
                 <StatusIndicator />
               </Status>
-              <div className="min-w-0 flex-1">
-                <div className="text-sm font-medium">{event.title}</div>
+              <div className="ds-agenda-event-body">
+                <div className="ds-agenda-event-title">{event.title}</div>
                 {event.meta != null ? (
-                  <div className="text-sm text-muted-foreground">
-                    {event.meta}
-                  </div>
+                  <div className="ds-agenda-event-meta">{event.meta}</div>
                 ) : null}
               </div>
             </div>

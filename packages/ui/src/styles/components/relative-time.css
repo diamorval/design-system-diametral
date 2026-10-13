@@ -1,0 +1,5 @@
+@layer components {
+  .ds-relative-time {
+    font-variant-numeric: tabular-nums;
+  }
+}

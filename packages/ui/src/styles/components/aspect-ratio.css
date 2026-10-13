@@ -1,0 +1,6 @@
+@layer components {
+  .ds-aspect-ratio {
+    position: relative;
+    aspect-ratio: var(--ratio);
+  }
+}

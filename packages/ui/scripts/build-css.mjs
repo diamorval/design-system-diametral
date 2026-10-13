@@ -18,7 +18,15 @@ const to = resolve(root, "dist/globals.css")
 
 const PACKAGED_SOURCE = `@source "./**/*.js";`
 
-const css = await readFile(from, "utf8")
+// Component stylesheets are @imported relative to src/styles; that folder is
+// not published, so inline them in place.
+const COMPONENT_IMPORT = /^@import "(\.\/components\/[^"]+\.css)";\s*$/gm
+const authored = await readFile(from, "utf8")
+let css = authored
+for (const [line, path] of authored.matchAll(COMPONENT_IMPORT)) {
+  const body = await readFile(resolve(dirname(from), path), "utf8")
+  css = css.replace(line, () => body.trimEnd())
+}
 
 // Collapse the contiguous run of @source directives into the packaged one.
 const sourceRun = /^@source\s+"[^"]*";\s*$(\n^@source\s+"[^"]*";\s*$)*/m
