@@ -82,7 +82,7 @@ function RadarChart({
       // Square and definite: the polar radius resolves against the shorter
       // side, and `max-h-*` alone leaves both axes indefinite so the responsive
       // container measures 0 and recharts never draws.
-      className={cn("mx-auto aspect-square h-64", className)}
+      className={cn("ds-radar-chart-root aspect-square h-64", className)}
       {...props}
     >
       <RechartsRadarChart accessibilityLayer data={data} margin={margin}>

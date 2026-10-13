@@ -18,7 +18,24 @@ const to = resolve(root, "dist/globals.css")
 
 const PACKAGED_SOURCE = `@source "./**/*.js";`
 
-const css = await readFile(from, "utf8")
+// Component stylesheets are @imported relative to src/styles; that folder is
+// not published, so inline them in place.
+const COMPONENT_IMPORT = /^@import "(\.\/components\/[^"]+\.css)";\s*$/gm
+const authored = await readFile(from, "utf8")
+const imports = [...authored.matchAll(COMPONENT_IMPORT)]
+const bodies = await Promise.all(
+  imports.map(([, path]) => readFile(resolve(dirname(from), path), "utf8"))
+)
+let css = authored
+imports.forEach(([line], i) => {
+  css = css.replace(line, () => bodies[i].trimEnd())
+})
+if (/^@import\s+["']\.{1,2}\//m.test(css)) {
+  throw new Error(
+    `A relative @import in ${from} was not inlined; it would point into the ` +
+      `unpublished src/styles. Use the form @import "./components/<name>.css";`
+  )
+}
 
 // Collapse the contiguous run of @source directives into the packaged one.
 const sourceRun = /^@source\s+"[^"]*";\s*$(\n^@source\s+"[^"]*";\s*$)*/m

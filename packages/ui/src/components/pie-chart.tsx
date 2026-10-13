@@ -52,8 +52,12 @@ function PieChart({
       config={config}
       // A definite height is what `aspect-square` resolves the width against:
       // capping with `max-h-*` alone leaves both axes indefinite and the
-      // container measures 0, so recharts never draws.
-      className={cn("mx-auto aspect-square h-64", className)}
+      // container measures 0, so recharts never draws. aspect-square and h-64
+      // stay literal Tailwind utilities — pie-chart/compact.tsx overrides h-64
+      // with h-28, relying on tailwind-merge to dedupe against the component's
+      // own default, and aspect-square itself has to dedupe against
+      // ChartContainer's literal aspect-video default.
+      className={cn("ds-pie-chart-root aspect-square h-64", className)}
       {...props}
     >
       <RechartsPieChart>

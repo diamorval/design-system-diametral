@@ -77,7 +77,7 @@ function Editable({
       <div
         data-slot="editable"
         data-editing="true"
-        className={cn("flex items-center gap-1.5", className)}
+        className={cn("ds-editable", className)}
         {...props}
       >
         <Input
@@ -126,13 +126,10 @@ function Editable({
     <div
       data-slot="editable"
       data-editing="false"
-      className={cn("group/editable flex items-center gap-1.5", className)}
+      className={cn("ds-editable", className)}
       {...props}
     >
-      <span
-        data-slot="editable-preview"
-        className={cn(!committed && "text-muted-foreground")}
-      >
+      <span data-slot="editable-preview" data-empty={!committed || undefined}>
         {committed || placeholder}
       </span>
       <Button
@@ -142,7 +139,7 @@ function Editable({
         aria-label={label("Edit")}
         disabled={disabled}
         onClick={startEditing}
-        className="opacity-0 group-hover/editable:opacity-100 focus-visible:opacity-100"
+        className="ds-editable-edit-button"
       >
         <PencilSimpleIcon />
       </Button>

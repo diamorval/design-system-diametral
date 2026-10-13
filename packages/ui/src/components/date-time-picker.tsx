@@ -78,7 +78,7 @@ function DateTimePicker({
   return (
     <div
       data-slot="date-time-picker"
-      className={cn("flex flex-wrap items-center gap-2", className)}
+      className={cn("ds-date-time-picker", className)}
       {...props}
     >
       <DatePicker open={open} onOpenChange={setOpen}>

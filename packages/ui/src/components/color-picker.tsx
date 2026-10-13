@@ -80,14 +80,14 @@ function ColorPicker({
       aria-label={
         ariaLabel ?? (props["aria-labelledby"] ? undefined : "Colour")
       }
-      className={cn("flex w-full max-w-sm flex-col gap-3", className)}
+      className={cn("ds-color-picker", className)}
       {...props}
     >
       <div
         data-slot="color-picker-swatches"
         role="group"
         aria-label="Swatches"
-        className="flex flex-wrap gap-1.5"
+        className="ds-color-picker-swatches"
       >
         {swatches.map((swatch) => {
           const norm = normHex(swatch)
@@ -103,22 +103,13 @@ function ColorPicker({
               title={swatch}
               style={{ background: swatch }}
               onClick={() => setCurrent(norm)}
-              className={cn(
-                "size-6 border border-border outline-none",
-                "focus-visible:ring-2 focus-visible:ring-ring/30",
-                "disabled:pointer-events-none disabled:opacity-50",
-                // The selected swatch is marked with a ring rather than a
-                // border colour, which would be invisible on a swatch whose
-                // own colour is close to the border's.
-                isSelected &&
-                  "ring-2 ring-foreground ring-offset-2 ring-offset-background"
-              )}
+              className="ds-color-picker-swatch"
             />
           )
         })}
       </div>
 
-      <div className="flex items-center gap-2">
+      <div className="ds-color-picker-row">
         {/* `id` lands on the hex field, the only labelable element, so a
             FieldLabel's htmlFor names it; aria-label would override that. */}
         <Input
@@ -144,7 +135,7 @@ function ColorPicker({
           disabled={disabled}
           aria-label="Pick a colour"
           onChange={(event) => setCurrent(normHex(event.target.value))}
-          className="size-9 shrink-0 cursor-pointer border border-border bg-transparent p-1 outline-none focus-visible:ring-2 focus-visible:ring-ring/30 disabled:pointer-events-none disabled:opacity-50"
+          className="ds-color-picker-native"
         />
       </div>
 
