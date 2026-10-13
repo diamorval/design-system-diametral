@@ -103,7 +103,7 @@ function ColorPicker({
               title={swatch}
               style={{ background: swatch }}
               onClick={() => setCurrent(norm)}
-              className={cn("ds-color-picker-swatch")}
+              className="ds-color-picker-swatch"
             />
           )
         })}

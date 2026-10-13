@@ -1,16 +1,3 @@
-/* font-weight/letter-spacing/text-transform live in @layer components (lower
-   priority than @layer utilities) so call sites can override them with plain
-   Tailwind utility classNames, e.g. docs/playground.tsx's font-normal
-   tracking-normal normal-case — see the peer-* overrides below, which target
-   the same properties and must keep winning via selector specificity. */
-@layer components {
-  .ds-label {
-    font-weight: 600;
-    letter-spacing: 0.025em;
-    text-transform: uppercase;
-  }
-}
-
 @layer components {
   .ds-label {
     display: flex;
@@ -18,6 +5,9 @@
     gap: 0.5rem;
     font-size: 0.75rem;
     line-height: calc(1 / 0.75);
+    font-weight: 600;
+    letter-spacing: 0.025em;
+    text-transform: uppercase;
     user-select: none;
   }
   .group[data-disabled="true"] .ds-label {

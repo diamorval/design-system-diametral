@@ -44,7 +44,7 @@ function TocItem({
     <li
       data-slot="toc-item"
       data-level={level}
-      className={cn(className)}
+      className={className}
       {...props}
     />
   )

@@ -96,6 +96,7 @@ function Editable({
             }
           }}
           onBlur={() => (submitOnBlur ? submit() : cancel())}
+          className="h-8"
         />
         <Button
           type="button"

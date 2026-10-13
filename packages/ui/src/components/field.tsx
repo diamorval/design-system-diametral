@@ -1,6 +1,7 @@
 "use client"
 
 import { useMemo } from "react"
+import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "../lib/utils.js"
 import { Label } from "./label.js"
@@ -41,19 +42,25 @@ function FieldGroup({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
+// Orientation is styled through `data-orientation` in field.css; cva only
+// carries the axis for apps/web's build-time playground extraction.
+const fieldVariants = cva("ds-field", {
+  variants: {
+    orientation: { vertical: "", horizontal: "", responsive: "" },
+  },
+})
+
 function Field({
   className,
   orientation = "vertical",
   ...props
-}: React.ComponentProps<"div"> & {
-  orientation?: "vertical" | "horizontal" | "responsive"
-}) {
+}: React.ComponentProps<"div"> & VariantProps<typeof fieldVariants>) {
   return (
     <div
       role="group"
       data-slot="field"
       data-orientation={orientation}
-      className={cn("ds-field", className)}
+      className={cn(fieldVariants({ orientation }), className)}
       {...props}
     />
   )

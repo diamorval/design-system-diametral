@@ -58,13 +58,10 @@
     gap: 0.25rem;
   }
 
-  /* width, height and padding stay literal Tailwind utilities on the nav
-     buttons (see calendar.tsx) — button.css's own .ds-button--size-default
-     already sets height and padding-inline as real (non-Tailwind) CSS, so
-     it now wins the cascade by import order alone regardless of class-list
-     position; baking size-(--cell-size)/p-0 here would flip that and make
-     the nav buttons cell-sized instead of matching their current
-     (already-shipped) fixed button size. */
+  /* size-(--cell-size) and p-0 stay literal Tailwind utilities on the nav
+     buttons (see calendar.tsx): component CSS sits in @layer components, so
+     those utilities override .ds-button--size-default's height and padding,
+     as tailwind-merge did before the conversion. */
   .ds-calendar-nav-button {
     user-select: none;
   }
@@ -262,12 +259,8 @@
   }
 
   /* aspect-ratio, height, width and min-width stay literal Tailwind
-     utilities on the day button (see calendar.tsx) — same reasoning as
-     .ds-calendar-nav-button above: button.css's own .ds-button--size-icon
-     already sets width/height as real CSS, so it wins the cascade by
-     import order regardless of class-list position, and baking those
-     dimensions here would flip that precedence instead of matching the
-     already-shipped fixed icon-button size. */
+     utilities on the day button (see calendar.tsx), for the same reason as
+     .ds-calendar-nav-button above: they override .ds-button--size-icon. */
   .ds-calendar-day-button {
     position: relative;
     isolation: isolate;

@@ -261,13 +261,7 @@ export const PLAYGROUNDS: Record<string, PlaygroundConfig> = {
       title: { default: "Private previews", label: "card title" },
       error: { default: "Enter a valid email address.", label: "error" },
     },
-    extras: [
-      {
-        prop: "orientation",
-        type: "select",
-        options: ["vertical", "horizontal", "responsive"],
-      },
-    ],
+    variantsFrom: "fieldVariants",
     note: "The orientation axis belongs to the first row; the rows below it show the invalid state and the selectable-card shape a FieldLabel takes when it wraps a whole Field.",
   },
 

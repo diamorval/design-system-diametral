@@ -4,10 +4,10 @@
      overrides it with w-56, relying on tailwind-merge to dedupe against
      whichever of those two literal classes is present. */
   .ds-date-range-picker-trigger {
-    justify-content: space-between !important;
-    font-weight: 400 !important;
-    letter-spacing: normal !important;
-    text-transform: none !important;
+    justify-content: space-between;
+    font-weight: 400;
+    letter-spacing: normal;
+    text-transform: none;
   }
 
   .ds-date-range-picker-label {

@@ -6,10 +6,7 @@
      SidebarSeparator (sidebar.tsx) overrides them with
      bg-sidebar-border/w-auto, both relying on tailwind-merge to dedupe
      against Separator's own defaults — which only works while those
-     specific utilities remain literal Tailwind classes on both sides. Baking
-     them here would make this file's rules win the cascade unconditionally
-     (later-imported @layer utilities beats an equal-specificity Tailwind
-     utility), breaking both overrides regardless of source order. */
+     specific utilities remain literal Tailwind classes on both sides. */
   .ds-separator {
     flex-shrink: 0;
   }

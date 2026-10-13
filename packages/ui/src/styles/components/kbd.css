@@ -1,13 +1,8 @@
-/* Layered (not left unlayered like the rest of this file's siblings) because
-   InputGroupAddon reaches into a nested Kbd with its own Tailwind utility
+/* InputGroupAddon reaches into a nested Kbd with its own Tailwind utility
    (`**:data-[slot=kbd]:bg-muted-foreground/10`, input-group.tsx) that must
-   keep winning here exactly as it did pre-conversion. Unlayered CSS beats any
-   layered Tailwind utility outright regardless of specificity, so leaving
-   this file unlayered would make the plain `background: var(--input)` below
-   always win instead — the opposite of the original cascade. `:where()`
-   around the ancestor mirrors Tailwind's own `in-data-[slot=input-group]:`
-   compile output, keeping this rule's specificity low enough that
-   InputGroupAddon's higher-specificity utility still overrides it. */
+   keep winning here, as it did pre-conversion. `:where()` around the
+   ancestor mirrors Tailwind's own `in-data-[slot=input-group]:` compile
+   output, keeping this rule's specificity low enough for that utility. */
 @layer components {
   .ds-kbd {
     pointer-events: none;
