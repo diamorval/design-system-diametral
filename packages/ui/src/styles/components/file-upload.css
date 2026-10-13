@@ -21,21 +21,6 @@
     transition-duration: 150ms;
     outline: none;
   }
-  .ds-file-upload:hover {
-    background-color: color-mix(in oklab, var(--muted) 50%, transparent);
-  }
-  .ds-file-upload:has(input:focus-visible) {
-    border-color: var(--ring);
-    box-shadow: 0 0 0 2px color-mix(in oklab, var(--ring) 30%, transparent);
-  }
-  .ds-file-upload[data-dragging] {
-    border-color: var(--ring);
-    background-color: color-mix(in oklab, var(--muted) 50%, transparent);
-  }
-  .ds-file-upload[data-disabled] {
-    pointer-events: none;
-    opacity: 0.5;
-  }
 
   .ds-file-upload-icon {
     display: flex;
@@ -46,10 +31,6 @@
     border-radius: 0;
     border: 1px solid var(--border);
     color: var(--muted-foreground);
-  }
-  .ds-file-upload-icon svg:not([class*="size-"]) {
-    width: 1rem;
-    height: 1rem;
   }
 
   .ds-file-upload-title {
@@ -65,5 +46,29 @@
     line-height: 1.5;
     color: var(--muted-foreground);
     text-transform: none;
+  }
+}
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+@layer utilities {
+  .ds-file-upload:hover {
+    background-color: color-mix(in oklab, var(--muted) 50%, transparent);
+  }
+  .ds-file-upload:has(input:focus-visible) {
+    border-color: var(--ring);
+    box-shadow: 0 0 0 2px color-mix(in oklab, var(--ring) 30%, transparent);
+  }
+  .ds-file-upload[data-dragging] {
+    border-color: var(--ring);
+    background-color: color-mix(in oklab, var(--muted) 50%, transparent);
+  }
+  .ds-file-upload[data-disabled] {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+  .ds-file-upload-icon svg:not([class*="size-"]) {
+    width: 1rem;
+    height: 1rem;
   }
 }

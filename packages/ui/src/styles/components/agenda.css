@@ -30,9 +30,6 @@
     border-bottom: 1px solid var(--border);
     padding-block: 0.75rem;
   }
-  .ds-agenda-event:last-child {
-    border-bottom: none;
-  }
 
   .ds-agenda-event-status {
     flex-shrink: 0;
@@ -63,5 +60,13 @@
     font-size: 0.875rem;
     line-height: calc(1.25 / 0.875);
     color: var(--muted-foreground);
+  }
+}
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+@layer utilities {
+  .ds-agenda-event:last-child {
+    border-bottom: none;
   }
 }

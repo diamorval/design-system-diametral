@@ -15,9 +15,6 @@
     font-size: 0.875rem;
     line-height: calc(1.25 / 0.875);
   }
-  .ds-message[data-align="end"] {
-    flex-direction: row-reverse;
-  }
 
   .ds-message-avatar {
     display: flex;
@@ -31,9 +28,6 @@
     border-radius: 0;
     background-color: var(--muted);
   }
-  .ds-message:has([data-slot="message-footer"]) .ds-message-avatar {
-    translate: 0 -2rem;
-  }
 
   .ds-message-content {
     display: flex;
@@ -42,9 +36,6 @@
     flex-direction: column;
     gap: 0.625rem;
     overflow-wrap: break-word;
-  }
-  .ds-message[data-align="end"] > .ds-message-content > [data-slot] {
-    align-self: flex-end;
   }
 
   .ds-message-header,
@@ -60,6 +51,20 @@
     letter-spacing: 0.025em;
     color: var(--muted-foreground);
     text-transform: uppercase;
+  }
+}
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+@layer utilities {
+  .ds-message[data-align="end"] {
+    flex-direction: row-reverse;
+  }
+  .ds-message:has([data-slot="message-footer"]) .ds-message-avatar {
+    translate: 0 -2rem;
+  }
+  .ds-message[data-align="end"] > .ds-message-content > [data-slot] {
+    align-self: flex-end;
   }
   .ds-message:has([data-variant="ghost"]) .ds-message-header,
   .ds-message:has([data-variant="ghost"]) .ds-message-footer {

@@ -26,9 +26,6 @@
     transition-duration: 200ms;
     transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
   }
-  :where([dir="rtl"], [dir="rtl"] *) .ds-theme-switcher-indicator {
-    translate: calc(var(--index) * (2.25rem - 1px) * -1) 0;
-  }
   @media (prefers-reduced-motion: reduce) {
     .ds-theme-switcher-indicator {
       transition-property: none;
@@ -46,6 +43,15 @@
     width: 2.25rem;
     padding-inline: 0;
     color: var(--muted-foreground);
+  }
+}
+
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+@layer utilities {
+  :where([dir="rtl"], [dir="rtl"] *) .ds-theme-switcher-indicator {
+    translate: calc(var(--index) * (2.25rem - 1px) * -1) 0;
   }
   .ds-theme-switcher-item:first-child {
     margin-inline-start: 0;

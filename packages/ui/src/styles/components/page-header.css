@@ -6,9 +6,6 @@
     border-bottom: 1px solid var(--border);
     padding-bottom: 1.5rem;
   }
-  .ds-page-header:has([data-slot="page-header-tabs"]) {
-    padding-bottom: 0;
-  }
 
   .ds-page-header-heading {
     display: flex;
@@ -24,13 +21,6 @@
     flex-shrink: 0;
     align-items: center;
     color: var(--muted-foreground);
-  }
-  .ds-page-header-icon svg {
-    pointer-events: none;
-  }
-  .ds-page-header-icon svg:not([class*="size-"]) {
-    width: 1.5rem;
-    height: 1.5rem;
   }
 
   .ds-page-header-title {
@@ -51,5 +41,20 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
+  }
+}
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+@layer utilities {
+  .ds-page-header:has([data-slot="page-header-tabs"]) {
+    padding-bottom: 0;
+  }
+  .ds-page-header-icon svg {
+    pointer-events: none;
+  }
+  .ds-page-header-icon svg:not([class*="size-"]) {
+    width: 1.5rem;
+    height: 1.5rem;
   }
 }

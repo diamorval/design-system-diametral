@@ -12,21 +12,10 @@
     line-height: calc(1.25 / 0.875);
   }
 
-  .ds-table-header tr {
-    border-bottom: 1px solid var(--border);
-  }
-
-  .ds-table-body tr:last-child {
-    border-width: 0;
-  }
-
   .ds-table-footer {
     border-top: 1px solid var(--border);
     background-color: color-mix(in oklab, var(--muted) 50%, transparent);
     font-weight: 500;
-  }
-  .ds-table-footer > tr:last-child {
-    border-bottom-width: 0;
   }
 
   .ds-table-row {
@@ -36,15 +25,6 @@
       text-decoration-color, fill, stroke;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 150ms;
-  }
-  .ds-table-row:hover {
-    background-color: color-mix(in oklab, var(--muted) 50%, transparent);
-  }
-  .ds-table-row:has([aria-expanded="true"]) {
-    background-color: color-mix(in oklab, var(--muted) 50%, transparent);
-  }
-  .ds-table-row[data-state="selected"] {
-    background-color: var(--muted);
   }
 
   /* text-start stays a literal Tailwind utility on TableHead's own default
@@ -64,17 +44,11 @@
     color: var(--muted-foreground);
     text-transform: uppercase;
   }
-  .ds-table-head:has([role="checkbox"]) {
-    padding-inline-end: 0;
-  }
 
   .ds-table-cell {
     padding: 0.75rem;
     vertical-align: middle;
     white-space: nowrap;
-  }
-  .ds-table-cell:has([role="checkbox"]) {
-    padding-inline-end: 0;
   }
 
   .ds-table-caption {
@@ -82,5 +56,37 @@
     font-size: 0.875rem;
     line-height: calc(1.25 / 0.875);
     color: var(--muted-foreground);
+  }
+}
+
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+@layer utilities {
+
+  .ds-table-header tr {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .ds-table-body tr:last-child {
+    border-width: 0;
+  }
+  .ds-table-footer > tr:last-child {
+    border-bottom-width: 0;
+  }
+  .ds-table-row:hover {
+    background-color: color-mix(in oklab, var(--muted) 50%, transparent);
+  }
+  .ds-table-row:has([aria-expanded="true"]) {
+    background-color: color-mix(in oklab, var(--muted) 50%, transparent);
+  }
+  .ds-table-row[data-state="selected"] {
+    background-color: var(--muted);
+  }
+  .ds-table-head:has([role="checkbox"]) {
+    padding-inline-end: 0;
+  }
+  .ds-table-cell:has([role="checkbox"]) {
+    padding-inline-end: 0;
   }
 }

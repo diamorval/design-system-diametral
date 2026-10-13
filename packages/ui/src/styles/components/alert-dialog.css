@@ -21,12 +21,6 @@
       opacity: 0;
     }
   }
-  .ds-alert-dialog-overlay[data-open] {
-    animation: ds-alert-dialog-overlay-enter 100ms ease;
-  }
-  .ds-alert-dialog-overlay[data-closed] {
-    animation: ds-alert-dialog-overlay-exit 100ms ease;
-  }
 
   .ds-alert-dialog-content {
     position: fixed;
@@ -49,14 +43,6 @@
     transition-duration: 100ms;
     outline: none;
   }
-  :dir(rtl) .ds-alert-dialog-content {
-    translate: 50% -50%;
-  }
-  @media (width >= 40rem) {
-    .ds-alert-dialog-content[data-size="default"] {
-      max-width: 28rem;
-    }
-  }
   @keyframes ds-alert-dialog-content-enter {
     from {
       opacity: 0;
@@ -69,12 +55,6 @@
       scale: 0.95;
     }
   }
-  .ds-alert-dialog-content[data-open] {
-    animation: ds-alert-dialog-content-enter 100ms ease;
-  }
-  .ds-alert-dialog-content[data-closed] {
-    animation: ds-alert-dialog-content-exit 100ms ease;
-  }
 
   .ds-alert-dialog-header {
     display: grid;
@@ -83,29 +63,11 @@
     gap: 0.5rem;
     text-align: center;
   }
-  .ds-alert-dialog-header:has([data-slot="alert-dialog-media"]) {
-    grid-template-rows: auto auto 1fr;
-    column-gap: 1.5rem;
-  }
-  @media (width >= 40rem) {
-    .ds-alert-dialog-content[data-size="default"] .ds-alert-dialog-header {
-      place-items: start;
-      text-align: start;
-    }
-    .ds-alert-dialog-content[data-size="default"]
-      .ds-alert-dialog-header:has([data-slot="alert-dialog-media"]) {
-      grid-template-rows: auto 1fr;
-    }
-  }
 
   .ds-alert-dialog-footer {
     display: flex;
     flex-direction: column-reverse;
     gap: 0.5rem;
-  }
-  .ds-alert-dialog-content[data-size="sm"] .ds-alert-dialog-footer {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   @media (width >= 40rem) {
     .ds-alert-dialog-footer {
@@ -124,15 +86,6 @@
     border-radius: 0;
     background-color: var(--muted);
   }
-  .ds-alert-dialog-media svg:not([class*="size-"]) {
-    width: 2rem;
-    height: 2rem;
-  }
-  @media (width >= 40rem) {
-    .ds-alert-dialog-content[data-size="default"] .ds-alert-dialog-media {
-      grid-row: span 2 / span 2;
-    }
-  }
 
   .ds-alert-dialog-title {
     font-family: var(--font-heading);
@@ -141,12 +94,6 @@
     font-weight: 600;
     letter-spacing: 0.05em;
     text-transform: uppercase;
-  }
-  @media (width >= 40rem) {
-    .ds-alert-dialog-content[data-size="default"]:has([data-slot="alert-dialog-media"])
-      .ds-alert-dialog-title {
-      grid-column-start: 2;
-    }
   }
 
   .ds-alert-dialog-description {
@@ -159,6 +106,64 @@
   @media (width >= 48rem) {
     .ds-alert-dialog-description {
       text-wrap: pretty;
+    }
+  }
+}
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+@layer utilities {
+  .ds-alert-dialog-overlay[data-open] {
+    animation: ds-alert-dialog-overlay-enter 100ms ease;
+  }
+  .ds-alert-dialog-overlay[data-closed] {
+    animation: ds-alert-dialog-overlay-exit 100ms ease;
+  }
+  :dir(rtl) .ds-alert-dialog-content {
+    translate: 50% -50%;
+  }
+  @media (width >= 40rem) {
+    .ds-alert-dialog-content[data-size="default"] {
+      max-width: 28rem;
+    }
+  }
+  .ds-alert-dialog-content[data-open] {
+    animation: ds-alert-dialog-content-enter 100ms ease;
+  }
+  .ds-alert-dialog-content[data-closed] {
+    animation: ds-alert-dialog-content-exit 100ms ease;
+  }
+  .ds-alert-dialog-header:has([data-slot="alert-dialog-media"]) {
+    grid-template-rows: auto auto 1fr;
+    column-gap: 1.5rem;
+  }
+  @media (width >= 40rem) {
+    .ds-alert-dialog-content[data-size="default"] .ds-alert-dialog-header {
+      place-items: start;
+      text-align: start;
+    }
+    .ds-alert-dialog-content[data-size="default"]
+      .ds-alert-dialog-header:has([data-slot="alert-dialog-media"]) {
+      grid-template-rows: auto 1fr;
+    }
+  }
+  .ds-alert-dialog-content[data-size="sm"] .ds-alert-dialog-footer {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .ds-alert-dialog-media svg:not([class*="size-"]) {
+    width: 2rem;
+    height: 2rem;
+  }
+  @media (width >= 40rem) {
+    .ds-alert-dialog-content[data-size="default"] .ds-alert-dialog-media {
+      grid-row: span 2 / span 2;
+    }
+  }
+  @media (width >= 40rem) {
+    .ds-alert-dialog-content[data-size="default"]:has([data-slot="alert-dialog-media"])
+      .ds-alert-dialog-title {
+      grid-column-start: 2;
     }
   }
   .ds-alert-dialog-description a {

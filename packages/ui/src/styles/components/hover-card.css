@@ -25,6 +25,26 @@
 
   /* Slide direction mirrors ds-popover-content / ds-context-menu-content: each
      side enters from the opposite edge, 0.5rem (spacing-2) away. */
+
+  @keyframes ds-hover-card-enter {
+    from {
+      opacity: 0;
+      scale: 0.95;
+      translate: var(--ds-hover-card-slide-x) var(--ds-hover-card-slide-y);
+    }
+  }
+  @keyframes ds-hover-card-exit {
+    to {
+      opacity: 0;
+      scale: 0.95;
+    }
+  }
+}
+
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+@layer utilities {
   .ds-hover-card-content[data-side="bottom"] {
     --ds-hover-card-slide-y: -0.5rem;
   }
@@ -54,20 +74,6 @@
       [dir="rtl"] *
     ).ds-hover-card-content[data-side="inline-start"] {
     --ds-hover-card-slide-x: -0.5rem;
-  }
-
-  @keyframes ds-hover-card-enter {
-    from {
-      opacity: 0;
-      scale: 0.95;
-      translate: var(--ds-hover-card-slide-x) var(--ds-hover-card-slide-y);
-    }
-  }
-  @keyframes ds-hover-card-exit {
-    to {
-      opacity: 0;
-      scale: 0.95;
-    }
   }
   .ds-hover-card-content[data-open] {
     animation: ds-hover-card-enter 100ms ease;

@@ -12,6 +12,21 @@
     transition-duration: 150ms;
     outline: none;
   }
+
+  .ds-switch-thumb {
+    display: block;
+    pointer-events: none;
+    background: var(--background);
+    box-shadow: none;
+    transition-property: transform, translate, scale, rotate;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+}
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+@layer utilities {
   .ds-switch::after {
     content: "";
     position: absolute;
@@ -49,16 +64,6 @@
   .ds-switch[data-disabled] {
     cursor: not-allowed;
     opacity: 0.5;
-  }
-
-  .ds-switch-thumb {
-    display: block;
-    pointer-events: none;
-    background: var(--background);
-    box-shadow: none;
-    transition-property: transform, translate, scale, rotate;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 150ms;
   }
   :where(.ds-switch[data-size="default"]) .ds-switch-thumb {
     width: 0.875rem;

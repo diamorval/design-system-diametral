@@ -15,9 +15,6 @@
     color: var(--muted-foreground);
     text-transform: uppercase;
   }
-  .ds-description-term:first-of-type {
-    border-top: 0;
-  }
 
   .ds-description-detail {
     display: flex;
@@ -28,6 +25,14 @@
     line-height: calc(1.25 / 0.875);
     color: var(--foreground);
     font-variant-numeric: tabular-nums;
+  }
+}
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+@layer utilities {
+  .ds-description-term:first-of-type {
+    border-top: 0;
   }
   .ds-description-detail:first-of-type {
     border-top: 0;

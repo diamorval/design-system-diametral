@@ -79,9 +79,6 @@
   .ds-data-table-pagination-icon {
     transition: rotate 150ms;
   }
-  :where([dir="rtl"], [dir="rtl"] *).ds-data-table-pagination-icon {
-    rotate: 180deg;
-  }
 
   .ds-data-table-sort-icon {
     width: 0.75rem;
@@ -102,18 +99,9 @@
     text-transform: uppercase;
     outline: none;
   }
-  .ds-data-table-column-header:hover {
-    color: var(--foreground);
-  }
-  .ds-data-table-column-header:focus-visible {
-    box-shadow: 0 0 0 2px color-mix(in oklab, var(--ring) 30%, transparent);
-  }
 
   .ds-data-table-expander-icon {
     transition: rotate 200ms;
-  }
-  [aria-expanded="true"] .ds-data-table-expander-icon {
-    rotate: 90deg;
   }
 
   .ds-data-table-head--sortable {
@@ -131,15 +119,32 @@
     color: var(--muted-foreground);
     outline: none;
   }
+
+  .ds-data-table-grip-icon {
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+}
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+@layer utilities {
+  :where([dir="rtl"], [dir="rtl"] *).ds-data-table-pagination-icon {
+    rotate: 180deg;
+  }
+  .ds-data-table-column-header:hover {
+    color: var(--foreground);
+  }
+  .ds-data-table-column-header:focus-visible {
+    box-shadow: 0 0 0 2px color-mix(in oklab, var(--ring) 30%, transparent);
+  }
+  [aria-expanded="true"] .ds-data-table-expander-icon {
+    rotate: 90deg;
+  }
   .ds-data-table-grip:hover {
     color: var(--foreground);
   }
   .ds-data-table-grip:focus-visible {
     box-shadow: 0 0 0 2px color-mix(in oklab, var(--ring) 30%, transparent);
-  }
-
-  .ds-data-table-grip-icon {
-    width: 0.875rem;
-    height: 0.875rem;
   }
 }

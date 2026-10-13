@@ -15,15 +15,9 @@
     display: flex;
     align-items: center;
   }
-  .ds-input-otp:has(input:disabled) {
-    opacity: 0.5;
-  }
 
   .ds-input-otp-input {
     cursor: default;
-  }
-  .ds-input-otp-input:disabled {
-    cursor: not-allowed;
   }
 
   .ds-input-otp-group {
@@ -31,12 +25,6 @@
     align-items: center;
     gap: 0.25rem;
     border-radius: 0;
-  }
-  .ds-input-otp-group:has([aria-invalid="true"]) {
-    border-bottom-color: var(--destructive);
-  }
-  .dark .ds-input-otp-group:has([aria-invalid="true"]) {
-    border-bottom-color: color-mix(in oklab, var(--destructive) 50%, transparent);
   }
 
   .ds-input-otp-slot {
@@ -57,16 +45,6 @@
     outline: none;
     border-radius: 0;
   }
-  .ds-input-otp-slot[aria-invalid="true"] {
-    border-bottom-color: var(--destructive);
-  }
-  .dark .ds-input-otp-slot[aria-invalid="true"] {
-    border-bottom-color: color-mix(in oklab, var(--destructive) 50%, transparent);
-  }
-  .ds-input-otp-slot[data-active="true"] {
-    z-index: 10;
-    border-bottom-color: var(--ring);
-  }
 
   .ds-input-otp-slot-caret {
     pointer-events: none;
@@ -86,6 +64,33 @@
   .ds-input-otp-separator {
     display: flex;
     align-items: center;
+  }
+}
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+@layer utilities {
+  .ds-input-otp:has(input:disabled) {
+    opacity: 0.5;
+  }
+  .ds-input-otp-input:disabled {
+    cursor: not-allowed;
+  }
+  .ds-input-otp-group:has([aria-invalid="true"]) {
+    border-bottom-color: var(--destructive);
+  }
+  .dark .ds-input-otp-group:has([aria-invalid="true"]) {
+    border-bottom-color: color-mix(in oklab, var(--destructive) 50%, transparent);
+  }
+  .ds-input-otp-slot[aria-invalid="true"] {
+    border-bottom-color: var(--destructive);
+  }
+  .dark .ds-input-otp-slot[aria-invalid="true"] {
+    border-bottom-color: color-mix(in oklab, var(--destructive) 50%, transparent);
+  }
+  .ds-input-otp-slot[data-active="true"] {
+    z-index: 10;
+    border-bottom-color: var(--ring);
   }
   .ds-input-otp-separator svg:not([class*="size-"]) {
     width: 0.875rem;

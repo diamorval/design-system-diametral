@@ -15,6 +15,18 @@
     transition-property: box-shadow;
     outline: none;
   }
+
+  .ds-checkbox-indicator {
+    display: grid;
+    place-content: center;
+    color: currentcolor;
+    transition-property: none;
+  }
+}
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+@layer utilities {
   .group[data-disabled="true"] .ds-checkbox {
     opacity: 0.5;
   }
@@ -50,13 +62,6 @@
   }
   .dark .ds-checkbox[data-checked] {
     background: var(--primary);
-  }
-
-  .ds-checkbox-indicator {
-    display: grid;
-    place-content: center;
-    color: currentcolor;
-    transition-property: none;
   }
   .ds-checkbox-indicator > svg {
     width: 0.875rem;

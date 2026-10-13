@@ -21,23 +21,6 @@
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 150ms;
   }
-  .ds-number-field-group:focus-within {
-    border-bottom-color: var(--ring);
-  }
-  .ds-number-field-group:has([aria-invalid="true"]) {
-    border-bottom-color: var(--destructive);
-  }
-  .ds-number-field-group:has(:disabled) {
-    pointer-events: none;
-    opacity: 0.5;
-  }
-  .dark .ds-number-field-group:has([aria-invalid="true"]) {
-    border-bottom-color: color-mix(
-      in oklab,
-      var(--destructive) 50%,
-      transparent
-    );
-  }
 
   /* px-2 and text-center stay literal Tailwind utilities on NumberFieldInput's
      own className (see number-field.tsx) — number-field/with-scrub.tsx
@@ -59,21 +42,11 @@
       line-height: calc(1.25 / 0.875);
     }
   }
-  .ds-number-field-input::placeholder {
-    color: var(--muted-foreground);
-  }
-  .ds-number-field-input:disabled {
-    cursor: not-allowed;
-  }
 
   .ds-number-field-decrement,
   .ds-number-field-increment {
     flex-shrink: 0;
     color: var(--muted-foreground);
-  }
-  .ds-number-field-decrement:hover,
-  .ds-number-field-increment:hover {
-    color: var(--foreground);
   }
 
   .ds-number-field-scrub-area {
@@ -83,5 +56,37 @@
 
   .ds-number-field-scrub-area-cursor {
     filter: drop-shadow(0 1px 1px rgb(0 0 0 / 0.05));
+  }
+}
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+@layer utilities {
+  .ds-number-field-group:focus-within {
+    border-bottom-color: var(--ring);
+  }
+  .ds-number-field-group:has([aria-invalid="true"]) {
+    border-bottom-color: var(--destructive);
+  }
+  .ds-number-field-group:has(:disabled) {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+  .dark .ds-number-field-group:has([aria-invalid="true"]) {
+    border-bottom-color: color-mix(
+      in oklab,
+      var(--destructive) 50%,
+      transparent
+    );
+  }
+  .ds-number-field-input::placeholder {
+    color: var(--muted-foreground);
+  }
+  .ds-number-field-input:disabled {
+    cursor: not-allowed;
+  }
+  .ds-number-field-decrement:hover,
+  .ds-number-field-increment:hover {
+    color: var(--foreground);
   }
 }

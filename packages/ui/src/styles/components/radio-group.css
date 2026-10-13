@@ -22,6 +22,30 @@
     background: transparent;
     outline: none;
   }
+
+  .ds-radio-group-indicator {
+    display: flex;
+    width: 1.125rem;
+    height: 1.125rem;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ds-radio-group-dot {
+    position: absolute;
+    top: 50%;
+    inset-inline-start: 50%;
+    width: 0.5rem;
+    height: 0.5rem;
+    translate: -50% -50%;
+    border-radius: 9999px;
+    background: var(--foreground);
+  }
+}
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+@layer utilities {
   .ds-radio-group-item::after {
     content: "";
     position: absolute;
@@ -51,25 +75,6 @@
   }
   .ds-radio-group-item[data-checked] {
     border-color: var(--foreground);
-  }
-
-  .ds-radio-group-indicator {
-    display: flex;
-    width: 1.125rem;
-    height: 1.125rem;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .ds-radio-group-dot {
-    position: absolute;
-    top: 50%;
-    inset-inline-start: 50%;
-    width: 0.5rem;
-    height: 0.5rem;
-    translate: -50% -50%;
-    border-radius: 9999px;
-    background: var(--foreground);
   }
   :where([dir="rtl"], [dir="rtl"] *) .ds-radio-group-dot {
     translate: 50% -50%;

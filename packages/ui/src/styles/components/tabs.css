@@ -3,9 +3,6 @@
     display: flex;
     gap: 0.5rem;
   }
-  .ds-tabs[data-orientation="horizontal"] {
-    flex-direction: column;
-  }
 
   .ds-tabs-list {
     display: inline-flex;
@@ -14,13 +11,6 @@
     justify-content: center;
     padding: 0.25rem;
     color: var(--muted-foreground);
-  }
-  :where(.ds-tabs[data-orientation="horizontal"]) .ds-tabs-list {
-    height: 2.5rem;
-  }
-  :where(.ds-tabs[data-orientation="vertical"]) .ds-tabs-list {
-    height: fit-content;
-    flex-direction: column;
   }
   .ds-tabs-list--default {
     background: var(--muted);
@@ -51,6 +41,38 @@
     transition-property: all;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 150ms;
+  }
+
+  /* Line variant never fills with a background, active or not — only the ::after
+     underline signals the active tab. These match the `[data-active]` rules above
+     in specificity, so they must stay declared after them to win the cascade. */
+
+  .ds-tabs-content {
+    flex: 1 1 0%;
+    outline: none;
+  }
+}
+
+/* text-sm stays a literal Tailwind utility on TabsContent's own default
+   className (see tabs.tsx) — tabs/in-card.tsx overrides it with font-mono
+   text-xs, relying on tailwind-merge to dedupe against this component's own
+   default, which only works while text-sm remains a literal class rather
+   than baked CSS. */
+
+/* State, attribute and context rules sit in the utilities layer, as the
+   Tailwind variants they came from did, so they still beat a plain
+   utility on the same element. */
+
+@layer utilities {
+  .ds-tabs[data-orientation="horizontal"] {
+    flex-direction: column;
+  }
+  :where(.ds-tabs[data-orientation="horizontal"]) .ds-tabs-list {
+    height: 2.5rem;
+  }
+  :where(.ds-tabs[data-orientation="vertical"]) .ds-tabs-list {
+    height: fit-content;
+    flex-direction: column;
   }
   .ds-tabs-trigger svg {
     pointer-events: none;
@@ -124,10 +146,6 @@
     inset-inline-end: -0.25rem;
     width: 0.125rem;
   }
-
-  /* Line variant never fills with a background, active or not — only the ::after
-     underline signals the active tab. These match the `[data-active]` rules above
-     in specificity, so they must stay declared after them to win the cascade. */
   :where(.ds-tabs-list--line) .ds-tabs-trigger {
     background: transparent;
   }
@@ -141,15 +159,4 @@
   :where(.ds-tabs-list--line) .ds-tabs-trigger[data-active]::after {
     opacity: 1;
   }
-
-  .ds-tabs-content {
-    flex: 1 1 0%;
-    outline: none;
-  }
 }
-
-/* text-sm stays a literal Tailwind utility on TabsContent's own default
-   className (see tabs.tsx) — tabs/in-card.tsx overrides it with font-mono
-   text-xs, relying on tailwind-merge to dedupe against this component's own
-   default, which only works while text-sm remains a literal class rather
-   than baked CSS. */
